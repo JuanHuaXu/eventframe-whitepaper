@@ -10,11 +10,19 @@ e_t = \Gamma(\omega_{A_t}), \quad \Gamma: \Omega^{A_t} \rightarrow \mathcal{E}.
 
 The conceptual role of \(\Gamma\) is to select usable predictive distinctions from a substrate that is too dense to represent directly. The operational use is that every prediction, cache key, and invariant test operates on \(e_t\), while slow-path review may revise \(\Gamma\) if the compression discards distinctions that matter.
 
-Let \(\mathcal{E}\) be the compressed event space defined by the product of typed fields. A trajectory is:
+Let \(\mathcal{E}\) be the compressed event space defined by the product of typed fields. A linear trajectory is:
 
 \[
 E_{1:T} = (e_1, e_2, \ldots, e_T), \quad e_t \in \mathcal{E}.
 \]
+
+More generally, an event history is a directed acyclic event graph:
+
+\[
+G_t = (V_t, R_t),
+\]
+
+where \(V_t \subset \mathcal{E}\) is a set of event frames and \(R_t\) contains temporal, causal, or dependency edges. This graph view allows streams to merge and branch instead of forcing all event histories into a single chain.
 
 For a context length \(k\), the prediction context is:
 
@@ -69,6 +77,20 @@ d_Y(P(Y \mid do(I_j)), P(Y)) > \eta_Y.
 \]
 
 EventFrame assumes that such distinctions are sparse relative to the microscopic substrate. This is not a proven physical theorem in the paper. It is a modeling hypothesis that justifies searching for compressed event frames rather than assigning a unique frame to every microscopic cell.
+
+Confluence and divergence define when compression is safe or unsafe over time. Let \(S_1,\ldots,S_m\) be event streams or subgraphs. A merge operator:
+
+\[
+e^{merge}_t = \mu_{\delta}(S_1,\ldots,S_m)
+\]
+
+is accepted only when replacing the streams by \(e^{merge}_t\) changes the prediction target by at most a threshold. Conversely, a branching operator:
+
+\[
+\mathcal{B}_{\epsilon}: \mathcal{E} \rightarrow \mathcal{P}(\mathcal{G})
+\]
+
+identifies downstream event subgraphs reachable under a perturbation or intervention scale \(\epsilon\). If the target distribution changes by more than \(\eta_Y\), the original distinction is divergence-effective and should not be compressed away.
 
 Confidence and provenance metadata enter the framework through \(c_t\). Operationally, \(c_t\) should affect whether a field is trusted for training, lookup, fuzzing, or invariant extraction. For example, if \(m_t\) is an inferred motive with low confidence, fuzzing that motive should not be treated the same as perturbing an observed timestamp. A conservative implementation can use \(c_t\) to weight losses, filter cache entries, or mark claims as uncertain.
 

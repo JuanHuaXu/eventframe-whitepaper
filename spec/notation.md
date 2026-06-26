@@ -103,6 +103,60 @@ A trajectory is:
 E_{1:T} = (e_1, e_2, \ldots, e_T)
 \]
 
+More generally, an event history may be a directed acyclic event graph:
+
+\[
+G_t = (V_t, R_t)
+\]
+
+where \(V_t \subset \mathcal{E}\) is a set of event frames and \(R_t\) contains
+temporal, causal, or dependency edges among them. A linear trajectory is the
+special case in which each event has at most one immediate predecessor and one
+immediate successor.
+
+## Event Confluence and Divergence
+
+Event confluence is a many-to-one compression over event streams. Let
+\(S_1, \ldots, S_m\) be event streams or subgraphs. A confluence operator is:
+
+\[
+\mu_{\delta}: \mathcal{G}^m \rightarrow \mathcal{E}
+\]
+
+where \(\mathcal{G}\) is the space of event subgraphs and \(\delta\) is a
+resolution or tolerance parameter. The aggregate event is:
+
+\[
+e^{merge}_t = \mu_{\delta}(S_1, \ldots, S_m).
+\]
+
+Conceptually, \(\mu_{\delta}\) says that separate event streams can become one
+larger event when their distinctions no longer change the target beyond the
+chosen resolution. Operationally, confluence is accepted only if replacing the
+streams by \(e^{merge}_t\) does not degrade prediction beyond a declared
+threshold.
+
+Event divergence is the opposite pattern: a small distinction produces multiple
+downstream branches. Let \(\mathcal{B}_{\epsilon}\) be a branching operator:
+
+\[
+\mathcal{B}_{\epsilon}: \mathcal{E} \rightarrow \mathcal{P}(\mathcal{G})
+\]
+
+where \(\epsilon\) is a perturbation or intervention scale and
+\(\mathcal{P}(\mathcal{G})\) is a set of possible downstream event subgraphs.
+A distinction is divergence-effective when:
+
+\[
+d_Y(P(Y \mid \mathcal{B}_{\epsilon}(e)), P(Y \mid e)) > \eta_Y.
+\]
+
+Conceptually, this captures butterfly-effect-style sensitivity: a distinction
+that appears small at one scale may amplify into materially different future
+event streams. Operationally, such distinctions should not be merged away by
+coarse-graining or lumpability unless the target-level divergence remains below
+threshold.
+
 ## Transition Function
 
 A transition model is:

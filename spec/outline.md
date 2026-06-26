@@ -23,6 +23,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Typed event frames
 - Intervention-effective event distinctions
 - Event states and transitions
+- Event confluence and divergence
 - Causal, temporal, and spatial links
 
 ## 3. Mathematical Framework
@@ -30,6 +31,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Substrate-to-event coarse-graining
 - Event space
 - Event trajectories
+- Event graphs, stream merge, and branching
 - Transition functions
 - Temporal prediction loss
 - Intervention-effective sparsity
@@ -59,11 +61,13 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Counterfactual event frames
 - Invariance testing
 - Boundary discovery
+- Confluence and divergence detection
 - Experimental protocols
 
 ## 7. Lumpability and Abstraction
 
 - Projection from events to abstract states
+- Merge operators and branching safeguards
 - Predictive lumpability
 - Abstraction quality
 - Anti-Pigeon principle
@@ -86,6 +90,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Cache hit-rate tests
 - Long-horizon prediction
 - Invariant stability tests
+- Confluence and divergence tests
 - Ablation studies
 
 ## 10. Open Problems
@@ -96,6 +101,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Grounding symbolic fields
 - Drift and cache pollution
 - Robust invariant extraction
+- Confluence and divergence detection
 - Scaling to multimodal data
 
 ## 11. Conclusion

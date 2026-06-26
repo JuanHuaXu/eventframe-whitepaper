@@ -38,6 +38,12 @@ If coarse event projections preserve predictive transition behavior, then detail
 
 Status: mathematical claim adapted from state aggregation ideas; needs careful formulation and citations to Markov chain lumpability, state aggregation, and approximate abstraction literature.
 
+## Claim 5a: Event streams can conjoin or diverge over time
+
+Event trajectories need not remain linear independent chains. Multiple streams can become representable as a single aggregate event, while small distinctions can also amplify into divergent downstream predictions.
+
+Status: modeling claim; requires formal treatment as event confluence, branching, and sensitivity analysis.
+
 ## Claim 6: Anti-Pigeon prevents premature abstraction
 
 Abstraction should be earned by invariance or lumpability evidence, not assumed from superficial similarity.

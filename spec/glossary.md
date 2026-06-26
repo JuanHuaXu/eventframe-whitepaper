@@ -36,6 +36,18 @@ A representation of the system before, during, or after an event. May include sy
 
 A mapping from one event state to a later event state.
 
+## Event Confluence
+
+A many-to-one process in which multiple event streams or event frames become representable as a single larger event, aggregate, or macro-event.
+
+## Event Divergence
+
+A one-to-many process in which a small event distinction, perturbation, or intervention leads to multiple downstream event branches or materially different predictions.
+
+## Event Stream
+
+A temporally ordered event trajectory or subtrajectory that can merge with other streams or branch into multiple downstream streams.
+
 ## Prediction
 
 The estimation of a future event frame, event state, or transition from current and prior event context.

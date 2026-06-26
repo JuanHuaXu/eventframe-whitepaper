@@ -31,11 +31,13 @@ S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
 
-The fifth experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional.
+The fifth experiment evaluates confluence and divergence. Generate event streams that eventually become prediction-equivalent and test whether a merge operator \(\mu_{\delta}\) can replace them with an aggregate event without degrading temporal prediction. Generate separate cases in which small perturbations amplify into target-distinct downstream branches and test whether the system preserves those divergence-effective distinctions rather than merging them away.
 
-The sixth experiment evaluates lumpability and abstraction. Define projections \(\pi\) that remove or group selected fields. Compare detailed and abstract predictors using temporal loss and transition-distribution divergence. An abstraction should be accepted only when loss degradation remains below a declared threshold. This experiment directly tests the Anti-Pigeon principle: surface-similar groupings should be rejected when they degrade prediction.
+The sixth experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional.
 
-The seventh experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
+The seventh experiment evaluates lumpability and abstraction. Define projections \(\pi\) that remove or group selected fields. Compare detailed and abstract predictors using temporal loss and transition-distribution divergence. An abstraction should be accepted only when loss degradation remains below a declared threshold. This experiment directly tests the Anti-Pigeon principle: surface-similar groupings should be rejected when they degrade prediction.
+
+The eighth experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
 
 Ablation studies should remove one component at a time: residual cache, episodic memory, fuzzing, abstraction, and slow-path refinement. The paper should treat negative results as informative. If residual caches fail in a domain, the failure helps characterize when EventFrame is useful. If fuzzing produces unstable invariants, the thresholds or perturbation families may be wrong.
 
