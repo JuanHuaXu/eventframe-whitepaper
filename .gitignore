@@ -1,0 +1,9 @@
+.DS_Store
+*.tmp
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Generated artifacts may be rebuilt from source drafts.
+build/*.pdf
