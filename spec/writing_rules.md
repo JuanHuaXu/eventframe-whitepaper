@@ -13,6 +13,7 @@
 9. Keep notation consistent with `spec/notation.md` unless revising that file deliberately.
 10. If a term is introduced, add it to `spec/glossary.md`.
 11. If a claim depends on external literature, add or update a placeholder in `spec/references.md`.
+12. Every core construct must include both conceptual explanation and operational use.
 
 ## Equation template
 
@@ -21,6 +22,7 @@ For each equation include:
 - Equation
 - Variables
 - Interpretation
+- Operational use
 - Assumptions
 - Failure mode or limitation
 
@@ -29,8 +31,10 @@ For each equation include:
 Each section should include:
 
 - Purpose
+- Conceptual role
 - Definitions if needed
 - Main formulation
+- How the formulation is used in prediction
 - Example if useful
 - Limitations
 - Transition to next section

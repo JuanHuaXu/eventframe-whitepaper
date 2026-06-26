@@ -2,13 +2,13 @@
 
 ## Phase 1: Repository normalization
 
-- [ ] Review `spec/project_brief.md`
-- [ ] Review `spec/glossary.md`
-- [ ] Review `spec/notation.md`
-- [ ] Review `spec/claims.md`
-- [ ] Review `spec/references.md`
-- [ ] Review `spec/outline.md`
-- [ ] Patch inconsistencies
+- [x] Review `spec/project_brief.md`
+- [x] Review `spec/glossary.md`
+- [x] Review `spec/notation.md`
+- [x] Review `spec/claims.md`
+- [x] Review `spec/references.md`
+- [x] Review `spec/outline.md`
+- [x] Patch inconsistencies
 
 ## Phase 2: Drafting
 

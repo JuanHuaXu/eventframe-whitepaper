@@ -10,6 +10,8 @@ Constraints:
 - Define terms before using them.
 - Include equations only when they carry real explanatory load.
 - For every equation, define variables and interpretation.
+- Pair formal math with a conceptual explanation of why the math is used.
+- When a section introduces a computational construct, explain how it would be run during prediction.
 - Mark uncertain claims as hypotheses or proposed methods.
 - End the section with a short transition to the next section.
 

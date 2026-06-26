@@ -24,6 +24,18 @@ A mapping from one event state to a later event state.
 
 The estimation of a future event frame, event state, or transition from current and prior event context.
 
+## Prediction Context
+
+The finite event history used as input to a prediction step, usually written as \(C_t = e_{t-k+1:t}\) for a context of length \(k\).
+
+## Baseline Predictor
+
+A model, rule, or procedure that produces an initial event prediction before residual correction.
+
+## Prediction Horizon
+
+The time scale \(H\) used to normalize temporal prediction loss and decide when timing errors should be treated as saturated.
+
 ## Residual Prediction
 
 A prediction strategy that estimates the difference between a baseline transition and the actual observed transition.
@@ -43,6 +55,10 @@ A bounded decision rule that maps an error magnitude to a fixed interval, usuall
 ## Residual Cache
 
 A memory structure storing reusable transition corrections. It is used when similar contexts produce similar residuals.
+
+## Residual Lookup
+
+The process of retrieving a cached residual correction whose key is sufficiently similar to the current prediction context.
 
 ## KV Episodic Cache
 

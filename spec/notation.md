@@ -56,13 +56,23 @@ F_\theta: \mathcal{E}^k \rightarrow \mathcal{E}
 
 where \(k\) is the context length and \(\theta\) are model parameters or rules.
 
+The prediction context at time \(t\) is:
+
+\[
+C_t = e_{t-k+1:t} = (e_{t-k+1}, \ldots, e_t)
+\]
+
+where \(C_t\) contains the \(k\) most recent event frames used by the
+predictor. Conceptually, \(C_t\) is the local event history from which the
+system asks, "what event should occur next, and when?"
+
 ## Residual Formulation
 
 Let \(B\) be a baseline predictor. A residual formulation should be written with
 an explicit composition operator rather than ordinary vector addition:
 
 \[
-\hat{e}_{t+1} = B(e_{t-k:t}) \oplus R(e_{t-k:t})
+\hat{e}_{t+1} = B(C_t) \oplus R(C_t)
 \]
 
 where \(\oplus\) composes a baseline event prediction with a residual event correction.
@@ -76,7 +86,7 @@ q: \mathcal{E} \rightarrow \mathcal{Q}
 
 encode an event frame as an operator-like structured representation, where
 \(\mathcal{Q}\) is an event representation space chosen for the model. Let
-\(b = B(e_{t-k:t})\) be the baseline event prediction and let \(r\) be a
+\(b = B(C_t)\) be the baseline event prediction and let \(r\) be a
 residual correction in the same representation space. Define:
 
 \[
@@ -96,18 +106,54 @@ borrows the idea that meaningful configurations should be evaluated through
 operator relationships and an action-like admissibility criterion, but it does
 not assume that EventFrame is a physical Causal Fermion System.
 
+## Residual Lookup
+
+Let a residual cache be a finite set:
+
+\[
+\mathcal{C}_R = \{(\kappa_i, r_i, s_i)\}_{i=1}^{N}
+\]
+
+where \(\kappa_i\) is a context key, \(r_i \in \mathcal{Q}\) is a residual
+correction, and \(s_i\) stores cache metadata such as age, confidence, and
+observed temporal error. Let:
+
+\[
+\kappa: \mathcal{E}^{k} \rightarrow \mathcal{K}
+\]
+
+map a prediction context to a cache key, and let \(d_{\mathcal{K}}\) be a
+distance over keys. The retrieved residual is:
+
+\[
+r_t^* =
+\begin{cases}
+r_j & \text{if } j = \arg\min_i d_{\mathcal{K}}(\kappa(C_t), \kappa_i)
+\text{ and } d_{\mathcal{K}}(\kappa(C_t), \kappa_j) \le \epsilon_K,\\
+0_{\mathcal{Q}} & \text{otherwise.}
+\end{cases}
+\]
+
+Conceptually, residual lookup asks whether the current event context resembles a
+past context whose baseline prediction failed in a reusable way. The threshold
+\(\epsilon_K\) prevents weak similarities from forcing a cached correction into
+the current prediction.
+
 ## Prediction Loss
 
 The primary prediction loss is temporal. For point-valued event times:
 
 \[
 \mathcal{L}_{time}^{H}(\theta) =
-\min\left(1,\frac{\left|\tau(F_\theta(e_{t-k:t}))-\tau(e_{t+1})\right|}{H}\right)
+\min\left(1,\frac{\left|\tau(\hat{e}_{t+1})-\tau(e_{t+1})\right|}{H}\right)
 \]
 
 where \(H > 0\) is the prediction horizon used to normalize and clamp the loss.
 The value is \(0\) for exact temporal prediction and saturates at \(1\) for
-errors greater than or equal to the horizon.
+errors greater than or equal to the horizon. If the predictor is written as a
+single transition model, then \(\hat{e}_{t+1} = F_\theta(C_t)\). If the
+reference residual procedure is used, then
+\(\hat{e}_{t+1} = B(C_t) \oplus_{\mathcal{A}} r_t^*\).
 
 For interval-valued event times, replace absolute difference with an interval
 distance \(d_{\mathcal{T}}\), such as midpoint distance or endpoint Hausdorff
@@ -115,12 +161,35 @@ distance:
 
 \[
 \mathcal{L}_{time}^{H}(\theta) =
-\min\left(1,\frac{d_{\mathcal{T}}(\tau(F_\theta(e_{t-k:t})),\tau(e_{t+1}))}{H}\right)
+\min\left(1,\frac{d_{\mathcal{T}}(\tau(\hat{e}_{t+1}),\tau(e_{t+1}))}{H}\right)
 \]
 
 Other field-level losses may be added as auxiliary diagnostics, but the current
 formulation treats time-to-event error as the canonical loss unless a section
 explicitly defines a broader objective.
+
+## Reference Prediction Step
+
+A single EventFrame prediction step should be described as:
+
+1. Form the prediction context \(C_t = e_{t-k+1:t}\).
+2. Compute the baseline prediction \(b_t = B(C_t)\).
+3. Retrieve a cached residual \(r_t^*\) from \(\mathcal{C}_R\), or use
+   \(0_{\mathcal{Q}}\) if no cache entry passes the lookup threshold.
+4. Compose the prediction:
+
+\[
+\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*
+\]
+
+5. When the observed event \(e_{t+1}\) becomes available, evaluate
+   \(\mathcal{L}_{time}^{H}\).
+6. On the slow path, estimate the observed residual and decide whether to update
+   the residual cache, revise thresholds, or trigger invariant tests.
+
+This procedure is not a mandatory implementation. It is the minimal operational
+model the paper should use when explaining how the formal objects participate in
+prediction.
 
 ## Fuzzing Operator
 

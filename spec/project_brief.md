@@ -44,3 +44,14 @@ The reader should be assumed to know general machine learning, state-space model
 ## Style
 
 The paper should be precise, self-contained, conservative in claims, and explicit about assumptions. Avoid grandiose language. Prefer definitions, equations, algorithms, and falsifiable experiments.
+
+## Expository Contract
+
+The paper must provide both conceptual explanation and operational mathematics.
+For each core construct, the reader should be able to answer:
+
+1. Why is this construct introduced?
+2. What does it mean intuitively?
+3. How is it computed or used during prediction?
+4. What assumptions make the computation valid?
+5. What failure modes should be expected?
