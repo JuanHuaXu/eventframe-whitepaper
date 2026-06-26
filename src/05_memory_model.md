@@ -28,10 +28,13 @@ Consolidation is the process of updating memory after observation. A conservativ
 2. Compute temporal loss for the prediction.
 3. Estimate whether the baseline error is systematic enough to store as a residual.
 4. Update or decay cache entries based on age, confidence, and repeated utility.
-5. Mark low-confidence entries so they cannot dominate future predictions.
+5. Preserve at least one representative event frame for every event-frame group used by abstraction, confluence, or cache-key equivalence.
+6. Mark low-confidence entries so they cannot dominate future predictions.
 
 Cache pollution is the main risk. If every error becomes a residual, the cache may memorize noise. If keys are too broad, residuals are applied in inappropriate contexts. If keys are too narrow, useful residuals are never reused. The cache should therefore track hit rate, post-correction loss, and whether retrieved residuals improve over the baseline.
 
 Fast-path memory use should be cheap. A practical implementation may use approximate nearest-neighbor lookup, hashed keys, or bounded-size caches. The paper treats constant-time lookup as an approximation, not as a guarantee. Slow-path memory refinement may be more expensive because it runs after the initial prediction, when latency pressure is lower.
+
+Representative preservation is a memory responsibility. If an abstraction stores only a label and discards all concrete examples, the system loses the ability to test whether interventions split that group or whether several groups have converged. At least one retained representative frame per group keeps later boundary measurement possible.
 
 The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. Slow-path consolidation keeps both memories from turning into unfiltered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.

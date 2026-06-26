@@ -16,6 +16,8 @@ Memory is divided into episodic recall and residual correction. Episodic memory 
 
 Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. The Anti-Pigeon principle summarizes the design stance: abstraction should be earned by evidence, not assumed from superficial similarity.
 
+Representative preservation keeps abstraction testable. Each event-frame group retains at least one concrete frame so later interventions can measure whether the group should split through divergence or merge through convergence.
+
 The claims in this paper remain conservative. Compressed event frames are proposed as useful predictive units, residual caches as a plausible way to reduce cost or error, property fuzzing as a method for candidate invariant discovery, and lumpability as a formal route to abstraction. The event sparsity hypothesis is treated as a modeling premise to be tested, not as a settled theorem. The proposed evaluation program measures temporal prediction accuracy, compression quality, cache utility, invariant stability, abstraction quality, and runtime tradeoffs.
 
 EventFrame is therefore best understood as a research framework for making event-centric prediction explicit. Its value lies in giving prediction systems a shared language for structured events, residual error, memory, invariance, and abstraction. The next stage is empirical: implement controlled event worlds, run the proposed ablations, and revise the framework according to what survives measurement.

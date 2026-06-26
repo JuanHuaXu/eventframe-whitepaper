@@ -44,6 +44,12 @@ Event trajectories need not remain linear independent chains. Multiple streams c
 
 Status: modeling claim; requires formal treatment as event confluence, branching, and sensitivity analysis.
 
+## Claim 5b: Each event frame group should retain a representative frame
+
+Every abstraction group, confluence group, or event-frame cluster should retain at least one representative frame so that future intervention, divergence, and convergence tests have a concrete anchor.
+
+Status: design invariant; requires experiments on boundary detection and cache or abstraction stability.
+
 ## Claim 6: Anti-Pigeon prevents premature abstraction
 
 Abstraction should be earned by invariance or lumpability evidence, not assumed from superficial similarity.

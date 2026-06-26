@@ -48,6 +48,14 @@ A one-to-many process in which a small event distinction, perturbation, or inter
 
 A temporally ordered event trajectory or subtrajectory that can merge with other streams or branch into multiple downstream streams.
 
+## Event Frame Group
+
+A set of event frames treated as equivalent or jointly represented under a chosen abstraction, confluence, cache key, or projection.
+
+## Representative Event Frame
+
+At least one retained event frame for an event frame group. It is used as an anchor for measuring when intervention causes divergence or when multiple events have become safe to merge.
+
 ## Prediction
 
 The estimation of a future event frame, event state, or transition from current and prior event context.

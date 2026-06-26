@@ -157,6 +157,46 @@ event streams. Operationally, such distinctions should not be merged away by
 coarse-graining or lumpability unless the target-level divergence remains below
 threshold.
 
+## Event Frame Groups and Representatives
+
+Let an abstraction, cache key, or confluence process induce event-frame groups:
+
+\[
+\mathcal{H} = \{\mathcal{H}_1, \ldots, \mathcal{H}_n\}, \quad
+\mathcal{H}_j \subseteq \mathcal{E}.
+\]
+
+Each non-empty group must retain at least one representative event frame:
+
+\[
+\forall \mathcal{H}_j \neq \varnothing,\quad
+\exists \bar{e}_j \in \mathcal{H}_j.
+\]
+
+The representative \(\bar{e}_j\) is not necessarily the centroid, average, or
+most likely event. It is a concrete retained frame used as a measurement anchor.
+For a proposed intervention \(I\), the divergence score of group
+\(\mathcal{H}_j\) can be estimated by:
+
+\[
+D_j(I) =
+d_Y(P(Y \mid do(I), \bar{e}_j), P(Y \mid \bar{e}_j)).
+\]
+
+If \(D_j(I) > \eta_Y\), the group should be split, refined, or marked as
+divergence-sensitive. If several groups have representative frames whose
+target-level behavior remains within a merge threshold \(\eta_{\mu}\), they may
+be candidates for confluence:
+
+\[
+d_Y(P(Y \mid \bar{e}_i), P(Y \mid \bar{e}_j)) \le \eta_{\mu}.
+\]
+
+Operationally, representative preservation prevents abstraction from becoming
+empty bookkeeping. It keeps at least one concrete event frame available for
+future tests of when interventions cause divergence and when multiple event
+streams have converged enough to merge.
+
 ## Transition Function
 
 A transition model is:

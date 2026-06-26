@@ -24,6 +24,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Intervention-effective event distinctions
 - Event states and transitions
 - Event confluence and divergence
+- Event-frame groups and representatives
 - Causal, temporal, and spatial links
 
 ## 3. Mathematical Framework
@@ -32,6 +33,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Event space
 - Event trajectories
 - Event graphs, stream merge, and branching
+- Representative preservation invariant
 - Transition functions
 - Temporal prediction loss
 - Intervention-effective sparsity
@@ -68,6 +70,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 
 - Projection from events to abstract states
 - Merge operators and branching safeguards
+- Representative frame retention
 - Predictive lumpability
 - Abstraction quality
 - Anti-Pigeon principle

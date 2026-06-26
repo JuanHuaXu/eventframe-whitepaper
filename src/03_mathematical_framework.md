@@ -92,6 +92,21 @@ is accepted only when replacing the streams by \(e^{merge}_t\) changes the predi
 
 identifies downstream event subgraphs reachable under a perturbation or intervention scale \(\epsilon\). If the target distribution changes by more than \(\eta_Y\), the original distinction is divergence-effective and should not be compressed away.
 
+Representative preservation makes this test operational for groups. Let \(\mathcal{H}_j \subseteq \mathcal{E}\) be an event-frame group induced by an abstraction, cache key, or merge. EventFrame requires:
+
+\[
+\exists \bar{e}_j \in \mathcal{H}_j
+\]
+
+for every non-empty group. The retained frame \(\bar{e}_j\) is a measurement anchor. For an intervention \(I\), a group-level divergence score can be estimated as:
+
+\[
+D_j(I) =
+d_Y(P(Y \mid do(I), \bar{e}_j), P(Y \mid \bar{e}_j)).
+\]
+
+If \(D_j(I)\) exceeds the target threshold, the group is not stable under that intervention and should be split, refined, or marked as sensitive. If two representative frames remain within a merge threshold, their groups may be candidates for confluence.
+
 Confidence and provenance metadata enter the framework through \(c_t\). Operationally, \(c_t\) should affect whether a field is trusted for training, lookup, fuzzing, or invariant extraction. For example, if \(m_t\) is an inferred motive with low confidence, fuzzing that motive should not be treated the same as perturbing an observed timestamp. A conservative implementation can use \(c_t\) to weight losses, filter cache entries, or mark claims as uncertain.
 
 The framework is limited by representation choices. A poor event encoding can make a useful transition appear noisy, while an overly rich encoding can make similar events appear unrelated. The rest of the paper therefore treats distance functions, cache keys, and abstraction maps as objects that must be specified and tested, not assumed. The next section decomposes the transition model into baseline prediction and residual correction.
