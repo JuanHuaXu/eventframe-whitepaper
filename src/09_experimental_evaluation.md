@@ -21,7 +21,7 @@ The primary metric is mean or median \(\mathcal{L}_{time}^{H}\), with confidence
 
 The second experiment tests compression and intervention relevance. Define a coarse-graining \(\Gamma_{\Delta_\tau}\) from microscopic variables to event frames and vary \(\Delta_\tau\). A distinction should be treated as intervention-effective only when intervening on it changes the target beyond a declared threshold \(\eta_Y\). This experiment tests the event sparsity hypothesis directly: useful event frames should be sparse relative to the microscopic substrate and candidate-frame set while still preserving target-relevant interventions.
 
-The third experiment measures cache utility. Report cache hit rate, post-hit temporal loss, baseline temporal loss on the same examples, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions.
+The third experiment measures cache utility. Report action-residual hit rate, general residual hit rate, post-hit temporal loss, baseline temporal loss on the same examples, confidence calibration, support count, cache age, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions. For the action-residual path, also report how often expected \(O(1)\) lookup succeeds without falling back to nearest-neighbor residual search or episodic retrieval.
 
 The fourth experiment evaluates property fuzzing. For each field \(\phi_i\), perturb it across a declared range and compute:
 
@@ -30,6 +30,8 @@ S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
 \]
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
+
+The fourth experiment should also test ontology self-organization. Deliberately place some generated information in the wrong 5W1H field, split one causal factor across two fields, and merge two distinct factors into one field. The slow path should use intervention scores \(I_{i \rightarrow g}\) to propose retain, migrate, split, or uncertain markings. Report whether those proposals recover the generator's true causal roles without over-rewriting stable fields.
 
 The fifth experiment evaluates confluence and divergence. Generate event streams that eventually become prediction-equivalent and test whether a merge operator \(\mu_{\delta}\) can replace them with an aggregate event without degrading temporal prediction. Generate separate cases in which small perturbations amplify into target-distinct downstream branches and test whether the system preserves those divergence-effective distinctions rather than merging them away. Each event-frame group must retain at least one representative frame, and the experiment should measure whether those representatives correctly identify split thresholds and merge thresholds.
 

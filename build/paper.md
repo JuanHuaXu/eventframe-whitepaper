@@ -8,9 +8,9 @@ EventFrame is a framework for event-centric prediction. It represents experience
 
 The central representational object is an event frame \(e_t \in \mathcal{E}_{\Delta_\tau}\), where \(\mathcal{E}_{\Delta_\tau}\) is a product space over compressed event fields at temporal resolution \(\Delta_\tau\). Formally, an event frame can be viewed as a coarse-graining \(e_t = \Gamma_{\Delta_\tau}(\omega_{A_t})\) of a denser substrate history \(\omega_{A_t}\). The precision of the when field determines how many candidate frames are instantiated, from seconds to microseconds when measurement supports that scale. A predictor receives a context \(C_t = e_{t-k+1:t}\) and estimates the next event \(\hat{e}_{t+1}\). The primary loss in this formulation is temporal: prediction error is measured by the distance between the predicted event time and the observed event time, normalized by a horizon \(H\) and clamped to \([0,1]\).
 
-EventFrame separates a baseline transition model from residual correction. A baseline predictor \(B(C_t)\) produces an initial event estimate. A residual cache may retrieve a reusable correction \(r_t^*\) when the current context resembles a previous context with a similar prediction error. The corrected event is composed as \(\hat{e}_{t+1} = B(C_t) \oplus_{\mathcal{A}} r_t^*\), where \(\oplus_{\mathcal{A}}\) denotes a constrained composition operator inspired by Causal Fermion Systems without claiming physical equivalence to that theory. The composition step is intended to preserve structured admissibility while allowing cached corrections to improve fast-path prediction.
+EventFrame separates a baseline transition model from residual correction. A baseline predictor \(B(C_t)\) produces an initial event estimate. A residual cache may retrieve a reusable correction \(r_t^*\) when the current context resembles a previous context with a similar prediction error. A lower-latency action-residual cache may reuse corrections keyed by compact action signatures when confidence, support, and age checks pass. The corrected event is composed as \(\hat{e}_{t+1} = B(C_t) \oplus_{\mathcal{A}} r_t^*\), where \(\oplus_{\mathcal{A}}\) denotes a constrained composition operator inspired by Causal Fermion Systems without claiming physical equivalence to that theory. The composition step is intended to preserve structured admissibility while allowing cached corrections to improve fast-path prediction.
 
-The framework also defines methods for property fuzzing, invariant discovery, event confluence, event divergence, and abstraction. Over time, multiple event streams may become representable as a single aggregate event, as streams merge into larger rivers. The opposite can also occur: small distinctions can amplify into materially different downstream event branches. To keep these boundaries measurable, every event-frame group retains at least one representative frame. Approximate predictive lumpability provides the merge-side route from detailed event frames to coarser abstract states when the abstraction preserves transition behavior for the target of interest. The Anti-Pigeon principle provides the split-side criterion: a bucket must split or be marked divergence-sensitive when its members predict materially different futures.
+The framework also defines methods for property fuzzing, invariant discovery, ontology self-organization, event confluence, event divergence, and abstraction. Over time, multiple event streams may become representable as a single aggregate event, as streams merge into larger rivers. The opposite can also occur: small distinctions can amplify into materially different downstream event branches. To keep these boundaries measurable, every event-frame group retains at least one representative frame. Approximate predictive lumpability provides the merge-side route from detailed event frames to coarser abstract states when the abstraction preserves transition behavior for the target of interest. The Anti-Pigeon principle provides the split-side criterion: a bucket must split or be marked divergence-sensitive when its members predict materially different futures.
 
 The paper presents EventFrame as a conservative research framework. Its main claims are architectural, methodological, and experimental rather than settled theoretical results. The proposed evaluation program measures temporal prediction accuracy, residual-cache utility, invariant stability, abstraction quality, and the tradeoff between fast-path prediction and slow-path refinement.
 
@@ -41,14 +41,42 @@ The contributions of this paper are therefore:
 
 1. A compressed event-frame ontology for prediction-oriented representation.
 2. A mathematical event-space formulation with temporal prediction loss.
-3. A residual prediction model with constrained composition.
-4. A distinction between episodic memory and residual cache memory.
-5. A property fuzzing method for invariant discovery.
+3. A residual prediction model with constrained composition and action-residual fast-path caching.
+4. A combined episodic and residual memory architecture.
+5. A property fuzzing method for invariant discovery and 5W1H ontology self-organization.
 6. A lumpability-based approach to abstraction.
 7. A fast-path and slow-path reference runtime model.
 8. Experiment designs for testing the framework's claims.
 
 These are proposed as a research framework, not as a finished theory or a fixed implementation. Several claims require empirical validation, especially the utility of residual caches, the stability of invariants discovered by fuzzing, and the quality of learned abstractions. The next section defines the event ontology used by the rest of the paper.
+
+## Claims Register
+
+This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
+
+Claim 1. Structured event frames are useful predictive units if, for a declared task, they improve interpretability or temporal prediction relative to unstructured sequence records without hiding field-level error.
+
+Claim 1a. Event frames are compressed representations, not fundamental ontology, if they can be modeled as coarse-grained records selected from a denser substrate by predictive and intervention relevance.
+
+Claim 1b. Temporal precision controls frame granularity if changing the declared time resolution \(\Delta_\tau\) changes the candidate-frame set, cache pressure, and detectable divergence boundaries in measurable ways.
+
+Claim 2. Residual caches reduce prediction cost or error when similar contexts or action signatures produce similar baseline errors and retrieved residuals improve temporal loss often enough to justify lookup and maintenance.
+
+Claim 3. Episodic memory and residual cache memory serve different roles because prior-case recall and prior-error correction can be independently useful or harmful under the same prediction context.
+
+Claim 4. Property fuzzing exposes candidate invariants and ontology corrections when controlled perturbations of event fields reveal which assigned 5W1H roles are stable, misleading, or target-relevant across validation contexts.
+
+Claim 5. Approximate predictive lumpability provides a route to abstraction when projected event states preserve target-relevant transition behavior within a declared divergence threshold.
+
+Claim 5a. Event streams can conjoin or diverge over time when multiple streams become prediction-equivalent under a merge threshold or when small distinctions amplify into target-distinct downstream futures.
+
+Claim 5b. Each event-frame group should retain a representative frame if later intervention, divergence, and convergence tests need a concrete anchor for the group.
+
+Claim 6. Anti-Pigeon prevents invalid abstraction when an event bucket whose members predict materially different futures is split, refined, or marked divergence-sensitive instead of being retained as one abstraction.
+
+Claim 6a. Intervention-effective event distinctions are sparse if useful prediction and intervention distinctions occupy a small subset of the microscopic or candidate-frame distinctions considered by the model.
+
+Claim 7. Fast-path and slow-path separation is computationally useful if low-latency prediction can reuse cached residuals while slower background work improves future predictions without blocking the current one.
 
 ## 2. Event Ontology
 
@@ -279,6 +307,18 @@ q^{-1}_{\mathrm{approx}}\left(\Pi_{\mathcal{Q}}\left(q(b) + \operatorname{clamp}
 
 Here \(q: \mathcal{E} \rightarrow \mathcal{Q}\) encodes an event into an operator-like representation space, \(r \in \mathcal{Q}\) is a residual correction, \(\operatorname{clamp}(r)\) bounds the residual magnitude, \(\Pi_{\mathcal{Q}}\) projects the corrected representation back into the admissible representation space, and \(q^{-1}_{\mathrm{approx}}\) decodes the representation back into an event frame. The operational use is: encode the baseline, apply a bounded correction, project to a valid representation, and decode to a predicted event.
 
+The admissibility constraint can be made measurable through a surrogate event action. One conservative choice is:
+
+\[
+\mathcal{A}_{event}(\hat{e}_{t+1}) =
+\lambda_r \mathcal{L}_{time}^{H}
++ \lambda_a D_{abs}
++ \lambda_c D_{edge}
++ \lambda_u U(\hat{e}_{t+1}),
+\]
+
+where \(D_{abs}\) measures abstraction or bucket inconsistency, \(D_{edge}\) measures causal-edge or graph-transition inconsistency, \(U(\hat{e}_{t+1})\) measures prediction uncertainty, and the \(\lambda\) terms are non-negative weights declared by the implementation. This is not a Causal Fermion Systems action. It is a runtime surrogate inspired by the idea that admissible configurations should minimize a structured action-like quantity. A corrected prediction is preferred only when it improves temporal loss without creating excessive abstraction, graph, or uncertainty penalties.
+
 Residuals may be estimated after observation. If the baseline prediction is \(b_t\) and the observed event is \(e_{t+1}\), then the observed residual is the correction that would have moved \(b_t\) toward \(e_{t+1}\) under the chosen representation. Because \(\mathcal{Q}\) is only specified as an operator-like representation space, the residual should be estimated by a declared residual estimator:
 
 \[
@@ -306,6 +346,47 @@ r_j & \text{if } j = \arg\min_i d_{\mathcal{K}}(\kappa(C_t), \kappa_i)
 
 This rule is the operational heart of fast-path residual prediction. If a sufficiently similar prior context exists, reuse its correction. If not, fall back to the baseline.
 
+For implementations that require a lower-latency path, EventFrame can use an action-residual cache keyed by a compact action signature. Let:
+
+\[
+\alpha: \mathcal{E}^{k} \rightarrow \mathcal{K}_A
+\]
+
+map a context to an action key, such as a tuple of action type, temporal regime, relevant actor class, and abstraction bucket. The action-residual cache is a partial map:
+
+\[
+\mathcal{C}_A: \mathcal{K}_A \rightharpoonup (r_a, c_a, n_a, t_a),
+\]
+
+where \(r_a \in \mathcal{Q}\) is the cached action residual, \(c_a \in [0,1]\) is confidence, \(n_a\) is support count, and \(t_a\) is last update time. The fast-path action residual is:
+
+\[
+r_t^{A} =
+\begin{cases}
+r_a & \text{if } \alpha(C_t) \in \operatorname{dom}(\mathcal{C}_A)
+\text{ and } c_a \ge \gamma_A
+\text{ and } n_a \ge n_{\min}
+\text{ and } age(t_a) \le A_{\max},\\
+0_{\mathcal{Q}} & \text{otherwise.}
+\end{cases}
+\]
+
+If \(\mathcal{C}_A\) is implemented as a bounded hash table or array over declared action keys, lookup is expected \(O(1)\). This is an implementation property, not a mathematical guarantee: collisions, eviction, unbounded key growth, or nearest-neighbor fallback can increase cost. The action-residual path should therefore report hit rate, confidence, support, age, and post-correction temporal loss.
+
+Action-residual validity is updated only after observation. A simple confidence update can be:
+
+\[
+c_a^{new} =
+(1-\beta)c_a + \beta \mathbf{1}
+\left[
+\mathcal{L}_{time}^{H}(b_t \oplus_{\mathcal{A}} r_a)
++ \delta_A
+< \mathcal{L}_{time}^{H}(b_t)
+\right],
+\]
+
+where \(\delta_A\) is the required improvement margin and \(\beta\) is an update rate. When confidence falls below \(\gamma_A\), when support is too small, or when the corrected prediction worsens loss, the slow path should trigger fuzzing, episodic review, or residual eviction rather than continuing to trust the cached action residual.
+
 The main failure modes are cache pollution, overcorrection, stale residuals, and false similarity. Cache pollution occurs when low-quality residuals accumulate. Overcorrection occurs when a residual dominates the baseline. Stale residuals occur when the environment changes. False similarity occurs when the key function treats different contexts as equivalent. The clamping function, metadata \(s_i\), and threshold \(\epsilon_K\) are safeguards, but they do not remove the need for empirical evaluation. The next section distinguishes this residual cache from episodic memory.
 
 ## 5. Memory Model
@@ -329,6 +410,17 @@ A residual cache is different:
 Here \(r_i\) is not a prior event. It is a correction to a prior baseline prediction. The operational use is correction reuse: if the current context resembles a past context where the baseline missed in a known direction, apply the cached residual through \(\oplus_{\mathcal{A}}\).
 
 The conceptual distinction is important. Episodic memory says, "something like this happened before." Residual memory says, "the predictor made this kind of mistake before." A system can have useful episodic recall but poor residual reuse if prior cases are similar but their prediction errors differ. Conversely, a residual may be reusable even when the full episode is not otherwise relevant.
+
+Prediction combines the two memories by priority rather than by collapse. A reference flow is:
+
+1. Compute the baseline \(b_t = B(C_t)\).
+2. Try action-residual lookup in \(\mathcal{C}_A\).
+3. If the action residual is valid, compose \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^A\).
+4. If confidence is insufficient, try residual lookup in \(\mathcal{C}_R\).
+5. If residual confidence is still insufficient, retrieve episodic cases from \(\mathcal{C}_E\) and use them to refine the baseline, explain uncertainty, or schedule slow-path review.
+6. After observation, update episodic memory, residual confidence, and any action-residual entry that was used or falsified.
+
+This flow keeps the low-latency path cheap while preserving a fallback to richer case evidence. Residual memory can answer quickly when the current situation matches a known error pattern. Episodic memory becomes more important when the residual cache is missing, low-confidence, stale, or contradicted by recent outcomes.
 
 Similarity lookup requires declared key functions and distances. For episodic memory, the key function may emphasize entities, action types, and temporal neighborhoods. For residual memory, the key should emphasize features that predict baseline error. These are not necessarily the same. For example, two events may share an action type but differ in timing dynamics; they may be episodically similar while producing different residuals.
 
@@ -369,6 +461,18 @@ where \(r\) identifies the event position or subset of \(C_t\) being perturbed.
 
 The conceptual role of fuzzing is to separate apparent relevance from predictive relevance. A field may look semantically important but not affect the prediction target for a specific task. Another field may look incidental but sharply change the predicted event time. Fuzzing gives a controlled way to test these dependencies.
 
+Fuzzing also supports 5W1H ontology self-organization. The initial assignment of information to who, what, when, where, why, and how may be wrong, incomplete, or too coarse. Let \(\rho_j(e)\) denote the component of an event assigned to role \(j \in \{W,A,T,L,M,H\}\), corresponding to actor, action, time, location, motive, and mechanism. For a field \(\phi_i\), define its target influence on output property \(g\) as:
+
+\[
+I_{i \rightarrow g} =
+\mathbb{E}_{C_t,\epsilon,r}
+\left[
+d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t))))
+\right].
+\]
+
+If a field assigned to one role consistently influences a target associated with another role, the ontology should not pretend the original assignment is final. The slow path may mark the field for migration, duplication, or splitting. For example, a value recorded as "where" may function as part of "how" if perturbing it changes the mechanism of the event rather than only spatial localization. A value recorded as "why" may need to split into confidence-tagged motive hypotheses if different interventions produce incompatible futures.
+
 Let \(g\) be a property of the prediction output, and let \(d_g\) be a distance over that property. The change induced by fuzzing is:
 
 \[
@@ -402,6 +506,20 @@ An operational fuzzing protocol is:
 The same protocol can detect confluence and divergence. If perturbing two event streams does not change the target beyond threshold, the streams may be candidates for confluence into a merged event. If a small perturbation produces multiple target-distinct downstream predictions, the event sits near a divergence boundary. This is the operational version of butterfly-effect-style sensitivity: small changes matter only when they amplify beyond the declared target threshold.
 
 Counterfactual event frames are the perturbed frames produced by this protocol. They should be marked as synthetic and should not be inserted into episodic memory as observed events. They may, however, be used by the slow path to test invariants, improve key design, or identify abstraction boundaries.
+
+Ontology updates should therefore be intervention-driven. A conservative update rule is:
+
+\[
+\operatorname{revise}(\phi_i) =
+\begin{cases}
+\operatorname{retain}(\phi_i) & \text{if all relevant } I_{i \rightarrow g} \text{ remain below threshold},\\
+\operatorname{migrate}(\phi_i, j \rightarrow j') & \text{if influence is stable for role } j',\\
+\operatorname{split}(\phi_i) & \text{if one field carries multiple target-distinct influences},\\
+\operatorname{mark\ uncertain}(\phi_i) & \text{if perturbation evidence is unstable.}
+\end{cases}
+\]
+
+This is not an automatic ontology rewrite. It is a slow-path review signal. The implementation should preserve provenance, confidence, and the previous assignment so that field migration can be audited or reversed.
 
 An invariant is not a universal truth unless the fuzzing family and domain justify that claim. In EventFrame, invariants are usually conditional: stable under these perturbations, in this data regime, for this prediction target, within this threshold. That conservative framing matters because an invariant useful for temporal prediction may fail for actor prediction or causal explanation.
 
@@ -490,19 +608,41 @@ The reference fast path is:
 
 1. Form \(C_t = e_{t-k+1:t}\).
 2. Compute \(b_t = B(C_t)\).
-3. Retrieve \(r_t^*\) from \(\mathcal{C}_R\).
-4. Compose \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*\).
-5. Return the prediction with confidence metadata.
+3. Retrieve \(r_t^A\) from the action-residual cache \(\mathcal{C}_A\), if a valid entry exists.
+4. Otherwise retrieve \(r_t^*\) from \(\mathcal{C}_R\).
+5. If residual confidence is insufficient, retrieve episodic support from \(\mathcal{C}_E\).
+6. Compose \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r\), using the highest-confidence admissible correction or \(0_{\mathcal{Q}}\).
+7. Return the prediction with confidence metadata.
 
-If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
+The architecture can be summarized as:
+
+```mermaid
+flowchart LR
+    C["Context C_t"] --> B["Baseline B(C_t)"]
+    B --> A["Action residual C_A"]
+    A -->|valid| P["Compose prediction"]
+    A -->|miss or low confidence| R["Residual cache C_R"]
+    R -->|valid| P
+    R -->|miss or low confidence| E["Episodic cache C_E"]
+    E --> P
+    P --> O["Observe e_{t+1}"]
+    O --> S["Slow path"]
+    S --> U["Update residuals and memories"]
+    S --> F["Async fuzzing"]
+    F --> G["Ontology and abstraction revision"]
+    G --> A
+    G --> R
+```
+
+If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Action-residual lookup can be expected \(O(1)\) when \(\mathcal{C}_A\) is a bounded hash table or array over declared action keys. General residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Episodic retrieval has its own cost \(T_E(M)\). Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
 
 A simple fast-path cost sketch is:
 
 \[
-T_{fast} \approx O(1) + T_B(k) + T_{lookup}(N) + T_{\oplus}.
+T_{fast} \approx O(1) + T_B(k) + T_A + T_R(N) + T_E(M) + T_{\oplus}.
 \]
 
-This equation should be interpreted as a decomposition, not a guarantee. The framework does not prove constant-time prediction. It identifies where cost enters and which parts can be optimized or approximated.
+Here \(T_A\) is the action-residual lookup cost, \(T_R(N)\) is the general residual lookup cost, and \(T_E(M)\) is episodic retrieval cost. In a successful action-residual hit, \(T_R(N)\) and \(T_E(M)\) may be skipped. This equation should be interpreted as a decomposition, not a guarantee. The framework does not prove constant-time prediction. It identifies where cost enters and which parts can be optimized or approximated.
 
 The slow path begins after an observation becomes available:
 
@@ -512,6 +652,7 @@ The slow path begins after an observation becomes available:
 4. Update episodic memory and residual cache metadata.
 5. Run selected fuzzing tests.
 6. Reassess invariants and abstraction maps.
+7. Revise 5W1H field assignments when intervention evidence shows that information should migrate, split, or be marked uncertain.
 
 The slow path may be much more expensive:
 
@@ -550,7 +691,7 @@ The primary metric is mean or median \(\mathcal{L}_{time}^{H}\), with confidence
 
 The second experiment tests compression and intervention relevance. Define a coarse-graining \(\Gamma_{\Delta_\tau}\) from microscopic variables to event frames and vary \(\Delta_\tau\). A distinction should be treated as intervention-effective only when intervening on it changes the target beyond a declared threshold \(\eta_Y\). This experiment tests the event sparsity hypothesis directly: useful event frames should be sparse relative to the microscopic substrate and candidate-frame set while still preserving target-relevant interventions.
 
-The third experiment measures cache utility. Report cache hit rate, post-hit temporal loss, baseline temporal loss on the same examples, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions.
+The third experiment measures cache utility. Report action-residual hit rate, general residual hit rate, post-hit temporal loss, baseline temporal loss on the same examples, confidence calibration, support count, cache age, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions. For the action-residual path, also report how often expected \(O(1)\) lookup succeeds without falling back to nearest-neighbor residual search or episodic retrieval.
 
 The fourth experiment evaluates property fuzzing. For each field \(\phi_i\), perturb it across a declared range and compute:
 
@@ -559,6 +700,8 @@ S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
 \]
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
+
+The fourth experiment should also test ontology self-organization. Deliberately place some generated information in the wrong 5W1H field, split one causal factor across two fields, and merge two distinct factors into one field. The slow path should use intervention scores \(I_{i \rightarrow g}\) to propose retain, migrate, split, or uncertain markings. Report whether those proposals recover the generator's true causal roles without over-rewriting stable fields.
 
 The fifth experiment evaluates confluence and divergence. Generate event streams that eventually become prediction-equivalent and test whether a merge operator \(\mu_{\delta}\) can replace them with an aggregate event without degrading temporal prediction. Generate separate cases in which small perturbations amplify into target-distinct downstream branches and test whether the system preserves those divergence-effective distinctions rather than merging them away. Each event-frame group must retain at least one representative frame, and the experiment should measure whether those representatives correctly identify split thresholds and merge thresholds.
 
@@ -618,9 +761,9 @@ The reference runtime separates baseline prediction from residual correction. A 
 
 This composition is structured and constrained rather than ordinary vector addition. It is inspired by Causal Fermion Systems only as a source of intuition about operator-like representations and action-like admissibility. The paper does not claim that EventFrame is a physical causal fermion system.
 
-Memory is divided into episodic recall and residual correction. Episodic memory stores prior cases. Residual memory stores reusable prediction errors. This distinction supports fast-path prediction while leaving more expensive analysis to a slow path. The slow path evaluates loss, consolidates memory, tests candidate invariants through fuzzing, and examines whether abstractions preserve transition behavior.
+Memory is divided into episodic recall and residual correction. Episodic memory stores prior cases. Residual memory stores reusable prediction errors, including lower-latency action residuals when compact action keys have enough confidence and support. This distinction supports fast-path prediction while leaving more expensive analysis to a slow path. The slow path evaluates loss, consolidates memory, tests candidate invariants through fuzzing, and examines whether abstractions preserve transition behavior.
 
-Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. Anti-Pigeon supplies the dual split criterion: abstraction should be refined when a grouped bucket predicts materially different futures.
+Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target and whether the current 5W1H assignment should be retained, migrated, split, or marked uncertain. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. Anti-Pigeon supplies the dual split criterion: abstraction should be refined when a grouped bucket predicts materially different futures.
 
 Representative preservation keeps abstraction testable. Each event-frame group retains at least one concrete frame so later interventions can measure whether the group should split through divergence or merge through convergence.
 
@@ -634,18 +777,18 @@ This map keeps the assembled paper tied to the claims register. It is not a proo
 
 | Claim | Paper location | Current status |
 | --- | --- | --- |
-| Claim 1 | Sections 1, 2, 3, 9 | Conceptual and experimental claim. |
-| Claim 1a | Sections 2, 3, 10 | Modeling assumption; physics-inspired motivation only. |
-| Claim 1b | Sections 2, 3, 9, 10 | Representational design claim. |
-| Claim 2 | Sections 4, 5, 8, 9 | Systems claim requiring cache experiments. |
-| Claim 3 | Section 5 | Definitional and architectural claim. |
-| Claim 4 | Sections 6, 9 | Methodological claim requiring controlled thresholds. |
-| Claim 5 | Sections 7, 9, 10 | Mathematical route adapted from lumpability and state aggregation. |
-| Claim 5a | Sections 3, 7 | Modeling claim about confluence, branching, and sensitivity. |
-| Claim 5b | Sections 3, 7 | Design invariant for abstraction groups. |
-| Claim 6 | Sections 6, 7, 9 | Formal split criterion against invalid abstraction. |
-| Claim 6a | Sections 2, 3, 9, 10 | Physics-inspired sparsity hypothesis; must remain falsifiable. |
-| Claim 7 | Sections 8, 9 | Runtime and evaluation claim. |
+| Claim 1 | Claims Register; Sections 1, 2, 3, 9 | Conceptual and experimental claim. |
+| Claim 1a | Claims Register; Sections 2, 3, 10 | Modeling assumption; physics-inspired motivation only. |
+| Claim 1b | Claims Register; Sections 2, 3, 9, 10 | Representational design claim. |
+| Claim 2 | Claims Register; Sections 4, 5, 8, 9 | Systems claim requiring cache confidence and utility experiments. |
+| Claim 3 | Claims Register; Section 5 | Definitional and architectural claim. |
+| Claim 4 | Claims Register; Sections 6, 9 | Methodological claim requiring controlled thresholds and ontology-revision tests. |
+| Claim 5 | Claims Register; Sections 7, 9, 10 | Mathematical route adapted from lumpability and state aggregation. |
+| Claim 5a | Claims Register; Sections 3, 7 | Modeling claim about confluence, branching, and sensitivity. |
+| Claim 5b | Claims Register; Sections 3, 7 | Design invariant for abstraction groups. |
+| Claim 6 | Claims Register; Sections 6, 7, 9 | Formal split criterion against invalid abstraction. |
+| Claim 6a | Claims Register; Sections 2, 3, 9, 10 | Physics-inspired sparsity hypothesis; must remain falsifiable. |
+| Claim 7 | Claims Register; Sections 8, 9 | Runtime and evaluation claim. |
 
 ## References
 

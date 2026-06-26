@@ -22,9 +22,9 @@ Status: representational design claim; requires measurement assumptions and comp
 
 ## Claim 2: Residual caches can reduce prediction cost
 
-When similar contexts produce similar transition errors, cached residuals can approximate corrections without recomputing the full transition.
+When similar contexts or action signatures produce similar transition errors, cached residuals can approximate corrections without recomputing the full transition.
 
-Status: plausible systems claim; requires cache hit-rate and accuracy evaluation. Residual composition should be framed as Causal Fermion Systems-inspired structure, not as a claim that the physical theory directly applies.
+Status: plausible systems claim; requires cache hit-rate, confidence, validity, and accuracy evaluation. Residual composition should be framed as Causal Fermion Systems-inspired structure, not as a claim that the physical theory directly applies.
 
 ## Claim 3: Episodic memory and residual cache serve different roles
 

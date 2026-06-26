@@ -104,6 +104,10 @@ A memory structure storing reusable transition corrections. It is used when simi
 
 The process of retrieving a cached residual correction whose key is sufficiently similar to the current prediction context.
 
+## Action-Residual Cache
+
+A low-latency residual cache keyed by a compact action signature. It stores a residual correction with confidence, support count, and age metadata so the fast path can reuse correction patterns when validity checks pass.
+
 ## KV Episodic Cache
 
 A key-value memory structure storing prior event episodes. Keys represent retrieval conditions; values represent event frames, trajectories, or summaries.
@@ -135,3 +139,7 @@ A higher-cost route using deeper computation, search, simulation, external tools
 ## Background Refinement
 
 Asynchronous or deferred computation used to improve future predictions, update caches, or test invariants after an initial response.
+
+## Ontology Self-Organization
+
+The slow-path process of revising, splitting, duplicating, or marking 5W1H field assignments when intervention and fuzzing evidence shows that the initial event ontology is incomplete or misleading.

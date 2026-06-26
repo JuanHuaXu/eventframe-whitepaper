@@ -332,6 +332,54 @@ past context whose baseline prediction failed in a reusable way. The threshold
 \(\epsilon_K\) prevents weak similarities from forcing a cached correction into
 the current prediction.
 
+## Surrogate Event Action
+
+A runtime implementation may define a measurable surrogate action:
+
+\[
+\mathcal{A}_{event}(\hat{e}_{t+1}) =
+\lambda_r \mathcal{L}_{time}^{H}
++ \lambda_a D_{abs}
++ \lambda_c D_{edge}
++ \lambda_u U(\hat{e}_{t+1}),
+\]
+
+where \(D_{abs}\) measures abstraction inconsistency, \(D_{edge}\) measures
+causal-edge or graph-transition inconsistency, and \(U\) measures uncertainty.
+This is not a physical Causal Fermion Systems action. It is a conservative
+runtime surrogate for choosing among admissible corrected predictions.
+
+## Action-Residual Cache
+
+For low-latency residual reuse, define an action-key map:
+
+\[
+\alpha: \mathcal{E}^{k} \rightarrow \mathcal{K}_A.
+\]
+
+An action-residual cache is a partial map:
+
+\[
+\mathcal{C}_A: \mathcal{K}_A \rightharpoonup (r_a, c_a, n_a, t_a),
+\]
+
+where \(r_a\) is the cached residual, \(c_a\) is confidence, \(n_a\) is support,
+and \(t_a\) is last update time. The retrieved action residual is:
+
+\[
+r_t^{A} =
+\begin{cases}
+r_a & \text{if } \alpha(C_t) \in \operatorname{dom}(\mathcal{C}_A)
+\text{ and } c_a \ge \gamma_A
+\text{ and } n_a \ge n_{\min}
+\text{ and } age(t_a) \le A_{\max},\\
+0_{\mathcal{Q}} & \text{otherwise.}
+\end{cases}
+\]
+
+Bounded hash-table or array lookup over \(\mathcal{K}_A\) can be expected
+\(O(1)\), but this is an implementation property rather than a theorem.
+
 ## Prediction Loss
 
 The primary prediction loss is temporal. For point-valued event times:
@@ -424,6 +472,24 @@ the perturbation reaches or exceeds the invariance threshold. The default
 threshold for temporal properties should be derived from the prediction horizon,
 for example \(\eta_\tau = 0.05H\) for strict tests and \(\eta_\tau = 0.10H\)
 for exploratory tests.
+
+## 5W1H Influence and Ontology Revision
+
+Let \(\rho_j(e)\) denote the component of an event assigned to role
+\(j \in \{W,A,T,L,M,H\}\), corresponding to actor, action, time, location,
+motive, and mechanism. For a field \(\phi_i\), define target influence:
+
+\[
+I_{i \rightarrow g} =
+\mathbb{E}_{C_t,\epsilon,r}
+\left[
+d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t))))
+\right].
+\]
+
+The slow path may use this influence score to retain, migrate, split, or mark a
+field uncertain. Ontology revision should preserve provenance and prior
+assignments so the update can be audited or reversed.
 
 ## Lumpability
 

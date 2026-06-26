@@ -20,6 +20,17 @@ Here \(r_i\) is not a prior event. It is a correction to a prior baseline predic
 
 The conceptual distinction is important. Episodic memory says, "something like this happened before." Residual memory says, "the predictor made this kind of mistake before." A system can have useful episodic recall but poor residual reuse if prior cases are similar but their prediction errors differ. Conversely, a residual may be reusable even when the full episode is not otherwise relevant.
 
+Prediction combines the two memories by priority rather than by collapse. A reference flow is:
+
+1. Compute the baseline \(b_t = B(C_t)\).
+2. Try action-residual lookup in \(\mathcal{C}_A\).
+3. If the action residual is valid, compose \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^A\).
+4. If confidence is insufficient, try residual lookup in \(\mathcal{C}_R\).
+5. If residual confidence is still insufficient, retrieve episodic cases from \(\mathcal{C}_E\) and use them to refine the baseline, explain uncertainty, or schedule slow-path review.
+6. After observation, update episodic memory, residual confidence, and any action-residual entry that was used or falsified.
+
+This flow keeps the low-latency path cheap while preserving a fallback to richer case evidence. Residual memory can answer quickly when the current situation matches a known error pattern. Episodic memory becomes more important when the residual cache is missing, low-confidence, stale, or contradicted by recent outcomes.
+
 Similarity lookup requires declared key functions and distances. For episodic memory, the key function may emphasize entities, action types, and temporal neighborhoods. For residual memory, the key should emphasize features that predict baseline error. These are not necessarily the same. For example, two events may share an action type but differ in timing dynamics; they may be episodically similar while producing different residuals.
 
 Consolidation is the process of updating memory after observation. A conservative consolidation step should:

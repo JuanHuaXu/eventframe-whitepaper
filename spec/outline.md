@@ -14,6 +14,11 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Contributions
 - Scope and non-goals
 
+## Claims Register
+
+- Falsifiable statement of each major claim
+- Claim status and validation target
+
 ## 2. Event Ontology
 
 - Event frames as compressed, non-fundamental representations

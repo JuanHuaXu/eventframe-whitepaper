@@ -25,9 +25,9 @@ The contributions of this paper are therefore:
 
 1. A compressed event-frame ontology for prediction-oriented representation.
 2. A mathematical event-space formulation with temporal prediction loss.
-3. A residual prediction model with constrained composition.
-4. A distinction between episodic memory and residual cache memory.
-5. A property fuzzing method for invariant discovery.
+3. A residual prediction model with constrained composition and action-residual fast-path caching.
+4. A combined episodic and residual memory architecture.
+5. A property fuzzing method for invariant discovery and 5W1H ontology self-organization.
 6. A lumpability-based approach to abstraction.
 7. A fast-path and slow-path reference runtime model.
 8. Experiment designs for testing the framework's claims.
