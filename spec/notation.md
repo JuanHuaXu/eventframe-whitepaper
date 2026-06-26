@@ -361,6 +361,40 @@ checks. If the action exceeds \(\eta_{\mathcal{A}}\), the slow path should
 inspect residuals, causal edges, fuzzing evidence, ontology assignments, and
 abstraction maps.
 
+## EventFrame Governing Principle
+
+Let:
+
+\[
+\Theta =
+(\Gamma_{\Delta_\tau}, F_\theta, \pi,
+\mathcal{C}_A, \mathcal{C}_R, \mathcal{C}_E)
+\]
+
+collect the current coarse-graining, predictor, abstraction map, action-residual
+cache, residual cache, and episodic cache. Let \(\mathcal{B}_{\pi}\) be the
+event buckets induced by \(\pi\), and let \(\Omega(\Theta)\) penalize
+unnecessary distinctions, cache growth, or overly complex keys. The central
+objective is:
+
+\[
+\Theta^*
+=
+\arg\min_{\Theta}
+\left[
+\mathbb{E}_{t}\,\mathcal{A}_{event}(\hat{e}_{\Theta,t+1})
++ \lambda_{\Omega}\Omega(\Theta)
+\right]
+\quad
+\text{s.t.}\quad
+\forall B \in \mathcal{B}_{\pi},\;
+\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+\]
+
+This says: minimize residual action and unnecessary representation cost while
+preserving predictive abstraction. The constraint is the Anti-Pigeon guard
+against hiding future-distinct events in one bucket.
+
 ## Action-Residual Cache
 
 For low-latency residual reuse, define an action-key map:

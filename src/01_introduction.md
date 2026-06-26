@@ -6,6 +6,8 @@ EventFrame begins from a compression premise. The underlying substrate may be fa
 
 The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
+The core contribution is adaptive event abstraction. The 5W1H fields provide a coordinate system, but the framework's governing principle is broader: minimize residual action while preserving predictive abstraction. In practice, this means compressing event distinctions when their futures remain equivalent, splitting abstractions when hidden futures diverge, and revising ontology only when interventions repeatedly validate the change.
+
 Conceptually, EventFrame treats prediction as a question about the next structured event. Given a recent context \(C_t = e_{t-k+1:t}\), the system estimates \(\hat{e}_{t+1}\). The canonical loss is temporal: the prediction is evaluated by how far the predicted event time is from the observed event time within a chosen horizon \(H\). This keeps the first version of the framework focused. Other field-level errors can be measured, but the central operational question is whether the framework improves time-to-event prediction while retaining interpretable structure.
 
 The reference prediction procedure has six steps:
@@ -24,7 +26,7 @@ EventFrame also proposes a slow path for analysis beyond immediate prediction. P
 The contributions of this paper are therefore:
 
 1. A compressed event-frame ontology for prediction-oriented representation.
-2. A mathematical event-space formulation with temporal prediction loss.
+2. A governing optimization principle for adaptive event abstraction.
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
 4. A combined episodic and residual memory architecture.
 5. A property fuzzing method for invariant discovery and 5W1H ontology self-organization.

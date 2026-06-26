@@ -2,6 +2,12 @@
 
 Each major claim in the paper should be tracked here and revised conservatively.
 
+## Claim 0: Adaptive event abstraction is the governing principle
+
+EventFrame should learn the lowest-action, lowest-unnecessary-complexity event representation that does not hide future-distinct events inside the same abstraction bucket.
+
+Status: organizing mathematical claim; requires implementation evidence, ablation tests, and future convergence analysis.
+
 ## Claim 1: Structured events are useful predictive units
 
 Event frames provide compressed fields for who, what, when, where, why, and how, making prediction and error analysis more interpretable than unstructured sequence records alone.
@@ -73,3 +79,9 @@ Status: physics-inspired modeling hypothesis; requires careful argument and shou
 Low-latency prediction can be served by memory and residual approximation, while slower computation refines caches and tests invariants.
 
 Status: systems claim; requires latency/quality experiments.
+
+## Claim 7a: Expected fast-path lookup is history-independent under bounded local keys
+
+If the 5W1H field arity, local graph degree, action-key size, and action-residual cache are bounded, expected action-residual lookup depends on local abstraction size rather than total event-history length.
+
+Status: design property; requires implementation validation and adversarial tests for unbounded key growth or fallback retrieval.

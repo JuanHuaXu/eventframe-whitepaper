@@ -32,6 +32,34 @@ cache pressure and noise sensitivity.
 For readability, later equations write \(\mathcal{E}\) as shorthand for
 \(\mathcal{E}_{\Delta_\tau}\) when the temporal resolution is fixed.
 
+The governing principle of EventFrame can now be stated. Let:
+
+\[
+\Theta =
+(\Gamma_{\Delta_\tau}, F_\theta, \pi,
+\mathcal{C}_A, \mathcal{C}_R, \mathcal{C}_E)
+\]
+
+collect the current coarse-graining, predictor, abstraction map, action-residual cache, residual cache, and episodic cache. Let \(\hat{e}_{\Theta,t+1}\) be the prediction produced by that state. Let \(\mathcal{B}_{\pi}\) be the event buckets induced by the abstraction map \(\pi\), and let \(\Omega(\Theta)\) be a representation-cost term that penalizes unnecessary event distinctions, unbounded cache growth, or overly complex keys. EventFrame seeks:
+
+\[
+\boxed{
+\Theta^*
+=
+\arg\min_{\Theta}
+\left[
+\mathbb{E}_{t}\,\mathcal{A}_{event}(\hat{e}_{\Theta,t+1})
++ \lambda_{\Omega}\Omega(\Theta)
+\right]
+\quad
+\text{s.t.}\quad
+\forall B \in \mathcal{B}_{\pi},\;
+\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+}
+\]
+
+In words: learn the lowest-action, lowest-unnecessary-complexity event representation that does not hide future-distinct events inside the same abstraction bucket. The action term measures predictive residual, abstraction inconsistency, causal-edge inconsistency, and uncertainty. The cost term favors compression and bounded runtime. The Anti-Pigeon constraint prevents compression from erasing distinctions whose futures diverge beyond threshold. This is the paper's compact governing equation: minimize residual action while preserving predictive abstraction.
+
 More generally, an event history is a directed acyclic event graph:
 
 \[

@@ -2,6 +2,8 @@
 
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
+Claim 0. Adaptive event abstraction is the governing principle of EventFrame: a useful implementation should minimize expected surrogate event action plus representation cost while preventing abstraction buckets from hiding future-distinct events.
+
 Claim 1. Structured event frames are useful predictive units if, for a declared task, they improve interpretability or temporal prediction relative to unstructured sequence records without hiding field-level error.
 
 Claim 1a. Event frames are compressed representations, not fundamental ontology, if they can be modeled as coarse-grained records selected from a denser substrate by predictive and intervention relevance.
@@ -25,3 +27,5 @@ Claim 6. Anti-Pigeon prevents invalid abstraction when an event bucket whose mem
 Claim 6a. Intervention-effective event distinctions are sparse if useful prediction and intervention distinctions occupy a small subset of the microscopic or candidate-frame distinctions considered by the model.
 
 Claim 7. Fast-path and slow-path separation is computationally useful if low-latency prediction can reuse cached residuals while slower background work improves future predictions without blocking the current one.
+
+Claim 7a. Expected fast-path lookup is history-independent when the 5W1H field arity, local graph degree, action-key size, and action-residual cache are bounded.
