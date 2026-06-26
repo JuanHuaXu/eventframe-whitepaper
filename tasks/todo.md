@@ -29,11 +29,11 @@
 
 For each section:
 
-- [ ] Extract definitions
-- [ ] Extract claims
-- [ ] Math review
-- [ ] Red-team review
-- [ ] Patch section
+- [x] Extract definitions
+- [x] Extract claims
+- [x] Math review
+- [x] Red-team review
+- [x] Patch section
 
 ## Phase 4: Assembly
 

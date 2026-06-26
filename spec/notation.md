@@ -394,18 +394,26 @@ Let \(\phi_i\) be an event property. A fuzzing operator perturbs it:
 
 where \(e'\) differs from \(e\) primarily in property \(\phi_i\) by perturbation magnitude \(\epsilon\).
 
+For prediction, fuzzing is usually applied to a context. Let
+\(\mathcal{F}_{i,\epsilon}^{(r)}\) perturb property \(\phi_i\) in the \(r\)-th
+event of \(C_t\), or in a declared subset of the context:
+
+\[
+\mathcal{F}_{i,\epsilon}^{(r)}: \mathcal{E}^k \rightarrow \mathcal{E}^k.
+\]
+
 ## Invariance Test
 
 A property \(g\) is invariant under fuzzing family \(\mathcal{F}\) if:
 
 \[
 \Delta_g =
-d_g(g(F_\theta(e)), g(F_\theta(\mathcal{F}_{i,\epsilon}(e)))) \le \eta_g
+d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t)))) \le \eta_g
 \]
 
-for defined ranges of \(i\) and \(\epsilon\), where \(d_g\) is a property-level
-distance and \(\eta_g\) is a declared threshold. Use a clamped score for
-reporting:
+for defined ranges of \(i\), \(r\), and \(\epsilon\), where \(d_g\) is a
+property-level distance and \(\eta_g\) is a declared threshold. Use a clamped
+score for reporting:
 
 \[
 S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right)

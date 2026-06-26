@@ -16,7 +16,7 @@ A transition process is predictively lumpable for a target when:
 P(\pi(e_{t+1}) \mid e_t) \approx P(\pi(e_{t+1}) \mid \pi(e_t)).
 \]
 
-The left side conditions on the detailed event. The right side conditions only on the abstract state. If the two distributions are close, the abstraction preserves target-relevant transition behavior. The approximation should be measured by a declared divergence or distance and accepted only under a threshold.
+The left side conditions on the detailed event. The right side conditions only on the abstract state. This one-step expression is a simplified case. For context-length \(k\), the analogous test conditions on \(C_t\) and on the projected context \(\pi(C_t)\). If the two distributions are close, the abstraction preserves target-relevant transition behavior. The approximation should be measured by a declared divergence or distance and accepted only under a threshold.
 
 Operationally, abstraction quality can be tested by comparing predictions before and after projection:
 

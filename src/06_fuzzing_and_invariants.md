@@ -2,13 +2,19 @@
 
 Property fuzzing tests whether predictions depend on specific event fields. The method perturbs a selected property, reruns prediction, and measures whether a target property of the output changes beyond a declared threshold. If a prediction remains stable under a controlled family of perturbations, the stable property becomes a candidate invariant.
 
-Let \(\phi_i\) be an event property, such as actor, action type, time, location, or a component of auxiliary state. A fuzzing operator is:
+Let \(\phi_i\) be an event property, such as actor, action type, time, location, or a component of auxiliary state. A single-event fuzzing operator is:
 
 \[
 \mathcal{F}_{i,\epsilon}(e) = e',
 \]
 
-where \(e'\) differs from \(e\) primarily in property \(\phi_i\) by perturbation magnitude \(\epsilon\). For a context \(C_t\), fuzzing may be applied to one event in the context or to a controlled subset of the context.
+where \(e'\) differs from \(e\) primarily in property \(\phi_i\) by perturbation magnitude \(\epsilon\). For prediction, the corresponding context-level operator is:
+
+\[
+\mathcal{F}_{i,\epsilon}^{(r)}: \mathcal{E}^k \rightarrow \mathcal{E}^k,
+\]
+
+where \(r\) identifies the event position or subset of \(C_t\) being perturbed.
 
 The conceptual role of fuzzing is to separate apparent relevance from predictive relevance. A field may look semantically important but not affect the prediction target for a specific task. Another field may look incidental but sharply change the predicted event time. Fuzzing gives a controlled way to test these dependencies.
 
@@ -16,7 +22,7 @@ Let \(g\) be a property of the prediction output, and let \(d_g\) be a distance 
 
 \[
 \Delta_g =
-d_g(g(F_\theta(e)), g(F_\theta(\mathcal{F}_{i,\epsilon}(e)))).
+d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t)))).
 \]
 
 A property is treated as stable under the fuzzing family if:
@@ -35,7 +41,7 @@ The value \(S_g = 0\) means no observed change, while \(S_g = 1\) means the pert
 
 An operational fuzzing protocol is:
 
-1. Select a context \(C_t\), prediction target \(g\), and field \(\phi_i\).
+1. Select a context \(C_t\), prediction target \(g\), field \(\phi_i\), and context position or subset \(r\).
 2. Define the perturbation family and valid magnitudes \(\epsilon\).
 3. Run the original prediction.
 4. Run predictions on perturbed contexts.
