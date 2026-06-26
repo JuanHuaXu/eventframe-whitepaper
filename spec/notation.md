@@ -2,7 +2,40 @@
 
 This notation is provisional and should be refined during drafting.
 
-## Event Frames
+## Microscopic Substrate and Event Frames
+
+EventFrame distinguishes a dense underlying substrate from the compressed event
+frames used for prediction. Let \(\Omega\) denote a microscopic substrate state
+space and let:
+
+\[
+\omega_{\alpha} \in \Omega
+\]
+
+denote a substrate state indexed by a microscopic spacetime cell \(\alpha\). In
+the physical motivation, \(\alpha\) may be considered at scales comparable to
+Planck length and Planck time. This is a motivation for density, not a claim
+that EventFrame supplies a theory of quantum gravity.
+
+Let a coarse-graining map be:
+
+\[
+\Gamma: \Omega^{A_t} \rightarrow \mathcal{E}
+\]
+
+where \(A_t\) is a finite spacetime region or computational region available to
+the model at event index \(t\). The event frame is then:
+
+\[
+e_t = \Gamma(\omega_{A_t})
+\]
+
+where \(\omega_{A_t}\) denotes the substrate history over the region. The
+operational role of \(\Gamma\) is compression: it selects distinctions that are
+useful for prediction, intervention, review, or memory.
+
+An event frame is not fundamental in this formulation. It is a compressed
+representation of an underlying substrate.
 
 Let an event frame be:
 
@@ -35,6 +68,30 @@ auxiliary state, and confidence/provenance metadata. The exact internal
 representation of each component is implementation-dependent, but each
 component must have a declared comparison rule before it is used in a loss,
 cache key, or invariant test.
+
+## Intervention-Effective Events
+
+Let \(I_j\) denote an intervention on a substrate region or on the event-frame
+representation. Let \(Y\) be a prediction target, such as the next event time.
+An event distinction is intervention-effective for \(Y\) if:
+
+\[
+d_Y(P(Y \mid do(I_j)), P(Y)) > \eta_Y
+\]
+
+where \(d_Y\) is a target-level distance and \(\eta_Y\) is a declared threshold.
+The event sparsity hypothesis says that the set of such distinctions is small
+relative to the number of microscopic substrate distinctions:
+
+\[
+|\mathcal{I}_{eff}(Y, \eta_Y)| \ll |\Omega^{A_t}|.
+\]
+
+Conceptually, this is why EventFrame searches for compressed event frames rather
+than assigning a unique event frame to every microscopic cell. Operationally,
+the hypothesis is tested by intervention experiments, property fuzzing, and
+ablation: distinctions that do not change the target beyond threshold should not
+be promoted to durable event-frame structure.
 
 ## Event Space
 

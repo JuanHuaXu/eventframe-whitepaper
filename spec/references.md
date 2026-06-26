@@ -27,3 +27,18 @@ Use for predictive lumpability, abstraction, and state compression.
 Use for time-to-event prediction, survival analysis, temporal point processes,
 and event forecasting metrics if the experimental section broadens beyond the
 current formulation.
+
+## Physical Information Bounds and Coarse-Graining
+
+Use to motivate why event frames are compressed representations rather than a
+unique label for every microscopic distinction.
+
+- NIST/CODATA values for Planck length and Planck time:
+  <https://physics.nist.gov/cgi-bin/cuu/Value?plkl=>
+  <https://physics.nist.gov/cgi-bin/cuu/Value?plkt=>
+- Jacob Bekenstein, "Universal upper bound on the entropy-to-energy ratio for bounded systems":
+  <https://link.aps.org/doi/10.1103/PhysRevD.23.287>
+- Leonard Susskind, "The World as a Hologram":
+  <https://arxiv.org/abs/hep-th/9409089>
+- Gerard 't Hooft and Leonard Susskind, holographic principle and entropy bounds.
+- Coarse-graining and effective theory literature for mapping dense microscopic states to predictive macrostates.

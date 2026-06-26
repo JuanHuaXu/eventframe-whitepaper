@@ -1,6 +1,6 @@
 # 9. Experimental Evaluation
 
-EventFrame's main claims require experiments. The framework should be evaluated on whether structured events improve interpretability and prediction, whether residual caches reduce cost or error, whether property fuzzing discovers stable invariants, and whether abstraction preserves target-relevant transition behavior.
+EventFrame's main claims require experiments. The framework should be evaluated on whether compressed event frames preserve intervention-relevant distinctions, whether structured events improve interpretability and prediction, whether residual caches reduce cost or error, whether property fuzzing discovers stable invariants, and whether abstraction preserves target-relevant transition behavior.
 
 A minimal synthetic event world should generate trajectories with known transition rules. Each event should expose the fields:
 
@@ -8,7 +8,7 @@ A minimal synthetic event world should generate trajectories with known transiti
 e_t = (w_t, a_t, \tau_t, \ell_t, m_t, h_t, x_t, c_t).
 \]
 
-The generator should control which fields actually influence event timing. This makes it possible to test whether fuzzing recovers true dependencies and whether abstraction removes irrelevant detail without damaging prediction.
+The generator should include many microscopic variables but control which variables actually influence event timing or downstream state. This makes it possible to test whether coarse-graining preserves intervention-effective distinctions, whether fuzzing recovers true dependencies, and whether abstraction removes irrelevant detail without damaging prediction.
 
 The first experiment measures temporal prediction accuracy. Compare:
 
@@ -19,9 +19,11 @@ The first experiment measures temporal prediction accuracy. Compare:
 
 The primary metric is mean or median \(\mathcal{L}_{time}^{H}\), with confidence intervals over trajectories. Secondary metrics may include actor, action, and location diagnostics. The key question is whether the residual formulation improves temporal prediction without hiding which fields contributed.
 
-The second experiment measures cache utility. Report cache hit rate, post-hit temporal loss, baseline temporal loss on the same examples, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions.
+The second experiment tests compression and intervention relevance. Define a coarse-graining \(\Gamma\) from microscopic variables to event frames. A distinction should be treated as intervention-effective only when intervening on it changes the target beyond a declared threshold \(\eta_Y\). This experiment tests the event sparsity hypothesis directly: useful event frames should be sparse relative to the microscopic substrate while still preserving target-relevant interventions.
 
-The third experiment evaluates property fuzzing. For each field \(\phi_i\), perturb it across a declared range and compute:
+The third experiment measures cache utility. Report cache hit rate, post-hit temporal loss, baseline temporal loss on the same examples, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions.
+
+The fourth experiment evaluates property fuzzing. For each field \(\phi_i\), perturb it across a declared range and compute:
 
 \[
 S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
@@ -29,11 +31,11 @@ S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
 
-The fourth experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional.
+The fifth experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional.
 
-The fifth experiment evaluates lumpability and abstraction. Define projections \(\pi\) that remove or group selected fields. Compare detailed and abstract predictors using temporal loss and transition-distribution divergence. An abstraction should be accepted only when loss degradation remains below a declared threshold. This experiment directly tests the Anti-Pigeon principle: surface-similar groupings should be rejected when they degrade prediction.
+The sixth experiment evaluates lumpability and abstraction. Define projections \(\pi\) that remove or group selected fields. Compare detailed and abstract predictors using temporal loss and transition-distribution divergence. An abstraction should be accepted only when loss degradation remains below a declared threshold. This experiment directly tests the Anti-Pigeon principle: surface-similar groupings should be rejected when they degrade prediction.
 
-The sixth experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
+The seventh experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
 
 Ablation studies should remove one component at a time: residual cache, episodic memory, fuzzing, abstraction, and slow-path refinement. The paper should treat negative results as informative. If residual caches fail in a domain, the failure helps characterize when EventFrame is useful. If fuzzing produces unstable invariants, the thresholds or perturbation families may be wrong.
 

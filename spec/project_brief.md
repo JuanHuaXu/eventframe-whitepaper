@@ -6,18 +6,18 @@ The EventFrame Whitepaper presents EventFrame as a framework for representing, p
 
 ## Problem
 
-Current predictive systems often operate over tokens, vectors, or unstructured histories. This makes it difficult to reason explicitly about what happened, who acted, where it occurred, why it mattered, how it changed state, and what is likely to happen next. EventFrame proposes an event-centered substrate in which prediction is performed over structured events rather than raw sequence elements alone.
+Current predictive systems often operate over tokens, vectors, or unstructured histories. This makes it difficult to reason explicitly about what happened, who acted, where it occurred, why it mattered, how it changed state, and what is likely to happen next. EventFrame proposes structured event frames as compressed predictive representations rather than as fundamental ontology.
 
 ## Core Idea
 
-Represent experience as event frames with structured fields, then learn or compute transitions between event states. Fast prediction can use cached residuals and episodic lookup. Slower computation can refine uncertain predictions, discover invariants by fuzzing event properties, and consolidate memory.
+Treat the underlying physical or computational substrate as far denser than any usable event representation. Event frames are coarse-grained records of regions where distinctions matter for prediction or intervention. Fast prediction can use cached residuals and episodic lookup over these compressed frames. Slower computation can refine uncertain predictions, discover invariants by fuzzing event properties, and consolidate memory.
 
 ## Contribution Claims
 
 EventFrame contributes:
 
-1. A 5W1H event ontology for prediction-oriented event representation.
-2. A mathematical event-space formulation.
+1. A compressed 5W1H event-frame ontology for prediction-oriented representation.
+2. A mathematical event-space formulation that distinguishes microscopic substrate from coarse event frames.
 3. A residual prediction model for approximating event transitions.
 4. A distinction between episodic key-value memory and residual cache memory.
 5. A property fuzzing method for invariant discovery.
@@ -36,6 +36,7 @@ The EventFrame Whitepaper is not:
 - A claim of human-level cognition.
 - A fully proven mathematical theory in its first formulation.
 - A fixed implementation or product architecture.
+- A claim that 5W1H event frames are fundamental physical entities.
 
 ## Target Reader
 

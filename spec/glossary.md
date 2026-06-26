@@ -6,11 +6,27 @@ A structured representation of a change, occurrence, action, observation, or sta
 
 ## Event Frame
 
-A structured event record containing fields such as who, what, when, where, why, and how, plus optional state vectors, confidence, causal links, and residuals.
+A compressed structured event record containing fields such as who, what, when, where, why, and how, plus optional state vectors, confidence, causal links, and residuals.
+
+## Microscopic Substrate
+
+The dense underlying physical or computational description from which event frames are coarse-grained. In the physical motivation, this substrate is considered at scales comparable to Planck time and Planck length, but EventFrame does not require a settled theory of quantum gravity.
+
+## Coarse-Graining
+
+The mapping from a dense substrate history to a lower-dimensional event frame or event trajectory.
+
+## Intervention-Effective Event
+
+A compressed event distinction whose alteration would be expected to change the prediction target or downstream state beyond a declared threshold.
+
+## Event Sparsity Hypothesis
+
+The hypothesis that intervention-effective event distinctions are sparse relative to the density of the microscopic substrate.
 
 ## 5W1H Ontology
 
-An event schema organized around: who, what, when, where, why, and how. In EventFrame, these are not prose labels only; they are typed fields used for prediction and comparison.
+An event-frame schema organized around: who, what, when, where, why, and how. In EventFrame, these are not fundamental physical categories; they are typed fields used for compressed prediction and comparison.
 
 ## Event State
 

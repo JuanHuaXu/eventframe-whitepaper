@@ -1,8 +1,10 @@
 # 1. Introduction
 
-Prediction systems often operate over sequences whose internal structure is only implicit. A model may receive tokens, vectors, logs, traces, or state observations and learn statistical regularities among them. This can be effective, but it makes some questions difficult to ask directly: who acted, what changed, when did it happen, where did it occur, why might it matter, and how did it transform the state of the world? EventFrame begins from the premise that these questions should be represented as first-class predictive structure.
+Prediction systems often operate over sequences whose internal structure is only implicit. A model may receive tokens, vectors, logs, traces, or state observations and learn statistical regularities among them. This can be effective, but it makes some questions difficult to ask directly: which compressed distinction mattered, what changed, when did it happen, where did it occur, why might it matter, and how did it transform the state of the world?
 
-The framework represents experience as event frames. An event frame is a typed record of an occurrence or transition. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, and competing explanations can still be recorded explicitly.
+EventFrame begins from a compression premise. The underlying substrate may be physically or computationally thick: at the physical limit, one can imagine distinctions at scales comparable to Planck length and Planck time. A useful prediction system cannot assign a separate durable event frame to every microscopic distinction. Entropy-bound and horizon-style arguments motivate the conservative view that representable distinctions must be compressed. EventFrame therefore treats the event frame as a coarse-grained representation, not as the fundamental thing itself.
+
+The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
 Conceptually, EventFrame treats prediction as a question about the next structured event. Given a recent context \(C_t = e_{t-k+1:t}\), the system estimates \(\hat{e}_{t+1}\). The canonical loss is temporal: the prediction is evaluated by how far the predicted event time is from the observed event time within a chosen horizon \(H\). This keeps the first version of the framework focused. Other field-level errors can be measured, but the central operational question is whether the framework improves time-to-event prediction while retaining interpretable structure.
 
@@ -21,7 +23,7 @@ EventFrame also proposes a slow path for analysis beyond immediate prediction. P
 
 The contributions of this paper are therefore:
 
-1. A typed event ontology for prediction-oriented event representation.
+1. A compressed event-frame ontology for prediction-oriented representation.
 2. A mathematical event-space formulation with temporal prediction loss.
 3. A residual prediction model with constrained composition.
 4. A distinction between episodic memory and residual cache memory.

@@ -4,9 +4,15 @@ Each major claim in the paper should be tracked here and revised conservatively.
 
 ## Claim 1: Structured events are useful predictive units
 
-Event frames provide explicit fields for who, what, when, where, why, and how, making prediction and error analysis more interpretable than unstructured sequence records alone.
+Event frames provide compressed fields for who, what, when, where, why, and how, making prediction and error analysis more interpretable than unstructured sequence records alone.
 
 Status: conceptual claim; requires experiments.
+
+## Claim 1a: Event frames are compressed representations, not fundamental ontology
+
+The fundamental substrate may be much denser than any usable event representation. EventFrame treats event frames as coarse-grained records selected for predictive and intervention relevance.
+
+Status: modeling assumption and conceptual claim; should be framed conservatively and linked to entropy-bound and coarse-graining motivations rather than presented as a proven physical result.
 
 ## Claim 2: Residual caches can reduce prediction cost
 
@@ -37,6 +43,12 @@ Status: mathematical claim adapted from state aggregation ideas; needs careful f
 Abstraction should be earned by invariance or lumpability evidence, not assumed from superficial similarity.
 
 Status: design principle.
+
+## Claim 6a: Intervention-effective event distinctions are sparse
+
+If every microscopic distinction required a unique event frame, the representation would be computationally and physically implausible. EventFrame therefore assumes that useful event distinctions are sparse and concentrated where interventions or predictions change outcomes.
+
+Status: physics-inspired modeling hypothesis; requires careful argument and should be tied to falsifiable compression and intervention tests.
 
 ## Claim 7: Fast-path / slow-path separation is computationally useful
 

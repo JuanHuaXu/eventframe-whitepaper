@@ -1,8 +1,16 @@
 # 3. Mathematical Framework
 
-The mathematical framework turns event frames into objects that can be predicted, evaluated, cached, and abstracted. The main purpose of the formalism is operational: given a context \(C_t\), produce a next-event estimate \(\hat{e}_{t+1}\), measure its temporal error, and decide whether memory or abstraction should be updated.
+The mathematical framework turns compressed event frames into objects that can be predicted, evaluated, cached, and abstracted. The main purpose of the formalism is operational: given a context \(C_t\), produce a next-event estimate \(\hat{e}_{t+1}\), measure its temporal error, and decide whether memory or abstraction should be updated.
 
-Let \(\mathcal{E}\) be the event space defined by the product of typed fields. A trajectory is:
+Let \(\Omega\) denote a dense substrate state space. For a finite region \(A_t\), let \(\omega_{A_t}\) denote the substrate history over that region. An event frame is produced by a coarse-graining map:
+
+\[
+e_t = \Gamma(\omega_{A_t}), \quad \Gamma: \Omega^{A_t} \rightarrow \mathcal{E}.
+\]
+
+The conceptual role of \(\Gamma\) is to select usable predictive distinctions from a substrate that is too dense to represent directly. The operational use is that every prediction, cache key, and invariant test operates on \(e_t\), while slow-path review may revise \(\Gamma\) if the compression discards distinctions that matter.
+
+Let \(\mathcal{E}\) be the compressed event space defined by the product of typed fields. A trajectory is:
 
 \[
 E_{1:T} = (e_1, e_2, \ldots, e_T), \quad e_t \in \mathcal{E}.
@@ -53,6 +61,14 @@ Optional diagnostic distances may be defined over other event fields. For a fiel
 \]
 
 These losses answer secondary questions: did the predictor identify the right actor, action type, location, or mechanism? They are not the canonical objective in the current formulation, but they are important for error analysis and for discovering which fields matter in a domain.
+
+The event sparsity hypothesis can be stated operationally. Let \(I_j\) be an intervention on a substrate or event-frame distinction, and let \(Y\) be a prediction target. A distinction is intervention-effective when:
+
+\[
+d_Y(P(Y \mid do(I_j)), P(Y)) > \eta_Y.
+\]
+
+EventFrame assumes that such distinctions are sparse relative to the microscopic substrate. This is not a proven physical theorem in the paper. It is a modeling hypothesis that justifies searching for compressed event frames rather than assigning a unique frame to every microscopic cell.
 
 Confidence and provenance metadata enter the framework through \(c_t\). Operationally, \(c_t\) should affect whether a field is trusted for training, lookup, fuzzing, or invariant extraction. For example, if \(m_t\) is an inferred motive with low confidence, fuzzing that motive should not be treated the same as perturbing an observed timestamp. A conservative implementation can use \(c_t\) to weight losses, filter cache entries, or mark claims as uncertain.
 

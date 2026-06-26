@@ -1,6 +1,8 @@
 # 2. Event Ontology
 
-EventFrame uses event frames as the basic predictive unit. An event is a structured representation of a change, occurrence, action, observation, or state transition. An event frame records that event in fields that can be compared, predicted, fuzzed, cached, and abstracted.
+EventFrame uses event frames as the basic predictive unit, but not as the fundamental ontology. The underlying substrate is assumed to be much denser than the representation used by the predictor. In the physical motivation, one can imagine substrate distinctions at scales comparable to Planck length and Planck time. EventFrame does not attempt to model every such distinction. It treats an event frame as a compressed representation of a region where a distinction may matter for prediction or intervention.
+
+An event is therefore a structured representation of a change, occurrence, action, observation, or state transition after coarse-graining. An event frame records that compressed event in fields that can be compared, predicted, fuzzed, cached, and abstracted.
 
 An event frame at index \(t\) is written:
 
@@ -10,7 +12,21 @@ e_t = (w_t, a_t, \tau_t, \ell_t, m_t, h_t, x_t, c_t)
 
 where \(w_t\) denotes participating agents or entities, \(a_t\) denotes the action or occurrence type, \(\tau_t\) denotes the time index or interval, \(\ell_t\) denotes location or spatial context, \(m_t\) denotes motive, objective, causal explanation, or inferred driver, \(h_t\) denotes mechanism or process, \(x_t\) denotes auxiliary state, and \(c_t\) denotes confidence, provenance, or uncertainty metadata.
 
-The conceptual role of this ontology is to prevent event prediction from collapsing into a single undifferentiated sequence element. The fields ask different questions. The "what" field identifies an occurrence type. The "when" field supports temporal prediction loss. The "who" and "where" fields localize the event. The "why" and "how" fields record explanatory hypotheses and mechanisms. The auxiliary state field allows symbolic, vector, graph, or latent variables to travel with the event. The confidence field prevents uncertain extraction from pretending to be certain observation.
+The conceptual role of this ontology is compression. It prevents prediction from treating history as a single undifferentiated sequence, but it also prevents prediction from pretending that every microscopic distinction deserves its own event identity. The fields ask different compressed questions. The "what" field identifies an occurrence type. The "when" field supports temporal prediction loss. The "who" and "where" fields localize the event. The "why" and "how" fields record explanatory hypotheses and mechanisms. The auxiliary state field allows symbolic, vector, graph, or latent variables to travel with the event. The confidence field prevents uncertain extraction from pretending to be certain observation.
+
+Let \(\Omega\) denote a dense substrate state space and let \(\omega_{A_t}\) denote the substrate history over a finite region \(A_t\). A coarse-graining map:
+
+\[
+\Gamma: \Omega^{A_t} \rightarrow \mathcal{E}
+\]
+
+produces an event frame:
+
+\[
+e_t = \Gamma(\omega_{A_t}).
+\]
+
+This equation states the ontology clearly: the event frame is a lossy, task-oriented compression. The compression is useful only if it preserves distinctions that matter for prediction, intervention, memory, or review.
 
 Mathematically, the event space is treated as a typed product:
 
@@ -39,4 +55,6 @@ The context \(C_t\) is the recent event history available to the predictor. It g
 
 The ontology also supports links among events. Temporal links order events and represent intervals or delays. Spatial links relate event locations. Causal links express hypothesized dependencies, such as one event enabling, preventing, or modifying another. These links may be stored inside \(x_t\), represented as fields in \(c_t\), or modeled as edges in a separate event graph. The important constraint is that links remain available to the prediction and review process rather than being hidden in uninspectable history.
 
-The main limitation of the ontology is extraction quality. In real data, the "why" and "how" fields may be ambiguous, inferred, or unavailable. EventFrame handles this by allowing missing values and confidence metadata rather than requiring false precision. A conservative implementation should distinguish observed fields from inferred fields and should propagate uncertainty into prediction and review. The next section defines the mathematical framework built on this ontology.
+The event sparsity hypothesis follows from this compression view. If every microscopic substrate distinction required a unique event frame, the representation would be physically and computationally implausible. EventFrame instead assumes that intervention-effective event distinctions are sparse: only some compressed differences change the prediction target or downstream state beyond a threshold. Property fuzzing, ablation, and intervention tests are ways to discover which distinctions are worth preserving.
+
+The main limitation of the ontology is extraction and compression quality. In real data, the "why" and "how" fields may be ambiguous, inferred, or unavailable. More fundamentally, the chosen coarse-graining \(\Gamma\) may discard distinctions that later turn out to matter. EventFrame handles this by allowing missing values, confidence metadata, and revision under slow-path review rather than requiring false precision. A conservative implementation should distinguish observed fields from inferred fields and should propagate uncertainty into prediction and review. The next section defines the mathematical framework built on this compressed ontology.

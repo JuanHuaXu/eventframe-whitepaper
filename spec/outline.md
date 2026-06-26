@@ -16,18 +16,23 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 
 ## 2. Event Ontology
 
+- Event frames as compressed, non-fundamental representations
+- Microscopic substrate and coarse-graining
 - Event definition
 - 5W1H fields
 - Typed event frames
+- Intervention-effective event distinctions
 - Event states and transitions
 - Causal, temporal, and spatial links
 
 ## 3. Mathematical Framework
 
+- Substrate-to-event coarse-graining
 - Event space
 - Event trajectories
 - Transition functions
 - Temporal prediction loss
+- Intervention-effective sparsity
 - Optional event-frame diagnostic distances
 - Confidence and uncertainty
 
@@ -76,6 +81,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 ## 9. Experimental Evaluation
 
 - Synthetic event worlds
+- Compression and intervention tests
 - Controlled perturbation tests
 - Cache hit-rate tests
 - Long-horizon prediction
@@ -84,6 +90,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 
 ## 10. Open Problems
 
+- Substrate-to-frame compression guarantees
 - Formal guarantees
 - Event distance metrics
 - Grounding symbolic fields
