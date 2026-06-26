@@ -20,19 +20,20 @@ that EventFrame supplies a theory of quantum gravity.
 Let a coarse-graining map be:
 
 \[
-\Gamma: \Omega^{A_t} \rightarrow \mathcal{E}
+\Gamma_{\Delta_\tau}: \Omega^{A_t} \rightarrow \mathcal{E}_{\Delta_\tau}
 \]
 
 where \(A_t\) is a finite spacetime region or computational region available to
-the model at event index \(t\). The event frame is then:
+the model at event index \(t\), and \(\Delta_\tau > 0\) is the chosen temporal
+resolution of the event representation. The event frame is then:
 
 \[
-e_t = \Gamma(\omega_{A_t})
+e_t = \Gamma_{\Delta_\tau}(\omega_{A_t})
 \]
 
 where \(\omega_{A_t}\) denotes the substrate history over the region. The
-operational role of \(\Gamma\) is compression: it selects distinctions that are
-useful for prediction, intervention, review, or memory.
+operational role of \(\Gamma_{\Delta_\tau}\) is compression: it selects
+distinctions that are useful for prediction, intervention, review, or memory.
 
 An event frame is not fundamental in this formulation. It is a compressed
 representation of an underlying substrate.
@@ -68,6 +69,47 @@ auxiliary state, and confidence/provenance metadata. The exact internal
 representation of each component is implementation-dependent, but each
 component must have a declared comparison rule before it is used in a loss,
 cache key, or invariant test.
+
+## Temporal Resolution and Frame Density
+
+Let \(\Delta_\tau > 0\) be the selected precision of the time field. A
+quantization map:
+
+\[
+Q_{\Delta_\tau}: \mathbb{R} \rightarrow \mathcal{T}_{\Delta_\tau}
+\]
+
+maps continuous or high-resolution time to the temporal space used by event
+frames. For example, \(\Delta_\tau = 1\,s\) gives second-level frames, while
+\(\Delta_\tau = 1\,\mu s\) gives microsecond-level frames if the data and
+instrumentation support that precision.
+
+The event space at temporal resolution \(\Delta_\tau\) is:
+
+\[
+\mathcal{E}_{\Delta_\tau} =
+\mathcal{W} \times \mathcal{A} \times \mathcal{T}_{\Delta_\tau} \times
+\mathcal{L} \times \mathcal{M} \times \mathcal{H} \times
+\mathcal{X} \times \mathcal{C}.
+\]
+
+Over a time interval \([a,b]\), the maximum number of temporal bins is:
+
+\[
+N_\tau(\Delta_\tau; [a,b]) =
+\left\lceil \frac{b-a}{\Delta_\tau} \right\rceil.
+\]
+
+Conceptually, EventFrame can instantiate as many candidate frames as the chosen
+temporal resolution requires. The sparsity hypothesis does not forbid dense
+candidate frames; it says that intervention-effective frames are sparse relative
+to all possible substrate distinctions and all candidate frame distinctions.
+Operationally, \(\Delta_\tau\) must be reported with experiments because it
+changes frame count, cache size, temporal loss interpretation, and the observed
+boundary between confluence and divergence.
+
+When the temporal resolution is fixed by context, the paper may write
+\(\mathcal{E}\) as shorthand for \(\mathcal{E}_{\Delta_\tau}\).
 
 ## Intervention-Effective Events
 

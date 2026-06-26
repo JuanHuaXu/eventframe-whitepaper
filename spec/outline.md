@@ -21,6 +21,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Event definition
 - 5W1H fields
 - Typed event frames
+- Temporal resolution and frame granularity
 - Intervention-effective event distinctions
 - Event states and transitions
 - Event confluence and divergence
@@ -30,6 +31,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 ## 3. Mathematical Framework
 
 - Substrate-to-event coarse-graining
+- Temporal quantization
 - Event space
 - Event trajectories
 - Event graphs, stream merge, and branching

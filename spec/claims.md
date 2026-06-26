@@ -14,6 +14,12 @@ The fundamental substrate may be much denser than any usable event representatio
 
 Status: modeling assumption and conceptual claim; should be framed conservatively and linked to entropy-bound and coarse-graining motivations rather than presented as a proven physical result.
 
+## Claim 1b: Temporal precision controls frame granularity
+
+EventFrame may instantiate as many candidate frames as the chosen temporal resolution requires. The precision of the when field controls whether frames are represented at seconds, milliseconds, microseconds, or another declared scale.
+
+Status: representational design claim; requires measurement assumptions and computational-cost reporting.
+
 ## Claim 2: Residual caches can reduce prediction cost
 
 When similar contexts produce similar transition errors, cached residuals can approximate corrections without recomputing the full transition.

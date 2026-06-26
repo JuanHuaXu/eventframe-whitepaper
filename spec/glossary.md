@@ -24,6 +24,14 @@ A compressed event distinction whose alteration would be expected to change the 
 
 The hypothesis that intervention-effective event distinctions are sparse relative to the density of the microscopic substrate.
 
+## Temporal Resolution
+
+The chosen precision of the event time field. A model may choose coarse resolution such as seconds or finer resolution such as microseconds, subject to measurement quality and computational budget.
+
+## Candidate Event Frame
+
+An event frame instantiated or considered at a chosen temporal resolution before it is known whether the frame is intervention-effective or worth retaining.
+
 ## 5W1H Ontology
 
 An event-frame schema organized around: who, what, when, where, why, and how. In EventFrame, these are not fundamental physical categories; they are typed fields used for compressed prediction and comparison.

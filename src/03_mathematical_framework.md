@@ -2,19 +2,35 @@
 
 The mathematical framework turns compressed event frames into objects that can be predicted, evaluated, cached, and abstracted. The main purpose of the formalism is operational: given a context \(C_t\), produce a next-event estimate \(\hat{e}_{t+1}\), measure its temporal error, and decide whether memory or abstraction should be updated.
 
-Let \(\Omega\) denote a dense substrate state space. For a finite region \(A_t\), let \(\omega_{A_t}\) denote the substrate history over that region. An event frame is produced by a coarse-graining map:
+Let \(\Omega\) denote a dense substrate state space. For a finite region \(A_t\), let \(\omega_{A_t}\) denote the substrate history over that region. At temporal resolution \(\Delta_\tau\), an event frame is produced by a coarse-graining map:
 
 \[
-e_t = \Gamma(\omega_{A_t}), \quad \Gamma: \Omega^{A_t} \rightarrow \mathcal{E}.
+e_t = \Gamma_{\Delta_\tau}(\omega_{A_t}), \quad
+\Gamma_{\Delta_\tau}: \Omega^{A_t} \rightarrow \mathcal{E}_{\Delta_\tau}.
 \]
 
-The conceptual role of \(\Gamma\) is to select usable predictive distinctions from a substrate that is too dense to represent directly. The operational use is that every prediction, cache key, and invariant test operates on \(e_t\), while slow-path review may revise \(\Gamma\) if the compression discards distinctions that matter.
+The conceptual role of \(\Gamma_{\Delta_\tau}\) is to select usable predictive distinctions from a substrate that is too dense to represent directly. The operational use is that every prediction, cache key, and invariant test operates on \(e_t\), while slow-path review may revise \(\Gamma_{\Delta_\tau}\) or \(\Delta_\tau\) if the compression discards distinctions that matter.
 
-Let \(\mathcal{E}\) be the compressed event space defined by the product of typed fields. A linear trajectory is:
+Let \(\mathcal{E}_{\Delta_\tau}\) be the compressed event space defined by the product of typed fields at temporal resolution \(\Delta_\tau\). A linear trajectory is:
 
 \[
-E_{1:T} = (e_1, e_2, \ldots, e_T), \quad e_t \in \mathcal{E}.
+E_{1:T} = (e_1, e_2, \ldots, e_T), \quad e_t \in \mathcal{E}_{\Delta_\tau}.
 \]
+
+The time field may be quantized by:
+
+\[
+Q_{\Delta_\tau}: \mathbb{R} \rightarrow \mathcal{T}_{\Delta_\tau}.
+\]
+
+If \(\Delta_\tau = 1\,s\), the model works at second-level precision. If
+\(\Delta_\tau = 1\,\mu s\), it works at microsecond-level precision, provided
+the data support that scale. Finer \(\Delta_\tau\) increases the number of
+candidate frames and may improve boundary detection, but it also increases
+cache pressure and noise sensitivity.
+
+For readability, later equations write \(\mathcal{E}\) as shorthand for
+\(\mathcal{E}_{\Delta_\tau}\) when the temporal resolution is fixed.
 
 More generally, an event history is a directed acyclic event graph:
 
