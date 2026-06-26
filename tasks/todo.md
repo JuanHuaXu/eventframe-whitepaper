@@ -12,18 +12,18 @@
 
 ## Phase 2: Drafting
 
-- [ ] Draft abstract
-- [ ] Draft introduction
-- [ ] Draft event ontology
-- [ ] Draft mathematical framework
-- [ ] Draft residual prediction
-- [ ] Draft memory model
-- [ ] Draft fuzzing and invariants
-- [ ] Draft lumpability and abstraction
-- [ ] Draft complexity and runtime model
-- [ ] Draft experimental evaluation
-- [ ] Draft open problems
-- [ ] Draft conclusion
+- [x] Draft abstract
+- [x] Draft introduction
+- [x] Draft event ontology
+- [x] Draft mathematical framework
+- [x] Draft residual prediction
+- [x] Draft memory model
+- [x] Draft fuzzing and invariants
+- [x] Draft lumpability and abstraction
+- [x] Draft complexity and runtime model
+- [x] Draft experimental evaluation
+- [x] Draft open problems
+- [x] Draft conclusion
 
 ## Phase 3: Review
 
