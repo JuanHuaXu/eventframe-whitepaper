@@ -64,6 +64,29 @@ The same protocol can detect confluence and divergence. If perturbing two event 
 
 Counterfactual event frames are the perturbed frames produced by this protocol. They should be marked as synthetic and should not be inserted into episodic memory as observed events. They may, however, be used by the slow path to test invariants, improve key design, or identify abstraction boundaries.
 
+Fuzzing can be extended from fields to event graphs. Let \(G_t = (V_t, R_t)\) be the local event graph and let \(\mathcal{I}_{v,\epsilon}\) denote an intervention on event node, edge, or local subgraph \(v\). A counterfactual graph update is:
+
+\[
+G_t' = do(\mathcal{I}_{v,\epsilon})(G_t),
+\]
+
+with target effect:
+
+\[
+\Delta_Y^{graph} =
+d_Y(P(Y \mid G_t'), P(Y \mid G_t)).
+\]
+
+The slow path uses this graph intervention when the residual action remains high. The reference loop is:
+
+1. Observe a high residual action \(\mathcal{A}_{event} > \eta_{\mathcal{A}}\).
+2. Choose candidate nodes, edges, or local subgraphs from the residual, episodic evidence, or uncertain 5W1H fields.
+3. Apply graph interventions to produce counterfactual event graphs.
+4. Measure \(\Delta_Y^{graph}\), residual improvement, and abstraction consistency.
+5. Update residual keys, causal-edge confidence, ontology assignments, or Anti-Pigeon split markers only when the intervention repeatedly explains the error.
+
+This is counterfactual graph learning, but in a conservative sense. The counterfactual graph is a test object used for slow-path learning, not an observed history.
+
 Ontology updates should therefore be intervention-driven. A conservative update rule is:
 
 \[
@@ -76,7 +99,14 @@ Ontology updates should therefore be intervention-driven. A conservative update 
 \end{cases}
 \]
 
-This is not an automatic ontology rewrite. It is a slow-path review signal. The implementation should preserve provenance, confidence, and the previous assignment so that field migration can be audited or reversed.
+This is not an automatic ontology rewrite. It is a slow-path review signal. The implementation should preserve provenance, confidence, and the previous assignment so that field migration can be audited or reversed. To prevent oscillation, a migration should be promoted only after repeated successful intervention validation. For example, require at least \(n_{\rho}\) independent validation contexts in which the proposed assignment reduces \(\mathcal{A}_{event}\) or target error by margin \(\delta_{\rho}\):
+
+\[
+\#\{C_t : \mathcal{A}_{event}^{old}(C_t) - \mathcal{A}_{event}^{new}(C_t) \ge \delta_{\rho}\}
+\ge n_{\rho}.
+\]
+
+Before that condition is met, the safer state is "mark uncertain" rather than permanent migration.
 
 An invariant is not a universal truth unless the fuzzing family and domain justify that claim. In EventFrame, invariants are usually conditional: stable under these perturbations, in this data regime, for this prediction target, within this threshold. That conservative framing matters because an invariant useful for temporal prediction may fail for actor prediction or causal explanation.
 

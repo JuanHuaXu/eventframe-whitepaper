@@ -10,7 +10,7 @@ A compressed structured event record containing fields such as who, what, when, 
 
 ## Microscopic Substrate
 
-The dense underlying physical or computational description from which event frames are coarse-grained. In the physical motivation, this substrate is considered at scales comparable to Planck time and Planck length, but EventFrame does not require a settled theory of quantum gravity.
+The dense underlying physical, simulated, biological, robotic, software, or computational description from which event frames are coarse-grained. The framework requires only that substrate detail may be much denser than the representable event space.
 
 ## Coarse-Graining
 

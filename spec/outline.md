@@ -103,6 +103,12 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Confluence and divergence tests
 - Ablation studies
 
+## Discussion: Innovation and Scientific Refinement
+
+- Innovation as a causal distinction that survives intervention
+- Science as alternating lumpability and Anti-Pigeon
+- Residual action as trigger for compression or refinement
+
 ## 10. Open Problems
 
 - Substrate-to-frame compression guarantees

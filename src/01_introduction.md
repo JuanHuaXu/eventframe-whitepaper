@@ -2,7 +2,7 @@
 
 Prediction systems often operate over sequences whose internal structure is only implicit. A model may receive tokens, vectors, logs, traces, or state observations and learn statistical regularities among them. This can be effective, but it makes some questions difficult to ask directly: which compressed distinction mattered, what changed, when did it happen, where did it occur, why might it matter, and how did it transform the state of the world?
 
-EventFrame begins from a compression premise. The underlying substrate may be physically or computationally thick: at the physical limit, one can imagine distinctions at scales comparable to Planck length and Planck time. A useful prediction system cannot assign a separate durable event frame to every microscopic distinction. Entropy-bound and horizon-style arguments motivate the conservative view that representable distinctions must be compressed. EventFrame therefore treats the event frame as a coarse-grained representation, not as the fundamental thing itself.
+EventFrame begins from a compression premise. The underlying substrate may be far denser than any representation a prediction system can maintain, whether the substrate is physical, simulated, biological, robotic, or software-based. A useful prediction system cannot assign a separate durable event frame to every microscopic or low-level distinction. EventFrame therefore treats the event frame as a coarse-grained representation, not as the fundamental thing itself. Physical information bounds can motivate this intuition, but the framework only requires the domain-general inequality that substrate detail is much larger than representable event space.
 
 The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
@@ -15,7 +15,7 @@ The reference prediction procedure has six steps:
 3. Retrieve a residual correction \(r_t^*\) from a residual cache if the current context matches a prior error pattern.
 4. Compose the prediction as \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*\).
 5. Observe \(e_{t+1}\) and evaluate temporal loss.
-6. Use a slower refinement process to update residuals, test invariants, or revise abstractions.
+6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 

@@ -27,12 +27,14 @@ flowchart LR
     O --> S["Slow path"]
     S --> U["Update residuals and memories"]
     S --> F["Async fuzzing"]
+    S --> I["Graph intervention"]
     F --> G["Ontology and abstraction revision"]
+    I --> G
     G --> A
     G --> R
 ```
 
-If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Action-residual lookup can be expected \(O(1)\) when \(\mathcal{C}_A\) is a bounded hash table or array over declared action keys. General residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Episodic retrieval has its own cost \(T_E(M)\). Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
+If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Action-residual lookup can be expected \(O(1)\) when \(\mathcal{C}_A\) is a bounded hash table or array over declared action keys. The reason is structural: the 5W1H schema has fixed field arity, the action key \(\alpha(C_t)\) is bounded by declared local fields and abstraction labels, and the graph neighborhood used by the key must have bounded degree. Under those assumptions, lookup depends on the size of the local abstraction key rather than the length of the full history. If action keys grow without bound, if graph degree is unbounded, or if lookup falls back to nearest-neighbor search, the \(O(1)\) approximation no longer applies. General residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Episodic retrieval has its own cost \(T_E(M)\). Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
 
 A simple fast-path cost sketch is:
 
@@ -49,8 +51,9 @@ The slow path begins after an observation becomes available:
 3. Decide whether the residual is worth caching.
 4. Update episodic memory and residual cache metadata.
 5. Run selected fuzzing tests.
-6. Reassess invariants and abstraction maps.
-7. Revise 5W1H field assignments when intervention evidence shows that information should migrate, split, or be marked uncertain.
+6. Run selected graph interventions when residual action remains above threshold.
+7. Reassess invariants and abstraction maps.
+8. Revise 5W1H field assignments when intervention evidence shows that information should migrate, split, or be marked uncertain.
 
 The slow path may be much more expensive:
 
@@ -58,9 +61,15 @@ The slow path may be much more expensive:
 T_{slow} \approx T_{loss} + T_{residual} + T_{consolidate} + M_f T_{predict} + T_{abstraction},
 \]
 
-where \(M_f\) is the number of fuzzed variants and \(T_{predict}\) is the cost of rerunning prediction. This cost is acceptable only if slow-path work is deferred, batched, or scheduled under a budget.
+where \(M_f\) is the number of fuzzed variants and \(T_{predict}\) is the cost of rerunning prediction. Graph interventions add another budgeted term when enabled:
 
-The conceptual reason for the split is that prediction and learning have different latency requirements. A system may need to answer quickly, but it does not need to discover invariants synchronously with every prediction. Residual caches allow some slow-path learning to be reused later by the fast path.
+\[
+T_{slow+graph} \approx T_{slow} + M_g T_{intervene},
+\]
+
+where \(M_g\) is the number of graph interventions and \(T_{intervene}\) is the cost of updating or simulating a counterfactual event subgraph. This cost is acceptable only if slow-path work is deferred, batched, or scheduled under a budget.
+
+The conceptual reason for the split is that prediction and learning have different latency requirements. A system may need to answer quickly, but it does not need to discover invariants synchronously with every prediction. Residual caches allow some slow-path learning to be reused later by the fast path. In the reference loop, residual prediction produces an error hypothesis; graph intervention tests whether changing an event node, edge, or local subgraph explains that error; counterfactual updates refine residuals; and ontology or abstraction updates are promoted only when repeated interventions support the same distinction.
 
 The runtime model has several failure modes. If the residual cache grows without control, lookup cost and pollution increase. If slow-path refinement is delayed too long, stale residuals may remain active. If fast-path prediction trusts low-confidence memory, errors can compound. If abstraction is too aggressive, the system may become fast but wrong.
 

@@ -1,6 +1,6 @@
 # 2. Event Ontology
 
-EventFrame uses event frames as the basic predictive unit, but not as the fundamental ontology. The underlying substrate is assumed to be much denser than the representation used by the predictor. In the physical motivation, one can imagine substrate distinctions at scales comparable to Planck length and Planck time. EventFrame does not attempt to model every such distinction. It treats an event frame as a compressed representation of a region where a distinction may matter for prediction or intervention.
+EventFrame uses event frames as the basic predictive unit, but not as the fundamental ontology. The underlying substrate is assumed to be much denser than the representation used by the predictor. That substrate may be physical, simulated, biological, robotic, or software-based. EventFrame does not attempt to model every low-level distinction. It treats an event frame as a compressed representation of a region where a distinction may matter for prediction or intervention.
 
 An event is therefore a structured representation of a change, occurrence, action, observation, or state transition after coarse-graining. An event frame records that compressed event in fields that can be compared, predicted, fuzzed, cached, and abstracted.
 

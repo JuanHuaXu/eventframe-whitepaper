@@ -13,9 +13,10 @@ space and let:
 \]
 
 denote a substrate state indexed by a microscopic spacetime cell \(\alpha\). In
-the physical motivation, \(\alpha\) may be considered at scales comparable to
-Planck length and Planck time. This is a motivation for density, not a claim
-that EventFrame supplies a theory of quantum gravity.
+the general motivation, \(\alpha\) may index physical, simulated, biological,
+robotic, software, or computational distinctions that are too dense to represent
+directly. This is a motivation for compression, not a claim about any particular
+fundamental substrate theory.
 
 Let a coarse-graining map be:
 
@@ -349,6 +350,17 @@ causal-edge or graph-transition inconsistency, and \(U\) measures uncertainty.
 This is not a physical Causal Fermion Systems action. It is a conservative
 runtime surrogate for choosing among admissible corrected predictions.
 
+Runtime decisions should use the same quantity:
+
+\[
+\mathcal{A}_{event}(\hat{e}_{t+1}) \le \eta_{\mathcal{A}}
+\]
+
+means the correction may be trusted under the declared confidence and age
+checks. If the action exceeds \(\eta_{\mathcal{A}}\), the slow path should
+inspect residuals, causal edges, fuzzing evidence, ontology assignments, and
+abstraction maps.
+
 ## Action-Residual Cache
 
 For low-latency residual reuse, define an action-key map:
@@ -490,6 +502,36 @@ d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t))))
 The slow path may use this influence score to retain, migrate, split, or mark a
 field uncertain. Ontology revision should preserve provenance and prior
 assignments so the update can be audited or reversed.
+
+A migration should be promoted only after repeated validation:
+
+\[
+\#\{C_t : \mathcal{A}_{event}^{old}(C_t) - \mathcal{A}_{event}^{new}(C_t) \ge \delta_{\rho}\}
+\ge n_{\rho}.
+\]
+
+Before this condition is met, the field should remain uncertain or provisional.
+
+## Counterfactual Graph Learning
+
+Let \(G_t = (V_t, R_t)\) be the local event graph and let
+\(\mathcal{I}_{v,\epsilon}\) intervene on a node, edge, or local subgraph.
+The counterfactual graph is:
+
+\[
+G_t' = do(\mathcal{I}_{v,\epsilon})(G_t).
+\]
+
+The target effect is:
+
+\[
+\Delta_Y^{graph} =
+d_Y(P(Y \mid G_t'), P(Y \mid G_t)).
+\]
+
+Counterfactual graph learning is slow-path learning: high residual action
+triggers graph intervention, graph intervention updates residual and edge
+confidence, and repeated validated effects may revise ontology or abstraction.
 
 ## Lumpability
 

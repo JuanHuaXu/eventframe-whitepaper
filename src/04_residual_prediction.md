@@ -43,13 +43,21 @@ The admissibility constraint can be made measurable through a surrogate event ac
 
 where \(D_{abs}\) measures abstraction or bucket inconsistency, \(D_{edge}\) measures causal-edge or graph-transition inconsistency, \(U(\hat{e}_{t+1})\) measures prediction uncertainty, and the \(\lambda\) terms are non-negative weights declared by the implementation. This is not a Causal Fermion Systems action. It is a runtime surrogate inspired by the idea that admissible configurations should minimize a structured action-like quantity. A corrected prediction is preferred only when it improves temporal loss without creating excessive abstraction, graph, or uncertainty penalties.
 
+The same surrogate action should drive runtime escalation. If the corrected prediction satisfies:
+
+\[
+\mathcal{A}_{event}(\hat{e}_{t+1}) \le \eta_{\mathcal{A}},
+\]
+
+the fast path may trust the correction, subject to confidence and age checks. If the action exceeds \(\eta_{\mathcal{A}}\), the system should treat the correction as unresolved: trigger background fuzzing, inspect causal edges, update residual confidence, or revise abstractions and ontology assignments. This makes \(\mathcal{A}_{event}\) a shared decision quantity rather than a decorative score.
+
 Residuals may be estimated after observation. If the baseline prediction is \(b_t\) and the observed event is \(e_{t+1}\), then the observed residual is the correction that would have moved \(b_t\) toward \(e_{t+1}\) under the chosen representation. Because \(\mathcal{Q}\) is only specified as an operator-like representation space, the residual should be estimated by a declared residual estimator:
 
 \[
 r_t^{obs} = \Delta_{\mathcal{Q}}(q(b_t), q(e_{t+1})).
 \]
 
-Here \(\Delta_{\mathcal{Q}}\) is model-dependent. In a vector representation it may reduce to subtraction, but in a structured or operator-like representation it may be an optimization, projection, alignment, or learned correction rule. The residual should therefore be treated as a reusable correction candidate, not as a guaranteed truth. Its value depends on the representation and the domain.
+Here \(\Delta_{\mathcal{Q}}\) is model-dependent. In a vector representation it may reduce to subtraction, but in a structured or operator-like representation it may be an optimization, projection, alignment, or learned correction rule. The residual should therefore be treated as a reusable correction candidate, not as a guaranteed truth. More strongly, residuals are cached causal hypotheses about how the baseline tends to fail; their continued validity is determined by future observations. Their value depends on the representation and the domain.
 
 Residual reuse requires a lookup rule. A residual cache stores triples:
 
@@ -103,12 +111,12 @@ Action-residual validity is updated only after observation. A simple confidence 
 c_a^{new} =
 (1-\beta)c_a + \beta \mathbf{1}
 \left[
-\mathcal{L}_{time}^{H}(b_t \oplus_{\mathcal{A}} r_a)
+\mathcal{A}_{event}(b_t \oplus_{\mathcal{A}} r_a)
 + \delta_A
-< \mathcal{L}_{time}^{H}(b_t)
+< \mathcal{A}_{event}(b_t)
 \right],
 \]
 
-where \(\delta_A\) is the required improvement margin and \(\beta\) is an update rate. When confidence falls below \(\gamma_A\), when support is too small, or when the corrected prediction worsens loss, the slow path should trigger fuzzing, episodic review, or residual eviction rather than continuing to trust the cached action residual.
+where \(\delta_A\) is the required improvement margin and \(\beta\) is an update rate. The update rewards corrections that improve the shared runtime action, not only raw temporal loss. When confidence falls below \(\gamma_A\), when support is too small, when the corrected prediction worsens the action, or when \(\mathcal{A}_{event}(\hat{e}_{t+1}) > \eta_{\mathcal{A}}\), the slow path should trigger fuzzing, episodic review, graph intervention, ontology review, or residual eviction rather than continuing to trust the cached action residual.
 
 The main failure modes are cache pollution, overcorrection, stale residuals, and false similarity. Cache pollution occurs when low-quality residuals accumulate. Overcorrection occurs when a residual dominates the baseline. Stale residuals occur when the environment changes. False similarity occurs when the key function treats different contexts as equivalent. The clamping function, metadata \(s_i\), and threshold \(\epsilon_K\) are safeguards, but they do not remove the need for empirical evaluation. The next section distinguishes this residual cache from episodic memory.

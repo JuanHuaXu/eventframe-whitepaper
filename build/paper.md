@@ -18,7 +18,7 @@ The paper presents EventFrame as a conservative research framework. Its main cla
 
 Prediction systems often operate over sequences whose internal structure is only implicit. A model may receive tokens, vectors, logs, traces, or state observations and learn statistical regularities among them. This can be effective, but it makes some questions difficult to ask directly: which compressed distinction mattered, what changed, when did it happen, where did it occur, why might it matter, and how did it transform the state of the world?
 
-EventFrame begins from a compression premise. The underlying substrate may be physically or computationally thick: at the physical limit, one can imagine distinctions at scales comparable to Planck length and Planck time. A useful prediction system cannot assign a separate durable event frame to every microscopic distinction. Entropy-bound and horizon-style arguments motivate the conservative view that representable distinctions must be compressed. EventFrame therefore treats the event frame as a coarse-grained representation, not as the fundamental thing itself.
+EventFrame begins from a compression premise. The underlying substrate may be far denser than any representation a prediction system can maintain, whether the substrate is physical, simulated, biological, robotic, or software-based. A useful prediction system cannot assign a separate durable event frame to every microscopic or low-level distinction. EventFrame therefore treats the event frame as a coarse-grained representation, not as the fundamental thing itself. Physical information bounds can motivate this intuition, but the framework only requires the domain-general inequality that substrate detail is much larger than representable event space.
 
 The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
@@ -31,7 +31,7 @@ The reference prediction procedure has six steps:
 3. Retrieve a residual correction \(r_t^*\) from a residual cache if the current context matches a prior error pattern.
 4. Compose the prediction as \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*\).
 5. Observe \(e_{t+1}\) and evaluate temporal loss.
-6. Use a slower refinement process to update residuals, test invariants, or revise abstractions.
+6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
@@ -80,7 +80,7 @@ Claim 7. Fast-path and slow-path separation is computationally useful if low-lat
 
 ## 2. Event Ontology
 
-EventFrame uses event frames as the basic predictive unit, but not as the fundamental ontology. The underlying substrate is assumed to be much denser than the representation used by the predictor. In the physical motivation, one can imagine substrate distinctions at scales comparable to Planck length and Planck time. EventFrame does not attempt to model every such distinction. It treats an event frame as a compressed representation of a region where a distinction may matter for prediction or intervention.
+EventFrame uses event frames as the basic predictive unit, but not as the fundamental ontology. The underlying substrate is assumed to be much denser than the representation used by the predictor. That substrate may be physical, simulated, biological, robotic, or software-based. EventFrame does not attempt to model every low-level distinction. It treats an event frame as a compressed representation of a region where a distinction may matter for prediction or intervention.
 
 An event is therefore a structured representation of a change, occurrence, action, observation, or state transition after coarse-graining. An event frame records that compressed event in fields that can be compared, predicted, fuzzed, cached, and abstracted.
 
@@ -319,13 +319,21 @@ The admissibility constraint can be made measurable through a surrogate event ac
 
 where \(D_{abs}\) measures abstraction or bucket inconsistency, \(D_{edge}\) measures causal-edge or graph-transition inconsistency, \(U(\hat{e}_{t+1})\) measures prediction uncertainty, and the \(\lambda\) terms are non-negative weights declared by the implementation. This is not a Causal Fermion Systems action. It is a runtime surrogate inspired by the idea that admissible configurations should minimize a structured action-like quantity. A corrected prediction is preferred only when it improves temporal loss without creating excessive abstraction, graph, or uncertainty penalties.
 
+The same surrogate action should drive runtime escalation. If the corrected prediction satisfies:
+
+\[
+\mathcal{A}_{event}(\hat{e}_{t+1}) \le \eta_{\mathcal{A}},
+\]
+
+the fast path may trust the correction, subject to confidence and age checks. If the action exceeds \(\eta_{\mathcal{A}}\), the system should treat the correction as unresolved: trigger background fuzzing, inspect causal edges, update residual confidence, or revise abstractions and ontology assignments. This makes \(\mathcal{A}_{event}\) a shared decision quantity rather than a decorative score.
+
 Residuals may be estimated after observation. If the baseline prediction is \(b_t\) and the observed event is \(e_{t+1}\), then the observed residual is the correction that would have moved \(b_t\) toward \(e_{t+1}\) under the chosen representation. Because \(\mathcal{Q}\) is only specified as an operator-like representation space, the residual should be estimated by a declared residual estimator:
 
 \[
 r_t^{obs} = \Delta_{\mathcal{Q}}(q(b_t), q(e_{t+1})).
 \]
 
-Here \(\Delta_{\mathcal{Q}}\) is model-dependent. In a vector representation it may reduce to subtraction, but in a structured or operator-like representation it may be an optimization, projection, alignment, or learned correction rule. The residual should therefore be treated as a reusable correction candidate, not as a guaranteed truth. Its value depends on the representation and the domain.
+Here \(\Delta_{\mathcal{Q}}\) is model-dependent. In a vector representation it may reduce to subtraction, but in a structured or operator-like representation it may be an optimization, projection, alignment, or learned correction rule. The residual should therefore be treated as a reusable correction candidate, not as a guaranteed truth. More strongly, residuals are cached causal hypotheses about how the baseline tends to fail; their continued validity is determined by future observations. Their value depends on the representation and the domain.
 
 Residual reuse requires a lookup rule. A residual cache stores triples:
 
@@ -379,13 +387,13 @@ Action-residual validity is updated only after observation. A simple confidence 
 c_a^{new} =
 (1-\beta)c_a + \beta \mathbf{1}
 \left[
-\mathcal{L}_{time}^{H}(b_t \oplus_{\mathcal{A}} r_a)
+\mathcal{A}_{event}(b_t \oplus_{\mathcal{A}} r_a)
 + \delta_A
-< \mathcal{L}_{time}^{H}(b_t)
+< \mathcal{A}_{event}(b_t)
 \right],
 \]
 
-where \(\delta_A\) is the required improvement margin and \(\beta\) is an update rate. When confidence falls below \(\gamma_A\), when support is too small, or when the corrected prediction worsens loss, the slow path should trigger fuzzing, episodic review, or residual eviction rather than continuing to trust the cached action residual.
+where \(\delta_A\) is the required improvement margin and \(\beta\) is an update rate. The update rewards corrections that improve the shared runtime action, not only raw temporal loss. When confidence falls below \(\gamma_A\), when support is too small, when the corrected prediction worsens the action, or when \(\mathcal{A}_{event}(\hat{e}_{t+1}) > \eta_{\mathcal{A}}\), the slow path should trigger fuzzing, episodic review, graph intervention, ontology review, or residual eviction rather than continuing to trust the cached action residual.
 
 The main failure modes are cache pollution, overcorrection, stale residuals, and false similarity. Cache pollution occurs when low-quality residuals accumulate. Overcorrection occurs when a residual dominates the baseline. Stale residuals occur when the environment changes. False similarity occurs when the key function treats different contexts as equivalent. The clamping function, metadata \(s_i\), and threshold \(\epsilon_K\) are safeguards, but they do not remove the need for empirical evaluation. The next section distinguishes this residual cache from episodic memory.
 
@@ -507,6 +515,29 @@ The same protocol can detect confluence and divergence. If perturbing two event 
 
 Counterfactual event frames are the perturbed frames produced by this protocol. They should be marked as synthetic and should not be inserted into episodic memory as observed events. They may, however, be used by the slow path to test invariants, improve key design, or identify abstraction boundaries.
 
+Fuzzing can be extended from fields to event graphs. Let \(G_t = (V_t, R_t)\) be the local event graph and let \(\mathcal{I}_{v,\epsilon}\) denote an intervention on event node, edge, or local subgraph \(v\). A counterfactual graph update is:
+
+\[
+G_t' = do(\mathcal{I}_{v,\epsilon})(G_t),
+\]
+
+with target effect:
+
+\[
+\Delta_Y^{graph} =
+d_Y(P(Y \mid G_t'), P(Y \mid G_t)).
+\]
+
+The slow path uses this graph intervention when the residual action remains high. The reference loop is:
+
+1. Observe a high residual action \(\mathcal{A}_{event} > \eta_{\mathcal{A}}\).
+2. Choose candidate nodes, edges, or local subgraphs from the residual, episodic evidence, or uncertain 5W1H fields.
+3. Apply graph interventions to produce counterfactual event graphs.
+4. Measure \(\Delta_Y^{graph}\), residual improvement, and abstraction consistency.
+5. Update residual keys, causal-edge confidence, ontology assignments, or Anti-Pigeon split markers only when the intervention repeatedly explains the error.
+
+This is counterfactual graph learning, but in a conservative sense. The counterfactual graph is a test object used for slow-path learning, not an observed history.
+
 Ontology updates should therefore be intervention-driven. A conservative update rule is:
 
 \[
@@ -519,7 +550,14 @@ Ontology updates should therefore be intervention-driven. A conservative update 
 \end{cases}
 \]
 
-This is not an automatic ontology rewrite. It is a slow-path review signal. The implementation should preserve provenance, confidence, and the previous assignment so that field migration can be audited or reversed.
+This is not an automatic ontology rewrite. It is a slow-path review signal. The implementation should preserve provenance, confidence, and the previous assignment so that field migration can be audited or reversed. To prevent oscillation, a migration should be promoted only after repeated successful intervention validation. For example, require at least \(n_{\rho}\) independent validation contexts in which the proposed assignment reduces \(\mathcal{A}_{event}\) or target error by margin \(\delta_{\rho}\):
+
+\[
+\#\{C_t : \mathcal{A}_{event}^{old}(C_t) - \mathcal{A}_{event}^{new}(C_t) \ge \delta_{\rho}\}
+\ge n_{\rho}.
+\]
+
+Before that condition is met, the safer state is "mark uncertain" rather than permanent migration.
 
 An invariant is not a universal truth unless the fuzzing family and domain justify that claim. In EventFrame, invariants are usually conditional: stable under these perturbations, in this data regime, for this prediction target, within this threshold. That conservative framing matters because an invariant useful for temporal prediction may fail for actor prediction or causal explanation.
 
@@ -629,12 +667,14 @@ flowchart LR
     O --> S["Slow path"]
     S --> U["Update residuals and memories"]
     S --> F["Async fuzzing"]
+    S --> I["Graph intervention"]
     F --> G["Ontology and abstraction revision"]
+    I --> G
     G --> A
     G --> R
 ```
 
-If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Action-residual lookup can be expected \(O(1)\) when \(\mathcal{C}_A\) is a bounded hash table or array over declared action keys. General residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Episodic retrieval has its own cost \(T_E(M)\). Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
+If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Action-residual lookup can be expected \(O(1)\) when \(\mathcal{C}_A\) is a bounded hash table or array over declared action keys. The reason is structural: the 5W1H schema has fixed field arity, the action key \(\alpha(C_t)\) is bounded by declared local fields and abstraction labels, and the graph neighborhood used by the key must have bounded degree. Under those assumptions, lookup depends on the size of the local abstraction key rather than the length of the full history. If action keys grow without bound, if graph degree is unbounded, or if lookup falls back to nearest-neighbor search, the \(O(1)\) approximation no longer applies. General residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Episodic retrieval has its own cost \(T_E(M)\). Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
 
 A simple fast-path cost sketch is:
 
@@ -651,8 +691,9 @@ The slow path begins after an observation becomes available:
 3. Decide whether the residual is worth caching.
 4. Update episodic memory and residual cache metadata.
 5. Run selected fuzzing tests.
-6. Reassess invariants and abstraction maps.
-7. Revise 5W1H field assignments when intervention evidence shows that information should migrate, split, or be marked uncertain.
+6. Run selected graph interventions when residual action remains above threshold.
+7. Reassess invariants and abstraction maps.
+8. Revise 5W1H field assignments when intervention evidence shows that information should migrate, split, or be marked uncertain.
 
 The slow path may be much more expensive:
 
@@ -660,9 +701,15 @@ The slow path may be much more expensive:
 T_{slow} \approx T_{loss} + T_{residual} + T_{consolidate} + M_f T_{predict} + T_{abstraction},
 \]
 
-where \(M_f\) is the number of fuzzed variants and \(T_{predict}\) is the cost of rerunning prediction. This cost is acceptable only if slow-path work is deferred, batched, or scheduled under a budget.
+where \(M_f\) is the number of fuzzed variants and \(T_{predict}\) is the cost of rerunning prediction. Graph interventions add another budgeted term when enabled:
 
-The conceptual reason for the split is that prediction and learning have different latency requirements. A system may need to answer quickly, but it does not need to discover invariants synchronously with every prediction. Residual caches allow some slow-path learning to be reused later by the fast path.
+\[
+T_{slow+graph} \approx T_{slow} + M_g T_{intervene},
+\]
+
+where \(M_g\) is the number of graph interventions and \(T_{intervene}\) is the cost of updating or simulating a counterfactual event subgraph. This cost is acceptable only if slow-path work is deferred, batched, or scheduled under a budget.
+
+The conceptual reason for the split is that prediction and learning have different latency requirements. A system may need to answer quickly, but it does not need to discover invariants synchronously with every prediction. Residual caches allow some slow-path learning to be reused later by the fast path. In the reference loop, residual prediction produces an error hypothesis; graph intervention tests whether changing an event node, edge, or local subgraph explains that error; counterfactual updates refine residuals; and ontology or abstraction updates are promoted only when repeated interventions support the same distinction.
 
 The runtime model has several failure modes. If the residual cache grows without control, lookup cost and pollution increase. If slow-path refinement is delayed too long, stale residuals may remain active. If fast-path prediction trusts low-confidence memory, errors can compound. If abstraction is too aggressive, the system may become fast but wrong.
 
@@ -715,6 +762,25 @@ Ablation studies should remove one component at a time: residual cache, episodic
 
 The evaluation plan is deliberately falsifiable. Each claim should be tied to a measurable result. The next section lists open problems that remain even if the initial experiments succeed.
 
+## Discussion: Innovation and Scientific Refinement
+
+EventFrame treats innovation conservatively. An innovation is not merely a novel label, cluster, or prediction. It is the discovery of a new causal distinction that repeatedly survives intervention. In the framework's terms, a candidate innovation begins as a residual, anomaly, fuzzing result, or graph-intervention result. It becomes meaningful only if later observations keep validating the distinction.
+
+This connects the runtime to a broader scientific pattern. Science alternates between compression and refinement. Lumpability compresses: it asks when detailed distinctions can be removed because future behavior remains equivalent for the target. Anti-Pigeon refines: it asks when an apparently unified abstraction hides incompatible futures and must split. Counterfactual graph learning supplies a mechanism for testing which side is currently warranted.
+
+The alternation can be written operationally:
+
+1. Predict with the current event ontology and abstraction.
+2. Measure residual action \(\mathcal{A}_{event}\).
+3. If the action remains low, preserve the current abstraction.
+4. If the action remains high, run fuzzing or graph intervention.
+5. If distinctions do not affect the target, compress through lumpability.
+6. If distinctions repeatedly affect the target, refine through Anti-Pigeon or ontology revision.
+
+In this sense, EventFrame does not assume that its ontology is correct at the start. The ontology is a working compression that earns stability through intervention. A field assignment, cache key, event group, or causal edge becomes more credible when it reduces future residual action under repeated tests. It becomes less credible when counterfactual interventions reveal hidden structure.
+
+This discussion also limits the claim. EventFrame does not provide a complete theory of scientific discovery. It provides a runtime vocabulary for one recurring pattern: prediction creates residuals, residuals suggest interventions, interventions test distinctions, and validated distinctions either compress or refine the event representation. The next section lists open problems that remain before this pattern can support stronger guarantees.
+
 ## 10. Open Problems
 
 EventFrame is a framework, not a completed theory. Several open problems must be resolved before it can support strong claims.
@@ -731,19 +797,25 @@ The fifth open problem is drift. Residual caches depend on the assumption that s
 
 The sixth open problem is cache pollution. If the system stores too many residuals, it may memorize noise. If it stores too few, it misses useful corrections. The right update rule may depend on domain, context length, confidence, and the cost of false correction.
 
-The seventh open problem is robust invariant extraction. Fuzzing can identify candidate invariants, but perturbation validity is hard. A counterfactual event may be syntactically valid but semantically impossible. Thresholds may be too permissive or too strict. Invariants may be local, conditional, or unstable under distribution shift.
+The seventh open problem is residual confidence theory. The current action-residual update treats residuals as cached causal hypotheses whose confidence is revised by later observations. A stronger theory would specify convergence conditions, decay schedules, false-positive costs, and when a residual should trigger graph intervention rather than eviction.
 
-The eighth open problem is abstraction quality. Approximate predictive lumpability is attractive, but exact lumpability is usually too strong. The framework needs practical criteria for deciding when an abstraction is good enough for one target but unsafe for another. An abstraction that preserves timing may destroy causal explanation.
+The eighth open problem is robust invariant extraction. Fuzzing can identify candidate invariants, but perturbation validity is hard. A counterfactual event may be syntactically valid but semantically impossible. Thresholds may be too permissive or too strict. Invariants may be local, conditional, or unstable under distribution shift.
 
-The ninth open problem is confluence and divergence detection. A system needs criteria for deciding when event streams have truly become prediction-equivalent and when small distinctions are about to amplify. Bad confluence loses necessary distinctions; bad divergence preserves noise as if it were signal.
+The ninth open problem is abstraction quality. Approximate predictive lumpability is attractive, but exact lumpability is usually too strong. The framework needs practical criteria for deciding when an abstraction is good enough for one target but unsafe for another. An abstraction that preserves timing may destroy causal explanation.
 
-The tenth open problem is representative selection. Keeping one representative per group is necessary for boundary tests, but choosing a bad representative may hide internal divergence or exaggerate differences between groups. Future work should compare medoids, boundary examples, highest-confidence examples, and adversarial representatives.
+The tenth open problem is confluence and divergence detection. A system needs criteria for deciding when event streams have truly become prediction-equivalent and when small distinctions are about to amplify. Bad confluence loses necessary distinctions; bad divergence preserves noise as if it were signal.
 
-The eleventh open problem is temporal resolution selection. Finer time precision can create more candidate frames and expose divergence boundaries, but it can also increase noise, cache pressure, and false distinctions. The framework needs principled methods for choosing \(\Delta_\tau\), possibly adapting it across domains or event groups.
+The eleventh open problem is representative selection. Keeping one representative per group is necessary for boundary tests, but choosing a bad representative may hide internal divergence or exaggerate differences between groups. Future work should compare medoids, boundary examples, highest-confidence examples, and adversarial representatives.
 
-The twelfth open problem is multimodal scaling. Event frames may be built from text, sensor streams, images, logs, graphs, or simulations. A unified event representation must allow these sources to contribute without pretending that all fields have the same reliability or comparison rule.
+The twelfth open problem is temporal resolution selection. Finer time precision can create more candidate frames and expose divergence boundaries, but it can also increase noise, cache pressure, and false distinctions. The framework needs principled methods for choosing \(\Delta_\tau\), possibly adapting it across domains or event groups.
 
-The thirteenth open problem is evaluation design. Synthetic worlds are useful because ground truth is known, but real domains are messier. A credible research program should move from synthetic tests to controlled real-world benchmarks while preserving the ability to inspect fields, residuals, and invariants.
+The thirteenth open problem is multimodal scaling. Event frames may be built from text, sensor streams, images, logs, graphs, or simulations. A unified event representation must allow these sources to contribute without pretending that all fields have the same reliability or comparison rule.
+
+The fourteenth open problem is evaluation design. Synthetic worlds are useful because ground truth is known, but real domains are messier. A credible research program should move from synthetic tests to controlled real-world benchmarks while preserving the ability to inspect fields, residuals, and invariants.
+
+The fifteenth open problem is counterfactual graph learning. The current paper sketches graph interventions as slow-path tests for high residual action, but it does not provide a full learning algorithm, regret bound, or graph-backpropagation method. Future work should specify how candidate graph interventions are selected, budgeted, validated, and promoted into residual keys or ontology changes.
+
+The sixteenth open problem is publication-quality references. The current reference section is a placeholder register. A publication draft should replace it with full bibliographic entries for Causal Fermion Systems, lumpability, state aggregation, temporal point processes, causal abstraction, counterfactual learning, and information-bound motivations.
 
 These open problems define the boundary of the current paper. The framework is useful if it makes prediction, memory, and abstraction more explicit and testable. It should not be presented as a final cognitive architecture, universal predictor, or complete mathematical theory. The conclusion summarizes the role EventFrame can play as a conservative event-centric substrate.
 
@@ -759,17 +831,17 @@ The reference runtime separates baseline prediction from residual correction. A 
 \hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*.
 \]
 
-This composition is structured and constrained rather than ordinary vector addition. It is inspired by Causal Fermion Systems only as a source of intuition about operator-like representations and action-like admissibility. The paper does not claim that EventFrame is a physical causal fermion system.
+This composition is structured and constrained rather than ordinary vector addition. It is inspired by Causal Fermion Systems only as a source of intuition about operator-like representations and action-like admissibility. The paper does not claim that EventFrame is a physical causal fermion system. Its practical decision quantity is instead the surrogate event action \(\mathcal{A}_{event}\), which determines whether a correction can be trusted or should trigger slow-path review.
 
 Memory is divided into episodic recall and residual correction. Episodic memory stores prior cases. Residual memory stores reusable prediction errors, including lower-latency action residuals when compact action keys have enough confidence and support. This distinction supports fast-path prediction while leaving more expensive analysis to a slow path. The slow path evaluates loss, consolidates memory, tests candidate invariants through fuzzing, and examines whether abstractions preserve transition behavior.
 
-Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target and whether the current 5W1H assignment should be retained, migrated, split, or marked uncertain. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. Anti-Pigeon supplies the dual split criterion: abstraction should be refined when a grouped bucket predicts materially different futures.
+Property fuzzing, counterfactual graph learning, and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target and whether the current 5W1H assignment should be retained, migrated, split, or marked uncertain. Graph interventions test whether high residual action can be explained by changing event nodes, edges, or local subgraphs. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. Anti-Pigeon supplies the dual split criterion: abstraction should be refined when a grouped bucket predicts materially different futures.
 
 Representative preservation keeps abstraction testable. Each event-frame group retains at least one concrete frame so later interventions can measure whether the group should split through divergence or merge through convergence.
 
 The claims in this paper remain conservative. Compressed event frames are proposed as useful predictive units, residual caches as a plausible way to reduce cost or error, property fuzzing as a method for candidate invariant discovery, and lumpability as a formal route to abstraction. The event sparsity hypothesis is treated as a modeling premise to be tested, not as a settled theorem. The proposed evaluation program measures temporal prediction accuracy, compression quality, cache utility, invariant stability, abstraction quality, and runtime tradeoffs.
 
-EventFrame is therefore best understood as a research framework for making event-centric prediction explicit. Its value lies in giving prediction systems a shared language for structured events, residual error, memory, invariance, and abstraction. The next stage is empirical: implement controlled event worlds, run the proposed ablations, and revise the framework according to what survives measurement.
+EventFrame is therefore best understood as a research framework for making event-centric prediction explicit. Its value lies in giving prediction systems a shared language for structured events, residual error, memory, invariance, graph intervention, and abstraction. The next stage is empirical: implement controlled event worlds, run the proposed ablations, and revise the framework according to what survives measurement.
 
 ## Claim Map
 
@@ -778,16 +850,16 @@ This map keeps the assembled paper tied to the claims register. It is not a proo
 | Claim | Paper location | Current status |
 | --- | --- | --- |
 | Claim 1 | Claims Register; Sections 1, 2, 3, 9 | Conceptual and experimental claim. |
-| Claim 1a | Claims Register; Sections 2, 3, 10 | Modeling assumption; physics-inspired motivation only. |
+| Claim 1a | Claims Register; Sections 2, 3, 10 | Modeling assumption; domain-general compression motivation. |
 | Claim 1b | Claims Register; Sections 2, 3, 9, 10 | Representational design claim. |
 | Claim 2 | Claims Register; Sections 4, 5, 8, 9 | Systems claim requiring cache confidence and utility experiments. |
 | Claim 3 | Claims Register; Section 5 | Definitional and architectural claim. |
 | Claim 4 | Claims Register; Sections 6, 9 | Methodological claim requiring controlled thresholds and ontology-revision tests. |
 | Claim 5 | Claims Register; Sections 7, 9, 10 | Mathematical route adapted from lumpability and state aggregation. |
-| Claim 5a | Claims Register; Sections 3, 7 | Modeling claim about confluence, branching, and sensitivity. |
+| Claim 5a | Claims Register; Sections 3, 7, Discussion | Modeling claim about confluence, branching, and sensitivity. |
 | Claim 5b | Claims Register; Sections 3, 7 | Design invariant for abstraction groups. |
-| Claim 6 | Claims Register; Sections 6, 7, 9 | Formal split criterion against invalid abstraction. |
-| Claim 6a | Claims Register; Sections 2, 3, 9, 10 | Physics-inspired sparsity hypothesis; must remain falsifiable. |
+| Claim 6 | Claims Register; Sections 6, 7, 9, Discussion | Formal split criterion against invalid abstraction. |
+| Claim 6a | Claims Register; Sections 2, 3, 9, 10 | Sparsity hypothesis; must remain falsifiable. |
 | Claim 7 | Claims Register; Sections 8, 9 | Runtime and evaluation claim. |
 
 ## References
