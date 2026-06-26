@@ -37,9 +37,9 @@ For each section:
 
 ## Phase 4: Assembly
 
-- [ ] Merge sections into `build/paper.md`
-- [ ] Normalize notation
-- [ ] Normalize references to claims
-- [ ] Add bibliography placeholders
-- [ ] Final red-team pass
+- [x] Merge sections into `build/paper.md`
+- [x] Normalize notation
+- [x] Normalize references to claims
+- [x] Add bibliography placeholders
+- [x] Final red-team pass
 - [ ] Optional PDF build
