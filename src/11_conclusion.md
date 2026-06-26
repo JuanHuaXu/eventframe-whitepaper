@@ -14,7 +14,7 @@ This composition is structured and constrained rather than ordinary vector addit
 
 Memory is divided into episodic recall and residual correction. Episodic memory stores prior cases. Residual memory stores reusable prediction errors. This distinction supports fast-path prediction while leaving more expensive analysis to a slow path. The slow path evaluates loss, consolidates memory, tests candidate invariants through fuzzing, and examines whether abstractions preserve transition behavior.
 
-Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. The Anti-Pigeon principle summarizes the design stance: abstraction should be earned by evidence, not assumed from superficial similarity.
+Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. Anti-Pigeon supplies the dual split criterion: abstraction should be refined when a grouped bucket predicts materially different futures.
 
 Representative preservation keeps abstraction testable. Each event-frame group retains at least one concrete frame so later interventions can measure whether the group should split through divergence or merge through convergence.
 

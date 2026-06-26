@@ -56,11 +56,11 @@ Every abstraction group, confluence group, or event-frame cluster should retain 
 
 Status: design invariant; requires experiments on boundary detection and cache or abstraction stability.
 
-## Claim 6: Anti-Pigeon prevents premature abstraction
+## Claim 6: Anti-Pigeon prevents invalid abstraction
 
-Abstraction should be earned by invariance or lumpability evidence, not assumed from superficial similarity.
+Abstraction should be earned by invariance or lumpability evidence, not assumed from superficial similarity. If an event-frame group contains members whose predicted future behavior diverges beyond a declared threshold, the group is invalid for that target and should be split, refined, or marked divergence-sensitive.
 
-Status: design principle.
+Status: formal design criterion; requires experiments on future-divergence thresholds, split stability, and false-positive refinement.
 
 ## Claim 6a: Intervention-effective event distinctions are sparse
 

@@ -122,7 +122,7 @@ A condition under which many detailed states can be aggregated into a coarser st
 
 ## Anti-Pigeon Principle
 
-A design principle that discourages collapsing events into overly broad categories before predictive distinctions have been tested.
+A split-side abstraction criterion. If one event-frame group predicts multiple materially different futures, the abstraction is invalid for that target and must be split, refined, or marked divergence-sensitive.
 
 ## Fast Path
 

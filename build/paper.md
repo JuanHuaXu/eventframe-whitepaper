@@ -10,7 +10,7 @@ The central representational object is an event frame \(e_t \in \mathcal{E}_{\De
 
 EventFrame separates a baseline transition model from residual correction. A baseline predictor \(B(C_t)\) produces an initial event estimate. A residual cache may retrieve a reusable correction \(r_t^*\) when the current context resembles a previous context with a similar prediction error. The corrected event is composed as \(\hat{e}_{t+1} = B(C_t) \oplus_{\mathcal{A}} r_t^*\), where \(\oplus_{\mathcal{A}}\) denotes a constrained composition operator inspired by Causal Fermion Systems without claiming physical equivalence to that theory. The composition step is intended to preserve structured admissibility while allowing cached corrections to improve fast-path prediction.
 
-The framework also defines methods for property fuzzing, invariant discovery, event confluence, event divergence, and abstraction. Over time, multiple event streams may become representable as a single aggregate event, as streams merge into larger rivers. The opposite can also occur: small distinctions can amplify into materially different downstream event branches. To keep these boundaries measurable, every event-frame group retains at least one representative frame. Approximate predictive lumpability provides a route from detailed event frames to coarser abstract states when the abstraction preserves transition behavior for the target of interest. The Anti-Pigeon principle states that abstraction should be earned by invariance, confluence, or lumpability evidence rather than assumed from surface similarity.
+The framework also defines methods for property fuzzing, invariant discovery, event confluence, event divergence, and abstraction. Over time, multiple event streams may become representable as a single aggregate event, as streams merge into larger rivers. The opposite can also occur: small distinctions can amplify into materially different downstream event branches. To keep these boundaries measurable, every event-frame group retains at least one representative frame. Approximate predictive lumpability provides the merge-side route from detailed event frames to coarser abstract states when the abstraction preserves transition behavior for the target of interest. The Anti-Pigeon principle provides the split-side criterion: a bucket must split or be marked divergence-sensitive when its members predict materially different futures.
 
 The paper presents EventFrame as a conservative research framework. Its main claims are architectural, methodological, and experimental rather than settled theoretical results. The proposed evaluation program measures temporal prediction accuracy, residual-cache utility, invariant stability, abstraction quality, and the tradeoff between fast-path prediction and slow-path refinement.
 
@@ -35,7 +35,7 @@ The reference prediction procedure has six steps:
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
-EventFrame also proposes a slow path for analysis beyond immediate prediction. Property fuzzing perturbs event fields to test whether predicted outcomes remain stable. Stable properties can become candidate invariants. Event confluence asks whether multiple streams can be represented as one aggregate event without losing target-relevant prediction. Event divergence asks whether a small distinction amplifies into materially different downstream branches. Approximate predictive lumpability then asks whether detailed event frames can be projected into coarser abstract states without losing target-relevant transition behavior. The Anti-Pigeon principle is the corresponding design rule: do not collapse events into broad categories merely because they look similar; require evidence that the collapsed category preserves prediction and does not hide divergence-effective distinctions.
+EventFrame also proposes a slow path for analysis beyond immediate prediction. Property fuzzing perturbs event fields to test whether predicted outcomes remain stable. Stable properties can become candidate invariants. Event confluence asks whether multiple streams can be represented as one aggregate event without losing target-relevant prediction. Event divergence asks whether a small distinction amplifies into materially different downstream branches. Approximate predictive lumpability then asks whether detailed event frames can be projected into coarser abstract states without losing target-relevant transition behavior. The Anti-Pigeon principle is the corresponding split criterion: do not collapse events into broad categories merely because they look similar; split or mark a group when its members predict target-distinct futures.
 
 The contributions of this paper are therefore:
 
@@ -441,7 +441,42 @@ Abstraction also has to respect event confluence and divergence. When streams me
 
 EventFrame therefore imposes a representative preservation invariant. Every event-frame group \(\mathcal{H}_j\) created by projection, clustering, confluence, or cache-key equivalence must keep at least one representative frame \(\bar{e}_j \in \mathcal{H}_j\). This representative lets the system measure boundary conditions later: intervene on the representative to test whether the group should diverge, or compare representatives from multiple groups to test whether they have converged enough to merge.
 
-The Anti-Pigeon principle is the design rule that prevents premature collapse. It says that events should not be grouped into broad categories merely because they share surface features. Grouping must be earned by invariance evidence, confluence evidence, lumpability evidence, or measured predictive adequacy. The principle is not a theorem. It is a discipline for avoiding abstractions that are convenient but predictively wrong.
+The Anti-Pigeon principle is the split-side criterion that prevents invalid abstraction. It says that events should not be grouped into broad categories merely because they share surface features. Grouping must be earned by invariance evidence, confluence evidence, lumpability evidence, or measured predictive adequacy. The principle is not a theorem. It is a discipline for avoiding abstractions that are convenient but predictively wrong.
+
+Formally, let \(B \subseteq \mathcal{E}\) be an event bucket represented by one abstract state, cache key, or event-frame group. For each retained event \(e_i \in B\), let \(H_i\) denote the prediction history or representative context associated with that event. Let \(P_Y(\cdot \mid H_i)\) be the predicted future distribution for the target \(Y\). Define pairwise future divergence:
+
+\[
+D_{ij} =
+D\left(P_Y(\cdot \mid H_i), P_Y(\cdot \mid H_j)\right),
+\]
+
+where \(D\) is a declared divergence or distance, such as total variation distance, KL divergence when well-defined, Wasserstein distance, or latent predictive distance. The bucket fails the Anti-Pigeon criterion whenever:
+
+\[
+\exists e_i,e_j \in B \quad \text{such that} \quad D_{ij} \ge \epsilon_{AP}.
+\]
+
+Equivalently, the bucket is valid for the target only when:
+
+\[
+\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+\]
+
+When this test fails, the system applies a split or refinement operator:
+
+\[
+\operatorname{Split}_{\epsilon_{AP}}(B) = \{B_1,\ldots,B_M\},
+\]
+
+such that each resulting non-empty bucket satisfies the same internal-divergence bound:
+
+\[
+\forall B_\ell,\quad \max_{e_i,e_j \in B_\ell} D_{ij} < \epsilon_{AP}.
+\]
+
+Every resulting bucket must retain at least one representative event frame. The representative requirement is what makes the split test repeatable: after refinement, the system can continue checking whether a bucket remains stable, should split again, or has converged enough to merge with another bucket.
+
+This makes lumpability and Anti-Pigeon dual operations. Lumpability accepts a merge when future distributions remain close enough under a declared merge threshold. Anti-Pigeon rejects or splits a bucket when internal future divergence crosses a declared split threshold. In practice, the thresholds may differ, for example \(\eta_{\mu} < \epsilon_{AP}\), so the system does not oscillate between merge and split decisions near a noisy boundary.
 
 Abstraction quality should be reported with both benefits and costs. Benefits may include lower memory use, faster lookup, better generalization, and simpler explanations. Costs may include lost distinctions, degraded temporal prediction, and hidden subgroup errors. A good abstraction for fast-path prediction may still be too coarse for causal explanation or invariant discovery.
 
@@ -529,7 +564,7 @@ The fifth experiment evaluates confluence and divergence. Generate event streams
 
 The sixth experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional.
 
-The seventh experiment evaluates lumpability and abstraction. Define projections \(\pi\) that remove or group selected fields. Compare detailed and abstract predictors using temporal loss and transition-distribution divergence. An abstraction should be accepted only when loss degradation remains below a declared threshold and at least one representative frame is retained for every event-frame group. This experiment directly tests the Anti-Pigeon principle: surface-similar groupings should be rejected when they degrade prediction.
+The seventh experiment evaluates lumpability and Anti-Pigeon refinement. Define projections \(\pi\) that remove or group selected fields. Compare detailed and abstract predictors using temporal loss and transition-distribution divergence. A merge should be accepted only when loss degradation remains below a declared threshold and at least one representative frame is retained for every event-frame group. Then test the dual split criterion: for each bucket \(B\), estimate \(\max_{e_i,e_j \in B} D_{ij}\). If the maximum future divergence exceeds \(\epsilon_{AP}\), the bucket should split or be marked divergence-sensitive. This experiment directly tests whether surface-similar groupings are rejected when they hide target-distinct futures.
 
 The eighth experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
 
@@ -585,7 +620,7 @@ This composition is structured and constrained rather than ordinary vector addit
 
 Memory is divided into episodic recall and residual correction. Episodic memory stores prior cases. Residual memory stores reusable prediction errors. This distinction supports fast-path prediction while leaving more expensive analysis to a slow path. The slow path evaluates loss, consolidates memory, tests candidate invariants through fuzzing, and examines whether abstractions preserve transition behavior.
 
-Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. The Anti-Pigeon principle summarizes the design stance: abstraction should be earned by evidence, not assumed from superficial similarity.
+Property fuzzing and approximate predictive lumpability provide mechanisms for disciplined abstraction. Fuzzing asks which fields actually affect the prediction target. Lumpability asks whether detailed events can be projected into coarser states without losing target-relevant transition behavior. Anti-Pigeon supplies the dual split criterion: abstraction should be refined when a grouped bucket predicts materially different futures.
 
 Representative preservation keeps abstraction testable. Each event-frame group retains at least one concrete frame so later interventions can measure whether the group should split through divergence or merge through convergence.
 
@@ -608,7 +643,7 @@ This map keeps the assembled paper tied to the claims register. It is not a proo
 | Claim 5 | Sections 7, 9, 10 | Mathematical route adapted from lumpability and state aggregation. |
 | Claim 5a | Sections 3, 7 | Modeling claim about confluence, branching, and sensitivity. |
 | Claim 5b | Sections 3, 7 | Design invariant for abstraction groups. |
-| Claim 6 | Sections 6, 7 | Design principle against premature abstraction. |
+| Claim 6 | Sections 6, 7, 9 | Formal split criterion against invalid abstraction. |
 | Claim 6a | Sections 2, 3, 9, 10 | Physics-inspired sparsity hypothesis; must remain falsifiable. |
 | Claim 7 | Sections 8, 9 | Runtime and evaluation claim. |
 

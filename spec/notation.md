@@ -439,3 +439,50 @@ This should be presented as approximate predictive lumpability and cited against
 the existing literature on Markov chain lumpability, state aggregation, and
 abstraction. The paper should avoid claiming a new theorem unless a proof is
 added.
+
+## Anti-Pigeon Split Criterion
+
+Anti-Pigeon is the split-side dual of lumpability. Lumpability asks whether
+unnecessary distinctions can be merged. Anti-Pigeon asks whether a current
+abstraction hides necessary distinctions.
+
+Let \(B \subseteq \mathcal{E}\) be an event bucket represented by one abstract
+state, cache key, or event-frame group. For each retained event \(e_i \in B\),
+let \(H_i\) denote the corresponding prediction history or representative
+context, and let \(P_Y(\cdot \mid H_i)\) be the predicted future target
+distribution. Define pairwise future divergence:
+
+\[
+D_{ij} =
+D\left(P_Y(\cdot \mid H_i), P_Y(\cdot \mid H_j)\right),
+\]
+
+where \(D\) is a declared divergence or distance, such as total variation, KL
+divergence when well-defined, Wasserstein distance, or latent predictive
+distance. The abstraction fails the Anti-Pigeon criterion when:
+
+\[
+\exists e_i,e_j \in B \quad \text{such that} \quad D_{ij} \ge \epsilon_{AP}.
+\]
+
+Equivalently, the bucket is valid for the target only if:
+
+\[
+\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+\]
+
+When the criterion fails, apply a split or refinement operator:
+
+\[
+\operatorname{Split}_{\epsilon_{AP}}(B) = \{B_1,\ldots,B_M\}
+\]
+
+such that each non-empty resulting bucket satisfies:
+
+\[
+\forall B_\ell,\quad \max_{e_i,e_j \in B_\ell} D_{ij} < \epsilon_{AP}.
+\]
+
+Each resulting bucket must retain at least one representative frame. In
+practice, merge and split thresholds may differ, for example
+\(\eta_{\mu} < \epsilon_{AP}\), to avoid oscillation near a boundary.
