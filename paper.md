@@ -324,7 +324,7 @@ d_E:\mathcal Q_{E,\mathrm{adm}}\rightarrow\mathcal E,
 where $\mathcal Q_{E,\mathrm{adm}}\subseteq\mathbb H_d$ is a non-empty closed admissible set and $d_E$ is a decoder, not an inverse of the lossy encoder. For a radius $\delta_E>0$, define norm clipping by:
 
 ```math
-\operatorname{clip}_{\delta_E}(r)=
+\mathrm{clip}_{\delta_E}(r)=
 \begin{cases}
 0, & r=0,\\
 r\min\!\left(1,\dfrac{\delta_E}{\|r\|_F}\right), & r\neq0.
@@ -339,7 +339,7 @@ A minimizer exists when the admissible set is closed in finite dimensions. It is
 
 ```math
 b\oplus_E r
-=d_E\!\left(\Pi_E\!\left(q_E(b)+\operatorname{clip}_{\delta_E}(r)\right)\right),
+=d_E\!\left(\Pi_E\!\left(q_E(b)+\mathrm{clip}_{\delta_E}(r)\right)\right),
 \qquad r\in\mathbb H_d.
 ```
 This construction borrows only the use of self-adjoint operator representations and variational admissibility from Causal Fermion Systems [1,2]. It is not the CFS causal action, does not inherit CFS field equations, and makes no claim of physical equivalence.
@@ -403,14 +403,14 @@ Then:
 ```math
 r_t^A=
 \begin{cases}
-r_{k_t}, & k_t\in\operatorname{dom}(\mathcal C_A),\ c_{k_t}\ge\gamma_A,\
-n_{k_t}\ge n_{\min},\ \operatorname{age}_t(t_{k_t})\le A_{\max},\\
+r_{k_t}, & k_t\in\mathrm{dom}(\mathcal C_A),\ c_{k_t}\ge\gamma_A,\
+n_{k_t}\ge n_{\min},\ \mathrm{age}_t(t_{k_t})\le A_{\max},\\
 0_{\mathbb H_d}, & \text{otherwise.}
 \end{cases}
 ```
 A bounded hash table can provide expected $O(1)$ lookup after the bounded key has been constructed. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs.
 
-After observation, let $I_t=1$ when the residual improves $\mathcal A_{\mathrm{post}}$ by at least $\delta_A$, and $I_t=0$ otherwise. With a Beta prior $\operatorname{Beta}(a_0,b_0)$, a calibrated stationary estimate is:
+After observation, let $I_t=1$ when the residual improves $\mathcal A_{\mathrm{post}}$ by at least $\delta_A$, and $I_t=0$ otherwise. With a Beta prior $\mathrm{Beta}(a_0,b_0)$, a calibrated stationary estimate is:
 
 ```math
 c_{k_t}=\frac{a_0+\sum_{u\in\mathcal U_{k_t}}I_u}
@@ -438,7 +438,7 @@ Choose a normed packet representation $\mathcal V_Y$, an admissible subset $\mat
 
 ```math
 y\oplus_Y r
-=d_Y\!\left(\Pi_Y\!\left(q_Y(y)+\operatorname{clip}_{\delta_Y}(r)\right)\right).
+=d_Y\!\left(\Pi_Y\!\left(q_Y(y)+\mathrm{clip}_{\delta_Y}(r)\right)\right).
 ```
 The baseline and residual now have compatible types:
 
