@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "Please cite this working paper using the metadata below."
+title: "EventFrame Whitepaper: A Mathematical Framework for Event-Centric Prediction"
+type: generic
+license: MIT
+version: 1.0.0
+date-released: 2026-07-18
+url: "https://github.com/JuanHuaXu/eventframe-whitepaper"
+repository-code: "https://github.com/JuanHuaXu/eventframe-whitepaper"
+authors:
+  - family-names: Xu
+    given-names: Juan Hua
+    orcid: "https://orcid.org/0009-0008-7305-5690"
+    website: "https://github.com/JuanHuaXu"
+keywords:
+  - event-centric prediction
+  - memory retrieval
+  - residual prediction
+  - adaptive abstraction
+  - Anti-Pigeon
+abstract: >-
+  EventFrame is a mathematical framework for event-centric prediction using
+  typed residual memory, coverage-aware abstraction, and immediate
+  confidence-mediated revision when historical equivalence classes cease to
+  predict reliably.
