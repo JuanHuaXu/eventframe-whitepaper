@@ -11,8 +11,8 @@ The repository is intentionally independent of any specific agent, chatbot, prod
 
 ## Read the Paper
 
-- [EventFrame Whitepaper (PDF)](output/pdf/EventFrame_Whitepaper.pdf)
-- [EventFrame Whitepaper (Markdown)](build/paper.md)
+- [EventFrame Whitepaper (PDF)](EventFrame_Whitepaper.pdf)
+- [EventFrame Whitepaper (Markdown)](paper.md)
 
 ## Intended Output
 
