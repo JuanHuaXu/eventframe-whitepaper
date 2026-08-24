@@ -156,9 +156,9 @@ be an abstraction compatibility graph. A node may represent an event group, temp
 For an edge \(e=\{i,j\}\), choose a common measurable comparison space \(\mathcal Y_e\) and measurable maps \(g_{ie}:\mathcal Y_i\to\mathcal Y_e\) and \(g_{je}:\mathcal Y_j\to\mathcal Y_e\). Their pushforward restrictions are:
 
 \[
-\mathsf r_{ie}\mathsf Q_i=(g_{ie})_{\#}\mathsf Q_i,
+\mathsf r_{ie}\mathsf Q_i=(g_{ie})_*\mathsf Q_i,
 \qquad
-\mathsf r_{je}\mathsf Q_j=(g_{je})_{\#}\mathsf Q_j.
+\mathsf r_{je}\mathsf Q_j=(g_{je})_*\mathsf Q_j.
 \]
 
 Given a declared divergence \(D_e\), the edge compatibility defect is:

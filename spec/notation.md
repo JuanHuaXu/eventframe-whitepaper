@@ -425,7 +425,7 @@ This is evaluated only on common context support across regimes; otherwise a dec
 For \(\mathcal G_t^A=(V_t^A,E_t^A)\), node \(i\) has \(\mathsf Q_i\in\mathcal P(\mathcal Y_i)\). For edge \(e=\{i,j\}\), measurable maps into \(\mathcal Y_e\) induce pushforwards:
 
 \[
-\mathsf r_{ie}\mathsf Q_i=(g_{ie})_{\#}\mathsf Q_i,
+\mathsf r_{ie}\mathsf Q_i=(g_{ie})_*\mathsf Q_i,
 \qquad
 \delta_e(\mathsf Q)=D_e(\mathsf r_{ie}\mathsf Q_i,\mathsf r_{je}\mathsf Q_j).
 \]

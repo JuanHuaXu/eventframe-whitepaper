@@ -101,8 +101,7 @@ An evidence-controlled promotion rule may conservatively require a paired lower 
 
 \[
 \mathrm{LCB}_{\mathrm{paired}}[G_{a\rightarrow b}^{\mathrm{pri}}]
--\mathrm{UCB}[C_{a\rightarrow b}(h)]
->\delta_{\mathrm{safety}},
+-\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}},
 \]
 
 Promotion also requires the paired upper confidence bound on proper-score degradation of \(q_b\) relative to \(q_a\) to be at most the preregistered \(\epsilon_{\mathrm{prop}}\).
