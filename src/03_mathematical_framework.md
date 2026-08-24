@@ -201,7 +201,7 @@ Define the feasible design family:
 
 \[
 \mathfrak F_{AP}^{\Gamma}=
-\left\{\Theta_\Gamma:
+\lbrace\Theta_\Gamma:
 \begin{array}{l}
 D_K^\star(\pi)\le\epsilon_{AP}
 \text{ for every }K\in\mathfrak K_\pi^+,\\
@@ -210,7 +210,7 @@ D_K^\star(\pi)\le\epsilon_{AP}
 \le \mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})
 +\epsilon_{\mathrm{prop}}
 \end{array}
-\right\}.
+\rbrace.
 \]
 
 Here \(\Theta_{\Gamma,0}\) is a frozen reference predictor and \(\epsilon_{\mathrm{prop}}\ge0\) is declared in advance. In finite samples, each inequality is enforced with the predeclared one-sided confidence procedure rather than by a point estimate alone.

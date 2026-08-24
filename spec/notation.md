@@ -487,11 +487,11 @@ At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\
 \]
 
 \[
-\mathfrak F_{AP}^\Gamma=\{\Theta_\Gamma:
+\mathfrak F_{AP}^\Gamma=\lbrace\Theta_\Gamma:
 D_K^\star(\pi)\le\epsilon_{AP}\ \forall K\in\mathfrak K_\pi^+,\quad
 h_\pi\text{ factorization holds},\quad
 \mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
-\le\mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})+\epsilon_{\mathrm{prop}}\},
+\le\mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})+\epsilon_{\mathrm{prop}}\rbrace,
 \]
 
 \[
