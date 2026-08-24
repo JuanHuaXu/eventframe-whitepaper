@@ -2,26 +2,26 @@
 
 Prediction systems often operate over sequences whose internal structure is only implicit. A model may receive tokens, vectors, logs, traces, or state observations and learn statistical regularities among them. This can be effective, but it makes some questions difficult to ask directly: which compressed distinction mattered, what changed, when did it happen, where did it occur, why might it matter, and how did it transform the state of the world?
 
-EventFrame begins from a compression premise. The underlying substrate may be far denser than any representation a prediction system can maintain, whether the substrate is physical, simulated, biological, robotic, or software-based. A useful prediction system cannot assign a separate durable event frame to every microscopic or low-level distinction. EventFrame therefore treats the event frame as a coarse-grained representation, not as the fundamental thing itself. Physical information bounds can motivate this intuition, but the framework only requires the domain-general inequality that substrate detail is much larger than representable event space.
+EventFrame begins from a compression premise: a modeled substrate may contain more detail than a prediction system can retain. Event frames are task-relative coarse-grained representations, not assertions about fundamental spacetime. Physical information bounds motivate caution but do not prove this software-level premise [7--9].
 
 The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
-The core contribution is adaptive event abstraction. The 5W1H fields provide a coordinate system, but the framework's governing principle is broader: minimize residual action while preserving predictive abstraction. In practice, this means compressing event distinctions when their futures remain equivalent, splitting abstractions when hidden futures diverge, and revising ontology only when interventions repeatedly validate the change.
+The core contribution is adaptive event abstraction. The framework minimizes post-observation predictive action and representation cost while constraining within-bucket future divergence. It distinguishes model-sensitivity evidence from causal intervention evidence.
 
-Conceptually, EventFrame treats prediction as a question about the next structured event. Given a recent context \(C_t = e_{t-k+1:t}\), the system estimates \(\hat{e}_{t+1}\). The canonical loss is temporal: the prediction is evaluated by how far the predicted event time is from the observed event time within a chosen horizon \(H\). This keeps the first version of the framework focused. Other field-level errors can be measured, but the central operational question is whether the framework improves time-to-event prediction while retaining interpretable structure.
+Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identity, event time, and no event within horizon \(H\). Proper forecast scores are primary because timing-only loss can reward the wrong event at the right time. Event-aware timing remains an interpretable diagnostic.
 
 The reference prediction procedure has six steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
-2. Compute a baseline prediction \(b_t = B(C_t)\).
-3. Retrieve a residual correction \(r_t^*\) from a residual cache if the current context matches a prior error pattern.
-4. Compose the prediction as \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*\).
-5. Observe \(e_{t+1}\) and evaluate temporal loss.
+2. Compute a baseline forecast law \(\mathsf Q_B(\cdot\mid C_t)\) and point summary \(b_t=B(C_t)\).
+3. From state \(S_{t^-}\), select an exact-key or general residual \(r_t^{\mathrm{use}}\) only when its distance, confidence, effective-support, age, epoch, compatibility-margin, and provenance checks pass.
+4. Clip one effective residual, use it for both \(\hat e_{t+1}=b_t\oplus_E r_t^{\mathrm{use}}\) and the declared residual Markov kernel, and apply the pre-observation risk gate to the resulting output bundle.
+5. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
 6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
-EventFrame also proposes a slow path for analysis beyond immediate prediction. Property fuzzing perturbs event fields to test whether predicted outcomes remain stable. Stable properties can become candidate invariants. Event confluence asks whether multiple streams can be represented as one aggregate event without losing target-relevant prediction. Event divergence asks whether a small distinction amplifies into materially different downstream branches. Approximate predictive lumpability then asks whether detailed event frames can be projected into coarser abstract states without losing target-relevant transition behavior. The Anti-Pigeon principle is the corresponding split criterion: do not collapse events into broad categories merely because they look similar; split or mark a group when its members predict target-distinct futures.
+The slow path uses validity-constrained perturbations to test model sensitivity, coverage-aware bucket audits to find hidden divergence, and approximate predictive lumpability to test compression. Causal analysis is a separate optional path requiring structural equations and identification assumptions.
 
 The contributions of this paper are therefore:
 
@@ -29,9 +29,9 @@ The contributions of this paper are therefore:
 2. A governing optimization principle for adaptive event abstraction.
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
 4. A combined episodic and residual memory architecture.
-5. A property fuzzing method for invariant discovery and 5W1H ontology self-organization.
+5. A validity-constrained sensitivity method for conditional invariants and ontology review.
 6. A lumpability-based approach to abstraction.
 7. A fast-path and slow-path reference runtime model.
 8. Experiment designs for testing the framework's claims.
 
-These are proposed as a research framework, not as a finished theory or a fixed implementation. Several claims require empirical validation, especially the utility of residual caches, the stability of invariants discovered by fuzzing, and the quality of learned abstractions. The next section defines the event ontology used by the rest of the paper.
+These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, and priority- and hardware-aware staged integration. The next section defines the event ontology.

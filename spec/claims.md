@@ -4,7 +4,7 @@ Each major claim in the paper should be tracked here and revised conservatively.
 
 ## Claim 0: Adaptive event abstraction is the governing principle
 
-EventFrame should learn the lowest-action, lowest-unnecessary-complexity event representation that does not hide future-distinct events inside the same abstraction bucket.
+At a fixed resolution, EventFrame should minimize normalized priority-weighted post-observation action plus non-negative declared representation cost while preventing abstraction buckets from hiding distinctions in an externally fixed target law and preventing degradation of an untransformed proper score. Design and confirmation samples are separate; priority, preprocessing, target, and weights are frozen before outcomes. Prediction-time gating uses a separate pre-observation risk and as-of state.
 
 Status: organizing mathematical claim; requires implementation evidence, ablation tests, and future convergence analysis.
 
@@ -16,7 +16,7 @@ Status: conceptual claim; requires experiments.
 
 ## Claim 1a: Event frames are compressed representations, not fundamental ontology
 
-The fundamental substrate may be much denser than any usable event representation. EventFrame treats event frames as coarse-grained records selected for predictive and intervention relevance.
+The modeled substrate may contain more detail than a usable event representation. EventFrame treats event frames as task-relative coarse-grained records. Planck scales and entropy bounds motivate caution but do not prove this modeling hypothesis.
 
 Status: modeling assumption and conceptual claim; should be framed conservatively and linked to entropy-bound and coarse-graining motivations rather than presented as a proven physical result.
 
@@ -28,9 +28,15 @@ Status: representational design claim; requires measurement assumptions and comp
 
 ## Claim 2: Residual caches can reduce prediction cost
 
-When similar contexts or action signatures produce similar transition errors, cached residuals can approximate corrections without recomputing the full transition.
+When similar contexts or action signatures produce similar transition errors, certified as-of residual caches can approximate corrections without recomputing the full transition. Point and forecast-law correction use the same clipped effective residual; proper-score improvement requires the latter and all metadata gates to pass.
 
 Status: plausible systems claim; requires cache hit-rate, confidence, validity, and accuracy evaluation. Residual composition should be framed as Causal Fermion Systems-inspired structure, not as a claim that the physical theory directly applies.
+
+## Claim 2a: Runtime prediction packets specialize residual composition
+
+A runtime may use a separately typed packet composition rule to predict \(\widehat{\mathbf y}_{t+1}\) over memory nodes, graph edges, retrieval lane, compaction risk, response mode, and optional control branch.
+
+Status: operational architecture claim; requires usefulness scoring, residual-confidence calibration, particle-set update tests, and ablation against a baseline packet selector.
 
 ## Claim 3: Episodic memory and residual cache serve different roles
 
@@ -40,7 +46,7 @@ Status: definitional and architectural claim.
 
 ## Claim 4: Property fuzzing can expose invariants
 
-Perturbing individual event properties and observing stable prediction outputs can identify candidate invariants.
+Validity-constrained perturbation can identify conditional model invariants. It measures predictor sensitivity, not real-world causal effect unless an explicit causal model and identification strategy are supplied.
 
 Status: methodological claim; requires controlled experiments and explicit temporal-error thresholds.
 
@@ -58,19 +64,19 @@ Status: modeling claim; requires formal treatment as event confluence, branching
 
 ## Claim 5b: Each event frame group should retain a representative frame
 
-Every abstraction group, confluence group, or event-frame cluster should retain at least one representative frame so that future intervention, divergence, and convergence tests have a concrete anchor.
+Every group should retain at least one concrete frame for traceability and a coverage-aware context audit set for divergence and convergence tests. One representative alone cannot establish group stability, and non-exhaustive coverage certifies unseen contexts only under a verified continuity bound.
 
 Status: design invariant; requires experiments on boundary detection and cache or abstraction stability.
 
 ## Claim 6: Anti-Pigeon prevents invalid abstraction
 
-Abstraction should be earned by invariance or lumpability evidence, not assumed from superficial similarity. If an event-frame group contains members whose predicted future behavior diverges beyond a declared threshold, the group is invalid for that target and should be split, refined, or marked divergence-sensitive.
+Abstraction should be earned against the external target law on untouched chronological confirmation data. Candidate-model agreement is diagnostic but cannot self-certify a bucket. If a group's context-conditional external future-diameter exceeds threshold, it should split or be marked divergence-sensitive. Regime comparisons require common support or an explicit transport model and do not establish causality without identified intervention evidence.
 
-Status: formal design criterion; requires experiments on future-divergence thresholds, split stability, and false-positive refinement.
+Status: formal design criterion; requires experiments on future-divergence thresholds, causal-regime shifts, split stability, stale-cache decay, and false-positive refinement.
 
 ## Claim 6a: Intervention-effective event distinctions are sparse
 
-If every microscopic distinction required a unique event frame, the representation would be computationally and physically implausible. EventFrame therefore assumes that useful event distinctions are sparse and concentrated where interventions or predictions change outcomes.
+Relative to a finite declared candidate set, EventFrame hypothesizes that target-effective distinctions form a small fraction. The ratio must be measured per domain and is not inferred from the cardinality of a continuous substrate.
 
 Status: physics-inspired modeling hypothesis; requires careful argument and should be tied to falsifiable compression and intervention tests.
 
@@ -82,6 +88,24 @@ Status: systems claim; requires latency/quality experiments.
 
 ## Claim 7a: Expected fast-path lookup is history-independent under bounded local keys
 
-If the 5W1H field arity, local graph degree, action-key size, and action-residual cache are bounded, expected action-residual lookup depends on local abstraction size rather than total event-history length.
+If key construction, context update, local graph degree, action-key size, and action-residual cache are bounded, expected exact-key lookup is independent of total event-history length. Fallback retrieval and cache maintenance are reported separately.
 
 Status: design property; requires implementation validation and adversarial tests for unbounded key growth or fallback retrieval.
+
+## Claim 8: Heterogeneous abstractions can be tested through explicit compatibility maps
+
+Event groups, resolutions, sensors, local models, or agents may be compared by mapping their predictive laws into declared edge spaces. Edge defects complement within-bucket future-diameter and must preserve unreconciled disagreement for audit.
+
+Status: architectural and mathematical proposal; requires map-validity tests, confidence calibration, and comparison against bucket-only Anti-Pigeon. It is sheaf-compatible only when the required map laws hold and causal only when SCM semantics are supplied.
+
+## Claim 8a: Full refinement can be integrated without redefining the fast path
+
+A cumulative architecture may retain certified residual reuse while adding compatibility audit, local reconciliation, spectral refinement under linear assumptions, and regime-mixture refinement. Hardware improvements may increase the selected depth without changing stage semantics.
+
+Status: systems design claim; requires implementation, stage-by-stage ablation, cost prediction, queue-stability tests, and validation on multiple hardware profiles.
+
+## Claim 8b: Upgrade value must be priority-weighted and utility-normalized
+
+A small average correction can be valuable when it credibly reduces predeclared high-priority failure. Prediction loss, latency, compute, and memory must be converted to a declared common utility scale; priority-weighted results must be reported beside unweighted and stratified results.
+
+Status: evaluation-design claim; requires preregistered priority and utility functions, uncertainty intervals, and manipulation or subgroup-harm audits.

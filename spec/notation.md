@@ -1,630 +1,521 @@
 # Notation
 
-This notation is provisional and should be refined during drafting.
+This register is normative for the paper. A symbol has one meaning unless an explicit subscript creates a typed variant.
 
-## Microscopic Substrate and Event Frames
+## Symbol Table
 
-EventFrame distinguishes a dense underlying substrate from the compressed event
-frames used for prediction. Let \(\Omega\) denote a microscopic substrate state
-space and let:
-
-\[
-\omega_{\alpha} \in \Omega
-\]
-
-denote a substrate state indexed by a microscopic spacetime cell \(\alpha\). In
-the general motivation, \(\alpha\) may index physical, simulated, biological,
-robotic, software, or computational distinctions that are too dense to represent
-directly. This is a motivation for compression, not a claim about any particular
-fundamental substrate theory.
-
-Let a coarse-graining map be:
-
-\[
-\Gamma_{\Delta_\tau}: \Omega^{A_t} \rightarrow \mathcal{E}_{\Delta_\tau}
-\]
-
-where \(A_t\) is a finite spacetime region or computational region available to
-the model at event index \(t\), and \(\Delta_\tau > 0\) is the chosen temporal
-resolution of the event representation. The event frame is then:
-
-\[
-e_t = \Gamma_{\Delta_\tau}(\omega_{A_t})
-\]
-
-where \(\omega_{A_t}\) denotes the substrate history over the region. The
-operational role of \(\Gamma_{\Delta_\tau}\) is compression: it selects
-distinctions that are useful for prediction, intervention, review, or memory.
-
-An event frame is not fundamental in this formulation. It is a compressed
-representation of an underlying substrate.
-
-Let an event frame be:
-
-\[
-e_t = (w_t, a_t, \tau_t, \ell_t, m_t, h_t, x_t, c_t)
-\]
-
-where:
-
-- \(w_t\): who / participating agents or entities
-- \(a_t\): what / action or occurrence type
-- \(\tau_t\): when / temporal index or interval
-- \(\ell_t\): where / location or spatial context
-- \(m_t\): why / motive, objective, causal explanation, or inferred driver
-- \(h_t\): how / mechanism, method, or process
-- \(x_t\): auxiliary state vector or structured state
-- \(c_t\): confidence, provenance, or uncertainty metadata
-
-Each field should be treated as typed. A more explicit product-space notation is:
-
-\[
-\mathcal{E} =
-\mathcal{W} \times \mathcal{A} \times \mathcal{T} \times
-\mathcal{L} \times \mathcal{M} \times \mathcal{H} \times
-\mathcal{X} \times \mathcal{C}
-\]
-
-where the component spaces correspond to who, what, when, where, why, how,
-auxiliary state, and confidence/provenance metadata. The exact internal
-representation of each component is implementation-dependent, but each
-component must have a declared comparison rule before it is used in a loss,
-cache key, or invariant test.
-
-## Temporal Resolution and Frame Density
-
-Let \(\Delta_\tau > 0\) be the selected precision of the time field. A
-quantization map:
-
-\[
-Q_{\Delta_\tau}: \mathbb{R} \rightarrow \mathcal{T}_{\Delta_\tau}
-\]
-
-maps continuous or high-resolution time to the temporal space used by event
-frames. For example, \(\Delta_\tau = 1\,s\) gives second-level frames, while
-\(\Delta_\tau = 1\,\mu s\) gives microsecond-level frames if the data and
-instrumentation support that precision.
-
-The event space at temporal resolution \(\Delta_\tau\) is:
-
-\[
-\mathcal{E}_{\Delta_\tau} =
-\mathcal{W} \times \mathcal{A} \times \mathcal{T}_{\Delta_\tau} \times
-\mathcal{L} \times \mathcal{M} \times \mathcal{H} \times
-\mathcal{X} \times \mathcal{C}.
-\]
-
-Over a time interval \([a,b]\), the maximum number of temporal bins is:
-
-\[
-N_\tau(\Delta_\tau; [a,b]) =
-\left\lceil \frac{b-a}{\Delta_\tau} \right\rceil.
-\]
-
-Conceptually, EventFrame can instantiate as many candidate frames as the chosen
-temporal resolution requires. The sparsity hypothesis does not forbid dense
-candidate frames; it says that intervention-effective frames are sparse relative
-to all possible substrate distinctions and all candidate frame distinctions.
-Operationally, \(\Delta_\tau\) must be reported with experiments because it
-changes frame count, cache size, temporal loss interpretation, and the observed
-boundary between confluence and divergence.
-
-When the temporal resolution is fixed by context, the paper may write
-\(\mathcal{E}\) as shorthand for \(\mathcal{E}_{\Delta_\tau}\).
-
-## Intervention-Effective Events
-
-Let \(I_j\) denote an intervention on a substrate region or on the event-frame
-representation. Let \(Y\) be a prediction target, such as the next event time.
-An event distinction is intervention-effective for \(Y\) if:
-
-\[
-d_Y(P(Y \mid do(I_j)), P(Y)) > \eta_Y
-\]
-
-where \(d_Y\) is a target-level distance and \(\eta_Y\) is a declared threshold.
-The event sparsity hypothesis says that the set of such distinctions is small
-relative to the number of microscopic substrate distinctions:
-
-\[
-|\mathcal{I}_{eff}(Y, \eta_Y)| \ll |\Omega^{A_t}|.
-\]
-
-Conceptually, this is why EventFrame searches for compressed event frames rather
-than assigning a unique event frame to every microscopic cell. Operationally,
-the hypothesis is tested by intervention experiments, property fuzzing, and
-ablation: distinctions that do not change the target beyond threshold should not
-be promoted to durable event-frame structure.
+| Symbol | Type | Meaning |
+|---|---|---|
+| \(\Omega\) | set | substrate state space |
+| \(A_t\) | finite index region | substrate/computational region available at event index \(t\) |
+| \(\omega_{A_t}\) | \(\Omega^{A_t}\) | substrate history over \(A_t\) |
+| \(\Delta_\tau\) | positive real | temporal resolution |
+| \(\Gamma_{\Delta_\tau}\) | \(\Omega^{A_t}\to\mathcal E_{\Delta_\tau}\) | task-relative coarse-graining |
+| \(e_t\) | \(\mathcal E_{\Delta_\tau}\) | event frame |
+| \(C_t\) | \(\mathcal E^k\) | length-\(k\) event context |
+| \(\mathfrak C_{\mathrm{adm}}\) | subset of \(\mathcal E^k\) | declared context domain for conditional laws and suprema |
+| \(H\) | positive real | prediction horizon |
+| \(\nu(e)\) | event-mark set | event identity/type extractor |
+| \(\tau(e)\) | temporal set | event-time extractor |
+| \(Z_{t+1}\) | \(\mathcal Z_H\) | observed marked time or no-event outcome |
+| \(a(x)\) | time | availability time of datum or state object \(x\) |
+| \(\mathscr F_t^{\mathrm{pred}},S_{t^-}\) | information, state | information and mutable state available immediately before prediction |
+| \(P_{\mathrm{obj}},P_{\mathrm{conf}}\) | laws or samples | design/selection distribution and untouched confirmation distribution |
+| \(P_\star(Y\mid C)\) | conditional law | externally fixed target conditional law |
+| \(\mathsf Q_\theta\) | probability kernel | predictive distribution over \(\mathcal Z_H\) |
+| \(\mathcal O_\theta(C)\) | \(\mathcal P(\mathcal Z_H)\times\mathcal E\) | typed forecast-law and point-summary output bundle |
+| \(\mathcal L_{\mathrm{pred}}\) | extended real | untransformed proper post-observation predictive loss |
+| \(\overline{\mathcal L}_{\mathrm{pred}}\) | \([0,1]\) | preregistered bounded transformation used inside system action |
+| \(\mathcal L_{\mathrm{event}}^H\) | \([0,1]\) | bounded event-aware timing diagnostic |
+| \(\mathcal R_{\mathrm{pre}}\) | \([0,1]\) | pre-observation admissibility risk |
+| \(\mathcal A_{\mathrm{post}}\) | \([0,1]\) | post-observation realized event action |
+| \(\mathsf Q_B\) | \(\mathcal E^k\to\mathcal P(\mathcal Z_H)\) | baseline probability-law predictor |
+| \(B\) | \(\mathcal E^k\to\mathcal E\) | baseline point predictor |
+| \(\mathscr H\) | finite-dimensional Hilbert space | carrier for operator representation |
+| \(\mathbb H_d\) | vector space | self-adjoint operators on \(\mathscr H\) |
+| \(\mathcal Q_{E,\mathrm{adm}}\) | closed subset of \(\mathbb H_d\) | admissible event representations |
+| \(q_E,d_E\) | encoder, decoder | event representation maps |
+| \(\Pi_E\) | deterministic projection selection | projection to \(\mathcal Q_{E,\mathrm{adm}}\) |
+| \(\delta_E\) | positive real | event-residual clipping radius |
+| \(\oplus_E\) | \(\mathcal E\times\mathbb H_d\to\mathcal E\) | event residual composition |
+| \(\mathcal C_{R,t^-}\) | finite cache | as-of general residual cache |
+| \(\mathcal C_{A,t^-}\) | partial map | as-of exact action-key residual cache |
+| \(J_t^R,J_t^A\) | \(\{0,1\}\) | general- and exact-cache acceptance indicators |
+| \(J_t^A\) | \(\{0,1\}\) | exact-cache acceptance indicator |
+| \(r_t^{\mathrm{use}}\) | \(\mathbb H_d\) | exact-to-general selected residual |
+| \(\mathfrak K_E\) | kernel-valued map | residual-induced Markov kernel on \(\mathcal Z_H\) |
+| \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
+| \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
+| \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
+| \(\mathcal V_Y\) | normed vector space | packet representation/residual space |
+| \(B_Y,R_Y\) | typed maps | packet baseline and packet residual |
+| \(\oplus_Y\) | \(\mathcal Y_{\mathrm{pkt}}\times\mathcal V_Y\to\mathcal Y_{\mathrm{pkt}}\) | packet residual composition |
+| \(\widehat{\mathbf y}_{t+1}\) | \(\mathcal Y_{\mathrm{pkt}}\) | predicted runtime packet |
+| \(\mathbf y_{t+1}^{\star}\) | \(\mathcal Y_{\mathrm{pkt}}\) | audited packet target |
+| \(G_t=(V_t,R_t)\) | typed directed graph | time-unrolled event graph |
+| \(\mathfrak M\) | SCM | structural causal model \((U,V,F,P_U)\) |
+| \(\pi\) | \(\mathcal E\to\mathcal S_{\mathrm{abs}}\) | event abstraction map |
+| \(h_\pi(C)\) | operational key | abstract context plus declared, costed side information |
+| \(K\) | subset of \(\mathcal E\) | abstraction bucket; never the baseline predictor |
+| \(\mathfrak K_\pi\) | set of buckets | partition or grouping induced by \(\pi\) |
+| \(\mathfrak K_\pi^+\) | set of buckets | active buckets with non-empty admissible context families |
+| \(\bar e_K\) | element of \(K\) | concrete traceability frame |
+| \(\mathfrak C_K\) | subset of \(\mathcal E^k\) | contexts whose anchor frame lies in \(K\) |
+| \(\mathcal R_C(K)\) | subset of \(\mathfrak C_K\) | coverage-aware context audit set |
+| \(D_K^\star(\pi)\) | non-negative real | external target-law bucket future-diameter |
+| \(D_K^{\mathrm{mdl}}(\Theta_\Gamma)\) | non-negative real | candidate model-forecast diameter; diagnostic only |
+| \(D_K^{\mathrm{audit},\star},\widehat D_K^\star\) | non-negative reals | restricted external diameter and its estimate |
+| \(D_K^{\mathrm{cert},\star}\) | non-negative real | simultaneous statistical and continuity upper certificate |
+| \(\zeta_t\) | \(\mathcal Z_{\mathrm{reg}}\) | observed operating regime; not causal by default |
+| \(\mathcal C_{\mathrm{rep}}\) | non-negative function | representation/runtime cost; does not reuse \(\Omega\) |
+| \(\Phi\) | real-valued potential | fixed finite-state refinement objective |
+| \(\mathcal G_t^A=(V_t^A,E_t^A)\) | undirected graph | abstraction compatibility graph at time \(t\) |
+| \(\mathsf Q_i\) | \(\mathcal P(\mathcal Y_i)\) | node-local predictive law |
+| \(g_{ie},\mathsf r_{ie}\) | measurable map, pushforward map | node-to-edge comparison map and its distributional restriction |
+| \(\delta_e,\Delta_{\mathrm{comp}}\) | non-negative reals | edge defect and maximum upper confidence bound |
+| \(\partial_A,L_A\) | linear operators | compatibility boundary and Laplacian under linear assumptions |
+| \(\Xi_A\) | typed structure tuple | candidate compatibility graph and comparison maps |
+| \(\Lambda_{\mathrm{eval}}\) | fixed contract tuple | externally frozen domains, metrics, targets, thresholds, weights, and validation procedures |
+| \(\mathcal U_0,\ldots,\mathcal U_4\) | staged maps | baseline and selectable refinement operators |
+| \(r_n\) | \(\{1,2,3,4\}\) | stage selected at slow-path invocation \(n\) |
+| \(d_t(h)\) | \(\{0,\ldots,4\}\) | selected refinement depth on hardware profile \(h\) |
+| \(p_t^{\mathrm{pri}}\) | \([0,1]\) | priority assigned from prediction-time information |
+| \(w_{\mathrm{pri}}\) | positive function | declared importance weight for priority |
+| \(G_{a\rightarrow b}^{\mathrm{pri}}\) | real | priority-weighted absolute gain between complete policies |
+| \(\mathcal R_{\mathrm{pri}}^D\) | non-negative real | normalized priority-weighted post-observation risk under \(D\) |
+| \(\mathcal R_{\mathrm{prop}}^D\) | extended real | unweighted strictly proper forecast risk under \(D\) |
+| \(D_Y^{\mathrm{law}}\) | law distance | distance between predictive or interventional laws; distinct from packet decoder \(d_Y\) |
 
 ## Event Space
 
-Let \(\mathcal{E}\) denote the space of possible event frames.
-
-A trajectory is:
+An event frame is:
 
 \[
-E_{1:T} = (e_1, e_2, \ldots, e_T)
+e_t=(w_t,a_t,\tau_t,\ell_t,m_t,h_t,x_t,c_t)
 \]
 
-More generally, an event history may be a directed acyclic event graph:
+with typed product space:
 
 \[
-G_t = (V_t, R_t)
+\mathcal E_{\Delta_\tau}
+=\mathcal W\times\mathcal A\times\mathcal T_{\Delta_\tau}
+\times\mathcal L\times\mathcal M\times\mathcal H
+\times\mathcal X\times\mathcal C.
 \]
 
-where \(V_t \subset \mathcal{E}\) is a set of event frames and \(R_t\) contains
-temporal, causal, or dependency edges among them. A linear trajectory is the
-special case in which each event has at most one immediate predecessor and one
-immediate successor.
+These component-space symbols are used only for event fields. Runtime packet component spaces carry descriptive subscripts and are not identified with them.
 
-## Event Confluence and Divergence
-
-Event confluence is a many-to-one compression over event streams. Let
-\(S_1, \ldots, S_m\) be event streams or subgraphs. A confluence operator is:
+The coarse-graining is:
 
 \[
-\mu_{\delta}: \mathcal{G}^m \rightarrow \mathcal{E}
+\Gamma_{\Delta_\tau}:\Omega^{A_t}\rightarrow\mathcal E_{\Delta_\tau},
+\qquad
+e_t=\Gamma_{\Delta_\tau}(\omega_{A_t}).
 \]
 
-where \(\mathcal{G}\) is the space of event subgraphs and \(\delta\) is a
-resolution or tolerance parameter. The aggregate event is:
+The framework does not assert that \(\Omega\) is discrete or sampled at Planck scale.
+
+## Marked Event Forecast
+
+The context is:
 
 \[
-e^{merge}_t = \mu_{\delta}(S_1, \ldots, S_m).
+C_t=e_{t-k+1:t}\in\mathcal E^k.
 \]
 
-Conceptually, \(\mu_{\delta}\) says that separate event streams can become one
-larger event when their distinctions no longer change the target beyond the
-chosen resolution. Operationally, confluence is accepted only if replacing the
-streams by \(e^{merge}_t\) does not degrade prediction beyond a declared
-threshold.
+All conditional-law suprema range over a declared \(\mathfrak C_{\mathrm{adm}}\) or the support of a named evaluation law; arbitrary zero-probability contexts are excluded unless a conditional-law version is explicitly defined there.
 
-Event divergence is the opposite pattern: a small distinction produces multiple
-downstream branches. Let \(\mathcal{B}_{\epsilon}\) be a branching operator:
+The next outcome over horizon \(H\) is:
 
 \[
-\mathcal{B}_{\epsilon}: \mathcal{E} \rightarrow \mathcal{P}(\mathcal{G})
-\]
-
-where \(\epsilon\) is a perturbation or intervention scale and
-\(\mathcal{P}(\mathcal{G})\) is a set of possible downstream event subgraphs.
-A distinction is divergence-effective when:
-
-\[
-d_Y(P(Y \mid \mathcal{B}_{\epsilon}(e)), P(Y \mid e)) > \eta_Y.
-\]
-
-Conceptually, this captures butterfly-effect-style sensitivity: a distinction
-that appears small at one scale may amplify into materially different future
-event streams. Operationally, such distinctions should not be merged away by
-coarse-graining or lumpability unless the target-level divergence remains below
-threshold.
-
-## Event Frame Groups and Representatives
-
-Let an abstraction, cache key, or confluence process induce event-frame groups:
-
-\[
-\mathcal{H} = \{\mathcal{H}_1, \ldots, \mathcal{H}_n\}, \quad
-\mathcal{H}_j \subseteq \mathcal{E}.
-\]
-
-Each non-empty group must retain at least one representative event frame:
-
-\[
-\forall \mathcal{H}_j \neq \varnothing,\quad
-\exists \bar{e}_j \in \mathcal{H}_j.
-\]
-
-The representative \(\bar{e}_j\) is not necessarily the centroid, average, or
-most likely event. It is a concrete retained frame used as a measurement anchor.
-For a proposed intervention \(I\), the divergence score of group
-\(\mathcal{H}_j\) can be estimated by:
-
-\[
-D_j(I) =
-d_Y(P(Y \mid do(I), \bar{e}_j), P(Y \mid \bar{e}_j)).
-\]
-
-If \(D_j(I) > \eta_Y\), the group should be split, refined, or marked as
-divergence-sensitive. If several groups have representative frames whose
-target-level behavior remains within a merge threshold \(\eta_{\mu}\), they may
-be candidates for confluence:
-
-\[
-d_Y(P(Y \mid \bar{e}_i), P(Y \mid \bar{e}_j)) \le \eta_{\mu}.
-\]
-
-Operationally, representative preservation prevents abstraction from becoming
-empty bookkeeping. It keeps at least one concrete event frame available for
-future tests of when interventions cause divergence and when multiple event
-streams have converged enough to merge.
-
-## Transition Function
-
-A transition model is:
-
-\[
-F_\theta: \mathcal{E}^k \rightarrow \mathcal{E}
-\]
-
-where \(k\) is the context length and \(\theta\) are model parameters or rules.
-
-The prediction context at time \(t\) is:
-
-\[
-C_t = e_{t-k+1:t} = (e_{t-k+1}, \ldots, e_t)
-\]
-
-where \(C_t\) contains the \(k\) most recent event frames used by the
-predictor. Conceptually, \(C_t\) is the local event history from which the
-system asks, "what event should occur next, and when?"
-
-## Residual Formulation
-
-Let \(B\) be a baseline predictor. A residual formulation should be written with
-an explicit composition operator rather than ordinary vector addition:
-
-\[
-\hat{e}_{t+1} = B(C_t) \oplus R(C_t)
-\]
-
-where \(\oplus\) composes a baseline event prediction with a residual event correction.
-
-For the paper draft, use a Causal Fermion Systems-inspired composition rule
-rather than ordinary vector addition. Let:
-
-\[
-q: \mathcal{E} \rightarrow \mathcal{Q}
-\]
-
-encode an event frame as an operator-like structured representation, where
-\(\mathcal{Q}\) is an event representation space chosen for the model. Let
-\(b = B(C_t)\) be the baseline event prediction and let \(r\) be a
-residual correction in the same representation space. Define:
-
-\[
-b \oplus_{\mathcal{A}} r =
-q^{-1}_{\mathrm{approx}}\left(\Pi_{\mathcal{Q}}\left(q(b) + \operatorname{clamp}(r)\right)\right)
-\]
-
-where:
-
-- \(\Pi_{\mathcal{Q}}\) projects the corrected representation back into the admissible event representation space.
-- \(q^{-1}_{\mathrm{approx}}\) is an approximate decoder from representations to event frames.
-- \(\operatorname{clamp}(r)\) bounds the residual magnitude so that cache reuse cannot dominate the baseline prediction.
-- The subscript \(\mathcal{A}\) indicates that admissibility is regularized by a causal-action-inspired constraint.
-
-Interpretation: residual composition is a constrained structured correction. It
-borrows the idea that meaningful configurations should be evaluated through
-operator relationships and an action-like admissibility criterion, but it does
-not assume that EventFrame is a physical Causal Fermion System.
-
-## Residual Lookup
-
-Let a residual cache be a finite set:
-
-\[
-\mathcal{C}_R = \{(\kappa_i, r_i, s_i)\}_{i=1}^{N}
-\]
-
-where \(\kappa_i\) is a context key, \(r_i \in \mathcal{Q}\) is a residual
-correction, and \(s_i\) stores cache metadata such as age, confidence, and
-observed temporal error. Let:
-
-\[
-\kappa: \mathcal{E}^{k} \rightarrow \mathcal{K}
-\]
-
-map a prediction context to a cache key, and let \(d_{\mathcal{K}}\) be a
-distance over keys. The retrieved residual is:
-
-\[
-r_t^* =
-\begin{cases}
-r_j & \text{if } j = \arg\min_i d_{\mathcal{K}}(\kappa(C_t), \kappa_i)
-\text{ and } d_{\mathcal{K}}(\kappa(C_t), \kappa_j) \le \epsilon_K,\\
-0_{\mathcal{Q}} & \text{otherwise.}
+Z_{t+1}=\begin{cases}
+(\nu(e_{t+1}),\tau(e_{t+1})-\tau(e_t)), & \text{event within }H,\\
+\varnothing, & \text{no event within }H.
 \end{cases}
 \]
 
-Conceptually, residual lookup asks whether the current event context resembles a
-past context whose baseline prediction failed in a reusable way. The threshold
-\(\epsilon_K\) prevents weak similarities from forcing a cached correction into
-the current prediction.
-
-## Surrogate Event Action
-
-A runtime implementation may define a measurable surrogate action:
+The forecast and primary loss are:
 
 \[
-\mathcal{A}_{event}(\hat{e}_{t+1}) =
-\lambda_r \mathcal{L}_{time}^{H}
-+ \lambda_a D_{abs}
-+ \lambda_c D_{edge}
-+ \lambda_u U(\hat{e}_{t+1}),
+\mathsf Q_\theta(\cdot\mid C_t)\in\mathcal P(\mathcal Z_H),
+\qquad
+\mathcal O_\theta(C_t)=
+(\mathsf Q_\theta(\cdot\mid C_t),\hat e_\theta(C_t)),
 \]
 
-where \(D_{abs}\) measures abstraction inconsistency, \(D_{edge}\) measures
-causal-edge or graph-transition inconsistency, and \(U\) measures uncertainty.
-This is not a physical Causal Fermion Systems action. It is a conservative
-runtime surrogate for choosing among admissible corrected predictions.
-
-Runtime decisions should use the same quantity:
-
 \[
-\mathcal{A}_{event}(\hat{e}_{t+1}) \le \eta_{\mathcal{A}}
+\qquad
+\mathcal L_{\mathrm{pred}}(\theta;t)
+=S_{\mathrm{prop}}(\mathsf Q_\theta(\cdot\mid C_t),Z_{t+1}).
 \]
 
-means the correction may be trusted under the declared confidence and age
-checks. If the action exceeds \(\eta_{\mathcal{A}}\), the slow path should
-inspect residuals, causal edges, fuzzing evidence, ontology assignments, and
-abstraction maps.
+For a mixed event/no-event logarithmic score, fix a dominating event-branch reference measure \(\mu_H\) and time units. The event branch is a subdensity with respect to \(\mu_H\) whose mass plus \(\mathsf Q_\theta(\{\varnothing\}\mid C_t)\) equals one. The no-event observation is scored by \(-\log\mathsf Q_\theta(\{\varnothing\}\mid C_t)\), not by evaluating an undefined event time. The reference measure and units remain fixed across forecast comparisons.
 
-## EventFrame Governing Principle
-
-Let:
+The event-aware diagnostic is:
 
 \[
-\Theta =
-(\Gamma_{\Delta_\tau}, F_\theta, \pi,
-\mathcal{C}_A, \mathcal{C}_R, \mathcal{C}_E)
+\mathcal L_{\mathrm{event}}^H(\hat Z,Z)=
+\begin{cases}
+0, & \hat Z=Z=\varnothing,\\
+1, & \text{one is null or their marks differ},\\
+\min(1,|\widehat{\Delta t}-\Delta t|/H), & \text{marks agree.}
+\end{cases}
 \]
 
-collect the current coarse-graining, predictor, abstraction map, action-residual
-cache, residual cache, and episodic cache. Let \(\mathcal{B}_{\pi}\) be the
-event buckets induced by \(\pi\), and let \(\Omega(\Theta)\) penalize
-unnecessary distinctions, cache growth, or overly complex keys. The central
-objective is:
+## Lifecycle Scores
+
+For a candidate bundle \(\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e)\), before observation:
 
 \[
-\Theta^*
-=
-\arg\min_{\Theta}
-\left[
-\mathbb{E}_{t}\,\mathcal{A}_{event}(\hat{e}_{\Theta,t+1})
-+ \lambda_{\Omega}\Omega(\Theta)
-\right]
+\mathcal R_{\mathrm{pre}}(\widetilde{\mathcal O}\mid C_t)
+=\lambda_a^{\mathrm{pre}}D_{\mathrm{abs}}^{\mathrm{pre}}(\widetilde{\mathcal O},C_t)
++\lambda_c^{\mathrm{pre}}D_{\mathrm{edge}}^{\mathrm{pre}}(\widetilde{\mathcal O},C_t)
++\lambda_u^{\mathrm{pre}}U^{\mathrm{pre}}(\widetilde{\mathcal O}\mid C_t).
+\]
+
+The three components lie in \([0,1]\), and their non-negative weights sum to one. Let \(g_{\mathrm{pred}}:\overline{\mathbb R}\to[0,1]\) be preregistered, order-preserving on the declared finite score range, and satisfy \(g_{\mathrm{pred}}(+\infty)=1\). Constant or order-reversing transforms are inadmissible. Define:
+
+\[
+\overline{\mathcal L}_{\mathrm{pred}}(\widetilde{\mathsf Q},Z)
+=g_{\mathrm{pred}}(S_{\mathrm{prop}}(\widetilde{\mathsf Q},Z)).
+\]
+
+Unless \(g_{\mathrm{pred}}\) is positive affine on the score range, the transformed loss is not asserted to remain proper. After observation:
+
+\[
+\begin{aligned}
+\mathcal A_{\mathrm{post}}(\widetilde{\mathcal O},Z)
+={}&\lambda_p^{\mathrm{post}}\overline{\mathcal L}_{\mathrm{pred}}(\widetilde{\mathsf Q},Z)
++\lambda_a^{\mathrm{post}}D_{\mathrm{abs}}^{\mathrm{post}}(\widetilde{\mathcal O},Z)\\
+&+\lambda_c^{\mathrm{post}}D_{\mathrm{edge}}^{\mathrm{post}}(\widetilde{\mathcal O},Z)
++\lambda_u^{\mathrm{post}}U^{\mathrm{post}}(\widetilde{\mathcal O},Z).
+\end{aligned}
+\]
+
+Every post component lies in \([0,1]\), and the four non-negative post weights sum to one. Thus \(\mathcal A_{\mathrm{post}}\in[0,1]\). The untransformed proper score remains the fitting and forecast-comparison quantity. \(\mathcal A_{\mathrm{post}}\) is undefined before \(Z\) is observed and may not gate the fast path.
+
+## Event Residual Composition
+
+Let \(\mathbb H_d\) be self-adjoint operators with Frobenius norm. Define:
+
+\[
+q_E:\mathcal E\to\mathbb H_d,
+\qquad
+d_E:\mathcal Q_{E,\mathrm{adm}}\to\mathcal E.
+\]
+
+Clipping is:
+
+\[
+\mathrm{clip}_{\delta_E}(r)=
+\begin{cases}
+0,&r=0,\\
+r\min(1,\delta_E/\|r\|_F),&r\ne0.
+\end{cases}
+\]
+
+Projection is a deterministic selection:
+
+\[
+\Pi_E(v)\in\arg\min_{u\in\mathcal Q_{E,\mathrm{adm}}}\|u-v\|_F.
+\]
+
+Composition is:
+
+\[
+b\oplus_Er=
+\begin{cases}
+b,&r=0,\\
+d_E(\Pi_E(q_E(b)+\mathrm{clip}_{\delta_E}(r))),&r\neq0.
+\end{cases}
+\]
+
+The zero branch makes no correction an exact identity. The decoder is not written as an inverse because the encoder may be lossy.
+
+## Residual Caches
+
+Both caches are reconstructed as of \(S_{t^-}\); no later entry, outcome, confidence update, epoch, or audit result may be read. The general cache is:
+
+\[
+\mathcal C_{R,t^-}=\{(\kappa_i,r_i,c_i,n_i,t_i,v_i,m_i,s_i)\}_{i=1}^{N_t},
 \quad
-\text{s.t.}\quad
-\forall B \in \mathcal{B}_{\pi},\;
-\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+\kappa:\mathcal E^k\to\mathcal K_R,
+\quad r_i\in\mathbb H_d.
 \]
 
-This says: minimize residual action and unnecessary representation cost while
-preserving predictive abstraction. The constraint is the Anti-Pigeon guard
-against hiding future-distinct events in one bucket.
-
-## Action-Residual Cache
-
-For low-latency residual reuse, define an action-key map:
+For \(N_t>0\), \(j_t\) is the deterministic nearest-key selection. Let \(J_t^R\) indicate that distance, confidence, effective support, age, epoch, compatibility margin, and provenance gates all pass; set it to zero when the cache is empty. Then
 
 \[
-\alpha: \mathcal{E}^{k} \rightarrow \mathcal{K}_A.
-\]
-
-An action-residual cache is a partial map:
-
-\[
-\mathcal{C}_A: \mathcal{K}_A \rightharpoonup (r_a, c_a, n_a, t_a),
-\]
-
-where \(r_a\) is the cached residual, \(c_a\) is confidence, \(n_a\) is support,
-and \(t_a\) is last update time. The retrieved action residual is:
-
-\[
-r_t^{A} =
-\begin{cases}
-r_a & \text{if } \alpha(C_t) \in \operatorname{dom}(\mathcal{C}_A)
-\text{ and } c_a \ge \gamma_A
-\text{ and } n_a \ge n_{\min}
-\text{ and } age(t_a) \le A_{\max},\\
-0_{\mathcal{Q}} & \text{otherwise.}
+r_t^*=\begin{cases}
+r_{j_t},&J_t^R=1,\\
+0_{\mathbb H_d},&\text{otherwise.}
 \end{cases}
 \]
 
-Bounded hash-table or array lookup over \(\mathcal{K}_A\) can be expected
-\(O(1)\), but this is an implementation property rather than a theorem.
-
-## Prediction Loss
-
-The primary prediction loss is temporal. For point-valued event times:
+The action cache is typed as:
 
 \[
-\mathcal{L}_{time}^{H}(\theta) =
-\min\left(1,\frac{\left|\tau(\hat{e}_{t+1})-\tau(e_{t+1})\right|}{H}\right)
+\mathcal C_{A,t^-}:\mathcal K_A\rightharpoonup
+\mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
+\times\mathbb N_0\times\mathbb R.
 \]
 
-where \(H > 0\) is the prediction horizon used to normalize and clamp the loss.
-The value is \(0\) for exact temporal prediction and saturates at \(1\) for
-errors greater than or equal to the horizon. If the predictor is written as a
-single transition model, then \(\hat{e}_{t+1} = F_\theta(C_t)\). If the
-reference residual procedure is used, then
-\(\hat{e}_{t+1} = B(C_t) \oplus_{\mathcal{A}} r_t^*\).
-
-For interval-valued event times, replace absolute difference with an interval
-distance \(d_{\mathcal{T}}\), such as midpoint distance or endpoint Hausdorff
-distance:
+For \(k_t=\alpha(C_t)\), bind the entry only when it exists. Let \(J_t^A\) indicate that confidence, effective support, age, epoch, and compatibility-margin checks pass; set it to zero when the key is absent. The exact-to-general selector is:
 
 \[
-\mathcal{L}_{time}^{H}(\theta) =
-\min\left(1,\frac{d_{\mathcal{T}}(\tau(\hat{e}_{t+1}),\tau(e_{t+1}))}{H}\right)
+r_t^{\mathrm{use}}=
+\begin{cases}
+r_{k_t},&J_t^A=1,\\
+r_t^*,&J_t^A=0\text{ and }J_t^R=1,\\
+0,&\text{otherwise.}
+\end{cases}
 \]
 
-Other field-level losses may be added as auxiliary diagnostics, but the current
-formulation treats time-to-event error as the canonical loss unless a section
-explicitly defines a broader objective.
-
-## Reference Prediction Step
-
-A single EventFrame prediction step should be described as:
-
-1. Form the prediction context \(C_t = e_{t-k+1:t}\).
-2. Compute the baseline prediction \(b_t = B(C_t)\).
-3. Retrieve a cached residual \(r_t^*\) from \(\mathcal{C}_R\), or use
-   \(0_{\mathcal{Q}}\) if no cache entry passes the lookup threshold.
-4. Compose the prediction:
+This indicator distinguishes an accepted zero residual from a cache miss. To obtain a corrected forecast law, declare:
 
 \[
-\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^*
+\mathfrak K_E:\mathbb H_d\to\mathrm{Ker}(\mathcal Z_H),
+\qquad
+\mathfrak K_E(0)(z,A)=\mathbf 1_A(z),
 \]
 
-5. When the observed event \(e_{t+1}\) becomes available, evaluate
-   \(\mathcal{L}_{time}^{H}\).
-6. On the slow path, estimate the observed residual and decide whether to update
-   the residual cache, revise thresholds, or trigger invariant tests.
-
-This procedure is not a mandatory implementation. It is the minimal operational
-model the paper should use when explaining how the formal objects participate in
-prediction.
-
-## Fuzzing Operator
-
-Let \(\phi_i\) be an event property. A fuzzing operator perturbs it:
+and define, for measurable \(A\subseteq\mathcal Z_H\) and candidate \(r\in\mathbb H_d\), with \(\bar r=\mathrm{clip}_{\delta_E}(r)\):
 
 \[
-\mathcal{F}_{i,\epsilon}(e) = e'
+\mathsf Q_t^{(r)}(A\mid C_t)=
+\int_{\mathcal Z_H}\mathfrak K_E(\bar r)(z,A)
+\,\mathsf Q_B(dz\mid C_t).
 \]
 
-where \(e'\) differs from \(e\) primarily in property \(\phi_i\) by perturbation magnitude \(\epsilon\).
+Let \(\mathcal O_t(r)=(\mathsf Q_t^{(r)},b_t\oplus_E\bar r)\). The same clipped residual controls both components. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise the exact baseline \(\mathcal O_t(0)\) is returned. A point-only implementation cannot claim improvement on a proper forecast score. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
 
-For prediction, fuzzing is usually applied to a context. Let
-\(\mathcal{F}_{i,\epsilon}^{(r)}\) perturb property \(\phi_i\) in the \(r\)-th
-event of \(C_t\), or in a declared subset of the context:
+## Runtime Packet
+
+The compressed runtime state is:
 
 \[
-\mathcal{F}_{i,\epsilon}^{(r)}: \mathcal{E}^k \rightarrow \mathcal{E}^k.
+X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\in\mathcal X_{\mathrm{ctx}}.
 \]
 
-## Invariance Test
-
-A property \(g\) is invariant under fuzzing family \(\mathcal{F}\) if:
+The packet space is:
 
 \[
-\Delta_g =
-d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t)))) \le \eta_g
+\mathcal Y_{\mathrm{pkt}}
+=\mathcal N_{\mathrm{mem}}
+\times\mathcal E_{\mathrm{graph}}
+\times\mathcal L_{\mathrm{lane}}
+\times\mathcal C_{\mathrm{compact}}
+\times\mathcal M_{\mathrm{mode}}
+\times\mathcal U_{\mathrm{control}}.
 \]
 
-for defined ranges of \(i\), \(r\), and \(\epsilon\), where \(d_g\) is a
-property-level distance and \(\eta_g\) is a declared threshold. Use a clamped
-score for reporting:
+With separately declared \(q_Y,d_Y,\Pi_Y\), and clipping in \(\mathcal V_Y\):
 
 \[
-S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right)
+y\oplus_Yr=
+\begin{cases}
+y,&r=0,\\
+d_Y(\Pi_Y(q_Y(y)+\mathrm{clip}_{\delta_Y}(r))),&r\neq0.
+\end{cases}
 \]
 
-with \(S_g = 0\) indicating no observed change and \(S_g = 1\) indicating that
-the perturbation reaches or exceeds the invariance threshold. The default
-threshold for temporal properties should be derived from the prediction horizon,
-for example \(\eta_\tau = 0.05H\) for strict tests and \(\eta_\tau = 0.10H\)
-for exploratory tests.
-
-## 5W1H Influence and Ontology Revision
-
-Let \(\rho_j(e)\) denote the component of an event assigned to role
-\(j \in \{W,A,T,L,M,H\}\), corresponding to actor, action, time, location,
-motive, and mechanism. For a field \(\phi_i\), define target influence:
+The maps and prediction are type-compatible:
 
 \[
-I_{i \rightarrow g} =
-\mathbb{E}_{C_t,\epsilon,r}
-\left[
-d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t))))
-\right].
+B_Y:\mathcal X_{\mathrm{ctx}}\to\mathcal Y_{\mathrm{pkt}},
+\quad
+R_Y:\mathcal X_{\mathrm{ctx}}\to\mathcal V_Y,
+\quad
+\widehat{\mathbf y}_{t+1}=B_Y(X_t)\oplus_YR_Y(X_t).
 \]
 
-The slow path may use this influence score to retain, migrate, split, or mark a
-field uncertain. Ontology revision should preserve provenance and prior
-assignments so the update can be audited or reversed.
+## Sensitivity and Causality
 
-A migration should be promoted only after repeated validation:
+Model fuzzing uses the partial map:
 
 \[
-\#\{C_t : \mathcal{A}_{event}^{old}(C_t) - \mathcal{A}_{event}^{new}(C_t) \ge \delta_{\rho}\}
-\ge n_{\rho}.
+\mathcal F_{i,\epsilon}^{(r)}:\mathcal E^k\rightharpoonup\mathcal E^k
 \]
 
-Before this condition is met, the field should remain uncertain or provisional.
-
-## Counterfactual Graph Learning
-
-Let \(G_t = (V_t, R_t)\) be the local event graph and let
-\(\mathcal{I}_{v,\epsilon}\) intervene on a node, edge, or local subgraph.
-The counterfactual graph is:
+and measures:
 
 \[
-G_t' = do(\mathcal{I}_{v,\epsilon})(G_t).
+\Delta_g^{\mathrm{model}}=
+d_g(g(\mathcal O_\theta(C_t)),g(\mathcal O_\theta(\mathcal F_{i,\epsilon}^{(r)}(C_t)))).
 \]
 
-The target effect is:
+The validation law is supported only where the partial perturbation is defined.
+
+This is model sensitivity. Causal effects use a separate SCM \(\mathfrak M=(U,V,F,P_U)\):
 
 \[
-\Delta_Y^{graph} =
-d_Y(P(Y \mid G_t'), P(Y \mid G_t)).
+\Delta_Y^{\mathrm{causal}}(v';P_{\mathrm{ref}})=
+D_Y^{\mathrm{law}}(P_{\mathfrak M}(Y\mid do(V_j=v')),P_{\mathrm{ref}}(Y)).
 \]
 
-Counterfactual graph learning is slow-path learning: high residual action
-triggers graph intervention, graph intervention updates residual and edge
-confidence, and repeated validated effects may revise ontology or abstraction.
+The reference law is declared. This is an effect magnitude, not a signed effect. The symbol \(do\) is never applied directly to a graph perturbation.
 
-## Lumpability
+## Lumpability and Anti-Pigeon
 
-A projection \(\pi: \mathcal{E} \rightarrow \mathcal{Z}\) maps detailed events to abstract states. A transition process is predictively lumpable if:
+For \(\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}\):
 
 \[
-P(\pi(e_{t+1}) \mid e_t) \approx P(\pi(e_{t+1}) \mid \pi(e_t))
+\varepsilon_{\mathrm{lump}}^\star(\pi)=
+\sup_{C,C'\in\mathfrak C_{\mathrm{adm}}:h_\pi(C)=h_\pi(C')}
+D(P_\star(Y\mid C),P_\star(Y\mid C')).
 \]
 
-for the prediction target of interest.
-
-This should be presented as approximate predictive lumpability and cited against
-the existing literature on Markov chain lumpability, state aggregation, and
-abstraction. The paper should avoid claiming a new theorem unless a proof is
-added.
-
-## Anti-Pigeon Split Criterion
-
-Anti-Pigeon is the split-side dual of lumpability. Lumpability asks whether
-unnecessary distinctions can be merged. Anti-Pigeon asks whether a current
-abstraction hides necessary distinctions.
-
-Let \(B \subseteq \mathcal{E}\) be an event bucket represented by one abstract
-state, cache key, or event-frame group. For each retained event \(e_i \in B\),
-let \(H_i\) denote the corresponding prediction history or representative
-context, and let \(P_Y(\cdot \mid H_i)\) be the predicted future target
-distribution. Define pairwise future divergence:
+A non-empty bucket \(K\) retains a concrete traceability frame \(\bar e_K\in K\). Let \(\mathrm{anc}(C)\) be the terminal anchor frame of context \(C\) and define:
 
 \[
-D_{ij} =
-D\left(P_Y(\cdot \mid H_i), P_Y(\cdot \mid H_j)\right),
+\mathfrak C_K=\{C\in\mathfrak C_{\mathrm{adm}}:\mathrm{anc}(C)\in K\}.
 \]
 
-where \(D\) is a declared divergence or distance, such as total variation, KL
-divergence when well-defined, Wasserstein distance, or latent predictive
-distance. The abstraction fails the Anti-Pigeon criterion when:
+When \(\mathfrak C_K\neq\varnothing\), maintain \(\varnothing\neq\mathcal R_C(K)\subseteq\mathfrak C_K\). The context-conditional future-diameter, true restricted audit diameter, and estimator are:
 
 \[
-\exists e_i,e_j \in B \quad \text{such that} \quad D_{ij} \ge \epsilon_{AP}.
+D_K^\star(\pi)=\sup_{C,C'\in\mathfrak C_K}
+D(P_\star(Y\mid C),P_\star(Y\mid C')),
+\qquad
+D_K^{\mathrm{audit},\star}=
+\max_{R,R'\in\mathcal R_C(K)}D_{R,R'}^{K,\star},
 \]
-
-Equivalently, the bucket is valid for the target only if:
 
 \[
-\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+\widehat D_K^\star=
+\max_{R,R'\in\mathcal R_C(K)}
+\widehat D_{R,R'}^{K,\star}.
 \]
 
-When the criterion fails, apply a split or refinement operator:
+With a context metric, an audit may satisfy:
 
 \[
-\operatorname{Split}_{\epsilon_{AP}}(B) = \{B_1,\ldots,B_M\}
+\sup_{C\in\mathfrak C_K}\min_{R\in\mathcal R_C(K)}d_C(C,R)\le\delta_K.
 \]
 
-such that each non-empty resulting bucket satisfies:
+Coverage alone does not certify unseen futures. If \(D\) obeys the triangle inequality and a verified \(\overline L_K\) satisfies
 
 \[
-\forall B_\ell,\quad \max_{e_i,e_j \in B_\ell} D_{ij} < \epsilon_{AP}.
+D(P_\star(Y\mid C),P_\star(Y\mid R))
+\le\overline L_Kd_C(C,R),
 \]
 
-Each resulting bucket must retain at least one representative frame. In
-practice, merge and split thresholds may differ, for example
-\(\eta_{\mu} < \epsilon_{AP}\), to avoid oscillation near a boundary.
+then a simultaneous certificate is:
+
+\[
+D_K^{\mathrm{cert},\star}=
+\max_{R,R'\in\mathcal R_C(K)}
+\mathrm{UCB}_{\mathrm{sim}}[D_{R,R'}^{K,\star}]
++2\overline L_K\delta_K.
+\]
+
+The deterministic inequality is \(D_K^\star\le D_K^{\mathrm{audit},\star}+2\overline L_K\delta_K\), while the simultaneous UCB handles estimation error. The model diameter \(D_K^{\mathrm{mdl}}(\Theta_\Gamma)\) is reported separately and cannot certify the abstraction. Without exhaustive coverage or a verified continuity bound, a small \(\widehat D_K^\star\) supports only an observed-sample claim. If \(\mathfrak C_K=\varnothing\), the bucket is unaudited and has no certificate.
+
+Observed regime divergence uses \(\zeta\), not \(\rho\):
+
+\[
+D_{i,a,b}^{\mathrm{reg}}=
+D(P_\star(Y\mid C_i,\zeta_a),P_\star(Y\mid C_i,\zeta_b)).
+\]
+
+This is evaluated only on common context support across regimes; otherwise a declared overlap and transport model is required. It is predictive evidence unless \(\zeta\) is causally identified.
+
+## Abstraction Compatibility
+
+For \(\mathcal G_t^A=(V_t^A,E_t^A)\), node \(i\) has \(\mathsf Q_i\in\mathcal P(\mathcal Y_i)\). For edge \(e=\{i,j\}\), measurable maps into \(\mathcal Y_e\) induce pushforwards:
+
+\[
+\mathsf r_{ie}\mathsf Q_i=(g_{ie})_{\#}\mathsf Q_i,
+\qquad
+\delta_e(\mathsf Q)=D_e(\mathsf r_{ie}\mathsf Q_i,\mathsf r_{je}\mathsf Q_j).
+\]
+
+The network statistic is:
+
+\[
+\Delta_{\mathrm{comp}}(\mathsf Q)=
+\begin{cases}
+0,&E_t^A=\varnothing,\\
+\max_{e\in E_t^A}\mathrm{UCB}_{\mathrm{sim}}[\delta_e(\mathsf Q)],&E_t^A\neq\varnothing.
+\end{cases}
+\]
+
+The confidence procedure covers the inspected or adaptively selected edge family. Changes to a dependent map, edge set, threshold, or simultaneous bound increment the affected cache epoch.
+
+Under finite-dimensional embeddings and linear restrictions only:
+
+\[
+(\partial_Ax)_e=R_{ie}x_i-R_{je}x_j,
+\qquad L_A=\partial_A^*\partial_A.
+\]
+
+Then \(\ker L_A=\ker\partial_A\). If \(\lambda_{\max}(L_A)>0\), fixed-step refinement converges to the orthogonal projection onto that kernel when \(0<\eta<2/\lambda_{\max}(L_A)\); if \(L_A=0\), no update is required.
+
+## Staged Refinement and Priority
+
+Starting with certified reuse, repeated or reordered slow-path stages are represented by:
+
+\[
+S_t^{(0)}=\mathcal U_0(S_{t^-}),
+\qquad
+S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
+\quad r_n\in\{1,2,3,4\}.
+\]
+
+Every invocation has a strictly positive conservative cost bound and every repeat is charged. A strict deadline additionally requires interruptibility and a worst-case reserve or deterministic stop. The reported depth is the maximum stage index reached; the complete sequence, actual cumulative cost, overruns, and stopping reason are also reported.
+
+Priority-normalized evaluation weights are:
+
+\[
+\widetilde w_t=
+\frac{w_{\mathrm{pri}}(p_t^{\mathrm{pri}})}
+{\sum_{u=1}^{T}w_{\mathrm{pri}}(p_u^{\mathrm{pri}})},
+\qquad
+G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
+\]
+
+## Governing Objective
+
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A)\). The frozen \(\Lambda_{\mathrm{eval}}\) includes \(P_{\mathrm{obj}},P_{\mathrm{conf}},P_\star\), domains, metrics, targets, thresholds, weights, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, and map-validity tests. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
+
+\[
+\mathcal R_{\mathrm{pri}}^D(\Theta_\Gamma)=
+\frac{\mathbb E_{(C,Z)\sim D}
+[w_{\mathrm{pri}}(p^{\mathrm{pri}}(C;S_{t^-}))\mathcal A_{\mathrm{post}}(\mathcal O_{\Theta_\Gamma}(C;S_{t^-}),Z)]}
+{\mathbb E_{C\sim D}[w_{\mathrm{pri}}(p^{\mathrm{pri}}(C;S_{t^-}))]},
+\quad D\in\{P_{\mathrm{obj}},P_{\mathrm{conf}}\}.
+\]
+
+\[
+\mathfrak F_{AP}^\Gamma=\{\Theta_\Gamma:
+D_K^\star(\pi)\le\epsilon_{AP}\ \forall K\in\mathfrak K_\pi^+,\quad
+h_\pi\text{ factorization holds},\quad
+\mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
+\le\mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})+\epsilon_{\mathrm{prop}}\},
+\]
+
+\[
+\mathcal J_\Gamma^*=\inf_{\Theta_\Gamma\in\mathfrak F_{AP}^\Gamma}
+[\mathcal R_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)].
+\]
+
+Only when the feasible infimum is attained may the paper write an argmin. Candidate selection uses only \(P_{\mathrm{obj}}\); final frozen claims use untouched \(P_{\mathrm{conf}}\). Both use grouped rolling-origin evaluation, an overlap/horizon/label-delay embargo, and as-of replay. Cross-resolution comparisons use common raw histories and the same external target.
+
+The pre-outcome priority rule and all preprocessing are fitted before each evaluated block and frozen independently of candidates. Setting \(w_{\mathrm{pri}}\equiv1\) recovers the unweighted objective. Finite-sample constraints use preregistered one-sided confidence procedures, clustered inference for overlapping contexts, and sequentially valid methods under repeated monitoring.
+
+## Finite-State Descent
+
+For a finite candidate set \(\mathfrak S\), fixed evaluation distribution, and potential:
+
+\[
+\Phi(s)=\sum_{t=1}^{T}\widetilde w_t\mathcal A_{\mathrm{post},t}^s
++\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(s),
+\]
+
+accept only moves satisfying:
+
+\[
+\Phi(s')\le\Phi(s)-\delta,\qquad\delta>0.
+\]
+
+Then no state is revisited and at most \(|\mathfrak S|-1\) moves are accepted. This statement does not apply under drift or changing candidate states.

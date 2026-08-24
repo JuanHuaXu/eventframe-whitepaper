@@ -10,7 +10,7 @@ A compressed structured event record containing fields such as who, what, when, 
 
 ## Microscopic Substrate
 
-The dense underlying physical, simulated, biological, robotic, software, or computational description from which event frames are coarse-grained. The framework requires only that substrate detail may be much denser than the representable event space.
+The physical, simulated, biological, robotic, software, or computational description from which task-relative event frames are coarse-grained. This does not assert a discrete Planck-scale substrate.
 
 ## Coarse-Graining
 
@@ -18,11 +18,11 @@ The mapping from a dense substrate history to a lower-dimensional event frame or
 
 ## Intervention-Effective Event
 
-A compressed event distinction whose alteration would be expected to change the prediction target or downstream state beyond a declared threshold.
+A distinction whose effect on a target exceeds a declared threshold under a randomized or otherwise identified intervention. Without identification, the framework reports predictive sensitivity instead.
 
 ## Event Sparsity Hypothesis
 
-The hypothesis that intervention-effective event distinctions are sparse relative to the density of the microscopic substrate.
+The hypothesis that target-effective distinctions form a small measured fraction of a finite declared candidate set.
 
 ## Temporal Resolution
 
@@ -62,7 +62,11 @@ A set of event frames treated as equivalent or jointly represented under a chose
 
 ## Representative Event Frame
 
-At least one retained event frame for an event frame group. It is used as an anchor for measuring when intervention causes divergence or when multiple events have become safe to merge.
+A concrete frame retained for traceability. It is not sufficient to establish group stability; a coverage-aware context audit set is required for divergence tests.
+
+## Audit Set
+
+A set of prediction contexts anchored in a group, containing boundary, uncertain, and sampled cases with declared context-space coverage metadata. Outcomes estimate disagreement in the externally fixed target law; the candidate's own forecasts cannot serve as truth. The group separately retains at least one concrete event frame for traceability. The audit set certifies unseen contexts only under exhaustive coverage or a verified continuity bound.
 
 ## Prediction
 
@@ -72,13 +76,41 @@ The estimation of a future event frame, event state, or transition from current 
 
 The finite event history used as input to a prediction step, usually written as \(C_t = e_{t-k+1:t}\) for a context of length \(k\).
 
+## Compressed World/Context State
+
+A runtime state \(X_t\) assembled from the current event context, active memory state, local graph, and control constraints. It is the object used when the system must decide not only what event is next, but what memory, graph edge, retrieval route, response mode, or control branch should be used next.
+
+## Runtime Prediction Packet
+
+A predicted operational packet \(\widehat{\mathbf y}_{t+1}\in\mathcal Y_{\mathrm{pkt}}\) produced by the typed packet operator \(\oplus_Y\). It may include memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch.
+
+## Retrieval Lane
+
+The selected retrieval route or source family for the next prediction or response, such as action-residual cache, general residual cache, episodic memory, graph lookup, or slow-path retrieval.
+
+## Compaction Risk
+
+An estimate that compressing context, memory, or event detail will hide distinctions that matter for the current prediction target.
+
+## Response Mode
+
+The selected mode of response or action, such as direct answer, clarification request, defer-to-slow-path, tool use, or control action.
+
+## Robot/Control Branch
+
+An optional runtime output specifying an embodied, robotic, tool, or external-control branch. Implementations without such a system may set this component to null or no-op.
+
+## Particle Set
+
+A weighted set of candidate hypotheses, abstraction choices, retrieval routes, or control branches. Tightening particles means reweighting, pruning, or resampling this set after usefulness feedback.
+
 ## Baseline Predictor
 
 A model, rule, or procedure that produces an initial event prediction before residual correction.
 
 ## Prediction Horizon
 
-The time scale \(H\) used to normalize temporal prediction loss and decide when timing errors should be treated as saturated.
+The future interval \(H\) over which marked events or the no-event outcome are forecast.
 
 ## Residual Prediction
 
@@ -86,11 +118,23 @@ A prediction strategy that estimates the difference between a baseline transitio
 
 ## Residual Composition
 
-The operation that applies a residual correction to a baseline event prediction. In EventFrame, residual composition is treated as a structured, causal-action-inspired update rather than ordinary vector addition.
+The typed point operation \(\oplus_E\) that encodes a baseline event, norm-clips a residual, projects into an admissible operator set, and decodes the result. Correcting a probability forecast additionally requires a declared residual Markov kernel.
 
 ## Temporal Loss
 
-A bounded measure of prediction error based on the time field of an event frame. It measures how far the predicted event time is from the observed event time within a chosen prediction horizon.
+A bounded event-aware diagnostic that assigns maximum error to a wrong event mark or incorrect no-event decision and otherwise measures normalized timing error. It is not the primary training objective.
+
+## Proper Predictive Score
+
+A score for a full predictive distribution that is minimized in expectation by reporting the forecaster's true distribution. EventFrame uses it for marked event time and censoring.
+
+## Pre-Observation Risk
+
+An admission score computed only from information available before the next event. It gates fast-path corrections.
+
+## Post-Observation Event Action
+
+A bounded realized system score computed after the next outcome. It combines a preregistered bounded transformation of predictive loss with declared abstraction, edge, and uncertainty diagnostics. The untransformed proper score remains the forecast-comparison quantity.
 
 ## Threshold Clamp
 
@@ -98,7 +142,7 @@ A bounded decision rule that maps an error magnitude to a fixed interval, usuall
 
 ## Residual Cache
 
-A memory structure storing reusable transition corrections. It is used when similar contexts produce similar residuals.
+A memory structure storing reusable transition corrections. At prediction time only the as-of snapshot may be read, and reuse requires declared distance, confidence, effective-support, age, epoch, compatibility-margin, and provenance gates.
 
 ## Residual Lookup
 
@@ -114,7 +158,7 @@ A key-value memory structure storing prior event episodes. Keys represent retrie
 
 ## Property Fuzzing
 
-A method for perturbing selected event properties to test whether predictions remain stable or change systematically.
+A validity-constrained method for testing predictor sensitivity to selected event properties. It is not causal evidence by itself.
 
 ## Invariant
 
@@ -126,11 +170,15 @@ A condition under which many detailed states can be aggregated into a coarser st
 
 ## Anti-Pigeon Principle
 
-A split-side abstraction criterion. If one event-frame group predicts multiple materially different futures, the abstraction is invalid for that target and must be split, refined, or marked divergence-sensitive.
+A split-side criterion against invalid pigeonholing. A bucket is unsafe when its external target-law future-diameter exceeds threshold. Agreement among a candidate model's own forecasts is diagnostic and cannot certify the bucket. Regime-conditioned divergence requires common support or transport assumptions; causal attribution requires separate evidence.
+
+## Causal Regime
+
+An observed operating condition under which a prediction pattern is evaluated. It is called causal only when intervention or identification assumptions support that interpretation.
 
 ## Fast Path
 
-A low-latency prediction route using cached residuals, episodic retrieval, or learned approximations.
+A low-latency prediction route using only state available immediately before prediction, including certified cached residuals, episodic retrieval, or learned approximations.
 
 ## Slow Path
 
@@ -142,4 +190,28 @@ Asynchronous or deferred computation used to improve future predictions, update 
 
 ## Ontology Self-Organization
 
-The slow-path process of revising, splitting, duplicating, or marking 5W1H field assignments when intervention and fuzzing evidence shows that the initial event ontology is incomplete or misleading.
+The slow-path process of revising, splitting, duplicating, or marking 5W1H field assignments when held-out sensitivity and predictive evidence show that the initial ontology is incomplete or misleading.
+
+## Abstraction Compatibility Graph
+
+A graph whose nodes hold predictive laws at possibly different event groups, resolutions, sensors, local models, or agents, and whose edges declare common comparison spaces and maps into them.
+
+## Edge Compatibility Defect
+
+A declared divergence between two node forecasts after both are pushed into the comparison space of their shared edge. It measures predictive agreement unless explicit SCM semantics make a causal comparison valid.
+
+## Sheaf-Compatible Scaffold
+
+An abstraction compatibility graph designed so that restriction-map identity and composition laws can be stated and tested. It is not called a sheaf until those laws and the required assigned structures actually hold.
+
+## Local Reconciliation
+
+A slow-path optimization that trades fidelity to unreconciled local forecasts against declared edge compatibility penalties within an affected neighborhood.
+
+## Refinement Depth
+
+The deepest completed stage in the cumulative upgrade architecture for one case. It is selected from priority, prerequisite gates, and measured cost on a named hardware profile.
+
+## Priority-Weighted Gain
+
+The reduction in predictive loss after weighting cases by a priority assigned before their outcomes are observed. It must be reported with unweighted and priority-stratified results.

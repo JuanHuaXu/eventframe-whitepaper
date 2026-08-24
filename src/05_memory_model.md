@@ -16,7 +16,7 @@ A residual cache is different:
 \mathcal{C}_R = \{(\kappa_i, r_i, s_i)\}_{i=1}^{N}.
 \]
 
-Here \(r_i\) is not a prior event. It is a correction to a prior baseline prediction. The operational use is correction reuse: if the current context resembles a past context where the baseline missed in a known direction, apply the cached residual through \(\oplus_{\mathcal{A}}\).
+Here \(r_i\) is not a prior event. It is a correction to a prior baseline prediction. The operational use is correction reuse: if the current context resembles a past context where the baseline missed in a known direction, apply the cached residual through the typed operator \(\oplus_E\).
 
 The conceptual distinction is important. Episodic memory says, "something like this happened before." Residual memory says, "the predictor made this kind of mistake before." A system can have useful episodic recall but poor residual reuse if prior cases are similar but their prediction errors differ. Conversely, a residual may be reusable even when the full episode is not otherwise relevant.
 
@@ -24,7 +24,7 @@ Prediction combines the two memories by priority rather than by collapse. A refe
 
 1. Compute the baseline \(b_t = B(C_t)\).
 2. Try action-residual lookup in \(\mathcal{C}_A\).
-3. If the action residual is valid, compose \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r_t^A\).
+3. If the action residual is valid under confidence, age, and pre-risk checks, compose \(\hat{e}_{t+1}=b_t\oplus_E r_t^A\).
 4. If confidence is insufficient, try residual lookup in \(\mathcal{C}_R\).
 5. If residual confidence is still insufficient, retrieve episodic cases from \(\mathcal{C}_E\) and use them to refine the baseline, explain uncertainty, or schedule slow-path review.
 6. After observation, update episodic memory, residual confidence, and any action-residual entry that was used or falsified.
@@ -36,16 +36,16 @@ Similarity lookup requires declared key functions and distances. For episodic me
 Consolidation is the process of updating memory after observation. A conservative consolidation step should:
 
 1. Record the observed event \(e_{t+1}\) with provenance and confidence.
-2. Compute temporal loss for the prediction.
+2. Compute proper predictive loss and the event-aware timing diagnostic.
 3. Estimate whether the baseline error is systematic enough to store as a residual.
 4. Update or decay cache entries based on age, confidence, and repeated utility.
-5. Preserve at least one representative event frame for every event-frame group used by abstraction, confluence, or cache-key equivalence.
+5. Preserve at least one traceability frame and the coverage-aware context audit set required by Section 7.
 6. Mark low-confidence entries so they cannot dominate future predictions.
 
 Cache pollution is the main risk. If every error becomes a residual, the cache may memorize noise. If keys are too broad, residuals are applied in inappropriate contexts. If keys are too narrow, useful residuals are never reused. The cache should therefore track hit rate, post-correction loss, and whether retrieved residuals improve over the baseline.
 
 Fast-path memory use should be cheap. A practical implementation may use approximate nearest-neighbor lookup, hashed keys, or bounded-size caches. The paper treats constant-time lookup as an approximation, not as a guarantee. Slow-path memory refinement may be more expensive because it runs after the initial prediction, when latency pressure is lower.
 
-Representative preservation is a memory responsibility. If an abstraction stores only a label and discards all concrete examples, the system loses the ability to test whether interventions split that group or whether several groups have converged. At least one retained representative frame per group keeps later boundary measurement possible.
+Representative preservation is a memory responsibility. A single traceability frame prevents a group from becoming an empty label, but boundary detection requires the context audit set, its associated anchor frames, coverage metadata, and sampling history. If these are discarded, the runtime must mark the group unaudited rather than infer stability from one example.
 
 The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. Slow-path consolidation keeps both memories from turning into unfiltered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.

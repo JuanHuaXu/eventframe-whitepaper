@@ -4,6 +4,8 @@
 *.swo
 .vscode/
 .idea/
+.learnings/
+tmp/
 
 # Generated artifacts may be rebuilt from source drafts.
 build/*.pdf

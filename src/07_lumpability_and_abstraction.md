@@ -1,74 +1,228 @@
 # 7. Lumpability and Abstraction
 
-Abstraction is useful only when it preserves what the prediction task needs. EventFrame uses approximate predictive lumpability as a formal route from detailed event frames to coarser states. The purpose is to compress detail when the compressed representation preserves transition behavior for the target of interest.
-
-Let:
+Abstraction is useful only when it preserves the transition behavior required by the declared target. Let:
 
 \[
-\pi: \mathcal{E} \rightarrow \mathcal{Z}
+\pi:\mathcal E\rightarrow\mathcal S_{\mathrm{abs}}
 \]
 
-be a projection from detailed event frames to abstract states. The abstract state \(\pi(e_t)\) may remove fields, group values, or map a high-dimensional representation into a smaller symbolic or latent state. The projection is useful only if it preserves enough predictive structure.
+map detailed events to abstract states, and extend it componentwise to contexts as \(\pi^k(C_t)\).
 
-A transition process is predictively lumpable for a target when:
+Let \(\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k\) be the declared admissible context domain from Section 3. The target \(Y\), target law \(P_\star\), divergence, and admissible context domain are fixed by the evaluation contract before \(\pi\) is selected. An aggregate conditional law is not by itself a lumpability test because it averages over hidden detailed states inside a bucket. Instead, define the external predictive lumpability defect:
 
 \[
-P(\pi(e_{t+1}) \mid e_t) \approx P(\pi(e_{t+1}) \mid \pi(e_t)).
+\varepsilon_{\mathrm{lump}}^\star(\pi)=
+\sup_{C,C'\in\mathfrak C_{\mathrm{adm}}:\,h_\pi(C)=h_\pi(C')}
+D\!\left(
+P_\star(Y\mid C),
+P_\star(Y\mid C')
+\right).
 \]
 
-The left side conditions on the detailed event. The right side conditions only on the abstract state. This one-step expression is a simplified case. For context-length \(k\), the analogous test conditions on \(C_t\) and on the projected context \(\pi(C_t)\). If the two distributions are close, the abstraction preserves target-relevant transition behavior. The approximation should be measured by a declared divergence or distance and accepted only under a threshold.
-
-Operationally, abstraction quality can be tested by comparing predictions before and after projection:
-
-1. Choose a projection \(\pi\) and target property.
-2. Estimate transition behavior using detailed contexts.
-3. Estimate transition behavior using projected contexts.
-4. Compare temporal loss and target distribution divergence.
-5. Accept the abstraction only if predictive degradation remains below a declared threshold.
-
-This connects directly to property fuzzing. If perturbing a field does not change the prediction target beyond threshold, that field may be a candidate for abstraction. If lumpability tests show that projected states preserve transition behavior, the abstraction has stronger evidence. Fuzzing gives local stability evidence; lumpability tests transition-level preservation.
-
-Abstraction also has to respect event confluence and divergence. When streams merge, a projection or merge operator may intentionally replace several event histories with one aggregate event. When a small distinction branches into materially different futures, the same projection becomes unsafe. A good abstraction therefore has two duties: merge distinctions that have become prediction-equivalent, and preserve distinctions that are divergence-effective.
-
-EventFrame therefore imposes a representative preservation invariant. Every event-frame group \(\mathcal{H}_j\) created by projection, clustering, confluence, or cache-key equivalence must keep at least one representative frame \(\bar{e}_j \in \mathcal{H}_j\). This representative lets the system measure boundary conditions later: intervene on the representative to test whether the group should diverge, or compare representatives from multiple groups to test whether they have converged enough to merge.
-
-The Anti-Pigeon principle is the split-side criterion that prevents invalid abstraction. It says that events should not be grouped into broad categories merely because they share surface features. Grouping must be earned by invariance evidence, confluence evidence, lumpability evidence, or measured predictive adequacy. The principle is not a theorem. It is a discipline for avoiding abstractions that are convenient but predictively wrong.
-
-Formally, let \(B \subseteq \mathcal{E}\) be an event bucket represented by one abstract state, cache key, or event-frame group. For each retained event \(e_i \in B\), let \(H_i\) denote the prediction history or representative context associated with that event. Let \(P_Y(\cdot \mid H_i)\) be the predicted future distribution for the target \(Y\). Define pairwise future divergence:
+The abstraction is \(\epsilon_L\)-predictively lumpable for the target when:
 
 \[
-D_{ij} =
-D\left(P_Y(\cdot \mid H_i), P_Y(\cdot \mid H_j)\right),
+\varepsilon_{\mathrm{lump}}^\star(\pi)\le\epsilon_L.
 \]
 
-where \(D\) is a declared divergence or distance, such as total variation distance, KL divergence when well-defined, Wasserstein distance, or latent predictive distance. The bucket fails the Anti-Pigeon criterion whenever:
+This pairwise condition prevents an aggregate conditional distribution from hiding incompatible microstate transitions. It adapts classical and near-lumpability to finite-context prediction rather than claiming a new Markov-chain theorem [3,4]. In finite data, the supremum is estimated with confidence bounds over observed or generated context pairs; passing the estimate is evidence, not proof about unseen contexts.
+
+Operationally:
+
+1. Freeze the target, target law, divergence \(D\), tolerance \(\epsilon_L\), and evaluation protocol; then choose \(\pi\).
+2. Form detailed context pairs that map to the same operational key \(h_\pi\).
+3. Compare their fixed-target future distributions.
+4. Report the maximum estimated divergence with uncertainty and minimum bucket support.
+5. Accept the abstraction only when held-out predictive degradation and the upper confidence bound remain below threshold.
+
+Confluence applies the same requirement to merged event streams. Divergence rejects a merge when a small valid perturbation produces target-distinct future distributions. These statements concern predictive equivalence unless a separate causal model supports intervention claims.
+
+Every non-empty bucket \(K\subseteq\mathcal E\) retains at least one concrete frame \(\bar e_K\in K\) for traceability, but one frame is not sufficient to characterize a heterogeneous bucket. Let \(\mathrm{anc}(C)=e_t\) denote the terminal or anchor frame of context \(C=e_{t-k+1:t}\), and define the context family represented by \(K\):
 
 \[
-\exists e_i,e_j \in B \quad \text{such that} \quad D_{ij} \ge \epsilon_{AP}.
+\mathfrak C_K=\{C\in\mathfrak C_{\mathrm{adm}}:\mathrm{anc}(C)\in K\}.
 \]
 
-Equivalently, the bucket is valid for the target only when:
+When \(\mathfrak C_K\neq\varnothing\), call \(K\) active and maintain a non-empty context audit set \(\mathcal R_C(K)\subseteq\mathfrak C_K\). If no context has yet been assigned to the bucket, retain \(\bar e_K\) for traceability but mark the bucket inactive and unaudited; no future-diameter or admissibility claim is made for it. With a declared context metric \(d_C\), a representational coverage rule for an auditable bucket may be:
 
 \[
-\max_{e_i,e_j \in B} D_{ij} < \epsilon_{AP}.
+\sup_{C\in\mathfrak C_K}\min_{R\in\mathcal R_C(K)}d_C(C,R)\le\delta_K.
 \]
 
-When this test fails, the system applies a split or refinement operator:
+The set should include contexts for a medoid or high-confidence anchor, boundary examples, high-uncertainty examples, and a reservoir sample when the bucket is large. Its associated anchor frames preserve concrete traceability. If compression prevents this coverage estimate, the system cannot claim that the bucket has been audited.
+
+Anti-Pigeon is the split-side guard against invalid abstraction and stale predictive habit. The name denotes anti-pigeonholing: events may share a bucket only while their target futures remain sufficiently similar.
+
+For each bucket \(K\) and contexts \(C,C'\in\mathfrak C_K\), define the external target-law disagreement:
 
 \[
-\operatorname{Split}_{\epsilon_{AP}}(B) = \{B_1,\ldots,B_M\},
+D_{C,C'}^{K,\star}=
+D\!\left(
+P_\star(Y\mid C),
+P_\star(Y\mid C')
+\right),
 \]
 
-such that each resulting non-empty bucket satisfies the same internal-divergence bound:
+and the theoretical future-diameter:
 
 \[
-\forall B_\ell,\quad \max_{e_i,e_j \in B_\ell} D_{ij} < \epsilon_{AP}.
+D_K^\star(\pi)=\sup_{C,C'\in\mathfrak C_K}D_{C,C'}^{K,\star}.
 \]
 
-Every resulting bucket must retain at least one representative event frame. The representative requirement is what makes the split test repeatable: after refinement, the system can continue checking whether a bucket remains stable, should split again, or has converged enough to merge with another bucket.
+The bucket is admissible only when:
 
-This makes lumpability and Anti-Pigeon dual operations. Lumpability accepts a merge when future distributions remain close enough under a declared merge threshold. Anti-Pigeon rejects or splits a bucket when internal future divergence crosses a declared split threshold. In practice, the thresholds may differ, for example \(\eta_{\mu} < \epsilon_{AP}\), so the system does not oscillate between merge and split decisions near a noisy boundary.
+\[
+D_K^\star(\pi)\le\epsilon_{AP}.
+\]
 
-Abstraction quality should be reported with both benefits and costs. Benefits may include lower memory use, faster lookup, better generalization, and simpler explanations. Costs may include lost distinctions, degraded temporal prediction, and hidden subgroup errors. A good abstraction for fast-path prediction may still be too coarse for causal explanation or invariant discovery.
+Separately define the model-forecast diameter
 
-The main mathematical limitation is that exact lumpability is often too strong for real event data. EventFrame therefore uses approximate predictive lumpability and must cite prior work on Markov chain lumpability, state aggregation, and approximate abstraction. The paper should not claim a new theorem unless a proof is added. The next section places these pieces into a reference runtime model.
+\[
+D_K^{\mathrm{mdl}}(\Theta_\Gamma)=
+\sup_{C,C'\in\mathfrak C_K}
+D\!\left(
+\mathsf Q_{\Theta_\Gamma}^{Y}(\cdot\mid C;S_{t^-}),
+\mathsf Q_{\Theta_\Gamma}^{Y}(\cdot\mid C';S_{t^-})
+\right).
+\]
+
+This model diameter detects internal inconsistency and drift, but it cannot certify the abstraction: a predictor that emits the same wrong law everywhere has zero model diameter while the external future-diameter may be large.
+
+Define the true restricted audit diameter and its estimator by:
+
+\[
+D_K^{\mathrm{audit},\star}=
+\max_{R,R'\in\mathcal R_C(K)}D_{R,R'}^{K,\star},
+\qquad
+\widehat D_K^\star=
+\max_{R,R'\in\mathcal R_C(K)}\widehat D_{R,R'}^{K,\star}
+\]
+
+where \(\widehat D_{R,R'}^{K,\star}\) estimates target-law disagreement from observed outcomes without using the candidate forecast as ground truth. The audit reports \(\widehat D_K^\star\), coverage, and statistical uncertainty. The deterministic relation is \(D_K^{\mathrm{audit},\star}\le D_K^\star\); no sample-wise ordering between \(\widehat D_K^\star\) and \(D_K^\star\) is asserted. A statistically significant large pairwise divergence is evidence to split or mark the bucket. Representational coverage alone does not make a small estimate a certificate of unseen future behavior.
+
+To obtain a certified upper bound from a non-exhaustive audit, require that \(D\) obey the triangle inequality and verify a continuity bound for the forecast map on \(\mathfrak C_K\). For example, if a certified constant \(\overline L_K\) satisfies:
+
+\[
+D\!\left(P_\star(Y\mid C),P_\star(Y\mid R)\right)
+\le\overline L_Kd_C(C,R)
+\qquad\text{for all }C,R\in\mathfrak C_K,
+\]
+
+then the coverage rule implies:
+
+\[
+D_K^\star(\pi)\le D_K^{\mathrm{audit},\star}+2\overline L_K\delta_K.
+\]
+
+With statistical estimation, a simultaneous upper confidence certificate is:
+
+\[
+D_K^{\mathrm{cert},\star}=
+\max_{R,R'\in\mathcal R_C(K)}
+\mathrm{UCB}_{\mathrm{sim}}[D_{R,R'}^{K,\star}]
++2\overline L_K\delta_K.
+\]
+
+The confidence procedure must cover all adaptively selected audit pairs used by the maximum. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify \(D_K^\star\le\epsilon_{AP}\).
+
+Observed operating regimes use a distinct symbol \(\zeta_t\in\mathcal Z_{\mathrm{reg}}\). On the common-support domain \(\mathfrak C_{a,b}=\mathrm{supp}(C\mid\zeta_a)\cap\mathrm{supp}(C\mid\zeta_b)\), regime-conditioned predictive divergence is:
+
+\[
+D_{i,a,b}^{\mathrm{reg}}=
+D\!\left(
+P_\star(Y\mid C_i,\zeta_a),
+P_\star(Y\mid C_i,\zeta_b)
+\right).
+\]
+
+This quantity is evaluated only for \(C_i\in\mathfrak C_{a,b}\). Outside common support it requires a declared overlap and transport model; otherwise it is unidentified and no comparison is reported. If it exceeds \(\epsilon_{AP}^{\mathrm{reg}}\) repeatedly on held-out contexts, the system has evidence that a shared predictive bucket is stale. It may split by regime, condition the cache key on \(\zeta\), decay the residual, or mark the abstraction as divergence-sensitive. This conditional difference supports predictive adaptation; it is not evidence that \(\zeta\) is causal unless intervention or identification assumptions establish that fact.
+
+A split operator returns \(\{K_1,\ldots,K_m\}\) such that every non-empty active child has sufficient effective support and either exhaustive verification or \(D_{K_j}^{\mathrm{cert},\star}\le\epsilon_{AP}\). Singleton buckets always satisfy an empirical pairwise bound, so representation cost, minimum support, untouched confirmation performance, and coverage of future contexts are required to prevent trivial memorization.
+
+Merge and split thresholds should use hysteresis, for example \(\epsilon_{\mathrm{merge}}<\epsilon_{AP}\), and changes should be accepted only after a minimum held-out improvement. Abstraction quality reports memory and latency gains alongside predictive degradation, subgroup errors, audit coverage, and split/merge churn.
+
+EventFrame can extend this bucket-local test to a network of heterogeneous abstractions. Let:
+
+\[
+\mathcal G_t^A=(V_t^A,E_t^A)
+\]
+
+be an abstraction compatibility graph. A node may represent an event group, temporal resolution, sensor, local predictor, or agent. Node \(i\) produces a predictive law:
+
+\[
+\mathsf Q_i(\cdot\mid C_t)\in\mathcal P(\mathcal Y_i).
+\]
+
+For an edge \(e=\{i,j\}\), choose a common measurable comparison space \(\mathcal Y_e\) and measurable maps \(g_{ie}:\mathcal Y_i\to\mathcal Y_e\) and \(g_{je}:\mathcal Y_j\to\mathcal Y_e\). Their pushforward restrictions are:
+
+\[
+\mathsf r_{ie}\mathsf Q_i=(g_{ie})_{\#}\mathsf Q_i,
+\qquad
+\mathsf r_{je}\mathsf Q_j=(g_{je})_{\#}\mathsf Q_j.
+\]
+
+Given a declared divergence \(D_e\), the edge compatibility defect is:
+
+\[
+\delta_e(\mathsf Q)=
+D_e\!\left(\mathsf r_{ie}\mathsf Q_i,\mathsf r_{je}\mathsf Q_j\right),
+\qquad
+\Delta_{\mathrm{comp}}(\mathsf Q)=
+\begin{cases}
+0, & E_t^A=\varnothing,\\
+\max_{e\in E_t^A}\mathrm{UCB}_{\mathrm{sim}}[\delta_e(\mathsf Q)],
+& E_t^A\neq\varnothing.
+\end{cases}
+\]
+
+Here the simultaneous confidence procedure must cover the family of inspected or adaptively selected edges. A zero defect on every edge defines a compatible assignment for the declared comparison maps. A small defect is only approximate predictive compatibility. It is not causal compatibility unless the node laws are interventional or counterfactual distributions from explicit SCMs and the maps preserve their declared causal semantics.
+
+The closest mathematical prior work for this extension is D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* [13]. Their causal abstraction network coordinates heterogeneous causal models using network sheaves and cosheaves, restriction maps, a connection Laplacian, global sections, and mixture causal models. EventFrame adapts the local-to-global compatibility pattern to event-centered predictive laws, then combines it with within-bucket Anti-Pigeon tests, residual-cache certification, and priority-aware staged execution. It does not inherit their causal semantics, consistency results, convergence results, or mixture-learning guarantees.
+
+Accordingly, the EventFrame construction is described only as a sheaf-compatible scaffold. It should be called a sheaf only after its assigned spaces and restriction maps satisfy the required identity and composition laws. EventFrame does not assume those laws merely because local forecasts are connected by a graph.
+
+The network defect complements rather than replaces Anti-Pigeon. \(D_K^\star\) tests hidden external future disagreement inside a bucket; \(\delta_e\) tests disagreement between representations after both are mapped into a common comparison space. A proposed merge is accepted only when both its external bucket future-diameter and affected edge-defect upper bounds are below their merge thresholds. A bucket or edge is split, invalidated, or routed to deeper review when a lower confidence bound exceeds its split threshold. Separate thresholds \(\epsilon_{\mathrm{merge}}^{\mathrm{comp}}<\epsilon_{\mathrm{split}}^{\mathrm{comp}}\) provide hysteresis.
+
+When simple rejection would discard useful local information, a local reconciliation stage may solve:
+
+\[
+\overline{\mathsf Q}_{\mathcal N}
+\in\arg\min_{\{\widetilde{\mathsf Q}_i:i\in\mathcal N\}}
+\left[
+\sum_{i\in\mathcal N}a_iD_i(\widetilde{\mathsf Q}_i,\mathsf Q_i)
++\lambda_A\sum_{e\in E^{+}(\mathcal N)}w_e\delta_e(\widetilde{\mathsf Q})
+\right],
+\]
+
+where \(\mathcal N\subseteq V_t^A\) is an affected neighborhood, \(E^{+}(\mathcal N)=\{e\in E_t^A:e\cap\mathcal N\neq\varnothing\}\) includes both internal and boundary edges, forecasts outside \(\mathcal N\) remain fixed, \(a_i,w_e\ge0\), and every divergence and tie-breaking rule is declared. The first term preserves each local forecast; the second penalizes incompatibility without hiding damage at the neighborhood boundary. A minimizer is asserted only when the feasible family is compact and the objective is lower semicontinuous, or under another stated existence theorem; otherwise the algorithm must return a declared approximate minimizer with an optimality gap. Reconciliation is not unqualified averaging, and the unreconciled forecasts and defects remain available for audit.
+
+For a fixed graph with finite-dimensional embeddings \(x_i=\phi_i(\mathsf Q_i)\) and linear restrictions \(R_{ie}\), define the boundary operator on edge \(e=\{i,j\}\) by:
+
+\[
+(\partial_Ax)_e=R_{ie}x_i-R_{je}x_j,
+\qquad
+L_A=\partial_A^{*}\partial_A.
+\]
+
+Then \(\|\partial_Ax\|^2=\langle x,L_Ax\rangle\) and \(\ker L_A=\ker\partial_A\), the linearly compatible assignments. If \(\lambda_{\max}(L_A)>0\), the fixed-step refinement
+
+\[
+x^{(n+1)}=x^{(n)}-\eta L_Ax^{(n)},
+\qquad
+0<\eta<\frac{2}{\lambda_{\max}(L_A)},
+\]
+
+converges in finite dimensions to the orthogonal projection of \(x^{(0)}\) onto \(\ker L_A\). If \(L_A=0\), the assignment is already linearly compatible and no update is required. These statements require a fixed graph, fixed linear restrictions, and the stated inner products. Nonlinear distribution-valued forecasts do not inherit this spectral guarantee automatically.
+
+Finally, a node may represent a predictive regime mixture:
+
+\[
+\mathsf Q_i(\cdot\mid C_t)
+=\sum_{s=1}^{S_i}\lambda_{is}(C_t)\mathsf Q_{is}(\cdot\mid C_t),
+\qquad
+\lambda_{is}\ge0,
+\quad
+\sum_{s=1}^{S_i}\lambda_{is}=1.
+\]
+
+This mixture can preserve multiple currently plausible mechanisms instead of collapsing them into one habitual prediction. It remains a predictive mixture unless each component has an explicit SCM and the data and assumptions identify causal interpretation. Mixture learning is the final, most expensive refinement stage; it may revise node laws or comparison maps and then rerun compatibility and reconciliation.

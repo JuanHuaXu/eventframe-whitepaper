@@ -82,6 +82,9 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Abstraction quality
 - Anti-Pigeon principle
 - Avoiding premature category collapse
+- Abstraction compatibility graph
+- Local reconciliation and spectral compatibility
+- Predictive regime mixtures
 
 ## 8. Complexity and Runtime Model
 
@@ -91,6 +94,8 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Complexity sketch
 - O(1) cache lookup as an approximate fast path
 - When expensive computation is still required
+- Cumulative refinement stages and step-integration function
+- Hardware-indexed cost policy
 
 ## 9. Experimental Evaluation
 
@@ -101,6 +106,9 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Long-horizon prediction
 - Invariant stability tests
 - Confluence and divergence tests
+- Compatibility and regime-mixture tests
+- Priority-weighted correction utility
+- Hardware-indexed stage benchmarks
 - Ablation studies
 
 ## Discussion: Innovation and Scientific Refinement
@@ -123,3 +131,9 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 ## 11. Conclusion
 
 Summarize EventFrame as a framework, not a product or agent, and state next research steps.
+
+## Appendix A. Symbol Index
+
+- Resolve every core symbol to one type and meaning
+- Distinguish event and packet composition domains
+- Distinguish pre-observation risk from post-observation loss

@@ -1,76 +1,146 @@
 # 8. Complexity and Runtime Model
 
-EventFrame separates low-latency prediction from slower refinement. The fast path produces an immediate prediction using the current context, baseline model, and available memory. The slow path evaluates errors, updates caches, tests invariants, and refines abstractions. This separation is a systems claim that must be evaluated experimentally.
+EventFrame separates prediction-time computation from post-observation refinement. The fast path may use only \(\mathscr F_t^{\mathrm{pred}}\) and state \(S_{t^-}\); realized loss, residual estimation, and abstraction learning begin only after the next outcome's availability time.
 
 The reference fast path is:
 
-1. Form \(C_t = e_{t-k+1:t}\).
-2. Compute \(b_t = B(C_t)\).
-3. Retrieve \(r_t^A\) from the action-residual cache \(\mathcal{C}_A\), if a valid entry exists.
-4. Otherwise retrieve \(r_t^*\) from \(\mathcal{C}_R\).
-5. If residual confidence is insufficient, retrieve episodic support from \(\mathcal{C}_E\).
-6. Compose \(\hat{e}_{t+1} = b_t \oplus_{\mathcal{A}} r\), using the highest-confidence admissible correction or \(0_{\mathcal{Q}}\).
-7. Return the prediction with confidence metadata.
+1. Incrementally update \(C_t=e_{t-k+1:t}\).
+2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
+3. Compute baseline law \(\mathsf Q_B(\cdot\mid C_t)\) and point summary \(b_t=B(C_t)\), or packet baseline \(B_Y(X_t)\).
+4. Construct the bounded action key \(k_t=\alpha(C_t)\).
+5. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient.
+6. Compose a candidate event output bundle or packet using the shared clipped effective residual.
+7. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
+8. Return the admissible prediction or fall back to the baseline. Do not evaluate realized prediction loss yet.
 
-The architecture can be summarized as:
+The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
 ```mermaid
 flowchart LR
-    C["Context C_t"] --> B["Baseline B(C_t)"]
-    B --> A["Action residual C_A"]
-    A -->|valid| P["Compose prediction"]
-    A -->|miss or low confidence| R["Residual cache C_R"]
-    R -->|valid| P
-    R -->|miss or low confidence| E["Episodic cache C_E"]
+    C["Context C_t"] --> B["Baseline"]
+    B --> A["Exact-key residual"]
+    A -->|accepted| P["Typed composition"]
+    A -->|miss| R["General residual cache"]
+    R -->|accepted| P
+    R -->|miss| E["Episodic support"]
     E --> P
-    P --> O["Observe e_{t+1}"]
-    O --> S["Slow path"]
-    S --> U["Update residuals and memories"]
-    S --> F["Async fuzzing"]
-    S --> I["Graph intervention"]
-    F --> G["Ontology and abstraction revision"]
-    I --> G
+    P --> Q["Pre-risk and validity gate"]
+    Q --> O["Return prediction"]
+    O --> Z["Observe outcome"]
+    Z --> S["Post-observation slow path"]
+    S --> U["Update losses and memories"]
+    S --> F["Sensitivity audit"]
+    S --> G["Abstraction and compatibility audit"]
+    U --> A
+    F --> G
     G --> A
     G --> R
 ```
 
-The fast-path design property is local boundedness. If context formation is treated as a sliding window, its incremental cost is \(O(1)\). The baseline cost is \(T_B(k)\), which depends on the model. Action-residual lookup can be expected \(O(1)\) when \(\mathcal{C}_A\) is a bounded hash table or array over declared action keys. The reason is structural: the 5W1H schema has fixed field arity, the action key \(\alpha(C_t)\) is bounded by declared local fields and abstraction labels, and the graph neighborhood used by the key must have bounded degree. Under those assumptions, lookup depends on the size of the local abstraction key rather than the length of the full history. Thus expected fast-path lookup is independent of total history length by design. If action keys grow without bound, if graph degree is unbounded, or if lookup falls back to nearest-neighbor search, the \(O(1)\) approximation no longer applies. General residual lookup cost depends on the cache design. A hash-like lookup may be approximately \(O(1)\), while nearest-neighbor search over \(N\) entries may be \(O(N)\) without indexing. Episodic retrieval has its own cost \(T_E(M)\). Composition cost is \(T_{\oplus}\), determined by encoding, clamping, projection, and decoding.
-
-A simple fast-path cost sketch is:
+Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, and \(T_{\oplus}\) typed composition. Then:
 
 \[
-T_{fast} \approx O(1) + T_B(k) + T_A + T_R(N) + T_E(M) + T_{\oplus}.
+T_{\mathrm{fast}}
+=T_C+T_B(k)+T_K+T_A+I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
 \]
 
-Here \(T_A\) is the action-residual lookup cost, \(T_R(N)\) is the general residual lookup cost, and \(T_E(M)\) is episodic retrieval cost. In a successful action-residual hit, \(T_R(N)\) and \(T_E(M)\) may be skipped. This equation should be interpreted as a decomposition, not a guarantee. The framework does not prove constant-time prediction. It identifies where cost enters and which parts can be optimized or approximated.
+where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the table is unbounded, or lookup falls back to nearest neighbors. Concurrency, hashing, collision handling, and eviction costs must be measured rather than hidden inside the constant.
 
-The slow path begins after an observation becomes available:
+The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 
-1. Evaluate \(\mathcal{L}_{time}^{H}\).
-2. Estimate the observed residual.
-3. Decide whether the residual is worth caching.
-4. Update episodic memory and residual cache metadata.
-5. Run selected fuzzing tests.
-6. Run selected graph interventions when residual action remains above threshold.
-7. Reassess invariants and abstraction maps.
-8. Revise 5W1H field assignments when intervention evidence shows that information should migrate, split, or be marked uncertain.
+1. Evaluate \(\mathcal L_{\mathrm{pred}}\), \(\mathcal L_{\mathrm{event}}^H\), and \(\mathcal A_{\mathrm{post}}\).
+2. Evaluate packet component loss when a packet was used.
+3. Estimate observed residuals and update support/confidence.
+4. Consolidate episodic and residual memory.
+5. Run validity-constrained sensitivity tests.
+6. Run causal analysis only when an explicit SCM and identification strategy exist.
+7. Audit bucket coverage and future-diameter estimates.
+8. Accept split, merge, or ontology changes only on independent held-out evidence.
 
-The slow path may be much more expensive:
+A cost decomposition is:
 
 \[
-T_{slow} \approx T_{loss} + T_{residual} + T_{consolidate} + M_f T_{predict} + T_{abstraction},
+T_{\mathrm{base}}
+=T_{\mathrm{score}}+T_{\mathrm{residual}}+T_{\mathrm{consolidate}}
++\sum_{q=1}^{M_f}T_{\mathrm{predict}}^{(q)}+T_{\mathrm{audit}}
 \]
-
-where \(M_f\) is the number of fuzzed variants and \(T_{predict}\) is the cost of rerunning prediction. Graph interventions add another budgeted term when enabled:
 
 \[
-T_{slow+graph} \approx T_{slow} + M_g T_{intervene},
+T_{\mathrm{upgrade}}
+=T_{\mathrm{comp}}+T_{\mathrm{reconcile}}
++T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
 \]
 
-where \(M_g\) is the number of graph interventions and \(T_{intervene}\) is the cost of updating or simulating a counterfactual event subgraph. This cost is acceptable only if slow-path work is deferred, batched, or scheduled under a budget.
+\[
+T_{\mathrm{slow}}=T_{\mathrm{base}}+T_{\mathrm{upgrade}}
++\sum_{q=1}^{M_c}T_{\mathrm{causal}}^{(q)},
+\]
 
-The conceptual reason for the split is that prediction and learning have different latency requirements. A system may need to answer quickly, but it does not need to discover invariants synchronously with every prediction. Residual caches allow some slow-path learning to be reused later by the fast path. In the reference loop, residual prediction produces an error hypothesis; graph intervention tests whether changing an event node, edge, or local subgraph explains that error; counterfactual updates refine residuals; and ontology or abstraction updates are promoted only when repeated interventions support the same distinction.
+where \(M_f,M_c\in\mathbb N_0\) are the numbers of fuzzing-prediction and causal-analysis invocations. Set \(M_c=0\) when no causal model is available. Slow work must be budgeted, deferred, or batched so it does not silently migrate into the latency-critical path.
 
-The runtime model has several failure modes. If the residual cache grows without control, lookup cost and pollution increase. If slow-path refinement is delayed too long, stale residuals may remain active. If fast-path prediction trusts low-confidence memory, errors can compound. If abstraction is too aggressive, the system may become fast but wrong.
+The full upgrade is defined as a staged family rather than one indivisible algorithm. Let \(S_t\) contain the current forecasts, caches, abstraction graph, audit state, and hardware profile \(h\). Define refinement operators:
 
-The runtime should therefore report not only prediction accuracy but also cache hit rate, residual utility, cache age, slow-path budget, and abstraction degradation. The next section proposes experiments to measure these properties.
+\[
+\mathcal U_0=\text{certified baseline/residual reuse},
+\qquad
+\mathcal U_1=\text{edge compatibility audit},
+\]
+
+\[
+\mathcal U_2=\text{local reconciliation},
+\qquad
+\mathcal U_3=\text{component or spectral refinement},
+\]
+
+\[
+\mathcal U_4=\text{regime-mixture and map refinement}.
+\]
+
+Starting from \(S_t^{(0)}=\mathcal U_0(S_{t^-})\), let \(r_n\in\{1,2,3,4\}\) be the stage selected for slow-path invocation \(n\), subject to its prerequisites. The step-integration recurrence is:
+
+\[
+S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
+\qquad n=1,\ldots,N_t.
+\]
+
+Let every conservative invocation-cost bound be strictly positive, \(c_r^{U}(h,S)>0\), and charge repeated stages separately:
+
+\[
+C_t^{U}(n;h)=
+\sum_{q=1}^{n}c_{r_q}^{U}(h,S_t^{(q-1)}).
+\]
+
+Invocation \(n\) is permitted only if:
+
+\[
+C_t^{U}(n;h)\le\mathcal B(p_t^{\mathrm{pri}}),
+\]
+
+and all prerequisite evidence and safety gates pass. The run stops at the first failed budget or prerequisite check, a declared convergence condition, or a finite iteration cap. Its reported refinement depth is:
+
+\[
+d_t(h)=\max\left(\{0\}\cup\{r_1,\ldots,r_{N_t}\}\right).
+\]
+
+Here \(p_t^{\mathrm{pri}}\in[0,1]\) is priority declared from prediction-time information, \(\mathcal B\) is a priority-dependent resource budget, and \(c_r^U(h,S)\) is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile \(h\). The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 4 may revise mixtures or comparison maps, after which Stages 1--3 may be selected again; every rerun appears again in \(C_t^U\). The architecture targets all five stages; \(d_t(h)\) records the deepest stage reached, while the complete invocation sequence \((r_1,\ldots,r_{N_t})\), actual cost, and stopping reason are also reported.
+
+This definition separates semantic interfaces from hardware policy. Faster processors, larger memory, improved accelerators, or cheaper distributional solvers reduce measured costs and their conservative bounds and can increase \(d_t(h)\) without changing event, residual, compatibility, or causality definitions. A conforming implementation must therefore record both the output stage and the hardware/cost profile used to select it.
+
+For a changed edge set \(E_{\Delta}\), compatibility work is approximately:
+
+\[
+T_{\mathrm{comp}}=O\!\left(\sum_{e\in E_{\Delta}}C_{D_e}\right),
+\]
+
+where \(C_{D_e}\) is the cost of mapping and comparing the two incident forecasts. With bounded local degree this is local in the changed neighborhood. Spectral work depends on component size, representation dimension, sparsity, solver, and requested tolerance. Mixture refinement additionally depends on component counts and optimization restarts and is expected to remain the most expensive stage. No fixed millisecond or slowdown claim is made without an implementation and hardware profile.
+
+The integration roadmap is cumulative:
+
+1. Specify typed node laws, edge comparison spaces, maps, divergences, confidence procedures, and deterministic fallbacks.
+2. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged fast path.
+3. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
+4. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
+5. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
+6. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
+
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.

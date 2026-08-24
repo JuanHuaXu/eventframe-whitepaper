@@ -1,113 +1,146 @@
 # 6. Fuzzing and Invariants
 
-Property fuzzing tests whether predictions depend on specific event fields. The method perturbs a selected property, reruns prediction, and measures whether a target property of the output changes beyond a declared threshold. If a prediction remains stable under a controlled family of perturbations, the stable property becomes a candidate invariant.
+Property fuzzing tests model sensitivity: perturb a selected event field, rerun prediction, and measure the change in a declared output. It does not by itself establish how the real world would respond to an intervention.
 
-Let \(\phi_i\) be an event property, such as actor, action type, time, location, or a component of auxiliary state. A single-event fuzzing operator is:
-
-\[
-\mathcal{F}_{i,\epsilon}(e) = e',
-\]
-
-where \(e'\) differs from \(e\) primarily in property \(\phi_i\) by perturbation magnitude \(\epsilon\). For prediction, the corresponding context-level operator is:
+Let \(\phi_i\) be an event property. A validity-constrained fuzzing operator is:
 
 \[
-\mathcal{F}_{i,\epsilon}^{(r)}: \mathcal{E}^k \rightarrow \mathcal{E}^k,
+\mathcal F_{i,\epsilon}:\mathcal E\rightharpoonup\mathcal E,
 \]
 
-where \(r\) identifies the event position or subset of \(C_t\) being perturbed.
-
-The conceptual role of fuzzing is to separate apparent relevance from predictive relevance. A field may look semantically important but not affect the prediction target for a specific task. Another field may look incidental but sharply change the predicted event time. Fuzzing gives a controlled way to test these dependencies.
-
-Fuzzing also supports 5W1H ontology self-organization. The initial assignment of information to who, what, when, where, why, and how may be wrong, incomplete, or too coarse. Let \(\rho_j(e)\) denote the component of an event assigned to role \(j \in \{W,A,T,L,M,H\}\), corresponding to actor, action, time, location, motive, and mechanism. For a field \(\phi_i\), define its target influence on output property \(g\) as:
+where the partial arrow records that some perturbations are invalid. At context position or subset \(r\):
 
 \[
-I_{i \rightarrow g} =
-\mathbb{E}_{C_t,\epsilon,r}
-\left[
-d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t))))
-\right].
+\mathcal F_{i,\epsilon}^{(r)}:\mathcal E^k\rightharpoonup\mathcal E^k.
 \]
 
-If a field assigned to one role consistently influences a target associated with another role, the ontology should not pretend the original assignment is final. The slow path may mark the field for migration, duplication, or splitting. For example, a value recorded as "where" may function as part of "how" if perturbing it changes the mechanism of the event rather than only spatial localization. A value recorded as "why" may need to split into confidence-tagged motive hypotheses if different interventions produce incompatible futures.
-
-Let \(g\) be a property of the prediction output, and let \(d_g\) be a distance over that property. The change induced by fuzzing is:
+Let \(\mathcal O_\theta(C)=(\mathsf Q_\theta(\cdot\mid C),\hat e_\theta(C))\) be the typed predictor output. For a declared output functional \(g\) on that bundle and distance \(d_g\), model sensitivity is:
 
 \[
-\Delta_g =
-d_g(g(F_\theta(C_t)), g(F_\theta(\mathcal{F}_{i,\epsilon}^{(r)}(C_t)))).
+\Delta_g^{\mathrm{model}}=
+d_g\!\left(
+g(\mathcal O_\theta(C_t)),
+g(\mathcal O_\theta(\mathcal F_{i,\epsilon}^{(r)}(C_t)))
+\right).
 \]
 
-A property is treated as stable under the fuzzing family if:
+The validation law \(\mathcal V_i\) must be supported only on triples \((C_t,\epsilon,r)\) for which the partial perturbation is defined. The field is empirically stable over that declared valid family when:
 
 \[
-\Delta_g \le \eta_g,
+\Pr_{(C_t,\epsilon,r)\sim\mathcal V_i}
+\left(\Delta_g^{\mathrm{model}}\le\eta_g\right)
+\ge1-\alpha_g,
 \]
 
-where \(\eta_g\) is a declared threshold. For reporting, use a clamped score:
+with a one-sided lower confidence bound for this probability at least \(1-\alpha_g\). A point estimate or a two-sided interval that crosses the threshold does not establish stability. The reporting score
 
 \[
-S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
+S_g=\min\!\left(1,\frac{\Delta_g^{\mathrm{model}}}{\eta_g}\right)
 \]
 
-The value \(S_g = 0\) means no observed change, while \(S_g = 1\) means the perturbation reaches or exceeds the threshold. For temporal prediction, the threshold can be tied to the horizon \(H\). A strict test may use \(\eta_\tau = 0.05H\), while an exploratory test may use \(\eta_\tau = 0.10H\).
+requires \(\eta_g>0\). Thresholds are selected from measurement resolution, operational decision tolerance, and held-out calibration; fixed fractions such as \(0.05H\) are examples only and must not be presented as universal constants.
 
-An operational fuzzing protocol is:
-
-1. Select a context \(C_t\), prediction target \(g\), field \(\phi_i\), and context position or subset \(r\).
-2. Define the perturbation family and valid magnitudes \(\epsilon\).
-3. Run the original prediction.
-4. Run predictions on perturbed contexts.
-5. Compute \(\Delta_g\) and \(S_g\).
-6. Record stable, unstable, and boundary regions.
-
-The same protocol can detect confluence and divergence. If perturbing two event streams does not change the target beyond threshold, the streams may be candidates for confluence into a merged event. If a small perturbation produces multiple target-distinct downstream predictions, the event sits near a divergence boundary. This is the operational version of butterfly-effect-style sensitivity: small changes matter only when they amplify beyond the declared target threshold.
-
-Counterfactual event frames are the perturbed frames produced by this protocol. They should be marked as synthetic and should not be inserted into episodic memory as observed events. They may, however, be used by the slow path to test invariants, improve key design, or identify abstraction boundaries.
-
-Fuzzing can be extended from fields to event graphs. Let \(G_t = (V_t, R_t)\) be the local event graph and let \(\mathcal{I}_{v,\epsilon}\) denote an intervention on event node, edge, or local subgraph \(v\). A counterfactual graph update is:
+For 5W1H review, let \(\psi_j^{\mathrm{role}}(e)\) denote the component assigned to role \(j\in\{W,A,T,L,M,H\}\). The average sensitivity of field \(\phi_i\) to target property \(g\) is:
 
 \[
-G_t' = do(\mathcal{I}_{v,\epsilon})(G_t),
+I_{i\rightarrow g}^{\mathrm{model}}=
+\mathbb E_{(C_t,\epsilon,r)\sim\mathcal V_i}
+\left[\Delta_g^{\mathrm{model}}\right].
 \]
 
-with target effect:
+This quantity may nominate a field for retain, migrate, duplicate, split, or uncertain status. It says that the current predictor uses the field; it does not prove that the field is a cause, that the assigned semantic explanation is true, or that changing the field in the world would change the target.
+
+An operational protocol is:
+
+1. Select contexts, target property, field, perturbation family, and validity constraints.
+2. Separate observed contexts from synthetic perturbations.
+3. Run original and perturbed predictions.
+4. Estimate sensitivity, uncertainty, and boundary regions on held-out contexts.
+5. Check whether the result survives alternative plausible perturbation families.
+6. Use the result as a review signal, not an automatic ontology rewrite.
+
+Synthetic frames are never inserted into episodic memory as observations. They may be stored in a separate audit log with their generating operator and validity assumptions.
+
+Graph perturbation follows the same rule. Let \(G_t=(V_t,R_t)\) be a time-unrolled predictive graph and let:
 
 \[
-\Delta_Y^{graph} =
-d_Y(P(Y \mid G_t'), P(Y \mid G_t)).
+G_t'=\mathcal I_{v,\epsilon}^{\mathrm{model}}(G_t).
 \]
 
-The slow path uses this graph intervention when the residual action remains high. The reference loop is:
-
-1. Observe a high residual action \(\mathcal{A}_{event} > \eta_{\mathcal{A}}\).
-2. Choose candidate nodes, edges, or local subgraphs from the residual, episodic evidence, or uncertain 5W1H fields.
-3. Apply graph interventions to produce counterfactual event graphs.
-4. Measure \(\Delta_Y^{graph}\), residual improvement, and abstraction consistency.
-5. Update residual keys, causal-edge confidence, ontology assignments, or Anti-Pigeon split markers only when the intervention repeatedly explains the error.
-
-This is counterfactual graph learning, but in a conservative sense. The counterfactual graph is a test object used for slow-path learning, not an observed history.
-
-Ontology updates should therefore be intervention-driven. A conservative update rule is:
+The resulting predictor sensitivity is:
 
 \[
-\operatorname{revise}(\phi_i) =
-\begin{cases}
-\operatorname{retain}(\phi_i) & \text{if all relevant } I_{i \rightarrow g} \text{ remain below threshold},\\
-\operatorname{migrate}(\phi_i, j \rightarrow j') & \text{if influence is stable for role } j',\\
-\operatorname{split}(\phi_i) & \text{if one field carries multiple target-distinct influences},\\
-\operatorname{mark\ uncertain}(\phi_i) & \text{if perturbation evidence is unstable.}
-\end{cases}
+\Delta_Y^{\mathrm{model}}=
+D_Y^{\mathrm{law}}\!\left(\mathsf Q_\theta^Y(\cdot\mid G_t'),\mathsf Q_\theta^Y(\cdot\mid G_t)\right),
 \]
 
-This is not an automatic ontology rewrite. It is a slow-path review signal. The implementation should preserve provenance, confidence, and the previous assignment so that field migration can be audited or reversed. To prevent oscillation, a migration should be promoted only after repeated successful intervention validation. For example, require at least \(n_{\rho}\) independent validation contexts in which the proposed assignment reduces \(\mathcal{A}_{event}\) or target error by margin \(\delta_{\rho}\):
+where \(\mathsf Q_\theta^Y\) is the declared predictive marginal for target \(Y\). This may update predictive-dependency confidence, residual keys, or abstraction review priorities. It must not update causal-edge confidence merely because the predictor changed.
+
+When an explicit structural causal model \(\mathfrak M=(U,V,F,P_U)\) exists and an intervention target is well-defined, a separate causal analysis may compute:
 
 \[
-\#\{C_t : \mathcal{A}_{event}^{old}(C_t) - \mathcal{A}_{event}^{new}(C_t) \ge \delta_{\rho}\}
-\ge n_{\rho}.
+\Delta_Y^{\mathrm{causal}}=
+D_Y^{\mathrm{law}}\!\left(
+P_{\mathfrak M}(Y\mid do(V_j=v')),
+P_{\mathrm{ref}}(Y)
+\right).
 \]
 
-Before that condition is met, the safer state is "mark uncertain" rather than permanent migration.
+The reference law \(P_{\mathrm{ref}}\) must be declared, and this distance is an effect magnitude rather than a signed effect. Identification assumptions, manipulated variables, confounder controls, and transport assumptions must be stated. Randomized or otherwise identified intervention evidence may update causal-edge confidence; input fuzzing alone may not [5].
 
-An invariant is not a universal truth unless the fuzzing family and domain justify that claim. In EventFrame, invariants are usually conditional: stable under these perturbations, in this data regime, for this prediction target, within this threshold. That conservative framing matters because an invariant useful for temporal prediction may fail for actor prediction or causal explanation.
+The slow path begins only after a realized post-observation loss is available:
 
-Failure modes include invalid perturbations, unrealistic counterfactuals, threshold gaming, and hidden confounding. If perturbing one field implicitly changes another, the test may not isolate the intended property. If the perturbation creates impossible events, stability may be meaningless. If thresholds are too loose, everything looks invariant and all streams appear to merge; if too strict, no abstraction or confluence is possible. The next section uses invariance evidence to decide when detailed events can be safely compressed.
+1. Observe \(\mathcal A_{\mathrm{post}}>\eta_{\mathrm{post}}\) or repeated packet failure.
+2. Select candidate fields, nodes, or edges from residual and uncertainty evidence.
+3. Run validity-constrained model perturbations.
+4. If an SCM and identification strategy exist, run the corresponding causal analysis separately.
+5. Update cache keys, predictive edges, or abstraction markers only after repeated held-out improvement.
+
+For a candidate ontology change from state \(s\) to \(s'\), use an independent paired forward-validation set \(\mathcal V_{\mathrm{rev}}=\{(C_t,Z_{t+1})\}_{t=1}^{n}\). Replay each case from \(S_{t^-}\), include it only when \(a(Z_{t+1})\) is inside the validation availability window, and group inference by independent trajectory or entity. Define per-case composite improvement:
+
+\[
+\Delta_t^{s\rightarrow s'}=
+\mathcal A_{\mathrm{post}}(\mathcal O^s(C_t),Z_{t+1})
+-\mathcal A_{\mathrm{post}}(\mathcal O^{s'}(C_t),Z_{t+1}).
+\]
+
+and the paired proper-score degradation:
+
+\[
+G_{t,\mathrm{prop}}^{s\rightarrow s'}=
+S_{\mathrm{prop}}(\mathsf Q^{s'}(\cdot\mid C_t;S_{t^-}),Z_{t+1})
+-S_{\mathrm{prop}}(\mathsf Q^{s}(\cdot\mid C_t;S_{t^-}),Z_{t+1}).
+\]
+
+Promotion requires all of the following preregistered conditions:
+
+\[
+n\ge n_{\min}^{\mathrm{rev}},
+\qquad
+\mathrm{LCB}_{\mathrm{paired}}\!\left[\frac{1}{n}\sum_{t=1}^{n}\Delta_t^{s\rightarrow s'}\right]
+\ge\delta_{\mathrm{rev}}>0,
+\]
+
+\[
+\mathrm{UCB}\!\left[
+\frac{1}{n}\sum_{t=1}^{n}
+\mathbf 1\{\Delta_t^{s\rightarrow s'}<-\delta_{\mathrm{harm}}\}
+\right]
+\le\beta_{\mathrm{harm}}.
+\]
+
+It additionally requires proper-score non-inferiority:
+
+\[
+\mathrm{UCB}_{\mathrm{paired}}\!\left[
+\frac{1}{n}\sum_{t=1}^{n}G_{t,\mathrm{prop}}^{s\rightarrow s'}
+\right]
+\le\epsilon_{\mathrm{prop}}^{\mathrm{rev}},
+\qquad \epsilon_{\mathrm{prop}}^{\mathrm{rev}}\ge0.
+\]
+
+Here \(\delta_{\mathrm{harm}}\ge0\) and \(\beta_{\mathrm{harm}}\in[0,1]\) are fixed before evaluation.
+
+Thus average composite improvement cannot hide either an uncontrolled rate of material regressions or degraded probabilistic calibration. The confidence construction must account for every adaptively compared candidate state. If promotion is monitored repeatedly, use a confidence sequence, alpha spending, or preregistered review times. All learned preprocessing, perturbation selection, and priority rules are fitted before the validation cutoff. The evaluation contexts must not be the same or temporally overlapping examples used to propose the change. Before validation, the field remains provisional. Previous assignments and provenance are retained so the change can be audited or reversed.
+
+An EventFrame invariant is therefore conditional: stable under this valid perturbation family, for this predictor and target, in this data regime, within this threshold and confidence level. Failure modes include invalid perturbations, off-manifold inputs, hidden confounding, adaptive reuse of the validation set, and thresholds below measurement noise.
