@@ -20,9 +20,9 @@ At a fixed temporal resolution, the governing principle minimizes priority-weigh
 
 EventFrame separates a baseline from cached statistical error correction. The typed point composition $`\hat e_{t+1}=B(C_t)\oplus_E r_t^{\mathrm{use}}`$ uses a self-adjoint operator representation, norm clipping, admissible projection, and a decoder. Proper-score evaluation additionally requires a declared residual Markov kernel that maps the baseline forecast law to a corrected law; point composition alone cannot support a proper-score improvement claim. A separately typed operator composes runtime packets. The construction is structurally inspired by Causal Fermion Systems but is not its causal action and makes no physical-equivalence claim.
 
-Validity-constrained fuzzing measures model sensitivity, not causality. Causal claims require an explicit structural causal model and identified interventions. Approximate predictive lumpability compares detailed contexts that share an abstract context. Every group retains a traceability frame plus a coverage-aware context audit set; one representative alone cannot establish group stability. A staged compatibility layer can compare heterogeneous abstractions, reconcile local forecasts, apply spectral refinement under explicit linear assumptions, and preserve regime mixtures. Its depth is selected by priority, evidence, and measured hardware cost while certified cache reuse remains available.
+Validity-constrained fuzzing measures model sensitivity, not causality. Causal claims require an explicit structural causal model and identified interventions. Approximate predictive lumpability compares detailed contexts that share an abstract context. Every group retains a traceability frame plus a coverage-aware context audit set; one representative alone cannot establish group stability. A staged compatibility layer can compare heterogeneous abstractions, reconcile local forecasts, perform bounded predictive sheaf snaps after untouched confirmation, apply spectral refinement under explicit linear assumptions, and preserve regime mixtures. Snaps revise predictive organization through atomic graph-key-epoch publication; they do not promote causal edges. Refinement depth is selected by priority, evidence, and measured hardware cost while certified cache reuse remains available.
 
-The paper remains a research framework without implementation results. Its evaluation program uses as-of rolling-origin replay and measures proper forecast quality, residual utility, sensitivity stability, audit coverage, abstraction compatibility, priority-weighted correction, regime adaptation, and hardware-indexed runtime tradeoffs.
+The paper remains a research framework without implementation results. Its evaluation program uses as-of rolling-origin replay and measures proper forecast quality, residual utility, sensitivity stability, audit coverage, abstraction compatibility, predictive-snap accuracy and churn, priority-weighted correction, regime adaptation, and hardware-indexed runtime tradeoffs.
 
 ## 1. Introduction
 
@@ -57,10 +57,11 @@ The contributions of this paper are therefore:
 4. A combined episodic and residual memory architecture.
 5. A validity-constrained sensitivity method for conditional invariants and ontology review.
 6. A lumpability-based approach to abstraction.
-7. A fast-path and slow-path reference runtime model.
-8. Experiment designs for testing the framework's claims.
+7. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
+8. A fast-path and slow-path reference runtime model.
+9. Experiment designs for testing the framework's claims.
 
-These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, and priority- and hardware-aware staged integration. The next section defines the event ontology.
+These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, bounded predictive sheaf snapping, and priority- and hardware-aware staged integration. The snapping term is EventFrame terminology for validated local predictive-structure revision, not a theorem or standard operation inherited from sheaf theory. The next section defines the event ontology.
 
 ## Claims Register
 
@@ -98,9 +99,11 @@ Claim 7a. Expected exact-key lookup is history-independent only when context upd
 
 Claim 8. Heterogeneous abstractions can be tested through declared comparison maps and edge defects, complementing within-bucket Anti-Pigeon audits. The construction is sheaf-compatible only when the required map laws hold and causal only when SCM semantics are supplied.
 
-Claim 8a. A full refinement architecture can retain certified residual reuse while adding compatibility audit, local reconciliation, spectral refinement under linear assumptions, and regime-mixture refinement. Hardware changes stage depth, not stage meaning.
+Claim 8a. A full refinement architecture can retain certified residual reuse while adding compatibility audit, local reconciliation, bounded predictive sheaf snapping, spectral refinement under linear assumptions, and regime-mixture refinement. Hardware changes stage depth, not stage meaning.
 
-Claim 8b. Upgrade value is evaluated by predeclared priority-weighted utility beside unweighted and stratified results; loss and resource percentages are not compared until converted to a common utility scale.
+Claim 8b. A predictive sheaf snap can improve a heterogeneous abstraction network when a finite local edit family is selected on chronological design data, fixed comparison obligations prevent deletion from masquerading as compatibility, the candidate is accepted only on later untouched evidence, and graph-key-epoch state is published atomically. Compatibility evidence alone does not promote causal edges.
+
+Claim 8c. Upgrade value is evaluated by predeclared priority-weighted utility beside unweighted and stratified results; loss and resource percentages are not compared until converted to a common utility scale.
 
 ## 2. Event Ontology
 
@@ -314,7 +317,7 @@ $$
 \alpha,\kappa,\epsilon_R,\text{cache gates}),
 $$
 
-and the candidate abstraction structure as $`\Xi_A`$, containing its compatibility graph and comparison maps. Separately freeze an evaluation contract:
+and the candidate abstraction structure as $`\Xi_A^{(v)}`$, containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version $`v`$ changes only when a validated slow-path revision is published. Separately freeze an evaluation contract:
 
 $$
 \begin{aligned}
@@ -325,7 +328,8 @@ $$
 \\
 &\text{score weights},p^{\mathrm{pri}},w_{\mathrm{pri}},
 \lambda_{\mathrm{rep}},\mathcal C_{\mathrm{rep}},
-\text{confidence and map-validity procedures}).
+\text{confidence and map-validity procedures},\\
+&\text{snap candidate, obligation, and publication rules}).
 \end{aligned}
 $$
 
@@ -333,7 +337,7 @@ Here $`P_{\mathrm{obj}}`$ is the design sample used to select a candidate, $`P_{
 
 $$
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
-\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A)
+\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})
 $$
 
 denote the complete event-prediction design evaluated under $`\Lambda_{\mathrm{eval}}`$. Let $`\mathcal O_{\Theta_\Gamma}(C;S_{t^-})`$ denote its final typed output bundle from the state available immediately before prediction time. Let $`\mathfrak K_\pi`$ be the buckets induced by $`\pi`$, and let $`\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}`$ be the active buckets with admissible contexts. For an active bucket $`K`$, define its external future-diameter $`D_K^\star(\pi)`$ as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to $`\Theta_\Gamma`$ only in an implementation that jointly optimizes packet selection.
@@ -675,7 +679,7 @@ An implementation may try the next lower-precedence residual after a rejected ca
 
 If an implementation supplies only the point operator $`\oplus_E`$ and no declared kernel $`\mathfrak K_E`$, it may claim improvement only on point diagnostics, not on the proper forecast score.
 
-A bounded hash table can provide expected $`O(1)`$ lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch $`v_t`$ must increase whenever a dependent comparison map, edge set, threshold, or simultaneous defect bound changes. Local epochs and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions.
+A bounded hash table can provide expected $`O(1)`$ lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch $`v_t`$ must increase whenever a dependent comparison map, edge set, threshold, or simultaneous defect bound changes. Local epochs and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap is built against a shadow graph version and published atomically with its affected abstraction-key map and epoch map. A reader uses one immutable graph-key-epoch snapshot for the entire prediction; it must never combine a new graph or abstraction key with old certificates. Entries invalidated by the publication fall back to the baseline or another currently certified cache path until recertified, and rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old epoch identifier.
 
 After observation, evaluate the particular residual candidate stored for key $`k`$, either on a deployed trial or in shadow mode. Set $`I_{t,k}=1`$ when
 
@@ -1153,6 +1157,91 @@ The closest mathematical prior work for this extension is D'Acunto, Di Lorenzo, 
 
 Accordingly, the EventFrame construction is described only as a sheaf-compatible scaffold. It should be called a sheaf only after its assigned spaces and restriction maps satisfy the required identity and composition laws. EventFrame does not assume those laws merely because local forecasts are connected by a graph.
 
+EventFrame calls a validated local revision of this scaffold a **predictive sheaf snap**. This is paper-specific terminology, not a standard sheaf-theoretic operation. Write the published compatibility structure at version $`v`$ as:
+
+$$
+\Xi_A^{(v)}=
+\left(
+\mathcal G^{A,(v)},
+\{\mathcal Y_i\}_{i\in V^{A,(v)}},
+\{\mathcal Y_e,D_e,w_e,\{g_{ie}:i\in e\}\}_{e\in E^{A,(v)}}
+\right).
+$$
+
+For an affected neighborhood $`\mathcal N`$, let $`D_t^{\mathrm{design}}`$ and $`D_t^{\mathrm{conf}}`$ be disjoint chronological design and confirmation blocks satisfying the paper's embargo and as-of rules. Let $`\mathfrak S_t(\Xi_A^{(v)};\mathcal N)`$ be a finite, predeclared family of candidate structures constructed only from information available by the slow-path review time, with the unchanged structure $`\Xi_A^{(v)}`$ included as the no-snap candidate. An edit may split, merge, or duplicate predictive nodes; add or remove predictive-compatibility edges; or select a comparison map from a prevalidated candidate class. The family has bounded neighborhood radius, candidate count, and map complexity. It may not relabel a predictive edge as causal. The notation $`\Theta_\Gamma[\Xi']`$ means the complete candidate design induced by $`\Xi'`$, including any required local revision $`\pi'`$ of the operational abstraction map, refitted node laws, keys, and certificates. Those dependent components are fitted only on $`D_t^{\mathrm{design}}`$; a graph edit is never scored while retaining keys or forecasts that are inconsistent with it.
+
+Fix a task-defined comparison-obligation set $`\mathfrak O_t`$ before candidate inspection. Each obligation names local predictions that must remain comparable. A candidate discharges an obligation through a valid direct edge or a composition-valid comparison path; otherwise it must retain the obligation explicitly as unresolved. Let $`U_{\mathrm{obl}}(\Xi';\mathfrak O_t)\ge0`$ be the predeclared weighted unresolved burden. This prevents a candidate from obtaining zero defect merely by deleting difficult edges; in particular, an empty graph is not automatically a successful snap when $`\mathfrak O_t\neq\varnothing`$.
+
+Let $`\mathcal D_{\Delta,t}(\Xi')`$ be the reverse dependency closure of the proposed edit, including every bucket, node law, comparison map, key, certificate, cache entry, or edge whose value or validity can change, not only objects edited syntactically. Let $`\mathfrak K_{\Delta,t}(\Xi')`$ and $`E_{\Delta,t}^{\mathrm{keep}}(\Xi')`$ be its affected active-bucket and retained-or-new-edge projections.
+
+On a chronological design block $`D_t^{\mathrm{design}}`$, score a candidate by:
+
+$$
+\begin{aligned}
+\Psi_t(\Xi';\Xi_A^{(v)})={}&
+\widehat{\mathcal R}_{\mathrm{pri}}^{D_t^{\mathrm{design}}}(\Theta_\Gamma[\Xi'])
++\lambda_{\mathrm{comp}}\widehat\Delta_{\mathrm{comp}}^{D_t^{\mathrm{design}}}
+(\Theta_\Gamma[\Xi'];\Xi')\\
+&+\lambda_{\mathrm{edit}}d_{\mathrm{edit}}(\Xi',\Xi_A^{(v)})
++\lambda_{\mathrm{snap}}\mathcal C_{\mathrm{snap}}(\Xi')
++\lambda_{\mathrm{obl}}U_{\mathrm{obl}}(\Xi';\mathfrak O_t),
+\end{aligned}
+$$
+
+where the hatted quantities are design-block estimates computed under the predeclared candidate-selection procedure. The compatibility estimate uses the candidate-induced laws and the maps in $`\Xi'`$. Every term is finite and normalized to a declared common utility scale, or its coefficient carries the conversion needed to produce that scale. All coefficients are non-negative: $`\lambda_{\mathrm{comp}}`$ weights compatibility defect, $`\lambda_{\mathrm{edit}}`$ weights structural churn, and $`\lambda_{\mathrm{snap}}`$ weights measured or hardware-indexed revision cost. The unresolved-obligation coefficient $`\lambda_{\mathrm{obl}}`$ is strictly positive unless the candidate family itself requires $`U_{\mathrm{obl}}=0`$. Because the candidate family is finite and non-empty, a deterministic tie-breaking rule selects:
+
+$$
+\Xi_A^{\mathrm{cand}}
+\in\arg\min_{\Xi'\in\mathfrak S_t(\Xi_A^{(v)};\mathcal N)}
+\Psi_t(\Xi';\Xi_A^{(v)}).
+$$
+
+Candidate generation and selection do not authorize publication. On $`D_t^{\mathrm{conf}}`$, define the proper-risk change:
+
+$$
+\Delta\mathcal R_{\mathrm{prop},t}^{\mathrm{snap}}=
+\widehat{\mathcal R}_{\mathrm{prop}}^{D_t^{\mathrm{conf}}}(\Theta_\Gamma[\Xi_A^{\mathrm{cand}}])
+-\widehat{\mathcal R}_{\mathrm{prop}}^{D_t^{\mathrm{conf}}}(\Theta_\Gamma[\Xi_A^{(v)}]).
+$$
+
+Let $`G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}`$ be the paired priority-weighted gain defined as in Section 9, and let $`C_{v\rightarrow\mathrm{cand},t}(h)`$ be its resource cost on the same declared utility scale. Declare $`\delta_{\mathrm{snap}}>0`$, $`\epsilon_{\mathrm{obl}}\ge0`$, and $`0\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\le\epsilon_{\mathrm{split}}^{\mathrm{comp}}`$ before candidate inspection. With $`\max\varnothing=0`$, the joint snap-acceptance indicator is:
+
+$$
+\begin{aligned}
+A_t^{\mathrm{snap}}=1\quad\Longleftrightarrow\quad&
+\mathrm{LCB}\!\left[G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}\right]
+-\mathrm{UCB}\!\left[C_{v\rightarrow\mathrm{cand},t}(h)\right]
+{}>\delta_{\mathrm{snap}},\\
+&\mathrm{UCB}\!\left[\Delta\mathcal R_{\mathrm{prop},t}^{\mathrm{snap}}\right]
+\le\epsilon_{\mathrm{prop}},\\
+&\max_{K\in\mathfrak K_{\Delta,t}(\Xi_A^{\mathrm{cand}})}
+D_K^{\mathrm{cert},\star}\le\epsilon_{AP},\\
+&\max_{e\in E_{\Delta,t}^{\mathrm{keep}}(\Xi_A^{\mathrm{cand}})}
+\mathrm{UCB}_{\mathrm{sim}}[\delta_e]\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}},\\
+&U_{\mathrm{obl}}(\Xi_A^{\mathrm{cand}};\mathfrak O_t)
+\le\epsilon_{\mathrm{obl}}.
+\end{aligned}
+$$
+
+Set $`A_t^{\mathrm{snap}}=0`$ otherwise. Every outcome-dependent quantity in the indicator is computed exclusively from as-of predictions on $`D_t^{\mathrm{conf}}`$; no confirmation outcome may refit the candidate. The predeclared joint confidence procedure covers every displayed stochastic gate after candidate selection. Repeated reviews use fresh blocks or a sequentially valid procedure. On acceptance, relabel the confirmed candidate as version $`v+1`$ and write $`\mathcal D_{\Delta,t}=\mathcal D_{\Delta,t}(\Xi_A^{\mathrm{cand}})`$. Let $`\mathbf v^{(v)}`$ be the local epoch map, let $`\mathcal C_{\mathrm{mem}}^{(v)}=(\mathcal C_A^{(v)},\mathcal C_R^{(v)},\mathcal C_E^{(v)})`$, let $`\mathsf B_{\mathcal D}`$ monotonically increment epochs in dependency closure $`\mathcal D`$, and let $`\mathsf I_{\mathcal D}`$ mark every dependent memory entry stale. The publish-or-retain transition is:
+
+$$
+\left(\Xi_A^{\mathrm{new}},\pi^{\mathrm{new}},
+\mathbf v^{\mathrm{new}},\mathcal C_{\mathrm{mem}}^{\mathrm{new}}\right)=
+\begin{cases}
+\left(\Xi_A^{(v+1)},\pi',
+\mathsf B_{\mathcal D_{\Delta,t}}(\mathbf v^{(v)}),
+\mathsf I_{\mathcal D_{\Delta,t}}(\mathcal C_{\mathrm{mem}}^{(v)})\right),
+& A_t^{\mathrm{snap}}=1,\\
+\left(\Xi_A^{(v)},\pi,\mathbf v^{(v)},\mathcal C_{\mathrm{mem}}^{(v)}\right),
+& A_t^{\mathrm{snap}}=0.
+\end{cases}
+$$
+
+The accepted tuple publishes atomically, and the previous complete version remains available for rollback. The invalidation operator preserves unaffected entries and marks affected ones unusable until recertified; it does not silently assign them certificates under the new version. When $`A_t^{\mathrm{snap}}=0`$, no candidate component is published. This operation revises predictive organization only. It may nominate a causal hypothesis, but changing an SCM edge additionally requires the paper's intervention and identification conditions; compatibility improvement alone is insufficient.
+
+When an explicit SCM exists, an accepted predictive snap may nominate a separate finite family of local SCM edits, such as adding or removing an edge, reversing a direction not fixed by temporal order, or introducing a measured mediator or regime variable. Every causal candidate must specify the resulting structural equations, obey declared temporal and domain constraints, and identify the intervention law under which it will be tested. Candidate generation may use predictive defect, but causal selection and confirmation require independent randomized or otherwise identified intervention evidence with correction for the inspected edit family. Observational fit, lower compatibility defect, or successful predictive gluing cannot by themselves orient or promote a causal edge. Until those tests pass, the published causal graph remains unchanged.
+
 The network defect complements rather than replaces Anti-Pigeon. $`D_K^\star`$ tests hidden external future disagreement inside a bucket; $`\delta_e`$ tests disagreement between representations after both are mapped into a common comparison space. A proposed merge is accepted only when both its external bucket future-diameter and affected edge-defect upper bounds are below their merge thresholds. A bucket or edge is split, invalidated, or routed to deeper review when a lower confidence bound exceeds its split threshold. Separate thresholds $`\epsilon_{\mathrm{merge}}^{\mathrm{comp}}<\epsilon_{\mathrm{split}}^{\mathrm{comp}}`$ provide hysteresis.
 
 When simple rejection would discard useful local information, a local reconciliation stage may solve:
@@ -1269,7 +1358,7 @@ $$
 $$
 T_{\mathrm{upgrade}}
 =T_{\mathrm{comp}}+T_{\mathrm{reconcile}}
-+T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
++T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
 $$
 
 $$
@@ -1290,14 +1379,16 @@ $$
 $$
 \mathcal U_2=\text{local reconciliation},
 \qquad
-\mathcal U_3=\text{component or spectral refinement},
+\mathcal U_3=\text{bounded predictive sheaf snap},
 $$
 
 $$
-\mathcal U_4=\text{regime-mixture and map refinement}.
+\mathcal U_4=\text{component or spectral refinement},
+\qquad
+\mathcal U_5=\text{regime-mixture and map refinement}.
 $$
 
-Starting from $`S_t^{(0)}=\mathcal U_0(S_{t^-})`$, let $`r_n\in\{1,2,3,4\}`$ be the stage selected for slow-path invocation $`n`$, subject to its prerequisites. The step-integration recurrence is:
+Starting from $`S_t^{(0)}=\mathcal U_0(S_{t^-})`$, let $`r_n\in\{1,2,3,4,5\}`$ be the stage selected for slow-path invocation $`n`$, subject to its prerequisites. The step-integration recurrence is:
 
 $$
 S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
@@ -1323,7 +1414,7 @@ $$
 d_t(h)=\max\left(\{0\}\cup\{r_1,\ldots,r_{N_t}\}\right).
 $$
 
-Here $`p_t^{\mathrm{pri}}\in[0,1]`$ is priority declared from prediction-time information, $`\mathcal B`$ is a priority-dependent resource budget, and $`c_r^U(h,S)`$ is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile $`h`$. The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 4 may revise mixtures or comparison maps, after which Stages 1--3 may be selected again; every rerun appears again in $`C_t^U`$. The architecture targets all five stages; $`d_t(h)`$ records the deepest stage reached, while the complete invocation sequence $`(r_1,\ldots,r_{N_t})`$, actual cost, and stopping reason are also reported.
+Here $`p_t^{\mathrm{pri}}\in[0,1]`$ is priority declared from prediction-time information, $`\mathcal B`$ is a priority-dependent resource budget, and $`c_r^U(h,S)`$ is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile $`h`$. The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 5 may revise mixtures or comparison maps, after which Stages 1--4 may be selected again; every rerun appears again in $`C_t^U`$. The architecture targets certified reuse plus all five refinement stages; $`d_t(h)`$ records the deepest stage reached, while the complete invocation sequence $`(r_1,\ldots,r_{N_t})`$, actual cost, and stopping reason are also reported.
 
 This definition separates semantic interfaces from hardware policy. Faster processors, larger memory, improved accelerators, or cheaper distributional solvers reduce measured costs and their conservative bounds and can increase $`d_t(h)`$ without changing event, residual, compatibility, or causality definitions. A conforming implementation must therefore record both the output stage and the hardware/cost profile used to select it.
 
@@ -1335,16 +1426,36 @@ $$
 
 where $`C_{D_e}`$ is the cost of mapping and comparing the two incident forecasts. With bounded local degree this is local in the changed neighborhood. Spectral work depends on component size, representation dimension, sparsity, solver, and requested tolerance. Mixture refinement additionally depends on component counts and optimization restarts and is expected to remain the most expensive stage. No fixed millisecond or slowdown claim is made without an implementation and hardware profile.
 
+For a finite predictive-snap family $`\mathfrak S_t`$, the design-block computation is bounded by the work charged for every inspected candidate:
+
+$$
+T_{\mathrm{snap}}
+\le
+T_{\mathrm{generate}}
++
+\sum_{\Xi'\in\mathfrak S_t}
+\left[
+T_{\mathrm{refit}}(\Xi')
++\sum_{e\in E_\Delta(\Xi')}C_{D_e}
++T_{\mathrm{obl}}(\Xi')
++T_{\mathrm{score}}(\Xi')
+\right]
++T_{\mathrm{confirm}}+T_{\mathrm{publish}}.
+$$
+
+Here $`T_{\mathrm{generate}}`$ includes bounded neighborhood and candidate construction, $`T_{\mathrm{obl}}`$ validates direct or composed comparison obligations, and $`T_{\mathrm{confirm}}`$ is confirmation scoring cost rather than the wall-clock wait for future outcomes. $`T_{\mathrm{score}}`$ includes candidate risk, affected-bucket Anti-Pigeon evaluation, and affected-edge compatibility evaluation not already charged in the explicit edge sum; an implementation must partition these measurements so no operation is omitted or counted twice. The ordinary $`T_{\mathrm{comp}}`$ term audits the published graph, whereas the inner edge sum charges incremental candidate comparisons. The untouched confirmation block may delay publication but is not placed on the current prediction path. Candidate count, neighborhood radius, reverse dependency closure, refit budget, comparison-obligation set, and map class must be bounded before the review begins; unrestricted graph-structure search is not a conforming snapping implementation. The candidate graph, induced local abstraction mapping, and dependent keys are built in shadow state, and publication is an atomic graph-key-epoch swap. Consequently snapping requires only the existing version-consistent epoch check on the direct fast path. The indirect cost is a temporary rise in baseline or certified-fallback use while affected residual entries are recertified.
+
 The integration roadmap is cumulative:
 
 1. Specify typed node laws, edge comparison spaces, maps, divergences, confidence procedures, and deterministic fallbacks.
 2. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged fast path.
 3. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
-4. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
-5. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
-6. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
+4. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
+5. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
+6. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
+7. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
 
-The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
 
 ## 9. Experimental Evaluation
 
@@ -1395,7 +1506,9 @@ The same experiment includes an observed regime shift $`\zeta_a\to\zeta_b`$. Mea
 
 The eighth experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
 
-The ninth experiment evaluates complete staged-execution policies, not merely adjacent stage labels. A policy $`q`$ freezes its admissible invocation sequences, prerequisites, repetition rules, stopping rule, and cost bound before confirmation. Compare preregistered policies including $`\mathcal U_0`$ alone, cumulative one-pass policies through each later stage, and any adaptive policy that may repeat or reorder stages. Report the realized invocation sequence for every case, ordinary proper score, edge-defect calibration, high-priority false-negative rate, probability of harmful correction, split/merge churn, budget overruns, and slow-path latency at the 50th, 95th, and 99th percentiles. Results from one policy do not establish the value of another.
+The ninth experiment evaluates predictive sheaf snapping. Synthetic event networks should include known local miswirings, unnecessary edges, missing regime splits, and deliberately misleading comparison maps. Compare no snapping, the bounded preregistered snap family, a larger-family stress test, and an oracle edit available only in simulation. Candidate generation and selection use the chronological design block; acceptance uses a later untouched block. Report beneficial-, harmful-, false-, and missed-snap rates; edit distance; compatibility-defect change; external future-diameter; unresolved comparison-obligation burden; ordinary and priority-weighted proper-score change; graph churn; rollback frequency; candidate count; selection and confirmation cost; affected-cache fraction; cache-hit recovery time; and fast-path latency before, during, and after publication. Report whether simultaneous coverage remains calibrated under adaptive edge and candidate inspection. Causal-edge recovery is scored only in generators with explicit SCMs, candidate structural equations, and identified interventions; it must compare predictive nomination with causal acceptance so that a useful predictive snap is not counted as a correct causal edit merely because its forecast improved.
+
+The tenth experiment evaluates complete staged-execution policies, not merely adjacent stage labels. A policy $`q`$ freezes its admissible invocation sequences, prerequisites, repetition rules, stopping rule, and cost bound before confirmation. Compare preregistered policies including $`\mathcal U_0`$ alone, cumulative one-pass policies through each later stage, and any adaptive policy that may repeat or reorder stages. Report the realized invocation sequence for every case, ordinary proper score, edge-defect calibration, high-priority false-negative rate, probability of harmful correction, snap acceptance and rollback, split/merge churn, budget overruns, and slow-path latency at the 50th, 95th, and 99th percentiles. Results from one policy do not establish the value of another.
 
 Average correction alone is not the deployment criterion. On a non-empty evaluation set, let $`p_t^{\mathrm{pri}}\in[0,1]`$ be assigned before the outcome by a rule frozen independently of the stages being compared, let $`w_{\mathrm{pri}}(p)>0`$ be a declared finite importance function, and normalize over evaluation cases:
 
@@ -1456,7 +1569,7 @@ Promotion also requires the paired upper confidence bound on proper-score degrad
 
 or a joint confidence construction with the same coverage, or a separately preregistered critical-risk constraint. If stages, priorities, thresholds, or hardware profiles are selected after inspecting the same evaluation data, the confidence procedure must adjust for those comparisons or use a fresh confirmation set. The weights, normalization, confidence procedure, safety margin, and hardware profile must be fixed before evaluation. This is a proposed decision rule, not evidence that any upgrade stage currently passes it.
 
-Ablation studies should remove one component at a time: residual cache, episodic memory, fuzzing, abstraction, compatibility audit, reconciliation, spectral refinement, regime mixtures, and slow-path refinement. The paper should treat negative results as informative. If residual caches fail in a domain, the failure helps characterize when EventFrame is useful. If fuzzing produces unstable invariants, the thresholds or perturbation families may be wrong.
+Ablation studies should remove one component at a time: residual cache, episodic memory, fuzzing, abstraction, compatibility audit, reconciliation, predictive sheaf snapping, targeted invalidation, rollback, spectral refinement, regime mixtures, and slow-path refinement. The paper should treat negative results as informative. If residual caches fail in a domain, the failure helps characterize when EventFrame is useful. If fuzzing produces unstable invariants, the thresholds or perturbation families may be wrong. If snapping reduces design-block defect but harms untouched proper score or causes persistent cache-hit collapse, the snap policy fails its stated purpose.
 
 The evaluation plan is deliberately falsifiable. Each claim should be tied to a measurable result. The next section lists open problems that remain even if the initial experiments succeed.
 
@@ -1474,8 +1587,10 @@ The alternation can be written operationally:
 4. If post-loss remains high, run sensitivity and abstraction audits.
 5. If distinctions do not affect the target, compress through lumpability.
 6. If distinctions repeatedly affect the target, refine through Anti-Pigeon or ontology revision.
+7. If incompatibility is localized to a heterogeneous abstraction neighborhood, generate a bounded predictive sheaf-snap family in shadow state.
+8. Publish a snap only after untouched chronological confirmation; otherwise retain the current graph.
 
-EventFrame does not assume that its ontology is correct at the start. The ontology is a working compression that earns predictive stability on independent tests. Causal-edge credibility is evaluated separately under an SCM or identified intervention design.
+EventFrame does not assume that its ontology is correct at the start. The ontology is a working compression that earns predictive stability on independent tests. A predictive snap may reorganize nodes, compatibility edges, or comparison maps, but causal-edge credibility is evaluated separately under an SCM or identified intervention design.
 
 This discussion also limits the claim. EventFrame does not provide a theory of scientific discovery. It provides a runtime vocabulary for prediction, residual diagnosis, sensitivity testing, and evidence-controlled abstraction.
 
@@ -1530,9 +1645,11 @@ The seventeenth open problem is empirical evidence. The bibliography and mathema
 
 The eighteenth open problem is compatibility-map validity. Pairwise comparison maps may be learned incorrectly, may fail to compose, or may erase exactly the distinctions that Anti-Pigeon is intended to protect. A graph of forecasts is not automatically a sheaf, and low edge defect under bad maps is not evidence of global coherence.
 
-The nineteenth open problem is priority calibration. Priority weighting can protect rare consequential cases, but a misspecified or manipulable priority function can hide ordinary harms or overfit a favored subgroup. Priority must be assigned before outcomes and evaluated beside unweighted and stratified results.
+The nineteenth open problem is predictive sheaf-snap search. Candidate families must be expressive enough to repair local incompatibility but bounded enough to avoid combinatorial search, repeated-test overfitting, and graph churn. Theory is needed for neighborhood selection, edit penalties, rollback, and cache-hit recovery under drift.
 
-The twentieth open problem is hardware-aware scheduling. The staged architecture permits deeper refinement as hardware improves, but stage-cost prediction, queue stability, energy use, and worst-case deadlines remain implementation-dependent. Faster hardware does not relax statistical, causal, or safety prerequisites.
+The twentieth open problem is priority calibration. Priority weighting can protect rare consequential cases, but a misspecified or manipulable priority function can hide ordinary harms or overfit a favored subgroup. Priority must be assigned before outcomes and evaluated beside unweighted and stratified results.
+
+The twenty-first open problem is hardware-aware scheduling. The staged architecture permits deeper refinement as hardware improves, but stage-cost prediction, queue stability, energy use, worst-case deadlines, and post-snap cache recovery remain implementation-dependent. Faster hardware does not relax statistical, causal, or safety prerequisites.
 
 These open problems define the boundary of the current paper. The framework is useful if it makes prediction, memory, and abstraction more explicit and testable. It should not be presented as a final cognitive architecture, universal predictor, or complete mathematical theory. The conclusion summarizes the role EventFrame can play as a conservative event-centric substrate.
 
@@ -1554,7 +1671,7 @@ Episodic memory stores prior cases; residual memory stores prior statistical cor
 
 Approximate predictive lumpability compares detailed contexts that map to the same operational abstraction key. Anti-Pigeon rejects buckets whose externally estimated target-law future-diameter exceeds threshold; a candidate model's own forecast agreement is diagnostic and cannot certify itself. Every bucket retains a concrete traceability frame, but divergence testing uses a coverage-aware context audit set because one representative cannot characterize a heterogeneous group. Observed regime divergence is evaluated on common support and supports predictive adaptation, not causal attribution by itself.
 
-The target architecture also admits a staged abstraction compatibility network. It begins with certified residual reuse, then adds edge audits, local reconciliation, spectral refinement under declared linear assumptions, and predictive regime mixtures. Hardware improvements may permit a greater refinement depth, but do not change the mathematical interfaces or waive evidence gates. Rare high-priority corrections are evaluated with predeclared priority-weighted risk alongside unweighted and stratified results.
+The target architecture also admits a staged abstraction compatibility network. It begins with certified residual reuse, then adds edge audits, local reconciliation, bounded predictive sheaf snapping, spectral refinement under declared linear assumptions, and predictive regime mixtures. A snap selects from a finite local edit family, preserves externally fixed comparison obligations, requires later untouched confirmation, and publishes an atomic graph-key-epoch version with targeted cache invalidation and rollback. It reorganizes predictive compatibility and does not establish causality. Hardware improvements may permit a greater refinement depth, but do not change the mathematical interfaces or waive evidence gates. Rare high-priority corrections are evaluated with predeclared priority-weighted risk alongside unweighted and stratified results.
 
 A finite-state abstraction search terminates under a strict-decrease rule on a fixed potential and fixed evaluation distribution. This result does not imply convergence in an online drifting environment. Implementation, staged ablation, compatibility-map validation, audit-coverage studies, and controlled real-world validation remain necessary before the framework's utility claims can be accepted.
 
@@ -1596,7 +1713,7 @@ $`\mathcal C_{A,t^-}`$, $`\mathcal C_{R,t^-}`$, $`\mathcal C_E`$: as-of exact-ke
 
 $`J_t^A`$, $`J_t^R`$, $`r_t^{\mathrm{use}}`$, $`\mathfrak K_E`$, $`\mathsf Q_t^R`$: exact- and general-cache acceptance indicators, selected residual, residual Markov-kernel map, and corrected forecast law.
 
-$`\Xi_R`$, $`\Xi_A`$, $`\Lambda_{\mathrm{eval}}`$: residual contract, candidate abstraction-compatibility structure, and the externally frozen evaluation contract.
+$`\Xi_R`$, $`\Xi_A^{(v)}`$, $`\Lambda_{\mathrm{eval}}`$: residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
 $`v_{k_t}`$, $`v_t`$, $`m_{k_t}`$: cache-entry epoch, active local abstraction epoch, and materialized compatibility safety margin.
 
@@ -1630,7 +1747,23 @@ $`\delta_e`$, $`\Delta_{\mathrm{comp}}`$: edge compatibility defect and maximum 
 
 $`\partial_A`$, $`L_A`$: compatibility boundary and Laplacian, defined only for the stated finite-dimensional linear representation.
 
-$`\mathcal U_0,\ldots,\mathcal U_4`$, $`r_n`$, $`d_t(h)`$: baseline/refinement operators, selected stage at invocation $`n`$, and deepest reached stage under hardware profile $`h`$.
+$`D_t^{\mathrm{design}}`$, $`D_t^{\mathrm{conf}}`$, $`\mathfrak S_t(\Xi_A^{(v)};\mathcal N)`$, $`\Psi_t`$, $`d_{\mathrm{edit}}`$, $`\mathcal C_{\mathrm{snap}}`$: disjoint chronological snap-design and confirmation blocks, finite local candidate family, design-block score, structural-churn penalty, and revision cost. $`\Theta_\Gamma[\Xi']`$ is the complete candidate induced by an edit, including dependent local abstraction, model, key, and certificate revisions.
+
+$`\mathfrak O_t`$, $`U_{\mathrm{obl}}`$: externally fixed comparison-obligation set and weighted unresolved burden.
+
+$`\lambda_{\mathrm{comp}}`$, $`\lambda_{\mathrm{edit}}`$, $`\lambda_{\mathrm{snap}}`$, $`\lambda_{\mathrm{obl}}`$: non-negative snap-selection weights for compatibility defect, structural churn, revision cost, and unresolved obligations; the final weight is strictly positive unless unresolved obligations are forbidden.
+
+$`\mathcal D_{\Delta,t}(\Xi')`$, $`\mathfrak K_{\Delta,t}(\Xi')`$, $`E_{\Delta,t}^{\mathrm{keep}}(\Xi')`$: reverse dependency closure of a snap candidate and its affected active-bucket and retained/new-edge projections.
+
+$`\Delta\mathcal R_{\mathrm{prop},t}^{\mathrm{snap}}`$, $`G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}`$, $`C_{v\rightarrow\mathrm{cand},t}(h)`$, $`A_t^{\mathrm{snap}}`$: empirical confirmation proper-risk change, paired priority gain, utility-normalized resource cost, and joint snap-acceptance indicator.
+
+$`T_{\mathrm{generate}}`$, $`T_{\mathrm{obl}}`$, $`T_{\mathrm{confirm}}`$, $`T_{\mathrm{publish}}`$: bounded snap-candidate generation, comparison-obligation validation, confirmation scoring, and atomic publication costs.
+
+$`\delta_{\mathrm{snap}}>0`$, $`\epsilon_{\mathrm{obl}}\ge0`$, $`\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\in[0,\epsilon_{\mathrm{split}}^{\mathrm{comp}}]`$: predeclared net-gain safety margin, unresolved-obligation limit, and compatibility threshold for affected retained or newly added edges.
+
+$`\mathbf v^{(v)}`$, $`\mathcal C_{\mathrm{mem}}^{(v)}`$, $`\mathsf B_{\mathcal D}`$, $`\mathsf I_{\mathcal D}`$: local epoch map, versioned memory tuple, monotone epoch-bump map, and targeted stale-marking operator for a dependency closure.
+
+$`\mathcal U_0,\ldots,\mathcal U_5`$, $`r_n`$, $`d_t(h)`$: baseline/refinement operators, selected stage at invocation $`n`$, and deepest reached stage under hardware profile $`h`$; $`\mathcal U_3`$ is bounded predictive sheaf snapping.
 
 $`p_t^{\mathrm{pri}}`$, $`w_{\mathrm{pri}}`$, $`\mathcal R_{\mathrm{pri}}^D`$, $`\mathcal R_{\mathrm{prop}}^D`$, $`G_{a\rightarrow b}^{\mathrm{pri}}`$: pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
 

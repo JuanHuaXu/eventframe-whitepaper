@@ -12,8 +12,10 @@ The alternation can be written operationally:
 4. If post-loss remains high, run sensitivity and abstraction audits.
 5. If distinctions do not affect the target, compress through lumpability.
 6. If distinctions repeatedly affect the target, refine through Anti-Pigeon or ontology revision.
+7. If incompatibility is localized to a heterogeneous abstraction neighborhood, generate a bounded predictive sheaf-snap family in shadow state.
+8. Publish a snap only after untouched chronological confirmation; otherwise retain the current graph.
 
-EventFrame does not assume that its ontology is correct at the start. The ontology is a working compression that earns predictive stability on independent tests. Causal-edge credibility is evaluated separately under an SCM or identified intervention design.
+EventFrame does not assume that its ontology is correct at the start. The ontology is a working compression that earns predictive stability on independent tests. A predictive snap may reorganize nodes, compatibility edges, or comparison maps, but causal-edge credibility is evaluated separately under an SCM or identified intervention design.
 
 This discussion also limits the claim. EventFrame does not provide a theory of scientific discovery. It provides a runtime vocabulary for prediction, residual diagnosis, sensitivity testing, and evidence-controlled abstraction.
 

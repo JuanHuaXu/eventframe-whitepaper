@@ -36,7 +36,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(J_t^A\), \(J_t^R\), \(r_t^{\mathrm{use}}\), \(\mathfrak K_E\), \(\mathsf Q_t^R\): exact- and general-cache acceptance indicators, selected residual, residual Markov-kernel map, and corrected forecast law.
 
-\(\Xi_R\), \(\Xi_A\), \(\Lambda_{\mathrm{eval}}\): residual contract, candidate abstraction-compatibility structure, and the externally frozen evaluation contract.
+\(\Xi_R\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
 \(v_{k_t}\), \(v_t\), \(m_{k_t}\): cache-entry epoch, active local abstraction epoch, and materialized compatibility safety margin.
 
@@ -70,7 +70,23 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\partial_A\), \(L_A\): compatibility boundary and Laplacian, defined only for the stated finite-dimensional linear representation.
 
-\(\mathcal U_0,\ldots,\mathcal U_4\), \(r_n\), \(d_t(h)\): baseline/refinement operators, selected stage at invocation \(n\), and deepest reached stage under hardware profile \(h\).
+\(D_t^{\mathrm{design}}\), \(D_t^{\mathrm{conf}}\), \(\mathfrak S_t(\Xi_A^{(v)};\mathcal N)\), \(\Psi_t\), \(d_{\mathrm{edit}}\), \(\mathcal C_{\mathrm{snap}}\): disjoint chronological snap-design and confirmation blocks, finite local candidate family, design-block score, structural-churn penalty, and revision cost. \(\Theta_\Gamma[\Xi']\) is the complete candidate induced by an edit, including dependent local abstraction, model, key, and certificate revisions.
+
+\(\mathfrak O_t\), \(U_{\mathrm{obl}}\): externally fixed comparison-obligation set and weighted unresolved burden.
+
+\(\lambda_{\mathrm{comp}}\), \(\lambda_{\mathrm{edit}}\), \(\lambda_{\mathrm{snap}}\), \(\lambda_{\mathrm{obl}}\): non-negative snap-selection weights for compatibility defect, structural churn, revision cost, and unresolved obligations; the final weight is strictly positive unless unresolved obligations are forbidden.
+
+\(\mathcal D_{\Delta,t}(\Xi')\), \(\mathfrak K_{\Delta,t}(\Xi')\), \(E_{\Delta,t}^{\mathrm{keep}}(\Xi')\): reverse dependency closure of a snap candidate and its affected active-bucket and retained/new-edge projections.
+
+\(\Delta\mathcal R_{\mathrm{prop},t}^{\mathrm{snap}}\), \(G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}\), \(C_{v\rightarrow\mathrm{cand},t}(h)\), \(A_t^{\mathrm{snap}}\): empirical confirmation proper-risk change, paired priority gain, utility-normalized resource cost, and joint snap-acceptance indicator.
+
+\(T_{\mathrm{generate}}\), \(T_{\mathrm{obl}}\), \(T_{\mathrm{confirm}}\), \(T_{\mathrm{publish}}\): bounded snap-candidate generation, comparison-obligation validation, confirmation scoring, and atomic publication costs.
+
+\(\delta_{\mathrm{snap}}>0\), \(\epsilon_{\mathrm{obl}}\ge0\), \(\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\in[0,\epsilon_{\mathrm{split}}^{\mathrm{comp}}]\): predeclared net-gain safety margin, unresolved-obligation limit, and compatibility threshold for affected retained or newly added edges.
+
+\(\mathbf v^{(v)}\), \(\mathcal C_{\mathrm{mem}}^{(v)}\), \(\mathsf B_{\mathcal D}\), \(\mathsf I_{\mathcal D}\): local epoch map, versioned memory tuple, monotone epoch-bump map, and targeted stale-marking operator for a dependency closure.
+
+\(\mathcal U_0,\ldots,\mathcal U_5\), \(r_n\), \(d_t(h)\): baseline/refinement operators, selected stage at invocation \(n\), and deepest reached stage under hardware profile \(h\); \(\mathcal U_3\) is bounded predictive sheaf snapping.
 
 \(p_t^{\mathrm{pri}}\), \(w_{\mathrm{pri}}\), \(\mathcal R_{\mathrm{pri}}^D\), \(\mathcal R_{\mathrm{prop}}^D\), \(G_{a\rightarrow b}^{\mathrm{pri}}\): pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
 

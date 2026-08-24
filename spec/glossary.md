@@ -204,6 +204,12 @@ A declared divergence between two node forecasts after both are pushed into the 
 
 An abstraction compatibility graph designed so that restriction-map identity and composition laws can be stated and tested. It is not called a sheaf until those laws and the required assigned structures actually hold.
 
+## Predictive Sheaf Snap
+
+EventFrame terminology for a bounded, slow-path revision of a local predictive compatibility structure. Candidate node, edge, or comparison-map edits are selected on chronological design data, accepted only after later untouched confirmation, and published as an atomic graph-key-epoch version. Externally fixed comparison obligations prevent a candidate from appearing coherent merely by deleting difficult edges. A predictive snap does not establish or promote causal edges.
+
+When an explicit SCM exists, a predictive snap may nominate a separate bounded causal-edit family. Causal publication still requires specified structural equations and independent randomized or otherwise identified intervention evidence; predictive gluing cannot orient an edge.
+
 ## Local Reconciliation
 
 A slow-path optimization that trades fidelity to unreconciled local forecasts against declared edge compatibility penalties within an affected neighborhood.

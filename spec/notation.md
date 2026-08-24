@@ -74,11 +74,18 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(g_{ie},\mathsf r_{ie}\) | measurable map, pushforward map | node-to-edge comparison map and its distributional restriction |
 | \(\delta_e,\Delta_{\mathrm{comp}}\) | non-negative reals | edge defect and maximum upper confidence bound |
 | \(\partial_A,L_A\) | linear operators | compatibility boundary and Laplacian under linear assumptions |
-| \(\Xi_A\) | typed structure tuple | candidate compatibility graph and comparison maps |
-| \(\Lambda_{\mathrm{eval}}\) | fixed contract tuple | externally frozen domains, metrics, targets, thresholds, weights, and validation procedures |
-| \(\mathcal U_0,\ldots,\mathcal U_4\) | staged maps | baseline and selectable refinement operators |
-| \(r_n\) | \(\{1,2,3,4\}\) | stage selected at slow-path invocation \(n\) |
-| \(d_t(h)\) | \(\{0,\ldots,4\}\) | selected refinement depth on hardware profile \(h\) |
+| \(\Xi_A^{(v)}\) | typed structure tuple | published versioned compatibility graph, assigned spaces, maps, divergences, and weights |
+| \(\mathfrak S_t,\Psi_t\) | finite set, real function | bounded predictive-snap candidate family and its design-block score |
+| \(d_{\mathrm{edit}},\mathcal C_{\mathrm{snap}}\) | non-negative functions | graph-churn penalty and measured or hardware-indexed snap cost |
+| \(D_t^{\mathrm{design}},D_t^{\mathrm{conf}}\) | chronological data blocks | disjoint as-of blocks used to select and then confirm a predictive-snap candidate |
+| \(\mathfrak O_t,U_{\mathrm{obl}}\) | finite obligation set, non-negative function | externally fixed comparison obligations and unresolved-obligation burden |
+| \(\lambda_{\mathrm{comp}},\lambda_{\mathrm{edit}},\lambda_{\mathrm{snap}},\lambda_{\mathrm{obl}}\) | non-negative reals | snap-selection weights for defect, churn, revision cost, and unresolved obligations |
+| \(\mathcal D_{\Delta,t},\mathfrak K_{\Delta,t},E_{\Delta,t}^{\mathrm{keep}}\) | affected sets | reverse dependency closure and its affected active-bucket and retained/new-edge projections |
+| \(A_t^{\mathrm{snap}}\) | \(\{0,1\}\) | joint confirmation and publication indicator for a selected snap |
+| \(\Lambda_{\mathrm{eval}}\) | fixed contract tuple | externally frozen domains, metrics, targets, thresholds, weights, validation procedures, and snap-policy rules |
+| \(\mathcal U_0,\ldots,\mathcal U_5\) | staged maps | baseline and selectable refinement operators, including predictive sheaf snapping at Stage 3 |
+| \(r_n\) | \(\{1,2,3,4,5\}\) | stage selected at slow-path invocation \(n\) |
+| \(d_t(h)\) | \(\{0,\ldots,5\}\) | selected refinement depth on hardware profile \(h\) |
 | \(p_t^{\mathrm{pri}}\) | \([0,1]\) | priority assigned from prediction-time information |
 | \(w_{\mathrm{pri}}\) | positive function | declared importance weight for priority |
 | \(G_{a\rightarrow b}^{\mathrm{pri}}\) | real | priority-weighted absolute gain between complete policies |
@@ -442,6 +449,16 @@ The network statistic is:
 
 The confidence procedure covers the inspected or adaptively selected edge family. Changes to a dependent map, edge set, threshold, or simultaneous bound increment the affected cache epoch.
 
+A predictive sheaf snap selects from a finite predeclared local family:
+
+\[
+\Xi_A^{\mathrm{cand}}
+\in\arg\min_{\Xi'\in\mathfrak S_t(\Xi_A^{(v)};\mathcal N)}
+\Psi_t(\Xi';\Xi_A^{(v)}).
+\]
+
+The score includes design-block priority risk, candidate-induced compatibility defect, edit distance, snap cost, and unresolved comparison-obligation burden. Every term is finite and normalized to a common utility scale or converted to it by its coefficient. The externally fixed \(\mathfrak O_t\) prevents edge deletion from making an obligated comparison disappear. Here \(\Theta_\Gamma[\Xi']\) is the complete induced candidate, including any required local change to \(\pi\), node laws, keys, and certificates, all fitted on \(D_t^{\mathrm{design}}\). On disjoint \(D_t^{\mathrm{conf}}\), \(A_t^{\mathrm{snap}}=1\) exactly when the joint confidence procedure establishes gain net of resource cost, proper-score non-inferiority, affected-bucket Anti-Pigeon bounds, affected retained/new-edge compatibility bounds, and bounded unresolved burden. Maxima over empty affected sets are zero. Accepted structures atomically publish graph, abstraction map, bumped epochs, and targeted memory invalidation; rejected candidates leave all four unchanged. This is predictive graph revision, not causal-edge promotion.
+
 Under finite-dimensional embeddings and linear restrictions only:
 
 \[
@@ -459,7 +476,7 @@ Starting with certified reuse, repeated or reordered slow-path stages are repres
 S_t^{(0)}=\mathcal U_0(S_{t^-}),
 \qquad
 S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
-\quad r_n\in\{1,2,3,4\}.
+\quad r_n\in\{1,2,3,4,5\}.
 \]
 
 Every invocation has a strictly positive conservative cost bound and every repeat is charged. A strict deadline additionally requires interruptibility and a worst-case reserve or deterministic stop. The reported depth is the maximum stage index reached; the complete sequence, actual cumulative cost, overruns, and stopping reason are also reported.
@@ -476,7 +493,7 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A)\). The frozen \(\Lambda_{\mathrm{eval}}\) includes \(P_{\mathrm{obj}},P_{\mathrm{conf}},P_\star\), domains, metrics, targets, thresholds, weights, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, and map-validity tests. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes \(P_{\mathrm{obj}},P_{\mathrm{conf}},P_\star\), domains, metrics, targets, thresholds, weights, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, and snap candidate, obligation, and publication rules. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
 
 \[
 \mathcal R_{\mathrm{pri}}^D(\Theta_\Gamma)=

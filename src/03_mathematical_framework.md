@@ -143,7 +143,7 @@ The governing principle can now be stated without overloading \(\Omega\). It is 
 \alpha,\kappa,\epsilon_R,\text{cache gates}),
 \]
 
-and the candidate abstraction structure as \(\Xi_A\), containing its compatibility graph and comparison maps. Separately freeze an evaluation contract:
+and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version \(v\) changes only when a validated slow-path revision is published. Separately freeze an evaluation contract:
 
 \[
 \begin{aligned}
@@ -154,7 +154,8 @@ and the candidate abstraction structure as \(\Xi_A\), containing its compatibili
 \\
 &\text{score weights},p^{\mathrm{pri}},w_{\mathrm{pri}},
 \lambda_{\mathrm{rep}},\mathcal C_{\mathrm{rep}},
-\text{confidence and map-validity procedures}).
+\text{confidence and map-validity procedures},\\
+&\text{snap candidate, obligation, and publication rules}).
 \end{aligned}
 \]
 
@@ -162,7 +163,7 @@ Here \(P_{\mathrm{obj}}\) is the design sample used to select a candidate, \(P_{
 
 \[
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
-\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A)
+\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})
 \]
 
 denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{eval}}\). Let \(\mathcal O_{\Theta_\Gamma}(C;S_{t^-})\) denote its final typed output bundle from the state available immediately before prediction time. Let \(\mathfrak K_\pi\) be the buckets induced by \(\pi\), and let \(\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}\) be the active buckets with admissible contexts. For an active bucket \(K\), define its external future-diameter \(D_K^\star(\pi)\) as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to \(\Theta_\Gamma\) only in an implementation that jointly optimizes packet selection.

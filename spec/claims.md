@@ -100,11 +100,17 @@ Status: architectural and mathematical proposal; requires map-validity tests, co
 
 ## Claim 8a: Full refinement can be integrated without redefining the fast path
 
-A cumulative architecture may retain certified residual reuse while adding compatibility audit, local reconciliation, spectral refinement under linear assumptions, and regime-mixture refinement. Hardware improvements may increase the selected depth without changing stage semantics.
+A cumulative architecture may retain certified residual reuse while adding compatibility audit, local reconciliation, bounded predictive sheaf snapping, spectral refinement under linear assumptions, and regime-mixture refinement. Hardware improvements may increase the selected depth without changing stage semantics.
 
 Status: systems design claim; requires implementation, stage-by-stage ablation, cost prediction, queue-stability tests, and validation on multiple hardware profiles.
 
-## Claim 8b: Upgrade value must be priority-weighted and utility-normalized
+## Claim 8b: Predictive sheaf snapping can revise local abstraction structure without redefining the fast path
+
+A finite, bounded family of local compatibility-graph edits may be selected on chronological design data and accepted only after untouched confirmation. Fixed comparison obligations prevent deletion from masquerading as compatibility. Publication is an atomic graph-key-epoch transition with targeted cache invalidation and rollback. Compatibility improvement alone never promotes a causal edge.
+
+Status: architectural and mathematical proposal; requires implementation, controls against unrestricted graph search and no-snap operation, false-snap and rollback measurement, chronological confirmation, and causal-label audits.
+
+## Claim 8c: Upgrade value must be priority-weighted and utility-normalized
 
 A small average correction can be valuable when it credibly reduces predeclared high-priority failure. Prediction loss, latency, compute, and memory must be converted to a declared common utility scale; priority-weighted results must be reported beside unweighted and stratified results.
 

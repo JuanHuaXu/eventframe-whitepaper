@@ -181,6 +181,91 @@ The closest mathematical prior work for this extension is D'Acunto, Di Lorenzo, 
 
 Accordingly, the EventFrame construction is described only as a sheaf-compatible scaffold. It should be called a sheaf only after its assigned spaces and restriction maps satisfy the required identity and composition laws. EventFrame does not assume those laws merely because local forecasts are connected by a graph.
 
+EventFrame calls a validated local revision of this scaffold a **predictive sheaf snap**. This is paper-specific terminology, not a standard sheaf-theoretic operation. Write the published compatibility structure at version \(v\) as:
+
+\[
+\Xi_A^{(v)}=
+\left(
+\mathcal G^{A,(v)},
+\{\mathcal Y_i\}_{i\in V^{A,(v)}},
+\{\mathcal Y_e,D_e,w_e,\{g_{ie}:i\in e\}\}_{e\in E^{A,(v)}}
+\right).
+\]
+
+For an affected neighborhood \(\mathcal N\), let \(D_t^{\mathrm{design}}\) and \(D_t^{\mathrm{conf}}\) be disjoint chronological design and confirmation blocks satisfying the paper's embargo and as-of rules. Let \(\mathfrak S_t(\Xi_A^{(v)};\mathcal N)\) be a finite, predeclared family of candidate structures constructed only from information available by the slow-path review time, with the unchanged structure \(\Xi_A^{(v)}\) included as the no-snap candidate. An edit may split, merge, or duplicate predictive nodes; add or remove predictive-compatibility edges; or select a comparison map from a prevalidated candidate class. The family has bounded neighborhood radius, candidate count, and map complexity. It may not relabel a predictive edge as causal. The notation \(\Theta_\Gamma[\Xi']\) means the complete candidate design induced by \(\Xi'\), including any required local revision \(\pi'\) of the operational abstraction map, refitted node laws, keys, and certificates. Those dependent components are fitted only on \(D_t^{\mathrm{design}}\); a graph edit is never scored while retaining keys or forecasts that are inconsistent with it.
+
+Fix a task-defined comparison-obligation set \(\mathfrak O_t\) before candidate inspection. Each obligation names local predictions that must remain comparable. A candidate discharges an obligation through a valid direct edge or a composition-valid comparison path; otherwise it must retain the obligation explicitly as unresolved. Let \(U_{\mathrm{obl}}(\Xi';\mathfrak O_t)\ge0\) be the predeclared weighted unresolved burden. This prevents a candidate from obtaining zero defect merely by deleting difficult edges; in particular, an empty graph is not automatically a successful snap when \(\mathfrak O_t\neq\varnothing\).
+
+Let \(\mathcal D_{\Delta,t}(\Xi')\) be the reverse dependency closure of the proposed edit, including every bucket, node law, comparison map, key, certificate, cache entry, or edge whose value or validity can change, not only objects edited syntactically. Let \(\mathfrak K_{\Delta,t}(\Xi')\) and \(E_{\Delta,t}^{\mathrm{keep}}(\Xi')\) be its affected active-bucket and retained-or-new-edge projections.
+
+On a chronological design block \(D_t^{\mathrm{design}}\), score a candidate by:
+
+\[
+\begin{aligned}
+\Psi_t(\Xi';\Xi_A^{(v)})={}&
+\widehat{\mathcal R}_{\mathrm{pri}}^{D_t^{\mathrm{design}}}(\Theta_\Gamma[\Xi'])
++\lambda_{\mathrm{comp}}\widehat\Delta_{\mathrm{comp}}^{D_t^{\mathrm{design}}}
+(\Theta_\Gamma[\Xi'];\Xi')\\
+&+\lambda_{\mathrm{edit}}d_{\mathrm{edit}}(\Xi',\Xi_A^{(v)})
++\lambda_{\mathrm{snap}}\mathcal C_{\mathrm{snap}}(\Xi')
++\lambda_{\mathrm{obl}}U_{\mathrm{obl}}(\Xi';\mathfrak O_t),
+\end{aligned}
+\]
+
+where the hatted quantities are design-block estimates computed under the predeclared candidate-selection procedure. The compatibility estimate uses the candidate-induced laws and the maps in \(\Xi'\). Every term is finite and normalized to a declared common utility scale, or its coefficient carries the conversion needed to produce that scale. All coefficients are non-negative: \(\lambda_{\mathrm{comp}}\) weights compatibility defect, \(\lambda_{\mathrm{edit}}\) weights structural churn, and \(\lambda_{\mathrm{snap}}\) weights measured or hardware-indexed revision cost. The unresolved-obligation coefficient \(\lambda_{\mathrm{obl}}\) is strictly positive unless the candidate family itself requires \(U_{\mathrm{obl}}=0\). Because the candidate family is finite and non-empty, a deterministic tie-breaking rule selects:
+
+\[
+\Xi_A^{\mathrm{cand}}
+\in\arg\min_{\Xi'\in\mathfrak S_t(\Xi_A^{(v)};\mathcal N)}
+\Psi_t(\Xi';\Xi_A^{(v)}).
+\]
+
+Candidate generation and selection do not authorize publication. On \(D_t^{\mathrm{conf}}\), define the proper-risk change:
+
+\[
+\Delta\mathcal R_{\mathrm{prop},t}^{\mathrm{snap}}=
+\widehat{\mathcal R}_{\mathrm{prop}}^{D_t^{\mathrm{conf}}}(\Theta_\Gamma[\Xi_A^{\mathrm{cand}}])
+-\widehat{\mathcal R}_{\mathrm{prop}}^{D_t^{\mathrm{conf}}}(\Theta_\Gamma[\Xi_A^{(v)}]).
+\]
+
+Let \(G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}\) be the paired priority-weighted gain defined as in Section 9, and let \(C_{v\rightarrow\mathrm{cand},t}(h)\) be its resource cost on the same declared utility scale. Declare \(\delta_{\mathrm{snap}}>0\), \(\epsilon_{\mathrm{obl}}\ge0\), and \(0\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\le\epsilon_{\mathrm{split}}^{\mathrm{comp}}\) before candidate inspection. With \(\max\varnothing=0\), the joint snap-acceptance indicator is:
+
+\[
+\begin{aligned}
+A_t^{\mathrm{snap}}=1\quad\Longleftrightarrow\quad&
+\mathrm{LCB}\!\left[G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}\right]
+-\mathrm{UCB}\!\left[C_{v\rightarrow\mathrm{cand},t}(h)\right]
+{}>\delta_{\mathrm{snap}},\\
+&\mathrm{UCB}\!\left[\Delta\mathcal R_{\mathrm{prop},t}^{\mathrm{snap}}\right]
+\le\epsilon_{\mathrm{prop}},\\
+&\max_{K\in\mathfrak K_{\Delta,t}(\Xi_A^{\mathrm{cand}})}
+D_K^{\mathrm{cert},\star}\le\epsilon_{AP},\\
+&\max_{e\in E_{\Delta,t}^{\mathrm{keep}}(\Xi_A^{\mathrm{cand}})}
+\mathrm{UCB}_{\mathrm{sim}}[\delta_e]\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}},\\
+&U_{\mathrm{obl}}(\Xi_A^{\mathrm{cand}};\mathfrak O_t)
+\le\epsilon_{\mathrm{obl}}.
+\end{aligned}
+\]
+
+Set \(A_t^{\mathrm{snap}}=0\) otherwise. Every outcome-dependent quantity in the indicator is computed exclusively from as-of predictions on \(D_t^{\mathrm{conf}}\); no confirmation outcome may refit the candidate. The predeclared joint confidence procedure covers every displayed stochastic gate after candidate selection. Repeated reviews use fresh blocks or a sequentially valid procedure. On acceptance, relabel the confirmed candidate as version \(v+1\) and write \(\mathcal D_{\Delta,t}=\mathcal D_{\Delta,t}(\Xi_A^{\mathrm{cand}})\). Let \(\mathbf v^{(v)}\) be the local epoch map, let \(\mathcal C_{\mathrm{mem}}^{(v)}=(\mathcal C_A^{(v)},\mathcal C_R^{(v)},\mathcal C_E^{(v)})\), let \(\mathsf B_{\mathcal D}\) monotonically increment epochs in dependency closure \(\mathcal D\), and let \(\mathsf I_{\mathcal D}\) mark every dependent memory entry stale. The publish-or-retain transition is:
+
+\[
+\left(\Xi_A^{\mathrm{new}},\pi^{\mathrm{new}},
+\mathbf v^{\mathrm{new}},\mathcal C_{\mathrm{mem}}^{\mathrm{new}}\right)=
+\begin{cases}
+\left(\Xi_A^{(v+1)},\pi',
+\mathsf B_{\mathcal D_{\Delta,t}}(\mathbf v^{(v)}),
+\mathsf I_{\mathcal D_{\Delta,t}}(\mathcal C_{\mathrm{mem}}^{(v)})\right),
+& A_t^{\mathrm{snap}}=1,\\
+\left(\Xi_A^{(v)},\pi,\mathbf v^{(v)},\mathcal C_{\mathrm{mem}}^{(v)}\right),
+& A_t^{\mathrm{snap}}=0.
+\end{cases}
+\]
+
+The accepted tuple publishes atomically, and the previous complete version remains available for rollback. The invalidation operator preserves unaffected entries and marks affected ones unusable until recertified; it does not silently assign them certificates under the new version. When \(A_t^{\mathrm{snap}}=0\), no candidate component is published. This operation revises predictive organization only. It may nominate a causal hypothesis, but changing an SCM edge additionally requires the paper's intervention and identification conditions; compatibility improvement alone is insufficient.
+
+When an explicit SCM exists, an accepted predictive snap may nominate a separate finite family of local SCM edits, such as adding or removing an edge, reversing a direction not fixed by temporal order, or introducing a measured mediator or regime variable. Every causal candidate must specify the resulting structural equations, obey declared temporal and domain constraints, and identify the intervention law under which it will be tested. Candidate generation may use predictive defect, but causal selection and confirmation require independent randomized or otherwise identified intervention evidence with correction for the inspected edit family. Observational fit, lower compatibility defect, or successful predictive gluing cannot by themselves orient or promote a causal edge. Until those tests pass, the published causal graph remains unchanged.
+
 The network defect complements rather than replaces Anti-Pigeon. \(D_K^\star\) tests hidden external future disagreement inside a bucket; \(\delta_e\) tests disagreement between representations after both are mapped into a common comparison space. A proposed merge is accepted only when both its external bucket future-diameter and affected edge-defect upper bounds are below their merge thresholds. A bucket or edge is split, invalidated, or routed to deeper review when a lower confidence bound exceeds its split threshold. Separate thresholds \(\epsilon_{\mathrm{merge}}^{\mathrm{comp}}<\epsilon_{\mathrm{split}}^{\mathrm{comp}}\) provide hysteresis.
 
 When simple rejection would discard useful local information, a local reconciliation stage may solve:

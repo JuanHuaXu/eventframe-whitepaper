@@ -31,7 +31,8 @@ The contributions of this paper are therefore:
 4. A combined episodic and residual memory architecture.
 5. A validity-constrained sensitivity method for conditional invariants and ontology review.
 6. A lumpability-based approach to abstraction.
-7. A fast-path and slow-path reference runtime model.
-8. Experiment designs for testing the framework's claims.
+7. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
+8. A fast-path and slow-path reference runtime model.
+9. Experiment designs for testing the framework's claims.
 
-These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, and priority- and hardware-aware staged integration. The next section defines the event ontology.
+These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, bounded predictive sheaf snapping, and priority- and hardware-aware staged integration. The snapping term is EventFrame terminology for validated local predictive-structure revision, not a theorem or standard operation inherited from sheaf theory. The next section defines the event ontology.

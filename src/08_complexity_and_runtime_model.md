@@ -68,7 +68,7 @@ T_{\mathrm{base}}
 \[
 T_{\mathrm{upgrade}}
 =T_{\mathrm{comp}}+T_{\mathrm{reconcile}}
-+T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
++T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
 \]
 
 \[
@@ -89,14 +89,16 @@ The full upgrade is defined as a staged family rather than one indivisible algor
 \[
 \mathcal U_2=\text{local reconciliation},
 \qquad
-\mathcal U_3=\text{component or spectral refinement},
+\mathcal U_3=\text{bounded predictive sheaf snap},
 \]
 
 \[
-\mathcal U_4=\text{regime-mixture and map refinement}.
+\mathcal U_4=\text{component or spectral refinement},
+\qquad
+\mathcal U_5=\text{regime-mixture and map refinement}.
 \]
 
-Starting from \(S_t^{(0)}=\mathcal U_0(S_{t^-})\), let \(r_n\in\{1,2,3,4\}\) be the stage selected for slow-path invocation \(n\), subject to its prerequisites. The step-integration recurrence is:
+Starting from \(S_t^{(0)}=\mathcal U_0(S_{t^-})\), let \(r_n\in\{1,2,3,4,5\}\) be the stage selected for slow-path invocation \(n\), subject to its prerequisites. The step-integration recurrence is:
 
 \[
 S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
@@ -122,7 +124,7 @@ and all prerequisite evidence and safety gates pass. The run stops at the first 
 d_t(h)=\max\left(\{0\}\cup\{r_1,\ldots,r_{N_t}\}\right).
 \]
 
-Here \(p_t^{\mathrm{pri}}\in[0,1]\) is priority declared from prediction-time information, \(\mathcal B\) is a priority-dependent resource budget, and \(c_r^U(h,S)\) is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile \(h\). The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 4 may revise mixtures or comparison maps, after which Stages 1--3 may be selected again; every rerun appears again in \(C_t^U\). The architecture targets all five stages; \(d_t(h)\) records the deepest stage reached, while the complete invocation sequence \((r_1,\ldots,r_{N_t})\), actual cost, and stopping reason are also reported.
+Here \(p_t^{\mathrm{pri}}\in[0,1]\) is priority declared from prediction-time information, \(\mathcal B\) is a priority-dependent resource budget, and \(c_r^U(h,S)\) is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile \(h\). The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 5 may revise mixtures or comparison maps, after which Stages 1--4 may be selected again; every rerun appears again in \(C_t^U\). The architecture targets certified reuse plus all five refinement stages; \(d_t(h)\) records the deepest stage reached, while the complete invocation sequence \((r_1,\ldots,r_{N_t})\), actual cost, and stopping reason are also reported.
 
 This definition separates semantic interfaces from hardware policy. Faster processors, larger memory, improved accelerators, or cheaper distributional solvers reduce measured costs and their conservative bounds and can increase \(d_t(h)\) without changing event, residual, compatibility, or causality definitions. A conforming implementation must therefore record both the output stage and the hardware/cost profile used to select it.
 
@@ -134,13 +136,33 @@ T_{\mathrm{comp}}=O\!\left(\sum_{e\in E_{\Delta}}C_{D_e}\right),
 
 where \(C_{D_e}\) is the cost of mapping and comparing the two incident forecasts. With bounded local degree this is local in the changed neighborhood. Spectral work depends on component size, representation dimension, sparsity, solver, and requested tolerance. Mixture refinement additionally depends on component counts and optimization restarts and is expected to remain the most expensive stage. No fixed millisecond or slowdown claim is made without an implementation and hardware profile.
 
+For a finite predictive-snap family \(\mathfrak S_t\), the design-block computation is bounded by the work charged for every inspected candidate:
+
+\[
+T_{\mathrm{snap}}
+\le
+T_{\mathrm{generate}}
++
+\sum_{\Xi'\in\mathfrak S_t}
+\left[
+T_{\mathrm{refit}}(\Xi')
++\sum_{e\in E_\Delta(\Xi')}C_{D_e}
++T_{\mathrm{obl}}(\Xi')
++T_{\mathrm{score}}(\Xi')
+\right]
++T_{\mathrm{confirm}}+T_{\mathrm{publish}}.
+\]
+
+Here \(T_{\mathrm{generate}}\) includes bounded neighborhood and candidate construction, \(T_{\mathrm{obl}}\) validates direct or composed comparison obligations, and \(T_{\mathrm{confirm}}\) is confirmation scoring cost rather than the wall-clock wait for future outcomes. \(T_{\mathrm{score}}\) includes candidate risk, affected-bucket Anti-Pigeon evaluation, and affected-edge compatibility evaluation not already charged in the explicit edge sum; an implementation must partition these measurements so no operation is omitted or counted twice. The ordinary \(T_{\mathrm{comp}}\) term audits the published graph, whereas the inner edge sum charges incremental candidate comparisons. The untouched confirmation block may delay publication but is not placed on the current prediction path. Candidate count, neighborhood radius, reverse dependency closure, refit budget, comparison-obligation set, and map class must be bounded before the review begins; unrestricted graph-structure search is not a conforming snapping implementation. The candidate graph, induced local abstraction mapping, and dependent keys are built in shadow state, and publication is an atomic graph-key-epoch swap. Consequently snapping requires only the existing version-consistent epoch check on the direct fast path. The indirect cost is a temporary rise in baseline or certified-fallback use while affected residual entries are recertified.
+
 The integration roadmap is cumulative:
 
 1. Specify typed node laws, edge comparison spaces, maps, divergences, confidence procedures, and deterministic fallbacks.
 2. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged fast path.
 3. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
-4. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
-5. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
-6. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
+4. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
+5. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
+6. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
+7. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
 
-The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
