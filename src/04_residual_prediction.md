@@ -2,7 +2,7 @@
 
 Residual prediction separates a first-pass event estimate from a correction. The baseline captures ordinary transition structure; the residual records a recurring statistical prediction error. A residual is not a causal hypothesis unless separate intervention evidence identifies it as causal.
 
-Let the baseline probability law and its structured point summary be:
+Let the baseline probability law and its conditional structured event template be:
 
 \[
 \mathsf Q_B:\mathcal E^k\rightarrow\mathcal P(\mathcal Z_H),
@@ -48,26 +48,38 @@ d_E\!\left(\Pi_E\!\left(q_E(b)+\mathrm{clip}_{\delta_E}(r)\right)\right), & r\ne
 
 Thus zero is an exact identity even when the encoder is lossy or the baseline encoding is outside the admissible set.
 
-This construction borrows only the use of self-adjoint operator representations and variational admissibility from Causal Fermion Systems [1,2]. It is not the CFS causal action, does not inherit CFS field equations, and makes no claim of physical equivalence.
+This construction takes limited inspiration from the use of self-adjoint operator representations in Causal Fermion Systems [1,2]. The clipping radius, admissible set, projection, decoder, and residual objective are EventFrame definitions; they are not CFS terminology or consequences of the CFS causal action principle. The construction does not inherit CFS field equations and makes no claim of physical equivalence.
 
-Residuals are estimated after observation. When a concrete next event has been observed, a simple representation residual is:
+Residuals are estimated after observation and are indexed by the forecast horizon that generated their label. For the forecast issued at \(t\), a simple point-representation residual exists only when the concrete next event lies inside that same horizon:
 
 \[
-r_t^{\mathrm{obs}}=q_E(e_{t+1})-q_E(b_t).
+r_{t,H}^{\mathrm{obs}}=
+q_E(e_{t+1})-q_E(b_t),
+\qquad
+0<\tau(e_{t+1})-\tau(e_t)\le H.
 \]
 
-If the horizon ends with \(Z_{t+1}=\varnothing\) before a concrete next event is observed, this event-representation residual is not yet available. The no-event outcome may update distributional residual utility, but it must not be silently encoded as a concrete event. An implementation may replace subtraction with a learned alignment or constrained estimator, but its domain and objective must be declared. In all cases, the residual is a reusable correction candidate whose utility must be re-evaluated on later observations.
+If \(Z_{t+1}=\varnothing\), then \(r_{t,H}^{\mathrm{obs}}\) is undefined for that forecast origin. A concrete event observed after \(H\) may label a later forecast origin, but it must not retroactively become the point residual of the expired \(H\)-horizon forecast. To learn a law correction from either branch, declare a measurable horizon-specific distributional residual estimator
+
+\[
+\rho_H:\mathcal P(\mathcal Z_H)\times\mathcal Z_H\rightarrow\mathbb H_d,
+\qquad
+r_{t,H}^{\mathrm{law}}=
+\rho_H\!\left(\mathsf Q_B(\cdot\mid C_t),Z_{t+1}\right).
+\]
+
+Its objective may be a proper-score gradient, a constrained alignment, or another predeclared rule, but it must be defined at \(Z_{t+1}=\varnothing\), fitted without future leakage, and evaluated on later outcomes. The point residual \(r_{t,H}^{\mathrm{obs}}\) and law residual \(r_{t,H}^{\mathrm{law}}\) are distinct estimators even though both inhabit \(\mathbb H_d\); cache provenance records which estimator produced an entry. A no-event observation must not be silently encoded as a concrete event. Every cache entry records its horizon and censoring convention; reuse across horizons requires a separately validated transport rule. In all cases, a stored residual is a reusable correction candidate whose utility must be re-evaluated on later observations.
 
 The general residual cache available immediately before prediction is:
 
 \[
-\mathcal C_{R,t^-}=\{(\kappa_i,r_i,c_i,n_i,t_i,v_i,m_i,s_i)\}_{i=1}^{N_t},
+\mathcal C_{R,t^-}=\{(\kappa_i,r_i,c_i,n_i,t_i,v_i,m_i,H_i,s_i)\}_{i=1}^{N_t},
 \qquad
 \kappa:\mathcal E^k\rightarrow\mathcal K_R,
 \qquad r_i\in\mathbb H_d,
 \]
 
-where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(m_i\) is its compatibility safety margin, and \(s_i\) is provenance including residual identity and eligible training interval. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
+where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(m_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, and \(s_i\) is provenance including residual identity, censoring convention, and eligible training interval. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
 
 \[
 j_t=\min\!\left(\arg\min_{1\le i\le N_t}
@@ -84,7 +96,7 @@ J_t^R=
 d_{\mathcal K_R}(\kappa(C_t),\kappa_{j_t})\le\epsilon_R,\quad
 c_{j_t}\ge\gamma_R,\quad n_{j_t}\ge n_{\min}^R,\\
 \mathrm{age}_t(t_{j_t})\le A_{\max}^R,\quad
-v_{j_t}=v_t,\quad m_{j_t}\ge0,\quad s_{j_t}\text{ is valid}
+v_{j_t}=v_t,\quad H_{j_t}=H,\quad m_{j_t}\ge0,\quad s_{j_t}\text{ is valid}
 \end{array}
 \right],&N_t>0,\\
 0,&N_t=0.
@@ -115,7 +127,7 @@ and define the partial map:
 \mathcal C_{A,t^-}:
 \mathcal K_A\rightharpoonup
 \mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
-\times\mathbb N_0\times\mathbb R.
+\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}.
 \]
 
 For \(k_t=\alpha(C_t)\), bind the cache entry only when it exists:
@@ -123,10 +135,10 @@ For \(k_t=\alpha(C_t)\), bind the cache entry only when it exists:
 \[
  k_t\in\mathrm{dom}(\mathcal C_{A,t^-})
  \quad\Longrightarrow\quad
-\mathcal C_{A,t^-}(k_t)=(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t}),
+\mathcal C_{A,t^-}(k_t)=(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t},H_{k_t}),
 \]
 
-where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, and \(m_{k_t}\) is the compatibility safety margin materialized by the slow path. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
+where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(m_{k_t}\) is the compatibility safety margin materialized by the slow path, and \(H_{k_t}\) is the horizon under which the residual was estimated. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
 
 \[
 m_{k_t}=
@@ -145,8 +157,11 @@ Define the exact-cache acceptance indicator without dereferencing a missing entr
 J_t^A=
 \begin{cases}
 \mathbf 1\!\left[
-c_{k_t}\ge\gamma_A,\ n_{k_t}\ge n_{\min},\
-\mathrm{age}_t(t_{k_t})\le A_{\max},\ v_{k_t}=v_t,\ m_{k_t}\ge0
+\begin{gathered}
+c_{k_t}\ge\gamma_A,\quad n_{k_t}\ge n_{\min},\quad
+\mathrm{age}_t(t_{k_t})\le A_{\max},\\
+v_{k_t}=v_t,\quad H_{k_t}=H,\quad m_{k_t}\ge0
+\end{gathered}
 \right],&k_t\in\mathrm{dom}(\mathcal C_{A,t^-}),\\
 0,&k_t\notin\mathrm{dom}(\mathcal C_{A,t^-}).
 \end{cases}
@@ -181,6 +196,8 @@ To connect point correction to the probability law evaluated by the proper score
 \mathfrak K_E(0)(z,A)=\mathbf 1_A(z).
 \]
 
+The declaration covers every \(z\in\mathcal Z_H\), including \(\varnothing\), for every effective residual. Write \(\mathcal Z_H^+=\mathcal Z_H\setminus\{\varnothing\}\). The implementation must explicitly specify both \(\mathfrak K_E(\bar r)(\varnothing,\{\varnothing\})\) and \(\mathfrak K_E(\bar r)(z,\{\varnothing\})\) for \(z\in\mathcal Z_H^+\); preservation of the no-event atom is not a default assumption.
+
 For every measurable \(A\subseteq\mathcal Z_H\) and candidate residual \(r\in\mathbb H_d\), first set \(\bar r=\mathrm{clip}_{\delta_E}(r)\) and define:
 
 \[
@@ -189,14 +206,38 @@ For every measurable \(A\subseteq\mathcal Z_H\) and candidate residual \(r\in\ma
 \,\mathsf Q_B(dz\mid C_t).
 \]
 
-Because \(\mathfrak K_E(r)\) is a Markov kernel, \(\mathsf Q_t^{(r)}\) is a probability law. Define the candidate bundle:
+Because \(\mathfrak K_E(r)\) is a Markov kernel, \(\mathsf Q_t^{(r)}\) is a probability law. Its no-event mass is explicitly:
+
+\[
+\begin{aligned}
+\mathsf Q_t^{(r)}(\{\varnothing\}\mid C_t)
+={}&\mathfrak K_E(\bar r)(\varnothing,\{\varnothing\})
+\mathsf Q_B(\{\varnothing\}\mid C_t)\\
+&+\int_{\mathcal Z_H^+}
+\mathfrak K_E(\bar r)(z,\{\varnothing\})
+\,\mathsf Q_B(dz\mid C_t).
+\end{aligned}
+\]
+
+Thus a nonzero residual may change the no-event probability by moving mass in either direction. Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) be a declared measurable map that aligns a structured event template with the mark and time selected by \(d_H\). Define the no-event-capable structured point summary:
+
+\[
+\hat e_t^H(r)=
+\begin{cases}
+\varnothing,
+&d_H(\mathsf Q_t^{(r)})=\varnothing,\\
+\mathrm{lift}_H\!\left(b_t\oplus_E\bar r,d_H(\mathsf Q_t^{(r)})\right),
+&d_H(\mathsf Q_t^{(r)})\in\mathcal Z_H^+.
+\end{cases}
+\]
 
 \[
 \mathcal O_t(r)=
-\left(\mathsf Q_t^{(r)}(\cdot\mid C_t),\ b_t\oplus_E\bar r\right).
+\left(\mathsf Q_t^{(r)}(\cdot\mid C_t),\hat e_t^H(r)\right)
+\in\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing.
 \]
 
-The same effective residual \(\bar r\) therefore controls both the probability law and the point correction. The baseline bundle is exactly \(\mathcal O_t^B=\mathcal O_t(0)=(\mathsf Q_B(\cdot\mid C_t),b_t)\). Form the selected candidate \(\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(r_t^{\mathrm{use}})\), and accept it only from current information:
+The same effective residual \(\bar r\) parameterizes both the law correction and the conditional event-template correction, while the fixed rule \(d_H\) makes the final point decision coherent with the corrected law. The baseline bundle is exactly \(\mathcal O_t^B=\mathcal O_t(0)=(\mathsf Q_B(\cdot\mid C_t),\hat e_t^H(0))\). Form the selected candidate \(\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(r_t^{\mathrm{use}})\), and accept it only from current information:
 
 \[
 J_t^{\mathrm{pre}}=

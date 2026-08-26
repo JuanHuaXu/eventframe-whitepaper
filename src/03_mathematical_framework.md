@@ -9,7 +9,7 @@ e_t = \Gamma_{\Delta_\tau}(\omega_{A_t}), \qquad
 \Gamma_{\Delta_\tau}: \Omega^{A_t} \rightarrow \mathcal{E}_{\Delta_\tau}.
 \]
 
-The coarse-graining \(\Gamma_{\Delta_\tau}\) is task-relative and lossy. It selects distinctions available to prediction, memory, and review; it does not establish a fundamental discretization of spacetime. The Planck scales and physical information bounds motivate caution about microscopic descriptions but do not prove the EventFrame sparsity hypothesis [7--9].
+The coarse-graining \(\Gamma_{\Delta_\tau}\) is task-relative and lossy. It selects distinctions available to prediction, memory, and review; it does not establish a fundamental discretization of spacetime. For a physical substrate, CODATA Planck scales and physical information bounds motivate a limiting thought experiment about microscopic description [7--9]. They do not imply a Planck-scale sampling lattice or prove EventFrame sparsity. Simulated and software substrates require an independent task- and resource-based compression argument; the physical citations do not support that case.
 
 A trajectory at fixed resolution is:
 
@@ -31,7 +31,7 @@ For a context length \(k\), define:
 C_t=e_{t-k+1:t}\in\mathcal E^k.
 \]
 
-Let \(\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k\) be the declared admissible context domain on which the chosen version of each conditional forecast law is defined. Population suprema below range over this domain or over the support of a named evaluation law, not over arbitrary zero-probability contexts.
+Let \(\varnothing\neq\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k\) be the declared admissible context domain on which the chosen version of each conditional forecast law is defined. Population suprema below range over this domain or over the support of a named evaluation law, not over arbitrary zero-probability contexts.
 
 Let \(a(x)\) be the time at which observation, label, cache record, or derived object \(x\) becomes available to the runtime. Let \(\mathscr F_t^{\mathrm{pred}}\) be the information available when the prediction at index \(t\) is issued, including \(C_t\) but excluding \(Z_{t+1}\). Mutable runtime state is the left-limit snapshot \(S_{t^-}\), constructed only from objects with \(a(x)\le t\). Every prediction, priority, cache lookup, abstraction decision, and pre-risk value used at time \(t\) must be measurable with respect to \(\mathscr F_t^{\mathrm{pred}}\). For a no-event outcome, \(a(Z_{t+1})\) is no earlier than expiration of horizon \(H\); delayed labels use their actual later availability time.
 
@@ -51,15 +51,21 @@ A probabilistic predictor returns a distribution rather than only a point:
 \mathsf Q_\theta(\cdot\mid C_t)\in\mathcal P(\mathcal Z_H),
 \]
 
-where \(\mathcal Z_H\) contains marked event times in \((0,H]\) and the no-event outcome \(\varnothing\). Let \(\hat e_\theta(C_t)\in\mathcal E\) be a separately declared point decision or structured point summary. The typed predictor output is the bundle:
+where \(\mathcal Z_H\) contains marked event times in \((0,H]\) and the no-event outcome \(\varnothing\). This is a finite-horizon marked-event representation with a right-censoring atom; standard marked point-process constructions provide a broader continuous-time setting [11]. Let \(\mathcal E_\varnothing=\mathcal E\sqcup\{\varnothing\}\) be the tagged extension of the structured event space. A fixed measurable decision rule
+
+\[
+d_H:\mathcal P(\mathcal Z_H)\rightarrow\mathcal Z_H
+\]
+
+returns the no-event decision or a marked time, with a declared loss and deterministic tie-break. Let \(\hat e_\theta^H(C_t)\in\mathcal E_\varnothing\) be a structured summary coherent with that decision: it equals \(\varnothing\) exactly when \(d_H(\mathsf Q_\theta(\cdot\mid C_t))=\varnothing\), and otherwise its mark and time agree with the marked decision. The typed predictor output is the bundle:
 
 \[
 \mathcal O_\theta(C_t)=
-\left(\mathsf Q_\theta(\cdot\mid C_t),\hat e_\theta(C_t)\right)
-\in\mathcal P(\mathcal Z_H)\times\mathcal E.
+\left(\mathsf Q_\theta(\cdot\mid C_t),\hat e_\theta^H(C_t)\right)
+\in\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing.
 \]
 
-The primary prediction objective is a declared strictly proper scoring rule applied to the probability-law component:
+The primary probabilistic-fidelity objective is a declared strictly proper scoring rule applied to the probability-law component. It is distinct from the composite system-design objective below:
 
 \[
 \mathcal L_{\mathrm{pred}}(\theta;t)
@@ -76,9 +82,9 @@ Fix a dominating reference measure \(\mu_H\) on the marked-time branch, includin
 \end{cases}
 \]
 
-Changing \(\mu_H\) or the time units changes density values by an additive score constant, so forecast comparisons must hold them fixed. This score covers event identity, timing, uncertainty, and right-censoring; calibration remains an empirical property to test. Proper scoring rules prevent a predictor from improving its expected score by reporting a distribution other than the one it believes [6].
+If \(d\mu_H'=h\,d\mu_H\), then the marked-branch logarithmic loss changes by the forecast-independent but generally outcome-dependent term \(\log h(Z)\). A pure unit rescaling makes this term constant. Such an integrable outcome-only term preserves propriety and pairwise forecast differences on the same observation, but the reference measure and units must remain fixed when absolute scores or results across datasets are reported. This score covers event identity, timing, uncertainty, and right-censoring; calibration remains an empirical property to test. Proper scoring rules prevent a predictor from improving its expected score by reporting a distribution other than the one it believes [6].
 
-For human-readable diagnostics, let \(\hat Z_{t+1}\) be a point summary of the distribution. A bounded event-aware timing diagnostic is:
+For human-readable diagnostics, let \(\hat Z_{t+1}=d_H(\mathsf Q_\theta(\cdot\mid C_t))\). A bounded event-aware timing diagnostic is:
 
 \[
 \mathcal L_{\mathrm{event}}^H(\hat Z,Z)=
@@ -102,7 +108,7 @@ For any other field, use a distinct projection \(\psi_i:\mathcal E\rightarrow\ma
 
 When \(Z_{t+1}=\varnothing\), this field loss is not evaluated unless a separate missing-aware loss with an explicit no-event symbol has been declared.
 
-EventFrame uses separate pre-observation and post-observation quantities. For a candidate output bundle \(\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e)\), a pre-observation admissibility risk may use only information available at prediction time:
+EventFrame uses separate pre-observation and post-observation quantities. For a candidate output bundle \(\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e^H)\), a pre-observation admissibility risk may use only information available at prediction time:
 
 \[
 \mathcal R_{\mathrm{pre}}(\widetilde{\mathcal O}\mid C_t)
@@ -139,7 +145,7 @@ The fast path may gate a correction using \(\mathcal R_{\mathrm{pre}}\); it may 
 The governing principle can now be stated without overloading \(\Omega\). It is evaluated at a fixed resolution \(\Gamma_{\Delta_\tau}\); comparisons across resolutions are a separate outer experiment on common raw histories. Group the event-residual implementation contract as:
 
 \[
-\Xi_R=(q_E,d_E,\Pi_E,\delta_E,\mathfrak K_E,
+\Xi_R=(q_E,d_E,\Pi_E,\delta_E,\rho_H,\mathfrak K_E,d_H,\mathrm{lift}_H,
 \alpha,\kappa,\epsilon_R,\text{cache gates}),
 \]
 
@@ -198,10 +204,10 @@ Let \(S_{\mathrm{prop}}\) be a predeclared strictly proper scoring rule on the p
 
 All displayed expectations must be finite. The proper risk prevents improvements in a bounded composite score from being purchased by a worse probabilistic forecast.
 
-Define the feasible design family:
+The population target law defines an oracle benchmark, not an implementable selector. Define the oracle feasible family:
 
 \[
-\mathfrak F_{AP}^{\Gamma}=
+\mathfrak F_{AP}^{\Gamma,\star}=
 \lbrace\Theta_\Gamma:
 \begin{array}{l}
 D_K^\star(\pi)\le\epsilon_{AP}
@@ -214,30 +220,57 @@ D_K^\star(\pi)\le\epsilon_{AP}
 \rbrace.
 \]
 
-Here \(\Theta_{\Gamma,0}\) is a frozen reference predictor and \(\epsilon_{\mathrm{prop}}\ge0\) is declared in advance. In finite samples, each inequality is enforced with the predeclared one-sided confidence procedure rather than by a point estimate alone.
-
-The governing value is:
+Here \(\Theta_{\Gamma,0}\) is a frozen reference predictor and \(\epsilon_{\mathrm{prop}}\ge0\) is declared in advance. The oracle governing value is:
 
 \[
 \boxed{
-\mathcal J_\Gamma^*=
-\inf_{\Theta_\Gamma\in\mathfrak F_{AP}^{\Gamma}}
+\mathcal J_\Gamma^{\mathrm{oracle}}=
+\inf_{\Theta_\Gamma\in\mathfrak F_{AP}^{\Gamma,\star}}
 \left[\mathcal R_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)\right]
 }.
 \]
 
-If the feasible set is non-empty and the infimum is attained, an optimizer satisfies:
+This value states the desired population property. When \(P_\star\) is unknown it is not directly computable, and no finite-sample algorithm may claim membership in \(\mathfrak F_{AP}^{\Gamma,\star}\) merely from a small point estimate. If the oracle feasible set is non-empty and its infimum is attained, an oracle optimizer satisfies:
 
 \[
-\Theta_\Gamma^*\in\arg\min_{\Theta_\Gamma\in\mathfrak F_{AP}^{\Gamma}}
+\Theta_\Gamma^{\mathrm{oracle}}\in
+\arg\min_{\Theta_\Gamma\in\mathfrak F_{AP}^{\Gamma,\star}}
 \left[\mathcal R_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)\right].
 \]
 
-Otherwise, for a declared \(\varepsilon_{\mathrm{opt}}>0\), report a feasible \(\Theta_{\Gamma,\varepsilon}\) whose objective is at most \(\mathcal J_\Gamma^*+\varepsilon_{\mathrm{opt}}\), if such a candidate has been constructed.
+Operational selection instead begins with a finite, predeclared candidate family \(\mathfrak G_\Gamma(P_{\mathrm{obj}})\), constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let \(\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}\) and \(\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}\) be the corresponding grouped, as-of empirical risks, and define:
 
-Selection and tuning use only \(P_{\mathrm{obj}}\). After the candidate, preprocessing, thresholds, priority rule, and analysis are frozen, final claims are evaluated once on \(P_{\mathrm{conf}}\). Both samples use rolling-origin or forward-chaining construction, grouped by independent trajectory or entity where applicable, with an embargo long enough to cover context overlap, forecast horizon, and label delay. Weighted results are accompanied by unweighted and priority-stratified results. The feasible-set constraint discourages compression that hides target-distinct futures; it does not guarantee non-emptiness, attainment, identifiability, or computational tractability. Cross-resolution comparisons use the same raw histories and fixed target law; a candidate resolution may not redefine the outcome it is judged against.
+\[
+\widehat{\mathfrak F}_{AP}^{\Gamma}=
+\left\{\Theta_\Gamma\in\mathfrak G_\Gamma(P_{\mathrm{obj}}):
+\begin{array}{l}
+D_K^{\mathrm{cert},\star}(\pi)\le\epsilon_{AP}
+\text{ for every }K\in\mathfrak K_\pi^+,\\
+\text{the operational factorization through }h_\pi\text{ holds},\\
+\mathrm{UCB}\!\left[
+\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
+-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})
+\right]\le\epsilon_{\mathrm{prop}}
+\end{array}
+\right\}.
+\]
+
+If \(\widehat{\mathfrak F}_{AP}^{\Gamma}\neq\varnothing\), the implementable design rule is the finite minimum
+
+\[
+\widehat\Theta_\Gamma\in
+\arg\min_{\Theta_\Gamma\in\widehat{\mathfrak F}_{AP}^{\Gamma}}
+\left[
+\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
++\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)
+\right],
+\]
+
+with a declared deterministic tie-break. If the certified family is empty, the procedure returns no admissible design or a separately declared conservative fallback; it does not relax the thresholds. The confidence guarantees apply to the stated finite-sample constraints, not to attainment of the oracle infimum.
+
+Selection and tuning use only \(P_{\mathrm{obj}}\). After the candidate, preprocessing, thresholds, priority rule, and analysis are frozen, final claims are evaluated once on \(P_{\mathrm{conf}}\). Both samples use rolling-origin or forward-chaining construction, grouped by independent trajectory or entity where applicable, with an embargo long enough to cover context overlap, forecast horizon, and label delay. Weighted results are accompanied by unweighted and priority-stratified results. Oracle feasibility does not guarantee empirical certifiability, and empirical certifiability does not prove unrestricted population feasibility beyond the certificate's assumptions and coverage. Cross-resolution comparisons use the same raw histories and fixed target law; a candidate resolution may not redefine the outcome it is judged against.
 
 An event history may be represented by a time-unrolled directed graph:
 
@@ -256,14 +289,35 @@ D_Y^{\mathrm{law}}\!\left(P_{\mathfrak M}(Y\mid do(V_j=v')),P_{\mathrm{ref}}(Y)\
 
 a causal effect magnitude relative to a declared reference law \(P_{\mathrm{ref}}\), such as the natural-course law \(P_{\mathfrak M}(Y)\) or another intervention law [5]. It is not a signed effect, and its interpretation depends on the chosen distance and reference. Without \(\mathfrak M\), changing an input frame or graph is a model perturbation and measures predictor sensitivity, not causation.
 
-The event sparsity hypothesis is therefore stated relative to a finite, non-empty declared candidate set \(\mathcal D_t\), not by comparing cardinalities with a continuous substrate. If \(\mathcal I_{\mathrm{eff}}(Y,\eta_Y)\subseteq\mathcal D_t\) contains candidate distinctions whose identified or randomized intervention effect magnitude exceeds \(\eta_Y\), then the empirical sparsity ratio is:
+The event sparsity hypothesis is stated relative to a finite, non-empty declared candidate set \(\mathcal D_t\), not by comparing cardinalities with a continuous substrate. Predictive and causal relevance are different estimands. For each distinction \(d\in\mathcal D_t\), let \(\Theta_\Gamma^{-d}\) be a predeclared ablation or coarsening fitted on design data under the same protocol. Define the paired proper-risk effect under the confirmation-generating law and, after all full and ablated designs are frozen, its empirical estimate:
 
 \[
-s_{\mathrm{eff}}=
-\frac{|\mathcal I_{\mathrm{eff}}(Y,\eta_Y)|}{|\mathcal D_t|}.
+\Delta_{\mathrm{pred}}(d)=
+\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
+\qquad
+\widehat\Delta_{\mathrm{pred}}(d)=
+\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma).
 \]
 
-EventFrame hypothesizes \(s_{\mathrm{eff}}\ll1\) in domains where compression is useful. This is a falsifiable modeling hypothesis, not a physical theorem.
+With a predeclared threshold \(\eta_{\mathrm{pred}}\ge0\), define the observationally evaluable predictive ratio using a paired simultaneous confidence procedure over the entire declared distinction family:
+
+\[
+s_{\mathrm{eff}}^{\mathrm{pred}}=
+\frac{|\{d\in\mathcal D_t:
+\mathrm{LCB}_{\mathrm{sim}}[\Delta_{\mathrm{pred}}(d)]>\eta_{\mathrm{pred}}\}|}
+{|\mathcal D_t|}.
+\]
+
+The confidence bound is constructed from \(\widehat\Delta_{\mathrm{pred}}(d)\). Confirmation outcomes may classify the frozen distinctions but may not refit, regenerate, or select the candidate family. This is a predictive association under the fixed ablation and evaluation distribution, not a causal effect. If \(\mathcal I_{\mathrm{eff}}^{\mathrm{causal}}(Y,\eta_Y)\subseteq\mathcal D_t\) contains distinctions whose randomized or otherwise identified intervention-effect magnitude exceeds \(\eta_Y\), define separately:
+
+\[
+s_{\mathrm{eff}}^{\mathrm{causal}}=
+\frac{|\mathcal I_{\mathrm{eff}}^{\mathrm{causal}}(Y,\eta_Y)|}{|\mathcal D_t|}.
+\]
+
+EventFrame hypothesizes \(s_{\mathrm{eff}}^{\mathrm{pred}}\ll1\) in domains where predictive compression is useful. It may hypothesize \(s_{\mathrm{eff}}^{\mathrm{causal}}\ll1\) only in a domain where the required interventions are identified. Both are falsifiable domain-level hypotheses, not physical theorems.
 
 Confluence and divergence concern target-relative predictive behavior. A merge \(\mu_\delta(S_1,\ldots,S_m)\) is accepted only when its held-out predictive degradation and bucket future-diameter remain below declared thresholds. A perturbation operator \(\mathcal B_\epsilon\) may generate candidate downstream graphs, but a distribution over those candidates must be specified before writing probabilities conditioned on its output.
 

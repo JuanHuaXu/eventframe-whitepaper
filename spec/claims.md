@@ -4,7 +4,7 @@ Each major claim in the paper should be tracked here and revised conservatively.
 
 ## Claim 0: Adaptive event abstraction is the governing principle
 
-At a fixed resolution, EventFrame should minimize normalized priority-weighted post-observation action plus non-negative declared representation cost while preventing abstraction buckets from hiding distinctions in an externally fixed target law and preventing degradation of an untransformed proper score. Design and confirmation samples are separate; priority, preprocessing, target, and weights are frozen before outcomes. Prediction-time gating uses a separate pre-observation risk and as-of state.
+At a fixed resolution, EventFrame uses an external target-law constrained population objective as an oracle benchmark. Operational selection minimizes empirical normalized priority-weighted post-observation action plus non-negative declared representation cost over a finite candidate family whose Anti-Pigeon and proper-score constraints have predeclared certificates. Oracle feasibility and empirical certifiability are distinct. Design and confirmation samples are separate; priority, preprocessing, target, and weights are frozen before outcomes. Prediction-time gating uses a separate pre-observation risk and as-of state.
 
 Status: organizing mathematical claim; requires implementation evidence, ablation tests, and future convergence analysis.
 
@@ -16,7 +16,7 @@ Status: conceptual claim; requires experiments.
 
 ## Claim 1a: Event frames are compressed representations, not fundamental ontology
 
-The modeled substrate may contain more detail than a usable event representation. EventFrame treats event frames as task-relative coarse-grained records. Planck scales and entropy bounds motivate caution but do not prove this modeling hypothesis.
+The modeled substrate may contain more detail than a usable event representation. EventFrame treats event frames as task-relative coarse-grained records. Planck scales and entropy bounds provide only a limiting thought experiment for physical substrates and do not prove this modeling hypothesis. Simulated and software substrates require independent justification.
 
 Status: modeling assumption and conceptual claim; should be framed conservatively and linked to entropy-bound and coarse-graining motivations rather than presented as a proven physical result.
 
@@ -28,7 +28,7 @@ Status: representational design claim; requires measurement assumptions and comp
 
 ## Claim 2: Residual caches can reduce prediction cost
 
-When similar contexts or action signatures produce similar transition errors, certified as-of residual caches can approximate corrections without recomputing the full transition. Point and forecast-law correction use the same clipped effective residual; proper-score improvement requires the latter and all metadata gates to pass.
+When similar contexts or action signatures produce similar transition errors, certified as-of residual caches can approximate corrections without recomputing the full transition. A point residual is defined only for an event inside its originating horizon; a separately declared distributional estimator is defined on both marked and no-event outcomes. Point-template and forecast-law correction use one clipped, horizon-valid selected residual. The full-outcome kernel explicitly governs probability flow into and out of the no-event atom, and the final point summary is derived coherently from the corrected law. Proper-score improvement requires the law correction and all metadata gates to pass.
 
 Status: plausible systems claim; requires cache hit-rate, confidence, validity, and accuracy evaluation. Residual composition should be framed as Causal Fermion Systems-inspired structure, not as a claim that the physical theory directly applies.
 
@@ -74,11 +74,11 @@ Abstraction should be earned against the external target law on untouched chrono
 
 Status: formal design criterion; requires experiments on future-divergence thresholds, causal-regime shifts, split stability, stale-cache decay, and false-positive refinement.
 
-## Claim 6a: Intervention-effective event distinctions are sparse
+## Claim 6a: Predictively effective event distinctions may be sparse
 
-Relative to a finite declared candidate set, EventFrame hypothesizes that target-effective distinctions form a small fraction. The ratio must be measured per domain and is not inferred from the cardinality of a continuous substrate.
+Relative to a finite declared candidate set, EventFrame hypothesizes that distinctions whose held-out ablation materially worsens proper risk form a small fraction in compressible domains. A separate causal ratio may be reported only when intervention effects are randomized or otherwise identified. Neither ratio is inferred from the cardinality of a continuous substrate.
 
-Status: physics-inspired modeling hypothesis; requires careful argument and should be tied to falsifiable compression and intervention tests.
+Status: modeling hypothesis; predictive and causal ratios require separate falsifiable tests and must not be conflated.
 
 ## Claim 7: Fast-path / slow-path separation is computationally useful
 

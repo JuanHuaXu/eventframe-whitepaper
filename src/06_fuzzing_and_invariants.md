@@ -14,7 +14,7 @@ where the partial arrow records that some perturbations are invalid. At context 
 \mathcal F_{i,\epsilon}^{(r)}:\mathcal E^k\rightharpoonup\mathcal E^k.
 \]
 
-Let \(\mathcal O_\theta(C)=(\mathsf Q_\theta(\cdot\mid C),\hat e_\theta(C))\) be the typed predictor output. For a declared output functional \(g\) on that bundle and distance \(d_g\), model sensitivity is:
+Let \(\mathcal O_\theta(C)=(\mathsf Q_\theta(\cdot\mid C),\hat e_\theta^H(C))\) be the typed predictor output, including its coherent no-event-capable point summary. For a declared output functional \(g\) on that bundle and distance \(d_g\), model sensitivity is:
 
 \[
 \Delta_g^{\mathrm{model}}=

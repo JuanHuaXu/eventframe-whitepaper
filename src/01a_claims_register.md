@@ -2,7 +2,7 @@
 
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
-Claim 0. At a fixed resolution, adaptive event abstraction minimizes normalized priority-weighted post-observation action plus non-negative representation cost while an external target-law diameter and proper-score guard prevent self-certified compression. Selection and untouched chronological confirmation are separate, and runtime admission uses as-of pre-observation risk.
+Claim 0. At a fixed resolution, an external target-law constrained population objective defines an oracle benchmark. The operational rule selects from a finite family using certified Anti-Pigeon and proper-score constraints, empirical priority-weighted action, and representation cost. Oracle feasibility and empirical certifiability are distinct; untouched chronological confirmation and as-of runtime admission remain separate.
 
 Claim 1. Structured event frames are useful predictive units if, for a declared task, they improve interpretability or temporal prediction relative to unstructured sequence records without hiding field-level error.
 
@@ -10,7 +10,7 @@ Claim 1a. Event frames are task-relative compressed representations rather than 
 
 Claim 1b. Temporal precision controls frame granularity if changing the declared time resolution \(\Delta_\tau\) changes the candidate-frame set, cache pressure, and detectable divergence boundaries in measurable ways.
 
-Claim 2. Residual caches reduce prediction cost or error when similar contexts or action signatures produce similar baseline errors and as-of, metadata-gated residuals improve forward-held-out loss often enough to justify lookup and maintenance. Point and law correction use the same clipped residual; proper-score improvement requires a declared forecast-law correction.
+Claim 2. Residual caches reduce prediction cost or error when similar contexts or action signatures produce similar baseline errors and as-of, metadata-gated residuals improve forward-held-out loss often enough to justify lookup and maintenance. Point residuals are in-horizon only, while a separately declared distributional estimator covers marked and no-event outcomes. Point-template and law correction use the same clipped, horizon-valid selected residual; the full kernel governs the no-event atom, and the final point summary is coherent with the corrected law.
 
 Claim 2a. Runtime prediction packets are useful when a separately typed packet composition operator improves selection of memory nodes, graph edges, retrieval lane, compaction risk, response mode, or control branch on held-out packet loss.
 
@@ -26,7 +26,7 @@ Claim 5b. Each group retains at least one concrete traceability frame plus a cov
 
 Claim 6. Anti-Pigeon rejects buckets whose externally evaluated context-conditional target-law diameter exceeds threshold. Model-forecast diameter is diagnostic only. Regime comparisons require common support or transport assumptions, and causal attribution requires separate intervention evidence.
 
-Claim 6a. Target-effective distinctions are sparse only when their measured ratio is small within a finite declared candidate set.
+Claim 6a. Predictively effective distinctions are sparse only when their held-out ablation ratio is small within a finite declared candidate set. A causal sparsity ratio is a separate quantity available only under identified interventions.
 
 Claim 7. Fast-path and slow-path separation is computationally useful if low-latency prediction can reuse cached residuals while slower background work improves future predictions without blocking the current one.
 

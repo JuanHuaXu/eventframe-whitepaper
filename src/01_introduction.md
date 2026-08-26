@@ -2,20 +2,20 @@
 
 Prediction systems often operate over sequences whose internal structure is only implicit. A model may receive tokens, vectors, logs, traces, or state observations and learn statistical regularities among them. This can be effective, but it makes some questions difficult to ask directly: which compressed distinction mattered, what changed, when did it happen, where did it occur, why might it matter, and how did it transform the state of the world?
 
-EventFrame begins from a compression premise: a modeled substrate may contain more detail than a prediction system can retain. Event frames are task-relative coarse-grained representations, not assertions about fundamental spacetime. Physical information bounds motivate caution but do not prove this software-level premise [7--9].
+EventFrame begins from a compression premise: a modeled substrate may contain more detail than a prediction system can retain. Event frames are task-relative coarse-grained representations, not assertions about fundamental spacetime. For physical substrates, Planck scales and information bounds motivate a limiting thought experiment [7--9]; they do not prove the compression premise. Simulated and software substrates require independent task- and resource-based justification.
 
 The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
 The core contribution is adaptive event abstraction. The framework minimizes post-observation predictive action and representation cost while constraining within-bucket future divergence. It distinguishes model-sensitivity evidence from causal intervention evidence.
 
-Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identity, event time, and no event within horizon \(H\). Proper forecast scores are primary because timing-only loss can reward the wrong event at the right time. Event-aware timing remains an interpretable diagnostic.
+Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identity, event time, and no event within horizon \(H\). A proper forecast score is the primary probabilistic-fidelity metric because timing-only loss can reward the wrong event at the right time. The complete system design minimizes a separate composite objective under a proper-score guard. Event-aware timing remains an interpretable diagnostic.
 
 The reference prediction procedure has six steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
-2. Compute a baseline forecast law \(\mathsf Q_B(\cdot\mid C_t)\) and point summary \(b_t=B(C_t)\).
+2. Compute a baseline forecast law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\).
 3. From state \(S_{t^-}\), select an exact-key or general residual \(r_t^{\mathrm{use}}\) only when its distance, confidence, effective-support, age, epoch, compatibility-margin, and provenance checks pass.
-4. Clip one effective residual, use it for both \(\hat e_{t+1}=b_t\oplus_E r_t^{\mathrm{use}}\) and the declared residual Markov kernel, and apply the pre-observation risk gate to the resulting output bundle.
+4. Clip one horizon-valid residual, use it for both the conditional event-template correction and the declared full-outcome residual kernel, derive the no-event-capable point summary from the corrected law, and apply the pre-observation risk gate to the coherent output bundle.
 5. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
 6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
 

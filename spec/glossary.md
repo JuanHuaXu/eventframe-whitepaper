@@ -22,7 +22,7 @@ A distinction whose effect on a target exceeds a declared threshold under a rand
 
 ## Event Sparsity Hypothesis
 
-The hypothesis that target-effective distinctions form a small measured fraction of a finite declared candidate set.
+The hypothesis that predictively effective distinctions form a small held-out ablation fraction of a finite declared candidate set. A separate causal fraction is defined only when intervention effects are identified.
 
 ## Temporal Resolution
 
@@ -114,11 +114,11 @@ The future interval \(H\) over which marked events or the no-event outcome are f
 
 ## Residual Prediction
 
-A prediction strategy that estimates the difference between a baseline transition and the actual observed transition.
+A prediction strategy that estimates a horizon-indexed difference between a baseline transition and an eligible observed transition. A post-horizon event cannot retroactively become the point residual of an expired forecast.
 
 ## Residual Composition
 
-The typed point operation \(\oplus_E\) that encodes a baseline event, norm-clips a residual, projects into an admissible operator set, and decodes the result. Correcting a probability forecast additionally requires a declared residual Markov kernel.
+The typed point-template operation \(\oplus_E\) that encodes a baseline event, norm-clips a residual, projects into an admissible operator set, and decodes the result. Correcting a probability forecast additionally requires a declared full-outcome Markov kernel whose no-event transitions are explicit; a fixed decision rule then derives a coherent no-event-capable point summary.
 
 ## Temporal Loss
 
@@ -126,7 +126,7 @@ A bounded event-aware diagnostic that assigns maximum error to a wrong event mar
 
 ## Proper Predictive Score
 
-A score for a full predictive distribution that is minimized in expectation by reporting the forecaster's true distribution. EventFrame uses it for marked event time and censoring.
+A score for a full predictive distribution that is minimized in expectation by reporting the forecaster's true distribution. EventFrame uses it as the primary probabilistic-fidelity metric for marked event time and censoring; the complete system-design objective is composite.
 
 ## Pre-Observation Risk
 

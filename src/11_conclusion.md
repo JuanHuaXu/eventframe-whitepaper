@@ -2,15 +2,15 @@
 
 EventFrame proposes typed, task-relative event frames for prediction without treating them as fundamental entities. A coarse-graining \(\Gamma_{\Delta_\tau}\) maps detailed histories into event frames at a declared resolution. The predictor returns a distribution over marked event times and a no-event outcome, evaluated by a proper score; bounded event-aware timing error remains diagnostic.
 
-At fixed temporal resolution, the governing objective minimizes expected priority-weighted post-observation action plus non-negative representation cost. Feasibility requires that prediction and retrieval operationally factor through the declared abstraction, that each bucket pass an external target-law future-diameter bound, and that the untransformed proper score remain non-inferior. Candidate selection and untouched chronological confirmation are separate. A distinct pre-observation risk gates fast-path use from \(S_{t^-}\) because realized loss is unavailable until its recorded availability time.
+At fixed temporal resolution, a population objective defines an oracle benchmark that minimizes expected priority-weighted post-observation action plus non-negative representation cost under external target-law and proper-score constraints. The operational rule is different: it minimizes empirical action over a finite candidate family whose bucket and proper-score constraints have predeclared certificates. Oracle feasibility and empirical certifiability are not interchangeable. Candidate selection and untouched chronological confirmation are separate. A distinct pre-observation risk gates fast-path use from \(S_{t^-}\) because realized loss is unavailable until its recorded availability time.
 
-Baseline and residual point composition is type-resolved:
+For an in-horizon concrete event, baseline and residual event-template composition is type-resolved:
 
 \[
-\hat e_{t+1}=b_t\oplus_E r_t^{\mathrm{use}}.
+e_{t+1}^{\mathrm{tmpl}}=b_t\oplus_E r_t^{\mathrm{use}}.
 \]
 
-The operator encodes events into a finite-dimensional self-adjoint operator space, norm-clips the residual, projects into a declared admissible set, and decodes with a named decoder. A separately declared residual Markov kernel transforms the baseline probability law when proper-score improvement is claimed; the point operator alone does not define that law. Runtime packets use an independent packet encoder, residual space, admissible set, and operator \(\oplus_Y\). The construction takes limited structural inspiration from Causal Fermion Systems but is not a CFS action or physical theory.
+The operator encodes events into a finite-dimensional self-adjoint operator space, norm-clips the residual, projects into a declared admissible set, and decodes with a named decoder. The residual is undefined as a point residual when the originating horizon expires without an event. A separately declared full-outcome Markov kernel transforms the baseline probability law, explicitly governs probability flow into and out of the no-event atom, and supplies the law evaluated by the proper score. A fixed decision rule derives the no-event-capable structured point summary from that corrected law. Runtime packets use an independent packet encoder, residual space, admissible set, and operator \(\oplus_Y\). The construction takes limited inspiration from CFS self-adjoint operator representations; its clipping and projection are EventFrame definitions, not a CFS action or physical theory.
 
 Episodic memory stores prior cases; residual memory stores prior statistical corrections. Residuals are not causal hypotheses without separate intervention evidence. The fast path performs bounded lookup, typed composition, and pre-risk checks. The slow path evaluates realized scores, updates confidence, runs model-sensitivity audits, and tests abstractions. Causal-edge updates require an explicit structural causal model and identification strategy.
 

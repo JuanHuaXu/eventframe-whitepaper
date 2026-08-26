@@ -18,19 +18,22 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\nu(e)\) | event-mark set | event identity/type extractor |
 | \(\tau(e)\) | temporal set | event-time extractor |
 | \(Z_{t+1}\) | \(\mathcal Z_H\) | observed marked time or no-event outcome |
+| \(\mathcal Z_H^+\) | subset of \(\mathcal Z_H\) | marked-time branch \(\mathcal Z_H\setminus\{\varnothing\}\) |
+| \(\mathcal E_\varnothing\) | tagged union | structured event space extended by the no-event symbol |
+| \(d_H\) | \(\mathcal P(\mathcal Z_H)\to\mathcal Z_H\) | fixed point-decision rule with declared loss and tie-break |
 | \(a(x)\) | time | availability time of datum or state object \(x\) |
 | \(\mathscr F_t^{\mathrm{pred}},S_{t^-}\) | information, state | information and mutable state available immediately before prediction |
 | \(P_{\mathrm{obj}},P_{\mathrm{conf}}\) | laws or samples | design/selection distribution and untouched confirmation distribution |
 | \(P_\star(Y\mid C)\) | conditional law | externally fixed target conditional law |
 | \(\mathsf Q_\theta\) | probability kernel | predictive distribution over \(\mathcal Z_H\) |
-| \(\mathcal O_\theta(C)\) | \(\mathcal P(\mathcal Z_H)\times\mathcal E\) | typed forecast-law and point-summary output bundle |
+| \(\mathcal O_\theta(C)\) | \(\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing\) | typed forecast-law and coherent no-event-capable point-summary bundle |
 | \(\mathcal L_{\mathrm{pred}}\) | extended real | untransformed proper post-observation predictive loss |
 | \(\overline{\mathcal L}_{\mathrm{pred}}\) | \([0,1]\) | preregistered bounded transformation used inside system action |
 | \(\mathcal L_{\mathrm{event}}^H\) | \([0,1]\) | bounded event-aware timing diagnostic |
 | \(\mathcal R_{\mathrm{pre}}\) | \([0,1]\) | pre-observation admissibility risk |
 | \(\mathcal A_{\mathrm{post}}\) | \([0,1]\) | post-observation realized event action |
 | \(\mathsf Q_B\) | \(\mathcal E^k\to\mathcal P(\mathcal Z_H)\) | baseline probability-law predictor |
-| \(B\) | \(\mathcal E^k\to\mathcal E\) | baseline point predictor |
+| \(B\) | \(\mathcal E^k\to\mathcal E\) | baseline conditional event-template predictor |
 | \(\mathscr H\) | finite-dimensional Hilbert space | carrier for operator representation |
 | \(\mathbb H_d\) | vector space | self-adjoint operators on \(\mathscr H\) |
 | \(\mathcal Q_{E,\mathrm{adm}}\) | closed subset of \(\mathbb H_d\) | admissible event representations |
@@ -43,7 +46,10 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(J_t^R,J_t^A\) | \(\{0,1\}\) | general- and exact-cache acceptance indicators |
 | \(J_t^A\) | \(\{0,1\}\) | exact-cache acceptance indicator |
 | \(r_t^{\mathrm{use}}\) | \(\mathbb H_d\) | exact-to-general selected residual |
+| \(r_{t,H}^{\mathrm{obs}}\) | \(\mathbb H_d\) or undefined | observed point residual only for an event inside the originating horizon |
+| \(\rho_H,r_{t,H}^{\mathrm{law}}\) | estimator, \(\mathbb H_d\) | horizon-specific distributional residual estimator and residual defined on event and no-event outcomes |
 | \(\mathfrak K_E\) | kernel-valued map | residual-induced Markov kernel on \(\mathcal Z_H\) |
+| \(H_i,H_{k_t}\) | positive reals | horizons recorded by general and exact residual-cache entries |
 | \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
@@ -88,6 +94,10 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(d_t(h)\) | \(\{0,\ldots,5\}\) | selected refinement depth on hardware profile \(h\) |
 | \(p_t^{\mathrm{pri}}\) | \([0,1]\) | priority assigned from prediction-time information |
 | \(w_{\mathrm{pri}}\) | positive function | declared importance weight for priority |
+| \(\Delta_{\mathrm{pred}}(d),\widehat\Delta_{\mathrm{pred}}(d)\) | reals | paired proper-risk effect of ablating distinction \(d\) and its confirmation estimate |
+| \(s_{\mathrm{eff}}^{\mathrm{pred}},s_{\mathrm{eff}}^{\mathrm{causal}}\) | \([0,1]\) | confidence-classified predictive-ablation and identified-causal sparsity ratios |
+| \(\mathfrak F_{AP}^{\Gamma,\star},\mathcal J_\Gamma^{\mathrm{oracle}}\) | family, real value | oracle population-feasible family and its infimal benchmark |
+| \(\mathfrak G_\Gamma,\widehat{\mathfrak F}_{AP}^{\Gamma},\widehat\Theta_\Gamma\) | finite families, design | predeclared candidate family, certified empirical family, and selected design |
 | \(G_{a\rightarrow b}^{\mathrm{pri}}\) | real | priority-weighted absolute gain between complete policies |
 | \(\mathcal R_{\mathrm{pri}}^D\) | non-negative real | normalized priority-weighted post-observation risk under \(D\) |
 | \(\mathcal R_{\mathrm{prop}}^D\) | extended real | unweighted strictly proper forecast risk under \(D\) |
@@ -141,13 +151,13 @@ Z_{t+1}=\begin{cases}
 \end{cases}
 \]
 
-The forecast and primary loss are:
+Let \(\mathcal E_\varnothing=\mathcal E\sqcup\{\varnothing\}\), and fix \(d_H:\mathcal P(\mathcal Z_H)\to\mathcal Z_H\) with a declared point loss and deterministic tie-break. The structured summary \(\hat e_\theta^H(C_t)\in\mathcal E_\varnothing\) equals \(\varnothing\) exactly when \(d_H(\mathsf Q_\theta)=\varnothing\); otherwise its mark and time agree with the selected marked time. The forecast and primary probabilistic-fidelity loss are:
 
 \[
 \mathsf Q_\theta(\cdot\mid C_t)\in\mathcal P(\mathcal Z_H),
 \qquad
 \mathcal O_\theta(C_t)=
-(\mathsf Q_\theta(\cdot\mid C_t),\hat e_\theta(C_t)),
+(\mathsf Q_\theta(\cdot\mid C_t),\hat e_\theta^H(C_t)),
 \]
 
 \[
@@ -156,7 +166,7 @@ The forecast and primary loss are:
 =S_{\mathrm{prop}}(\mathsf Q_\theta(\cdot\mid C_t),Z_{t+1}).
 \]
 
-For a mixed event/no-event logarithmic score, fix a dominating event-branch reference measure \(\mu_H\) and time units. The event branch is a subdensity with respect to \(\mu_H\) whose mass plus \(\mathsf Q_\theta(\{\varnothing\}\mid C_t)\) equals one. The no-event observation is scored by \(-\log\mathsf Q_\theta(\{\varnothing\}\mid C_t)\), not by evaluating an undefined event time. The reference measure and units remain fixed across forecast comparisons.
+For a mixed event/no-event logarithmic score, fix a dominating event-branch reference measure \(\mu_H\) and time units. The event branch is a subdensity with respect to \(\mu_H\) whose mass plus \(\mathsf Q_\theta(\{\varnothing\}\mid C_t)\) equals one. The no-event observation is scored by \(-\log\mathsf Q_\theta(\{\varnothing\}\mid C_t)\), not by evaluating an undefined event time. If \(d\mu_H'=h\,d\mu_H\), marked-event loss changes by \(\log h(Z)\), which is outcome-dependent unless \(h\) is constant. The reference measure and units remain fixed for absolute reporting.
 
 The event-aware diagnostic is:
 
@@ -171,7 +181,7 @@ The event-aware diagnostic is:
 
 ## Lifecycle Scores
 
-For a candidate bundle \(\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e)\), before observation:
+For a candidate bundle \(\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e^H)\), before observation:
 
 \[
 \mathcal R_{\mathrm{pre}}(\widetilde{\mathcal O}\mid C_t)
@@ -239,18 +249,37 @@ d_E(\Pi_E(q_E(b)+\mathrm{clip}_{\delta_E}(r))),&r\neq0.
 
 The zero branch makes no correction an exact identity. The decoder is not written as an inverse because the encoder may be lossy.
 
+For the forecast issued at \(t\), the point residual is defined only on an in-horizon event:
+
+\[
+r_{t,H}^{\mathrm{obs}}=q_E(e_{t+1})-q_E(b_t),
+\qquad 0<\tau(e_{t+1})-\tau(e_t)\le H.
+\]
+
+It is undefined when \(Z_{t+1}=\varnothing\). A later event cannot retroactively label the expired forecast; no-event observations may instead update the distributional kernel through the proper score.
+
+A distributional residual may be learned on either outcome branch through a declared measurable estimator:
+
+\[
+\rho_H:\mathcal P(\mathcal Z_H)\times\mathcal Z_H\to\mathbb H_d,
+\qquad
+r_{t,H}^{\mathrm{law}}=\rho_H(\mathsf Q_B(\cdot\mid C_t),Z_{t+1}).
+\]
+
+It is defined at \(\varnothing\), and cache provenance distinguishes it from \(r_{t,H}^{\mathrm{obs}}\).
+
 ## Residual Caches
 
 Both caches are reconstructed as of \(S_{t^-}\); no later entry, outcome, confidence update, epoch, or audit result may be read. The general cache is:
 
 \[
-\mathcal C_{R,t^-}=\{(\kappa_i,r_i,c_i,n_i,t_i,v_i,m_i,s_i)\}_{i=1}^{N_t},
+\mathcal C_{R,t^-}=\{(\kappa_i,r_i,c_i,n_i,t_i,v_i,m_i,H_i,s_i)\}_{i=1}^{N_t},
 \quad
 \kappa:\mathcal E^k\to\mathcal K_R,
 \quad r_i\in\mathbb H_d.
 \]
 
-For \(N_t>0\), \(j_t\) is the deterministic nearest-key selection. Let \(J_t^R\) indicate that distance, confidence, effective support, age, epoch, compatibility margin, and provenance gates all pass; set it to zero when the cache is empty. Then
+For \(N_t>0\), \(j_t\) is the deterministic nearest-key selection. Let \(J_t^R\) indicate that distance, confidence, effective support, age, epoch, horizon equality \(H_i=H\), compatibility margin, and provenance gates all pass; set it to zero when the cache is empty. Then
 
 \[
 r_t^*=\begin{cases}
@@ -264,10 +293,10 @@ The action cache is typed as:
 \[
 \mathcal C_{A,t^-}:\mathcal K_A\rightharpoonup
 \mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
-\times\mathbb N_0\times\mathbb R.
+\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}.
 \]
 
-For \(k_t=\alpha(C_t)\), bind the entry only when it exists. Let \(J_t^A\) indicate that confidence, effective support, age, epoch, and compatibility-margin checks pass; set it to zero when the key is absent. The exact-to-general selector is:
+For \(k_t=\alpha(C_t)\), bind the entry only when it exists. Let \(J_t^A\) indicate that confidence, effective support, age, epoch, horizon equality \(H_{k_t}=H\), and compatibility-margin checks pass; set it to zero when the key is absent. The exact-to-general selector is:
 
 \[
 r_t^{\mathrm{use}}=
@@ -286,6 +315,8 @@ This indicator distinguishes an accepted zero residual from a cache miss. To obt
 \mathfrak K_E(0)(z,A)=\mathbf 1_A(z),
 \]
 
+for every \(z\in\mathcal Z_H\), including \(\varnothing\). With \(\mathcal Z_H^+=\mathcal Z_H\setminus\{\varnothing\}\), the implementation declares the no-event transitions for every nonzero effective residual; no atom-preservation default is assumed.
+
 and define, for measurable \(A\subseteq\mathcal Z_H\) and candidate \(r\in\mathbb H_d\), with \(\bar r=\mathrm{clip}_{\delta_E}(r)\):
 
 \[
@@ -294,7 +325,19 @@ and define, for measurable \(A\subseteq\mathcal Z_H\) and candidate \(r\in\mathb
 \,\mathsf Q_B(dz\mid C_t).
 \]
 
-Let \(\mathcal O_t(r)=(\mathsf Q_t^{(r)},b_t\oplus_E\bar r)\). The same clipped residual controls both components. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise the exact baseline \(\mathcal O_t(0)\) is returned. A point-only implementation cannot claim improvement on a proper forecast score. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
+In particular,
+
+\[
+\begin{aligned}
+\mathsf Q_t^{(r)}(\{\varnothing\}\mid C_t)
+={}&\mathfrak K_E(\bar r)(\varnothing,\{\varnothing\})
+\mathsf Q_B(\{\varnothing\}\mid C_t)\\
+&+\int_{\mathcal Z_H^+}\mathfrak K_E(\bar r)(z,\{\varnothing\})
+\,\mathsf Q_B(dz\mid C_t).
+\end{aligned}
+\]
+
+Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) align a corrected event template with the marked decision. Set \(\hat e_t^H(r)=\varnothing\) when \(d_H(\mathsf Q_t^{(r)})=\varnothing\), and otherwise set \(\hat e_t^H(r)=\mathrm{lift}_H(b_t\oplus_E\bar r,d_H(\mathsf Q_t^{(r)}))\). Then \(\mathcal O_t(r)=(\mathsf Q_t^{(r)},\hat e_t^H(r))\). The same clipped residual parameterizes the law and event-template corrections, while \(d_H\) enforces law/point coherence. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise the exact baseline \(\mathcal O_t(0)\) is returned. A point-only implementation cannot claim improvement on a proper forecast score. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
 
 ## Runtime Packet
 
@@ -361,6 +404,31 @@ D_Y^{\mathrm{law}}(P_{\mathfrak M}(Y\mid do(V_j=v')),P_{\mathrm{ref}}(Y)).
 \]
 
 The reference law is declared. This is an effect magnitude, not a signed effect. The symbol \(do\) is never applied directly to a graph perturbation.
+
+For a finite non-empty distinction set \(\mathcal D_t\), let \(\Theta_\Gamma^{-d}\) be the predeclared ablation of distinction \(d\), fitted on design data under the same protocol. Define the paired proper-risk effect under the confirmation-generating law and, after freezing every design, its estimate:
+
+\[
+\Delta_{\mathrm{pred}}(d)=
+\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
+\qquad
+\widehat\Delta_{\mathrm{pred}}(d)=
+\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
+\]
+
+\[
+s_{\mathrm{eff}}^{\mathrm{pred}}=
+\frac{|\{d:\mathrm{LCB}_{\mathrm{sim}}[\Delta_{\mathrm{pred}}(d)]
+>\eta_{\mathrm{pred}}\}|}{|\mathcal D_t|}.
+\]
+
+The simultaneous bounds cover the declared family. Confirmation outcomes classify but do not refit or regenerate distinctions. This ratio is predictive, not causal. If \(\mathcal I_{\mathrm{eff}}^{\mathrm{causal}}(Y,\eta_Y)\) is identified by randomized or otherwise valid interventions, define separately
+
+\[
+s_{\mathrm{eff}}^{\mathrm{causal}}=
+\frac{|\mathcal I_{\mathrm{eff}}^{\mathrm{causal}}(Y,\eta_Y)|}{|\mathcal D_t|}.
+\]
 
 ## Lumpability and Anti-Pigeon
 
@@ -504,7 +572,7 @@ At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\
 \]
 
 \[
-\mathfrak F_{AP}^\Gamma=\lbrace\Theta_\Gamma:
+\mathfrak F_{AP}^{\Gamma,\star}=\lbrace\Theta_\Gamma:
 D_K^\star(\pi)\le\epsilon_{AP}\ \forall K\in\mathfrak K_\pi^+,\quad
 h_\pi\text{ factorization holds},\quad
 \mathcal R_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
@@ -512,11 +580,25 @@ h_\pi\text{ factorization holds},\quad
 \]
 
 \[
-\mathcal J_\Gamma^*=\inf_{\Theta_\Gamma\in\mathfrak F_{AP}^\Gamma}
+\mathcal J_\Gamma^{\mathrm{oracle}}=
+\inf_{\Theta_\Gamma\in\mathfrak F_{AP}^{\Gamma,\star}}
 [\mathcal R_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)].
 \]
 
-Only when the feasible infimum is attained may the paper write an argmin. Candidate selection uses only \(P_{\mathrm{obj}}\); final frozen claims use untouched \(P_{\mathrm{conf}}\). Both use grouped rolling-origin evaluation, an overlap/horizon/label-delay embargo, and as-of replay. Cross-resolution comparisons use common raw histories and the same external target.
+This is an oracle population benchmark. Operational selection uses a finite predeclared \(\mathfrak G_\Gamma(P_{\mathrm{obj}})\). Candidates lacking exhaustive audit coverage or the verified continuity certificate are not certifiable. Define
+
+\[
+\widehat{\mathfrak F}_{AP}^{\Gamma}=\left\{\Theta_\Gamma\in\mathfrak G_\Gamma:
+\begin{array}{l}
+D_K^{\mathrm{cert},\star}(\pi)\le\epsilon_{AP}\ \forall K\in\mathfrak K_\pi^+,\\
+h_\pi\text{ factorization holds},\\
+\mathrm{UCB}[\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
+-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})]
+\le\epsilon_{\mathrm{prop}}
+\end{array}\right\}.
+\]
+
+If this family is non-empty, \(\widehat\Theta_\Gamma\) is the deterministic finite argmin of \(\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}\) over it. Otherwise the procedure reports no certified design or uses a separately declared conservative fallback. Candidate selection uses only \(P_{\mathrm{obj}}\); final frozen claims use untouched \(P_{\mathrm{conf}}\). Both use grouped rolling-origin evaluation, an overlap/horizon/label-delay embargo, and as-of replay. Cross-resolution comparisons use common raw histories and the same external target. Empirical certification does not imply oracle attainment beyond the certificate's assumptions.
 
 The pre-outcome priority rule and all preprocessing are fitted before each evaluated block and frozen independently of candidates. Setting \(w_{\mathrm{pri}}\equiv1\) recovers the unweighted objective. Finite-sample constraints use preregistered one-sided confidence procedures, clustered inference for overlapping contexts, and sequentially valid methods under repeated monitoring.
 

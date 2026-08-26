@@ -10,7 +10,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(e_t\), \(C_t\), \(\mathfrak C_{\mathrm{adm}}\): event frame, length-\(k\) event context, and declared context domain for conditional laws and suprema.
 
-\(H\), \(Z_{t+1}\): prediction horizon and observed marked-time or no-event outcome.
+\(H\), \(Z_{t+1}\), \(\mathcal Z_H^+\): prediction horizon, observed marked-time or no-event outcome, and its marked-time branch.
 
 \(a(x)\), \(\mathscr F_t^{\mathrm{pred}}\), \(S_{t^-}\): availability time, prediction-time information, and mutable state reconstructed immediately before prediction.
 
@@ -18,13 +18,15 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\nu(e)\), \(\tau(e)\): event-mark and event-time extractors.
 
-\(\mathsf Q_\theta\), \(\mathcal O_\theta(C)\): predictive distribution over marked event times and the no-event outcome, and the typed bundle pairing that law with a structured point summary.
+\(\mathcal E_\varnothing\), \(d_H\): tagged no-event extension of the structured event space and fixed point-decision rule on forecast laws.
+
+\(\mathsf Q_\theta\), \(\mathcal O_\theta(C)\): predictive distribution over marked event times and the no-event outcome, and the typed bundle pairing that law with a coherent no-event-capable structured summary.
 
 \(\mathcal L_{\mathrm{pred}}\), \(\overline{\mathcal L}_{\mathrm{pred}}\), \(\mathcal L_{\mathrm{event}}^H\): untransformed proper predictive loss, its preregistered bounded system-action transform, and bounded event-aware timing diagnostic.
 
 \(\mathcal R_{\mathrm{pre}}\), \(\mathcal A_{\mathrm{post}}\): pre-observation admission risk and post-observation realized event action.
 
-\(\mathsf Q_B\), \(B\), \(b_t\): baseline forecast law, baseline point predictor, and its point prediction. Event buckets use \(K\), never \(B\).
+\(\mathsf Q_B\), \(B\), \(b_t\): baseline forecast law, conditional event-template predictor, and its template. Event buckets use \(K\), never \(B\).
 
 \(\mathscr H\), \(\mathbb H_d\): finite-dimensional Hilbert space and its self-adjoint operator representation space.
 
@@ -34,7 +36,11 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathcal C_{A,t^-}\), \(\mathcal C_{R,t^-}\), \(\mathcal C_E\): as-of exact-key residual, as-of general residual, and episodic caches.
 
-\(J_t^A\), \(J_t^R\), \(r_t^{\mathrm{use}}\), \(\mathfrak K_E\), \(\mathsf Q_t^R\): exact- and general-cache acceptance indicators, selected residual, residual Markov-kernel map, and corrected forecast law.
+\(J_t^A\), \(J_t^R\), \(r_t^{\mathrm{use}}\), \(r_{t,H}^{\mathrm{obs}}\): exact- and general-cache acceptance indicators, selected residual, and observed point residual defined only for an event inside the originating horizon.
+
+\(\rho_H\), \(r_{t,H}^{\mathrm{law}}\): horizon-specific distributional residual estimator and its residual, defined for both marked-event and no-event outcomes.
+
+\(\mathfrak K_E\), \(\mathsf Q_t^R\), \(H_i\), \(H_{k_t}\): full-outcome residual Markov-kernel map, corrected forecast law, and horizons attached to general and exact cache entries.
 
 \(\Xi_R\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
@@ -90,8 +96,12 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(p_t^{\mathrm{pri}}\), \(w_{\mathrm{pri}}\), \(\mathcal R_{\mathrm{pri}}^D\), \(\mathcal R_{\mathrm{prop}}^D\), \(G_{a\rightarrow b}^{\mathrm{pri}}\): pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
 
+\(\Delta_{\mathrm{pred}}(d)\), \(\widehat\Delta_{\mathrm{pred}}(d)\), \(s_{\mathrm{eff}}^{\mathrm{pred}}\), \(s_{\mathrm{eff}}^{\mathrm{causal}}\): paired proper-risk effect of ablating distinction \(d\), its confirmation estimate, the simultaneous-confidence-classified predictive sparsity ratio, and the separately identified causal sparsity ratio.
+
 \(\zeta_t\), \(\mathcal Z_{\mathrm{reg}}\): observed operating regime and its space. A regime is not causal by default.
 
 \(\mathcal C_{\mathrm{rep}}\), \(\Phi\): representation/runtime cost and finite-state descent potential.
 
-\(\mathfrak F_{AP}^{\Gamma}\), \(\mathcal J_\Gamma^*\): fixed-resolution Anti-Pigeon-feasible design family and infimal governing objective value.
+\(\mathfrak F_{AP}^{\Gamma,\star}\), \(\mathcal J_\Gamma^{\mathrm{oracle}}\): population Anti-Pigeon-feasible design family and its oracle infimal benchmark.
+
+\(\mathfrak G_\Gamma\), \(\widehat{\mathfrak F}_{AP}^{\Gamma}\), \(\widehat\Theta_\Gamma\): finite predeclared design family, empirically certified feasible family, and operationally selected design.

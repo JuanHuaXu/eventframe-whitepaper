@@ -6,7 +6,7 @@ The reference fast path is:
 
 1. Incrementally update \(C_t=e_{t-k+1:t}\).
 2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
-3. Compute baseline law \(\mathsf Q_B(\cdot\mid C_t)\) and point summary \(b_t=B(C_t)\), or packet baseline \(B_Y(X_t)\).
+3. Compute baseline law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\), or packet baseline \(B_Y(X_t)\).
 4. Construct the bounded action key \(k_t=\alpha(C_t)\).
 5. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient.
 6. Compose a candidate event output bundle or packet using the shared clipped effective residual.
