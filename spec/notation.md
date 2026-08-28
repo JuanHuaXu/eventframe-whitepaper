@@ -58,6 +58,13 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(H_i,H_{k_t}\) | positive reals | horizons recorded by general and exact residual-cache entries |
 | \(s_i,s_{k_t}\) | \(\mathcal S_{\mathrm{prov}}\) | provenance records for general and exact residual-cache entries |
 | \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
+| \(\mathcal N_t^B\) | finite set | bounded Bayesian candidate frontier from vector, sheaf-inspired, and as-of graph neighborhoods |
+| \(A_t^B,\tau_t^B,J_t^{\mathrm{act}}\) | scores and indicator | activation score, criticality-adjusted threshold, and update-admission decision |
+| \(J_{K,t}^{\mathrm{share}}\) | \(\{0,1\}\) | Anti-Pigeon posterior-sharing certificate decision for bucket \(K\) |
+| \(q_{K,t^-},q_{K,t}^+\) | probability measures | cached prior and updated posterior for a certified Bayesian bucket |
+| \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent inactive-event audit indicator |
+| \(U_t^{\mathrm{omit}}\) | non-negative real | simultaneous upper bound on local-versus-expanded forecast disagreement |
+| \(\mathcal C_{B,t^-},\Xi_B\) | cache, typed contract | as-of posterior cache and complete selective Bayesian contract |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
 | \(\mathcal V_Y\) | normed vector space | packet representation/residual space |
@@ -97,6 +104,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(A_t^{\mathrm{snap}}\) | \(\{0,1\}\) | joint confirmation and publication indicator for a selected snap |
 | \(\Lambda_{\mathrm{eval}}\) | fixed contract tuple | externally frozen domains, metrics, targets, thresholds, weights, validation procedures, and snap-policy rules |
 | \(\mathcal U_0,\ldots,\mathcal U_5\) | staged maps | baseline and selectable refinement operators, including predictive sheaf snapping at Stage 3 |
+| \(\mathcal B_0,\ldots,\mathcal B_3\) | staged maps | bounded Bayesian update, changepoint, event-pattern, and deep particle/variational ladder |
 | \(r_n\) | \(\{1,2,3,4,5\}\) | stage selected at slow-path invocation \(n\) |
 | \(d_t(h)\) | \(\{0,\ldots,5\}\) | selected refinement depth on hardware profile \(h\) |
 | \(p_t^{\mathrm{pri}}\) | \([0,1]\) | priority assigned from prediction-time information |
@@ -349,6 +357,85 @@ In particular,
 
 Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) align a corrected event template with the marked decision. Set \(\hat e_t^H(\mathbf r)=\varnothing\) when \(d_H(\mathsf Q_t^{(\mathbf r)})=\varnothing\), and otherwise set \(\hat e_t^H(\mathbf r)=\mathrm{lift}_H(b_t\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)}))\). Then \(\mathcal O_t(\mathbf r)=(\mathsf Q_t^{(\mathbf r)},\hat e_t^H(\mathbf r))\). The typed pair keeps law and auxiliary-template semantics separate; \(d_H\) and \(\mathrm{lift}_H\) enforce mark/time coherence only. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise \(\mathcal O_t(\mathbf 0_R)\) is returned. Point-only records cannot support a proper-score claim; law-only records cannot claim auxiliary-field correction. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
 
+## Selective Bayesian Updating
+
+Let the bounded as-of candidate frontier be
+
+\[
+\mathcal N_t^B=
+\mathcal R_t^{\mathrm{vec}}\cup\mathcal N_t^{\mathrm{sh}}\cup
+\begin{cases}
+\mathrm{Pa}_{\mathfrak M}(v_t^E)\cup\mathrm{Ch}_{\mathfrak M}(v_t^E),
+&\mathfrak M\text{ and its identification contract are available},\\
+\mathcal N_t^{\mathrm{pred}},&\text{otherwise}.
+\end{cases}
+\]
+
+Here \(\mathcal R_t^{\mathrm{vec}}\) is bounded vector retrieval, \(\mathcal N_t^{\mathrm{sh}}\) is a bounded sheaf-inspired compatibility neighborhood, and the final two sets are bounded incoming and outgoing relationships already present in the as-of graph. They scope candidate updates only: an outgoing edge is not evidence about an unrealized child outcome. The graph terms are called causal only when an explicit SCM and identification contract justify that label; otherwise they are predictive-dependency neighbors.
+
+For \(e\in\mathcal N_t^B\), let \(v_t^B(e),n_t^B(e),u_t^B(e),s_t^B(e),c_t^B(e)\in[0,1]\) be frozen vector relevance, neighbor compatibility, novelty, source-independence, and structural-criticality scores. With non-negative weights summing to one, define
+
+\[
+A_t^B(e)=\alpha_Bv_t^B(e)+\beta_Bn_t^B(e)+\gamma_Bu_t^B(e)+\delta_Bs_t^B(e),
+\]
+
+\[
+\tau_t^B(e)=\min\!\left(\tau_{\max},
+\max\!\left(\tau_{\min},\tau_0-\lambda_{\mathrm{crit}}c_t^B(e)\right)\right),
+\qquad
+J_t^{\mathrm{act}}(e)=\mathbf1\{A_t^B(e)\ge\tau_t^B(e)\}.
+\]
+
+Every score is computed from information available when the update decision is made and before any target whose performance will be claimed. The scoring maps, caps, weights, thresholds, tie-breaks, and provenance rules are components of \(\Xi_B\) and are frozen under \(\Lambda_{\mathrm{eval}}\).
+
+Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a measurable parameter space and \(q_{K,t^-}\in\mathcal P(\Theta_K)\) the cached prior for bucket \(K\). Anti-Pigeon controls posterior granularity through
+
+\[
+J_{K,t}^{\mathrm{share}}=\mathbf1\!\left\{
+D_K^{\mathrm{cert},\star}\le\epsilon_{B,\mathrm{share}},\quad
+n_{K,t}^{\mathrm{eff}}\ge n_{B,\min},\quad
+v_{K,t}=v_t,\quad H_K=H,\quad s_K\text{ is valid}
+\right\}.
+\]
+
+The certificate uses the external downstream target law, not agreement inside the posterior. Compatible events may share a bucket posterior; a failed or absent certificate creates a separate posterior key and nominates a slow-path split audit. The fast path reads a materialized certificate and never recomputes the diameter.
+
+For admitted evidence \(\xi_t\) with history \(h_t^B\), an ordinary Bayesian update is valid only for a declared normalized likelihood \(L_K\) with positive finite normalizer:
+
+\[
+q_{K,t}^+(d\theta)=
+\frac{L_K(\xi_t\mid\theta,h_t^B)q_{K,t^-}(d\theta)}
+{\int_{\Theta_K}L_K(\xi_t\mid\vartheta,h_t^B)q_{K,t^-}(d\vartheta)}.
+\]
+
+If activation is informative, the update instead declares the selection-conditioned likelihood
+
+\[
+L_K^{\mathrm{sel}}(\xi\mid\theta,h,J^{\mathrm{act}}=1)=
+\frac{P_\theta(J^{\mathrm{act}}=1\mid\xi,h)L_K(\xi\mid\theta,h)}
+{P_\theta(J^{\mathrm{act}}=1\mid h)},
+\]
+
+where the denominator is positive. For a jointly activated evidence set, the contract supplies its joint selection probability; products of one-event selection corrections are valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result. Without either condition, the result is called an activation-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model.
+
+Let \(R_{K,t}\) be a declared changepoint run-length state and
+
+\[
+J_{K,t}^{\mathrm{cp}}=\mathbf1\{P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}\}.
+\]
+
+A trigger invalidates the affected posterior and residual certificates, increments their shared epoch, expands the bounded frontier, and queues slow recalibration. A monitor updated only by activated evidence detects changepoints in that selected process; it supports a full-stream regime claim only when the selection model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error.
+
+Conditional on the inactive candidate set, candidates enter a shadow audit independently of their activation scores with \(J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}})\) under a frozen schedule. If accepted candidates exceed the audit budget, a frozen uniform reservoir subsamples them and records each final inclusion probability; audit estimators use the corresponding design weights. Let
+
+\[
+U_t^{\mathrm{omit}}=\mathrm{UCB}_{\mathrm{sim}}\!\left[
+D_B(\mathsf Q_t^{\mathrm{local}},\mathsf Q_t^{\mathrm{expanded}})
+\right].
+\]
+
+Selective locality is certified only while \(U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}\). Activation, sharing, audit inclusion probability, provenance, horizon, posterior version, and changepoint state are logged. Publication atomically replaces the posterior, posterior key, dependent residual state, and epoch; readers observe either the old complete version or the new complete version. Posterior storage has a declared capacity and eviction rule; eviction removes reuse eligibility but does not erase immutable audit provenance.
+
 ## Runtime Packet
 
 The compressed runtime state is:
@@ -584,7 +671,7 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, and snap candidate, obligation, and publication rules. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, epoch, and confidence state is reconstructed from the same raw history. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian frontier caps, activation maps and thresholds, source and selection models, posterior-sharing certificates, audit sampling, omitted-influence divergence, changepoint approximation, epoch invalidation, and atomic publication. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
 
 \[
 \mathcal R_{\mathrm{pri}}^D(\Theta_\Gamma)=

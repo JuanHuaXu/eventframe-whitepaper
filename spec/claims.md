@@ -38,6 +38,12 @@ A runtime may use a separately typed packet composition rule to predict \(\wideh
 
 Status: operational architecture claim; requires usefulness scoring, residual-confidence calibration, particle-set update tests, and ablation against a baseline packet selector.
 
+## Claim 2b: Selective Bayesian updating can preserve bounded local work
+
+Vector retrieval, sheaf-inspired compatibility expansion, and as-of causal or predictive adjacency may nominate a bounded belief-update frontier. The activation rule controls whether an event earns an update; a current Anti-Pigeon certificate controls whether activated events may share a posterior. A near-constant update claim requires explicit caps on retrieval width, graph degree, active set, hypothesis or sufficient-statistic dimension, retained changepoint state, and update iterations. Informative activation is included in the likelihood or the result is labeled an activation-conditioned working posterior. Independent inactive-event audits measure omitted influence and selection calibration.
+
+Status: architectural and mathematical proposal; requires implementation benchmarks, posterior-calibration tests on the full stream, changepoint false-alarm and delay measurements, and ablation against unconditional and non-sharing baselines.
+
 ## Claim 3: Episodic memory and residual cache serve different roles
 
 Episodic memory recalls prior cases. Residual cache recalls reusable corrections. The former stores examples; the latter stores transition adjustments.

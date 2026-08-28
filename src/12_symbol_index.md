@@ -48,9 +48,17 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(s_i\), \(s_{k_t}\), \(\mathcal S_{\mathrm{prov}}\): provenance records for general and exact residual-cache entries and their declared space.
 
-\(\Xi_R\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
+\(\Xi_R\), \(\Xi_B\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, selective Bayesian contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
 \(H_i\), \(H_{k_t}\), \(v_{k_t}\), \(v_t\), \(\mu_{k_t}\): cache horizons, cache-entry and active epochs, and materialized compatibility safety margin.
+
+\(\mathcal N_t^B\), \(\mathcal R_t^{\mathrm{vec}}\), \(\mathcal N_t^{\mathrm{sh}}\): bounded Bayesian candidate frontier and its vector-retrieval and sheaf-inspired components.
+
+\(A_t^B\), \(\tau_t^B\), \(J_t^{\mathrm{act}}\): Bayesian activation score, criticality-adjusted threshold, and activation indicator.
+
+\(J_{K,t}^{\mathrm{share}}\), \(q_{K,t^-}\), \(q_{K,t}^+\), \(\mathcal C_{B,t^-}\): Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
+
+\(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(U_t^{\mathrm{omit}}\): changepoint trigger, independent inactive-event audit indicator, and upper bound on local-versus-expanded forecast disagreement.
 
 \(X_t\), \(\mathcal X_{\mathrm{ctx}}\): compressed runtime state and its domain. This domain is distinct from the auxiliary event-field space \(\mathcal X\).
 
@@ -103,6 +111,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(\mathbf v^{(v)}\), \(\mathcal C_{\mathrm{mem}}^{(v)}\), \(\mathsf B_{\mathcal D}\), \(\mathsf I_{\mathcal D}\): local epoch map, versioned memory tuple, monotone epoch-bump map, and targeted stale-marking operator for a dependency closure.
 
 \(\mathcal U_0,\ldots,\mathcal U_5\), \(r_n\), \(d_t(h)\): baseline/refinement operators, selected stage at invocation \(n\), and deepest reached stage under hardware profile \(h\); \(\mathcal U_3\) is bounded predictive sheaf snapping.
+
+\(\mathcal B_0,\ldots,\mathcal B_3\): bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle or variational inference stages.
 
 \(p_t^{\mathrm{pri}}\), \(w_{\mathrm{pri}}\), \(\mathcal R_{\mathrm{pri}}^D\), \(\mathcal R_{\mathrm{prop}}^D\), \(G_{a\rightarrow b}^{\mathrm{pri}}\): pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
 

@@ -10,14 +10,15 @@ The core contribution is adaptive event abstraction. At fixed resolution, an ext
 
 Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identity, event time, and no event within horizon \(H\). A proper forecast score is the primary probabilistic-fidelity metric because timing-only loss can reward the wrong event at the right time. The complete system design minimizes a separate composite objective under a proper-score guard. Event-aware timing remains an interpretable diagnostic.
 
-The reference prediction procedure has six steps:
+The reference prediction procedure has seven steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
 2. Compute a baseline forecast law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\).
 3. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and component-provenance checks pass.
-4. Clip its separately typed point and law components, apply each only to its declared semantics, derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
-5. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
-6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
+4. Construct a bounded Bayesian update frontier, apply the recorded activation rule, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise preserve separate posteriors or defer.
+5. Clip the separately typed point and law residual components, apply each only to its declared semantics, derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
+6. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
+7. Use a slower refinement process to audit selective updates, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
@@ -28,11 +29,12 @@ The contributions of this paper are therefore:
 1. A compressed event-frame ontology for prediction-oriented representation.
 2. A governing optimization principle for adaptive event abstraction.
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
-4. A combined episodic and residual memory architecture.
-5. A validity-constrained sensitivity method for conditional invariants and ontology review.
-6. A lumpability-based approach to abstraction.
-7. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
-8. A fast-path and slow-path reference runtime model.
-9. Experiment designs for testing the framework's claims.
+4. A selective Bayesian update frontier with Anti-Pigeon posterior-sharing control, selection-aware semantics, changepoint invalidation, and independent audit sampling.
+5. A combined episodic, residual, and bounded belief-memory architecture.
+6. A validity-constrained sensitivity method for conditional invariants and ontology review.
+7. A lumpability-based approach to abstraction.
+8. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
+9. A fast-path and slow-path reference runtime model.
+10. Experiment designs for testing the framework's claims.
 
-These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, bounded predictive sheaf snapping, and priority- and hardware-aware staged integration. The snapping term is EventFrame terminology for validated local predictive-structure revision, not a theorem or standard operation inherited from sheaf theory. The next section defines the event ontology.
+These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. Streaming and sequential Bayesian methods provide prior work for incremental posterior approximation and changepoint monitoring [14--18], while Pattern Markov Chains and shift-aware sequential prediction provide narrower event-forecasting precedents [19,20]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including selective Bayesian activation, Anti-Pigeon posterior granularity, cache certificates, bounded predictive sheaf snapping, and priority- and hardware-aware staged integration. It does not claim to invent streaming Bayes, particle filtering, online changepoint detection, or event-pattern forecasting. The snapping term is EventFrame terminology for validated local predictive-structure revision, not a theorem or standard operation inherited from sheaf theory. The next section defines the event ontology.

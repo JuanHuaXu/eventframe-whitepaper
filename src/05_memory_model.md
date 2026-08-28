@@ -48,4 +48,126 @@ Fast-path memory use should be cheap. A practical implementation may use approxi
 
 Representative preservation is a memory responsibility. A single traceability frame prevents a group from becoming an empty label, but boundary detection requires the context audit set, its associated anchor frames, coverage metadata, and sampling history. If these are discarded, the runtime must mark the group unaudited rather than infer stability from one example.
 
-The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. Slow-path consolidation keeps both memories from turning into unfiltered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.
+## Selective Bayesian Update Frontier
+
+EventFrame may attach a bounded Bayesian belief state to an event bucket, residual family, latent regime, or declared hypothesis family. It does not update every stored belief after every frame. Instead, vector retrieval and graph locality propose a finite update frontier. Let \(\mathcal R_t^{\mathrm{vec}}\) be at most \(k_v\) candidates returned by the frozen vector-retrieval rule. Let \(\mathcal N_t^{\mathrm{sh}}\) be the bounded neighborhood returned by the abstraction compatibility graph. This is a sheaf-inspired neighborhood, not a sheaf-theoretic neighborhood unless the required restriction identity and composition laws have actually been instantiated.
+
+If an explicit SCM \(\mathfrak M\) exists, let \(v_t^E\) be the graph node associated with the current context and use its declared parents and children. A child here is an outgoing relationship already present in the as-of graph, not a future realized event. Without an identified SCM, the corresponding predictive-dependency neighbors may be used but may not be called causal. The candidate frontier is
+
+\[
+\mathcal N_t^B=
+\mathcal R_t^{\mathrm{vec}}
+\cup\mathcal N_t^{\mathrm{sh}}
+\cup
+\begin{cases}
+\mathrm{Pa}_{\mathfrak M}(v_t^E)\cup
+\mathrm{Ch}_{\mathfrak M}(v_t^E),&\mathfrak M\text{ is available},\\
+\mathcal N_t^{\mathrm{pred}},&\text{otherwise.}
+\end{cases}
+\]
+
+Every set is constructed from the as-of snapshot and has a predeclared cardinality or degree cap. For an evidence-bearing event \(e\in\mathcal N_t^B\), define four measurable scores in \([0,1]\): vector relevance \(v_t^B(e)\), sheaf-inspired neighbor compatibility \(n_t^B(e)\), novelty \(u_t^B(e)\), and source independence \(s_t^B(e)\). Freeze non-negative weights satisfying \(\alpha_B+\beta_B+\gamma_B+\delta_B=1\), and set
+
+\[
+A_t^B(e)=
+\alpha_Bv_t^B(e)+\beta_Bn_t^B(e)
++\gamma_Bu_t^B(e)+\delta_Bs_t^B(e).
+\]
+
+Let \(c_t^B(e)\in[0,1]\) be structural criticality available before the downstream target whose performance will be evaluated. For fixed \(0\le\tau_{\min}\le\tau_{\max}\le1\), define the lower threshold for critical neighbors by
+
+\[
+\tau_t^B(e)=
+\min\!\left(\tau_{\max},
+\max\!\left(\tau_{\min},
+\tau_0-\lambda_{\mathrm{crit}}c_t^B(e)\right)\right),
+\qquad
+J_t^{\mathrm{act}}(e)=\mathbf1[A_t^B(e)\ge\tau_t^B(e)].
+\]
+
+All scoring maps, normalizations, weights, thresholds, tie-breaks, and source-dependence estimators are part of \(\Lambda_{\mathrm{eval}}\). A score may use a newly arrived frame once that frame is available, but it may not use a later target outcome, posterior audit, or graph revision. Activation controls expenditure; it does not establish that candidates are safe to pool.
+
+Anti-Pigeon controls posterior granularity. For a candidate bucket \(K\), let \(v_K^B\) be the abstraction epoch under which its posterior-sharing certificate was produced. Sharing is permitted only when
+
+\[
+J_{K,t}^{\mathrm{share}}=
+\mathbf1\!\left\{
+D_K^{\mathrm{cert},\star}\le\epsilon_{B,\mathrm{share}},\quad
+n_K^{\mathrm{eff}}\ge n_{B,\min},\quad
+v_K^B=v_t,\quad
+H_K=H,\quad
+s_K^B\text{ is valid}
+\right\}.
+\]
+
+The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. The fast path checks a materialized certificate; it does not recompute \(D_K^{\mathrm{cert},\star}\). Active events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
+
+Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a declared parameter space and let \(q_{K,t^-}\in\mathcal P(\Theta_K)\) be the cached prior available before the update. Let \(\xi_t(e)\) be the evidence packet extracted from an available event and its currently available labels. For an activated, sharing-approved evidence set \(\mathcal E_{K,t}^{\mathrm{act}}\), an ordinary Bayesian update is
+
+\[
+q_{K,t}^{+}(d\theta)=
+\frac{
+L_K^{\mathrm{sel}}(\mathcal E_{K,t}^{\mathrm{act}}\mid\theta,\mathfrak h_t)
+q_{K,t^-}(d\theta)}
+{\int_{\Theta_K}
+L_K^{\mathrm{sel}}(\mathcal E_{K,t}^{\mathrm{act}}\mid\vartheta,\mathfrak h_t)
+q_{K,t^-}(d\vartheta)},
+\]
+
+provided the denominator is finite and strictly positive. Because novelty or compatibility may depend on the arrived event, activation is generally informative. For one evidence packet \(\xi\), the selection-conditioned likelihood is
+
+\[
+L_K^{\mathrm{sel}}(\xi\mid\theta,\mathfrak h_t,J^{\mathrm{act}}=1)=
+\frac{
+P_\theta(J^{\mathrm{act}}=1\mid\xi,\mathfrak h_t)
+p_\theta(\xi\mid\mathfrak h_t)}
+{P_\theta(J^{\mathrm{act}}=1\mid\mathfrak h_t)},
+\]
+
+on the domain where the denominator is positive. For a jointly activated evidence set, the contract must model the joint activation probability; multiplying one-event selection corrections is valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result, for example when activation depends exclusively on already conditioned-on pre-evidence variables. If the selection probability cannot be modeled, the result is called an activation-conditioned working posterior, not a calibrated posterior for the full event stream, and must be tested against the independent audit stream.
+
+Likewise, a product of conditionally independent likelihoods is ordinary Bayes only when the declared source model justifies that factorization. Tempering correlated-source contributions,
+
+\[
+q_{K,t}^{+}(d\theta)\propto
+q_{K,t^-}(d\theta)
+\prod_{e\in\mathcal E_{K,t}^{\mathrm{act}}}
+p_\theta(\xi_t(e)\mid\mathfrak h_t)^{\omega_t(e)},
+\qquad 0\le\omega_t(e)\le1,
+\]
+
+defines a generalized or power posterior unless it is derived from a joint generative model. Source-independence scoring therefore cannot by itself justify multiplying evidence as if it were independent.
+
+For cheap regime monitoring, a bucket may maintain a bounded approximation to a Bayesian online changepoint run-length posterior [17,18]. Let \(R_{K,t}\in\mathbb N_0\) be run length and define
+
+\[
+J_{K,t}^{\mathrm{cp}}=
+\mathbf1\!\left[
+P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}
+\right].
+\]
+
+When this indicator fires, the runtime invalidates the affected shared posterior and residual certificate, increments the local epoch, expands the review frontier, and routes recalibration to the slow path. A monitor fed only activated evidence detects changes in the selected process. It supports a full-stream regime claim only when its transition and observation model includes the selection mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error.
+
+Selective retrieval can become self-confirming by never revisiting what it has learned to ignore. EventFrame therefore reserves a predeclared audit probability \(\pi_{\mathrm{audit}}>0\). Conditional on the inactive candidate set and independently of activation-score magnitude, draw
+
+\[
+J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}}).
+\]
+
+If the accepted audit sample exceeds a fixed budget \(B_{\mathrm{audit}}\), a frozen uniform reservoir subsamples it and records every final inclusion probability. Audit estimators use the corresponding design weights; an unweighted capped convenience sample cannot support the omission certificate. Audited inactive events are evaluated in shadow mode against an expanded update. Define the omitted-influence statistic
+
+\[
+U_t^{\mathrm{omit}}=
+\mathrm{UCB}_{\mathrm{sim}}\!\left[
+D_B\!\left(\mathsf Q_t^{\mathrm{local}},\mathsf Q_t^{\mathrm{expanded}}\right)
+\right].
+\]
+
+Local updating remains certified only while \(U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}\). The simultaneous procedure covers every inspected bucket, expansion, and repeated audit decision. Every production or shadow decision records \((A_t^B,\tau_t^B,J_t^{\mathrm{act}},J_{K,t}^{\mathrm{share}},J_t^{\mathrm{audit}},v_t,H,s_t^{\mathrm{prov}})\), together with audit inclusion probability, so calibration can be reconstructed under as-of replay.
+
+Posterior, posterior key, dependent residual certificate, and epoch publish atomically. Prediction readers observe one complete old or new version, never a mixed state. Posterior storage has a declared capacity and deterministic eviction rule. Eviction removes fast-path reuse eligibility but preserves immutable provenance required by later audits.
+
+Streaming variational Bayes motivates incremental and asynchronous posterior approximation [14]. Streaming variational Monte Carlo and online variational sequential Monte Carlo provide richer state-space and particle-based alternatives [15,16], but their constant-per-sample or online properties do not make their particle count, parameter dimension, optimization, or hardware cost free. Pattern Markov Chains are relevant only for declared event-pattern completion forecasts, not as a universal next-event Bayesian model [19]. Work on out-of-distribution sequential event prediction motivates latent-context and shift-aware evaluation [20], but EventFrame does not inherit its causal interpretation without the corresponding identification assumptions.
+
+The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. The selective Bayesian frontier updates bounded cached beliefs, while Anti-Pigeon decides which evidence may share one posterior. Slow-path consolidation, changepoint review, and independent audits keep all three memories from turning into overconfident filtered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.

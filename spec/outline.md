@@ -62,6 +62,11 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - KV episodic cache
 - Residual cache
 - Similarity lookup
+- Selective Bayesian candidate frontier
+- Activation and selection-conditioned updating
+- Anti-Pigeon posterior sharing
+- Independent omitted-influence audit
+- Changepoint invalidation
 - Consolidation
 - Cache pollution
 
@@ -104,12 +109,15 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Compression and intervention tests
 - Controlled perturbation tests
 - Cache hit-rate tests
+- Selective Bayesian calibration and omission tests
+- Posterior-sharing and changepoint tests
 - Long-horizon prediction
 - Invariant stability tests
 - Confluence and divergence tests
 - Compatibility and regime-mixture tests
 - Priority-weighted correction utility
 - Hardware-indexed stage benchmarks
+- Bayesian update-ladder benchmarks
 - Ablation studies
 
 ## Discussion: Innovation and Scientific Refinement

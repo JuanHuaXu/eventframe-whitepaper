@@ -14,6 +14,8 @@ Claim 2. Residual caches reduce prediction cost or error when similar contexts o
 
 Claim 2a. Runtime prediction packets are useful when a separately typed packet composition operator improves selection of memory nodes, graph edges, retrieval lane, compaction risk, response mode, or control branch on held-out packet loss.
 
+Claim 2b. A selective Bayesian layer can preserve bounded local update cost when vector width, graph degree, activated frontier size, hypothesis dimension, and retained changepoint state are explicitly capped. Activation determines which evidence is updated; Anti-Pigeon certificates determine which evidence may share a posterior. Informative selection must enter the likelihood or the result is reported only as an activation-conditioned working posterior. Independent inactive-event audits and omitted-influence bounds test whether suppression has become overconfident.
+
 Claim 3. Episodic memory and residual cache memory serve different roles because prior-case recall and prior-error correction can be independently useful or harmful under the same prediction context.
 
 Claim 4. Validity-constrained property fuzzing exposes conditional model invariants and ontology review signals. It does not establish causal effects without an explicit SCM and identification strategy.

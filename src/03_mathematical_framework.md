@@ -174,7 +174,9 @@ The governing principle can now be stated without overloading \(\Omega\). It is 
 \alpha,\kappa,\epsilon_R,\text{cache gates}),
 \]
 
-and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version \(v\) changes only when a validated slow-path revision is published. Separately freeze an evaluation contract:
+and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version \(v\) changes only when a validated slow-path revision is published.
+
+The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-inspired, and as-of graph frontier rules; activation and criticality maps; posterior family and likelihood; selection model; Anti-Pigeon sharing certificate; source-dependence treatment; changepoint approximation; independent audit schedule; omitted-influence test; resource caps; and atomic publication rule. Its as-of posterior cache is \(\mathcal C_{B,t^-}\). Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
 
 \[
 \begin{aligned}
@@ -189,7 +191,8 @@ and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a version
 \lambda_{\mathrm{rep}},\mathcal C_{\mathrm{rep}},\\
 &\text{packet target and loss},\text{regime-shift rule},
 \text{confidence and map-validity procedures},\\
-&\text{snap candidate, obligation, and publication rules}).
+&\text{snap candidate, obligation, and publication rules},\\
+&\text{Bayesian activation, selection, audit, changepoint, cap, and publication rules}).
 \end{aligned}
 \]
 
@@ -199,11 +202,12 @@ Let \(\mathfrak h_t\in\mathfrak H_t\) denote the complete observable history ava
 S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t).
 \]
 
-Here \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are fixed design- and confirmation-generating laws on prediction instances \((\mathfrak h_t,Z_{t+1})\). Their realized, chronologically separated samples or trajectory blocks are \(\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}\) and \(\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}\); independence is not assumed unless the sampling design supplies it. Replaying each candidate on the same raw history permits its caches, epochs, confidence, and prior updates to differ without treating state as an unintegrated free variable. The external target conditional law is \(P_\star(Y\mid C)\). This contract is fixed independently of the candidates being compared; a candidate cannot shrink the history or context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require \(\lambda_{\mathrm{rep}}\ge0\) and \(\mathcal C_{\mathrm{rep}}\ge0\). At the fixed resolution, let:
+Here \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are fixed design- and confirmation-generating laws on prediction instances \((\mathfrak h_t,Z_{t+1})\). Their realized, chronologically separated samples or trajectory blocks are \(\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}\) and \(\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}\); independence is not assumed unless the sampling design supplies it. Replaying each candidate on the same raw history permits its caches, posteriors, epochs, changepoint states, confidence, and prior updates to differ without treating state as an unintegrated free variable. The external target conditional law is \(P_\star(Y\mid C)\). This contract is fixed independently of the candidates being compared; a candidate cannot shrink the history or context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require \(\lambda_{\mathrm{rep}}\ge0\) and \(\mathcal C_{\mathrm{rep}}\ge0\). At the fixed resolution, let:
 
 \[
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
-\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})
+\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,
+\Xi_R,\Xi_B,\Xi_A^{(v)})
 \]
 
 denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{eval}}\). Let \(\mathcal O_{\Theta_\Gamma}(C;S_{\Theta_\Gamma,t^-})\) denote its final typed output bundle from the candidate state reconstructed immediately before prediction time. Let \(\mathfrak K_\pi\) be the buckets induced by \(\pi\), and let \(\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}\) be the active buckets with admissible contexts. For an active bucket \(K\), define its external future-diameter \(D_K^\star(\pi)\) as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to \(\Theta_\Gamma\) only in an implementation that jointly optimizes packet selection.

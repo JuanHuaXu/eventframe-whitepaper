@@ -156,6 +156,30 @@ A low-latency residual cache keyed by a compact action signature. It stores a re
 
 A key-value memory structure storing prior event episodes. Keys represent retrieval conditions; values represent event frames, trajectories, or summaries.
 
+## Selective Bayesian Frontier
+
+A bounded as-of candidate set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. Graph children nominate where to update; they do not reveal future child outcomes.
+
+## Bayesian Activation Score
+
+A frozen weighted score combining vector relevance, neighbor compatibility, novelty, and source independence. Structurally critical candidates may receive a lower clamped threshold. The score decides whether evidence is admitted to a local Bayesian update.
+
+## Activation-Conditioned Working Posterior
+
+The result of updating only on activated evidence without proving conditional ignorability or using a valid selection-conditioned likelihood. It may be useful operationally, but it is not claimed to be calibrated for the full event stream.
+
+## Anti-Pigeon Posterior Sharing
+
+The rule that events may share one cached posterior only while an external target-law divergence certificate, effective-support, horizon, epoch, and provenance checks pass. Divergent or uncertified events receive separate posterior keys.
+
+## Omitted-Influence Audit
+
+An independent shadow sample of inactive candidates used to compare a local forecast with an expanded-neighborhood forecast. A simultaneous upper bound on their disagreement limits claims that selective locality is harmless.
+
+## Bayesian Update Ladder
+
+Four resource-aware stages: bounded cached updating, bounded changepoint monitoring, optional event-pattern refinement, and deep particle, variational, or model-comparison inference. Only stages with declared deterministic caps belong on a hard-latency fast path.
+
 ## Property Fuzzing
 
 A validity-constrained method for testing predictor sensitivity to selected event properties. It is not causal evidence by itself.
@@ -178,7 +202,7 @@ An observed operating condition under which a prediction pattern is evaluated. I
 
 ## Fast Path
 
-A low-latency prediction route using only state available immediately before prediction, including certified cached residuals, episodic retrieval, or learned approximations.
+A low-latency prediction route using only state available immediately before prediction, including certified cached residuals, bounded cached posterior updates, episodic retrieval, or learned approximations.
 
 ## Slow Path
 

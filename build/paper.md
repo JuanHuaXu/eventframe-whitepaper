@@ -18,11 +18,11 @@ The central object is $`e_t\in\mathcal E_{\Delta_\tau}`$, obtained as $`e_t=\Gam
 
 At a fixed temporal resolution, a target-law constrained population objective supplies an oracle benchmark. The operational rule instead minimizes empirical priority-weighted post-observation action plus non-negative representation cost over a finite family satisfying certified abstraction and proper-score constraints. Oracle feasibility and empirical certifiability are distinct. Candidate design and untouched chronological confirmation are separated. Prediction-time admission uses a distinct risk and state containing only quantities available before the prediction occurs.
 
-EventFrame separates a baseline from cached statistical error correction. A horizon-indexed residual record carries separately typed point-template and forecast-law components, each with its own clipping and estimator semantics. Proper-score evaluation requires the law component's declared Markov kernel on the complete measurable marked-time/no-event space; auxiliary structured fields use the point component. The kernel explicitly governs the no-event atom, and a fixed decision rule keeps the final mark and time coherent with the corrected law. A separately typed operator composes runtime packets. The operator representation takes limited inspiration from Causal Fermion Systems; EventFrame's clipping, projection, and residual objective are its own constructions, not the CFS causal action.
+EventFrame separates a baseline from cached statistical error correction. A horizon-indexed residual record carries separately typed point-template and forecast-law components, each with its own clipping and estimator semantics. Proper-score evaluation requires the law component's declared Markov kernel on the complete measurable marked-time/no-event space; auxiliary structured fields use the point component. The kernel explicitly governs the no-event atom, and a fixed decision rule keeps the final mark and time coherent with the corrected law. A selective Bayesian frontier uses bounded vector retrieval, sheaf-inspired compatibility neighbors, and as-of causal or predictive adjacency to nominate belief updates. Activation controls update expenditure, while Anti-Pigeon certificates determine which events may share a posterior. Selection-conditioned likelihoods, independent inactive-event audits, changepoint invalidation, and explicit resource caps prevent the local posterior from being presented as an unqualified full-stream posterior. A separately typed operator composes runtime packets. The operator representation takes limited inspiration from Causal Fermion Systems; EventFrame's clipping, projection, and residual objective are its own constructions, not the CFS causal action.
 
 Validity-constrained fuzzing measures model sensitivity, not causality. Causal claims require an explicit structural causal model and identified interventions. Approximate predictive lumpability compares detailed contexts that share an abstract context. Every group retains a traceability frame plus a coverage-aware context audit set; one representative alone cannot establish group stability. A staged compatibility layer can compare heterogeneous abstractions, reconcile local forecasts, perform bounded predictive sheaf snaps after untouched confirmation, apply spectral refinement under explicit linear assumptions, and preserve regime mixtures. Snaps revise predictive organization through atomic graph-key-epoch publication; they do not promote causal edges. Refinement depth is selected by priority, evidence, and measured hardware cost while certified cache reuse remains available.
 
-The paper remains a research framework without implementation results. A finite worked instantiation demonstrates the residual, no-event, horizon-gate, and operational-selection arithmetic but is not empirical validation. The evaluation program uses as-of rolling-origin replay and measures proper forecast quality, residual utility, sensitivity stability, audit coverage, abstraction compatibility, predictive-snap accuracy and churn, priority-weighted correction, regime adaptation, and hardware-indexed runtime tradeoffs.
+The paper remains a research framework without implementation results. A finite worked instantiation demonstrates the residual, no-event, horizon-gate, and operational-selection arithmetic but is not empirical validation. The evaluation program uses as-of rolling-origin replay and measures proper forecast quality, residual utility, Bayesian activation and selection calibration, omitted influence, changepoint detection, sensitivity stability, audit coverage, abstraction compatibility, predictive-snap accuracy and churn, priority-weighted correction, regime adaptation, and hardware-indexed runtime tradeoffs.
 
 ## 1. Introduction
 
@@ -36,14 +36,15 @@ The core contribution is adaptive event abstraction. At fixed resolution, an ext
 
 Given $`C_t=e_{t-k+1:t}`$, the system predicts a distribution over event identity, event time, and no event within horizon $`H`$. A proper forecast score is the primary probabilistic-fidelity metric because timing-only loss can reward the wrong event at the right time. The complete system design minimizes a separate composite objective under a proper-score guard. Event-aware timing remains an interpretable diagnostic.
 
-The reference prediction procedure has six steps:
+The reference prediction procedure has seven steps:
 
 1. Form a context $`C_t`$ from the last $`k`$ event frames.
 2. Compute a baseline forecast law $`\mathsf Q_B(\cdot\mid C_t)`$ and conditional event template $`b_t=B(C_t)`$.
 3. From candidate-specific state $`S_{\Theta,t^-}`$, select an exact-key or general residual record $`\mathbf r_t^{\mathrm{use}}`$ only when its distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and component-provenance checks pass.
-4. Clip its separately typed point and law components, apply each only to its declared semantics, derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
-5. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
-6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
+4. Construct a bounded Bayesian update frontier, apply the recorded activation rule, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise preserve separate posteriors or defer.
+5. Clip the separately typed point and law residual components, apply each only to its declared semantics, derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
+6. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
+7. Use a slower refinement process to audit selective updates, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
@@ -54,14 +55,15 @@ The contributions of this paper are therefore:
 1. A compressed event-frame ontology for prediction-oriented representation.
 2. A governing optimization principle for adaptive event abstraction.
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
-4. A combined episodic and residual memory architecture.
-5. A validity-constrained sensitivity method for conditional invariants and ontology review.
-6. A lumpability-based approach to abstraction.
-7. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
-8. A fast-path and slow-path reference runtime model.
-9. Experiment designs for testing the framework's claims.
+4. A selective Bayesian update frontier with Anti-Pigeon posterior-sharing control, selection-aware semantics, changepoint invalidation, and independent audit sampling.
+5. A combined episodic, residual, and bounded belief-memory architecture.
+6. A validity-constrained sensitivity method for conditional invariants and ontology review.
+7. A lumpability-based approach to abstraction.
+8. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
+9. A fast-path and slow-path reference runtime model.
+10. Experiment designs for testing the framework's claims.
 
-These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including its predictive Anti-Pigeon criterion, cache certificates, bounded predictive sheaf snapping, and priority- and hardware-aware staged integration. The snapping term is EventFrame terminology for validated local predictive-structure revision, not a theorem or standard operation inherited from sheaf theory. The next section defines the event ontology.
+These are proposed as a research framework, not as validated results or a fixed implementation. Event-centric latent retrieval itself has prior art [10]. Streaming and sequential Bayesian methods provide prior work for incremental posterior approximation and changepoint monitoring [14--18], while Pattern Markov Chains and shift-aware sequential prediction provide narrower event-forecasting precedents [19,20]. D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* provides prior work on coordinating heterogeneous causal abstractions through network sheaves, restriction maps, connection Laplacians, global sections, and mixture causal models [13]. EventFrame's claimed contribution is the typed residual-error and evidence-controlled event-abstraction loop, including selective Bayesian activation, Anti-Pigeon posterior granularity, cache certificates, bounded predictive sheaf snapping, and priority- and hardware-aware staged integration. It does not claim to invent streaming Bayes, particle filtering, online changepoint detection, or event-pattern forecasting. The snapping term is EventFrame terminology for validated local predictive-structure revision, not a theorem or standard operation inherited from sheaf theory. The next section defines the event ontology.
 
 ## Claims Register
 
@@ -78,6 +80,8 @@ Claim 1b. Temporal precision controls frame granularity if changing the declared
 Claim 2. Residual caches reduce prediction cost or error when similar contexts or action signatures produce similar baseline errors and as-of, metadata-gated residual records improve forward-held-out loss often enough to justify lookup and maintenance. Point residuals are in-horizon only, while a separately declared law estimator covers marked and no-event outcomes. A typed cache record keeps point-template and law corrections semantically separate; the full kernel governs the no-event atom, and the final mark and time are coherent with the corrected law. Joint records require forward validation of the complete bundle.
 
 Claim 2a. Runtime prediction packets are useful when a separately typed packet composition operator improves selection of memory nodes, graph edges, retrieval lane, compaction risk, response mode, or control branch on held-out packet loss.
+
+Claim 2b. A selective Bayesian layer can preserve bounded local update cost when vector width, graph degree, activated frontier size, hypothesis dimension, and retained changepoint state are explicitly capped. Activation determines which evidence is updated; Anti-Pigeon certificates determine which evidence may share a posterior. Informative selection must enter the likelihood or the result is reported only as an activation-conditioned working posterior. Independent inactive-event audits and omitted-influence bounds test whether suppression has become overconfident.
 
 Claim 3. Episodic memory and residual cache memory serve different roles because prior-case recall and prior-error correction can be independently useful or harmful under the same prediction context.
 
@@ -348,7 +352,9 @@ $$
 \alpha,\kappa,\epsilon_R,\text{cache gates}),
 $$
 
-and the candidate abstraction structure as $`\Xi_A^{(v)}`$, containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version $`v`$ changes only when a validated slow-path revision is published. Separately freeze an evaluation contract:
+and the candidate abstraction structure as $`\Xi_A^{(v)}`$, containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version $`v`$ changes only when a validated slow-path revision is published.
+
+The selective Bayesian contract $`\Xi_B`$ contains the bounded vector, sheaf-inspired, and as-of graph frontier rules; activation and criticality maps; posterior family and likelihood; selection model; Anti-Pigeon sharing certificate; source-dependence treatment; changepoint approximation; independent audit schedule; omitted-influence test; resource caps; and atomic publication rule. Its as-of posterior cache is $`\mathcal C_{B,t^-}`$. Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
 
 $$
 \begin{aligned}
@@ -363,7 +369,8 @@ $$
 \lambda_{\mathrm{rep}},\mathcal C_{\mathrm{rep}},\\
 &\text{packet target and loss},\text{regime-shift rule},
 \text{confidence and map-validity procedures},\\
-&\text{snap candidate, obligation, and publication rules}).
+&\text{snap candidate, obligation, and publication rules},\\
+&\text{Bayesian activation, selection, audit, changepoint, cap, and publication rules}).
 \end{aligned}
 $$
 
@@ -373,11 +380,12 @@ $$
 S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t).
 $$
 
-Here $`P_{\mathrm{obj}}`$ and $`P_{\mathrm{conf}}`$ are fixed design- and confirmation-generating laws on prediction instances $`(\mathfrak h_t,Z_{t+1})`$. Their realized, chronologically separated samples or trajectory blocks are $`\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}`$ and $`\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}`$; independence is not assumed unless the sampling design supplies it. Replaying each candidate on the same raw history permits its caches, epochs, confidence, and prior updates to differ without treating state as an unintegrated free variable. The external target conditional law is $`P_\star(Y\mid C)`$. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the history or context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require $`\lambda_{\mathrm{rep}}\ge0`$ and $`\mathcal C_{\mathrm{rep}}\ge0`$. At the fixed resolution, let:
+Here $`P_{\mathrm{obj}}`$ and $`P_{\mathrm{conf}}`$ are fixed design- and confirmation-generating laws on prediction instances $`(\mathfrak h_t,Z_{t+1})`$. Their realized, chronologically separated samples or trajectory blocks are $`\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}`$ and $`\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}`$; independence is not assumed unless the sampling design supplies it. Replaying each candidate on the same raw history permits its caches, posteriors, epochs, changepoint states, confidence, and prior updates to differ without treating state as an unintegrated free variable. The external target conditional law is $`P_\star(Y\mid C)`$. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the history or context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require $`\lambda_{\mathrm{rep}}\ge0`$ and $`\mathcal C_{\mathrm{rep}}\ge0`$. At the fixed resolution, let:
 
 $$
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
-\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})
+\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,
+\Xi_R,\Xi_B,\Xi_A^{(v)})
 $$
 
 denote the complete event-prediction design evaluated under $`\Lambda_{\mathrm{eval}}`$. Let $`\mathcal O_{\Theta_\Gamma}(C;S_{\Theta_\Gamma,t^-})`$ denote its final typed output bundle from the candidate state reconstructed immediately before prediction time. Let $`\mathfrak K_\pi`$ be the buckets induced by $`\pi`$, and let $`\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}`$ be the active buckets with admissible contexts. For an active bucket $`K`$, define its external future-diameter $`D_K^\star(\pi)`$ as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to $`\Theta_\Gamma`$ only in an implementation that jointly optimizes packet selection.
@@ -851,7 +859,7 @@ For one context $`C_t`$, suppose the baseline law is the row vector $`\mathbf q_
 Take $`\mathscr H=\mathbb R^3`$, represent both tagged residual components by diagonal self-adjoint matrices, and use the certified joint cache record
 
 $$
-r_0^E=r_0^Q=\operatorname{diag}(0.10,-0.05,-0.05),
+r_0^E=r_0^Q=\mathrm{diag}(0.10,-0.05,-0.05),
 \qquad
 \mathbf r_0=(r_0^E,r_0^Q,EQ),
 \qquad
@@ -862,7 +870,7 @@ The equality of the two matrices is a convenience of this toy, not a semantic id
 
 $$
 \rho_H^Q(\mathbf q,z)
-=\operatorname{diag}(\mathbf 1_z-\mathbf q),
+=\mathrm{diag}(\mathbf 1_z-\mathbf q),
 $$
 
 where $`\mathbf 1_z`$ is the one-hot vector for any $`z\in\mathcal Z_H`$, including $`\varnothing`$. A separately declared point estimator supplies $`r_0^E`$. A cache may store projected or averaged outputs such as $`\mathbf r_0`$, together with component-specific estimator identities, horizon, and provenance; the example does not claim that one observation produced either component.
@@ -895,7 +903,7 @@ $$
 =(0.60,0.15,0.25).
 $$
 
-The law correction therefore moves $`0.05`$ probability from $`z_b`$ and $`0.05`$ from $`\varnothing`$ to $`z_a`$; the no-event branch is operational rather than pinned. Let $`d_H`$ select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be $`b_t=e_a\in\mathcal E`$, whose mark and anchor correspond to $`z_a`$, and set $`q_E(e_a)=\operatorname{diag}(1,0,0)`$. Let $`\mathcal Q_{E,\mathrm{adm}}`$ be the diagonal probability simplex, let $`\Pi_E`$ be Euclidean projection onto it, and let $`d_E`$ decode its largest coordinate into the corresponding marked template with the same tie-break. Then $`e_a\oplus_Er_0^E=e_a`$. With $`\mathrm{lift}_H`$ replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+The law correction therefore moves $`0.05`$ probability from $`z_b`$ and $`0.05`$ from $`\varnothing`$ to $`z_a`$; the no-event branch is operational rather than pinned. Let $`d_H`$ select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be $`b_t=e_a\in\mathcal E`$, whose mark and anchor correspond to $`z_a`$, and set $`q_E(e_a)=\mathrm{diag}(1,0,0)`$. Let $`\mathcal Q_{E,\mathrm{adm}}`$ be the diagonal probability simplex, let $`\Pi_E`$ be Euclidean projection onto it, and let $`d_E`$ decode its largest coordinate into the corresponding marked template with the same tie-break. Then $`e_a\oplus_Er_0^E=e_a`$. With $`\mathrm{lift}_H`$ replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
 
 $$
 d_H(\mathbf q_R)=z_a,
@@ -1074,7 +1082,129 @@ Fast-path memory use should be cheap. A practical implementation may use approxi
 
 Representative preservation is a memory responsibility. A single traceability frame prevents a group from becoming an empty label, but boundary detection requires the context audit set, its associated anchor frames, coverage metadata, and sampling history. If these are discarded, the runtime must mark the group unaudited rather than infer stability from one example.
 
-The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. Slow-path consolidation keeps both memories from turning into unfiltered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.
+## Selective Bayesian Update Frontier
+
+EventFrame may attach a bounded Bayesian belief state to an event bucket, residual family, latent regime, or declared hypothesis family. It does not update every stored belief after every frame. Instead, vector retrieval and graph locality propose a finite update frontier. Let $`\mathcal R_t^{\mathrm{vec}}`$ be at most $`k_v`$ candidates returned by the frozen vector-retrieval rule. Let $`\mathcal N_t^{\mathrm{sh}}`$ be the bounded neighborhood returned by the abstraction compatibility graph. This is a sheaf-inspired neighborhood, not a sheaf-theoretic neighborhood unless the required restriction identity and composition laws have actually been instantiated.
+
+If an explicit SCM $`\mathfrak M`$ exists, let $`v_t^E`$ be the graph node associated with the current context and use its declared parents and children. A child here is an outgoing relationship already present in the as-of graph, not a future realized event. Without an identified SCM, the corresponding predictive-dependency neighbors may be used but may not be called causal. The candidate frontier is
+
+$$
+\mathcal N_t^B=
+\mathcal R_t^{\mathrm{vec}}
+\cup\mathcal N_t^{\mathrm{sh}}
+\cup
+\begin{cases}
+\mathrm{Pa}_{\mathfrak M}(v_t^E)\cup
+\mathrm{Ch}_{\mathfrak M}(v_t^E),&\mathfrak M\text{ is available},\\
+\mathcal N_t^{\mathrm{pred}},&\text{otherwise.}
+\end{cases}
+$$
+
+Every set is constructed from the as-of snapshot and has a predeclared cardinality or degree cap. For an evidence-bearing event $`e\in\mathcal N_t^B`$, define four measurable scores in $`[0,1]`$: vector relevance $`v_t^B(e)`$, sheaf-inspired neighbor compatibility $`n_t^B(e)`$, novelty $`u_t^B(e)`$, and source independence $`s_t^B(e)`$. Freeze non-negative weights satisfying $`\alpha_B+\beta_B+\gamma_B+\delta_B=1`$, and set
+
+$$
+A_t^B(e)=
+\alpha_Bv_t^B(e)+\beta_Bn_t^B(e)
++\gamma_Bu_t^B(e)+\delta_Bs_t^B(e).
+$$
+
+Let $`c_t^B(e)\in[0,1]`$ be structural criticality available before the downstream target whose performance will be evaluated. For fixed $`0\le\tau_{\min}\le\tau_{\max}\le1`$, define the lower threshold for critical neighbors by
+
+$$
+\tau_t^B(e)=
+\min\!\left(\tau_{\max},
+\max\!\left(\tau_{\min},
+\tau_0-\lambda_{\mathrm{crit}}c_t^B(e)\right)\right),
+\qquad
+J_t^{\mathrm{act}}(e)=\mathbf1[A_t^B(e)\ge\tau_t^B(e)].
+$$
+
+All scoring maps, normalizations, weights, thresholds, tie-breaks, and source-dependence estimators are part of $`\Lambda_{\mathrm{eval}}`$. A score may use a newly arrived frame once that frame is available, but it may not use a later target outcome, posterior audit, or graph revision. Activation controls expenditure; it does not establish that candidates are safe to pool.
+
+Anti-Pigeon controls posterior granularity. For a candidate bucket $`K`$, let $`v_K^B`$ be the abstraction epoch under which its posterior-sharing certificate was produced. Sharing is permitted only when
+
+$$
+J_{K,t}^{\mathrm{share}}=
+\mathbf1\!\left\{
+D_K^{\mathrm{cert},\star}\le\epsilon_{B,\mathrm{share}},\quad
+n_K^{\mathrm{eff}}\ge n_{B,\min},\quad
+v_K^B=v_t,\quad
+H_K=H,\quad
+s_K^B\text{ is valid}
+\right\}.
+$$
+
+The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. The fast path checks a materialized certificate; it does not recompute $`D_K^{\mathrm{cert},\star}`$. Active events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
+
+Let $`(\Theta_K,\mathscr A_{\Theta_K})`$ be a declared parameter space and let $`q_{K,t^-}\in\mathcal P(\Theta_K)`$ be the cached prior available before the update. Let $`\xi_t(e)`$ be the evidence packet extracted from an available event and its currently available labels. For an activated, sharing-approved evidence set $`\mathcal E_{K,t}^{\mathrm{act}}`$, an ordinary Bayesian update is
+
+$$
+q_{K,t}^{+}(d\theta)=
+\frac{
+L_K^{\mathrm{sel}}(\mathcal E_{K,t}^{\mathrm{act}}\mid\theta,\mathfrak h_t)
+q_{K,t^-}(d\theta)}
+{\int_{\Theta_K}
+L_K^{\mathrm{sel}}(\mathcal E_{K,t}^{\mathrm{act}}\mid\vartheta,\mathfrak h_t)
+q_{K,t^-}(d\vartheta)},
+$$
+
+provided the denominator is finite and strictly positive. Because novelty or compatibility may depend on the arrived event, activation is generally informative. For one evidence packet $`\xi`$, the selection-conditioned likelihood is
+
+$$
+L_K^{\mathrm{sel}}(\xi\mid\theta,\mathfrak h_t,J^{\mathrm{act}}=1)=
+\frac{
+P_\theta(J^{\mathrm{act}}=1\mid\xi,\mathfrak h_t)
+p_\theta(\xi\mid\mathfrak h_t)}
+{P_\theta(J^{\mathrm{act}}=1\mid\mathfrak h_t)},
+$$
+
+on the domain where the denominator is positive. For a jointly activated evidence set, the contract must model the joint activation probability; multiplying one-event selection corrections is valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result, for example when activation depends exclusively on already conditioned-on pre-evidence variables. If the selection probability cannot be modeled, the result is called an activation-conditioned working posterior, not a calibrated posterior for the full event stream, and must be tested against the independent audit stream.
+
+Likewise, a product of conditionally independent likelihoods is ordinary Bayes only when the declared source model justifies that factorization. Tempering correlated-source contributions,
+
+$$
+q_{K,t}^{+}(d\theta)\propto
+q_{K,t^-}(d\theta)
+\prod_{e\in\mathcal E_{K,t}^{\mathrm{act}}}
+p_\theta(\xi_t(e)\mid\mathfrak h_t)^{\omega_t(e)},
+\qquad 0\le\omega_t(e)\le1,
+$$
+
+defines a generalized or power posterior unless it is derived from a joint generative model. Source-independence scoring therefore cannot by itself justify multiplying evidence as if it were independent.
+
+For cheap regime monitoring, a bucket may maintain a bounded approximation to a Bayesian online changepoint run-length posterior [17,18]. Let $`R_{K,t}\in\mathbb N_0`$ be run length and define
+
+$$
+J_{K,t}^{\mathrm{cp}}=
+\mathbf1\!\left[
+P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}
+\right].
+$$
+
+When this indicator fires, the runtime invalidates the affected shared posterior and residual certificate, increments the local epoch, expands the review frontier, and routes recalibration to the slow path. A monitor fed only activated evidence detects changes in the selected process. It supports a full-stream regime claim only when its transition and observation model includes the selection mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error.
+
+Selective retrieval can become self-confirming by never revisiting what it has learned to ignore. EventFrame therefore reserves a predeclared audit probability $`\pi_{\mathrm{audit}}>0`$. Conditional on the inactive candidate set and independently of activation-score magnitude, draw
+
+$$
+J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}}).
+$$
+
+If the accepted audit sample exceeds a fixed budget $`B_{\mathrm{audit}}`$, a frozen uniform reservoir subsamples it and records every final inclusion probability. Audit estimators use the corresponding design weights; an unweighted capped convenience sample cannot support the omission certificate. Audited inactive events are evaluated in shadow mode against an expanded update. Define the omitted-influence statistic
+
+$$
+U_t^{\mathrm{omit}}=
+\mathrm{UCB}_{\mathrm{sim}}\!\left[
+D_B\!\left(\mathsf Q_t^{\mathrm{local}},\mathsf Q_t^{\mathrm{expanded}}\right)
+\right].
+$$
+
+Local updating remains certified only while $`U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}`$. The simultaneous procedure covers every inspected bucket, expansion, and repeated audit decision. Every production or shadow decision records $`(A_t^B,\tau_t^B,J_t^{\mathrm{act}},J_{K,t}^{\mathrm{share}},J_t^{\mathrm{audit}},v_t,H,s_t^{\mathrm{prov}})`$, together with audit inclusion probability, so calibration can be reconstructed under as-of replay.
+
+Posterior, posterior key, dependent residual certificate, and epoch publish atomically. Prediction readers observe one complete old or new version, never a mixed state. Posterior storage has a declared capacity and deterministic eviction rule. Eviction removes fast-path reuse eligibility but preserves immutable provenance required by later audits.
+
+Streaming variational Bayes motivates incremental and asynchronous posterior approximation [14]. Streaming variational Monte Carlo and online variational sequential Monte Carlo provide richer state-space and particle-based alternatives [15,16], but their constant-per-sample or online properties do not make their particle count, parameter dimension, optimization, or hardware cost free. Pattern Markov Chains are relevant only for declared event-pattern completion forecasts, not as a universal next-event Bayesian model [19]. Work on out-of-distribution sequential event prediction motivates latent-context and shift-aware evaluation [20], but EventFrame does not inherit its causal interpretation without the corresponding identification assumptions.
+
+The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. The selective Bayesian frontier updates bounded cached beliefs, while Anti-Pigeon decides which evidence may share one posterior. Slow-path consolidation, changepoint review, and independent audits keep all three memories from turning into overconfident filtered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.
 
 ## 6. Fuzzing and Invariants
 
@@ -1545,18 +1675,22 @@ The reference fast path is:
 
 1. Incrementally update $`C_t=e_{t-k+1:t}`$.
 2. Optionally form $`X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)`$.
-3. Compute baseline law $`\mathsf Q_B(\cdot\mid C_t)`$ and conditional event template $`b_t=B(C_t)`$, or packet baseline $`B_Y(X_t)`$.
-4. Construct the bounded action key $`k_t=\alpha(C_t)`$.
-5. Try $`\mathcal C_{A,t^-}(k_t)`$, then $`\mathcal C_{R,t^-}`$, then episodic support if confidence is insufficient.
-6. Compose a candidate event output bundle or packet using the shared clipped effective residual.
-7. Evaluate $`\mathcal R_{\mathrm{pre}}`$, confidence, effective support, age, epoch, margin, provenance, and decoder validity from $`S_{t^-}`$.
-8. Return the admissible prediction or fall back to the baseline. Do not evaluate realized prediction loss yet.
+3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier $`\mathcal N_t^B`$.
+4. Check activation and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update.
+5. Compute baseline law $`\mathsf Q_B(\cdot\mid C_t)`$ and conditional event template $`b_t=B(C_t)`$, optionally conditioned on the accepted updated belief, or compute packet baseline $`B_Y(X_t)`$.
+6. Construct the bounded action key $`k_t=\alpha(C_t)`$.
+7. Try $`\mathcal C_{A,t^-}(k_t)`$, then $`\mathcal C_{R,t^-}`$, then episodic support if confidence is insufficient.
+8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
+9. Evaluate $`\mathcal R_{\mathrm{pre}}`$, confidence, effective support, age, epoch, margin, provenance, and decoder validity from $`S_{t^-}`$.
+10. Return the admissible prediction or fall back to the baseline. Do not evaluate realized prediction loss yet.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
 ```mermaid
 flowchart LR
-    C["Context C_t"] --> B["Baseline"]
+    C["Context C_t"] --> N["Bounded Bayesian frontier"]
+    N --> J["Activation and sharing certificates"]
+    J --> B["Cached belief update and baseline"]
     B --> A["Exact-key residual"]
     A -->|accepted| P["Typed composition"]
     A -->|miss| R["General residual cache"]
@@ -1568,22 +1702,33 @@ flowchart LR
     O --> Z["Observe outcome"]
     Z --> S["Post-observation slow path"]
     S --> U["Update losses and memories"]
+    S --> D["Bayesian audit and changepoint review"]
     S --> F["Sensitivity audit"]
     S --> G["Abstraction and compatibility audit"]
     U --> A
+    D --> N
     F --> G
     G --> A
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let $`T_K`$ be key-construction cost, $`T_A`$ exact-key lookup, $`T_R(N)`$ general residual retrieval, $`T_E(M)`$ episodic retrieval, and $`T_{\oplus}`$ typed composition. Then:
+Expected constant-time lookup is a conditional implementation property. Let $`T_K`$ be key-construction cost, $`T_A`$ exact-key lookup, $`T_R(N)`$ general residual retrieval, $`T_E(M)`$ episodic retrieval, $`T_{\oplus}`$ typed composition, and $`T_B^{\mathrm{fast}}`$ the selective Bayesian work. Then:
 
 $$
 T_{\mathrm{fast}}
-=T_C+T_B(k)+T_K+T_A+I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
+=T_C+T_B^{\mathrm{fast}}+T_B(k)+T_K+T_A
++I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
 $$
 
-where $`I_R,I_E\in\{0,1\}`$ indicate fallbacks. Sliding-window maintenance gives $`T_C=O(1)`$. A bounded, already-constructed key and bounded hash table give expected $`T_A=O(1)`$. The claim fails if key construction scans unbounded context, graph degree grows, the table is unbounded, or lookup falls back to nearest neighbors. Concurrency, hashing, collision handling, and eviction costs must be measured rather than hidden inside the constant.
+where $`I_R,I_E\in\{0,1\}`$ indicate fallbacks. Let $`B_t^A=|\{e\in\mathcal N_t^B:J_t^{\mathrm{act}}(e)=1\}|`$, let $`M_B`$ bound the updated sufficient-statistic or discrete-hypothesis dimension, and let $`R_B`$ bound retained changepoint run-length states. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+
+$$
+T_B^{\mathrm{fast}}
+=T_{\mathrm{vec}}(k_v)+T_{\mathrm{expand}}(d_{\mathrm{sh}},d_G)
++O(B_t^A M_B R_B)+T_{\mathrm{cert}}.
+$$
+
+This is history-independent only when $`k_v`$, sheaf-inspired degree $`d_{\mathrm{sh}}`$, as-of graph degree $`d_G`$, $`B_t^A`$, $`M_B`$, and $`R_B`$ are bounded and when the vector-index query itself has a declared bound. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on particle count, parameter dimension, optimization iterations, graph degree, or hardware. Sliding-window maintenance gives $`T_C=O(1)`$. A bounded, already-constructed key and bounded hash table give expected $`T_A=O(1)`$. The claim fails if key construction scans unbounded context, graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, selection-probability evaluation, and eviction costs must be measured rather than hidden inside the constant.
 
 The slow path starts after $`Z_{t+1}`$ or the audited packet target exists:
 
@@ -1591,23 +1736,27 @@ The slow path starts after $`Z_{t+1}`$ or the audited packet target exists:
 2. Evaluate packet component loss when a packet was used.
 3. Estimate observed residuals and update support/confidence.
 4. Consolidate episodic and residual memory.
-5. Run validity-constrained sensitivity tests.
-6. Run causal analysis only when an explicit SCM and identification strategy exist.
-7. Audit bucket coverage and future-diameter estimates.
-8. Accept split, merge, or ontology changes only on independent held-out evidence.
+5. Evaluate inactive audit samples, omitted influence, posterior calibration, and changepoint triggers.
+6. Refit or expand Bayesian posteriors with particle, variational, or model-comparison methods when required.
+7. Run validity-constrained sensitivity tests.
+8. Run causal analysis only when an explicit SCM and identification strategy exist.
+9. Audit bucket coverage and future-diameter estimates.
+10. Accept split, merge, posterior-sharing, or ontology changes only on independent held-out evidence.
 
 A cost decomposition is:
 
 $$
 T_{\mathrm{base}}
 =T_{\mathrm{score}}+T_{\mathrm{residual}}+T_{\mathrm{consolidate}}
++T_{B,\mathrm{audit}}+T_{\mathrm{cp}}
 +\sum_{q=1}^{M_f}T_{\mathrm{predict}}^{(q)}+T_{\mathrm{audit}}
 $$
 
 $$
 T_{\mathrm{upgrade}}
 =T_{\mathrm{comp}}+T_{\mathrm{reconcile}}
-+T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
++T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}}
++T_{B,\mathrm{deep}},
 $$
 
 $$
@@ -1616,6 +1765,24 @@ T_{\mathrm{slow}}=T_{\mathrm{base}}+T_{\mathrm{upgrade}}
 $$
 
 where $`M_f,M_c\in\mathbb N_0`$ are the numbers of fuzzing-prediction and causal-analysis invocations. Set $`M_c=0`$ when no causal model is available. Slow work must be budgeted, deferred, or batched so it does not silently migrate into the latency-critical path.
+
+The Bayesian upgrade has an orthogonal cumulative ladder that does not renumber the abstraction-refinement stages:
+
+$$
+\begin{aligned}
+\mathcal B_0&=\text{bounded activation, certificate lookup, and cached update},\\
+\mathcal B_1&=\text{bounded robust changepoint monitoring},
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\mathcal B_2&=\text{declared event-pattern forecast refinement},\\
+\mathcal B_3&=\text{particle, variational SMC, and model recalibration}.
+\end{aligned}
+$$
+
+Only $`\mathcal B_0`$, and $`\mathcal B_1`$ when its run-length state is explicitly bounded, may be admitted to the direct fast path. $`\mathcal B_2`$ is fast only for a bounded precompiled pattern family and state space. $`\mathcal B_3`$ is slow-path work. A changepoint, high omitted-influence certificate, missing prior, invalid sharing certificate, high-priority case, or exhausted approximation budget escalates to a predeclared deeper Bayesian stage.
 
 The full upgrade is defined as a staged family rather than one indivisible algorithm. Let $`S_t`$ contain the current forecasts, caches, abstraction graph, audit state, and hardware profile $`h`$. Define refinement operators:
 
@@ -1696,15 +1863,18 @@ Here $`T_{\mathrm{generate}}`$ includes bounded neighborhood and candidate const
 
 The integration roadmap is cumulative:
 
-1. Specify typed node laws, edge comparison spaces, maps, divergences, confidence procedures, and deterministic fallbacks.
-2. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged fast path.
-3. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
-4. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
-5. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
-6. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
-7. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
+1. Specify typed Bayesian evidence, parameter spaces, activation maps, source model, selection semantics, bounded sufficient statistics, and deterministic fallbacks.
+2. Add shadow-only activation, independent audit sampling, and omitted-influence measurement before allowing production posterior updates.
+3. Materialize Anti-Pigeon posterior-sharing certificates and enable bounded cached updates with atomic posterior-key-epoch publication.
+4. Add bounded robust changepoint monitoring and targeted invalidation; keep particle or unbounded run-length methods asynchronous.
+5. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged residual fast path.
+6. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
+7. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
+8. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
+9. Add predictive regime mixtures and deep Bayesian state-space refinement; promote causal interpretations only with explicit SCMs and identification assumptions.
+10. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
 
-The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
 
 ## 9. Experimental Evaluation
 
@@ -1735,7 +1905,13 @@ The second experiment tests compression and target relevance. Define a finite ca
 
 The third experiment measures cache utility under as-of replay. Report action-residual hit rate, general residual hit rate, post-hit temporal loss, baseline temporal loss on the same examples, confidence calibration, effective support, cache age, epoch and margin rejection, provenance rejection, and the fraction of hits that improve prediction. A residual cache is useful only if retrieved residuals improve over the baseline often enough to justify lookup and maintenance. Cache pollution should be measured by tracking entries that repeatedly fail to improve predictions. For the action-residual path, also report how often expected $`O(1)`$ lookup succeeds without falling back to nearest-neighbor residual search or episodic retrieval.
 
-The fourth experiment evaluates property fuzzing. For each field $`\phi_i`$, perturb it across a declared range and compute:
+The fourth experiment evaluates selective Bayesian updating and Anti-Pigeon posterior granularity. Compare no Bayesian update, update-all Bayesian inference, selective activation with naive unconditioned likelihood, selective inference with the declared selection-conditioned likelihood, selective inference with separate per-event posteriors, Anti-Pigeon-certified posterior sharing, and a simulation-only oracle frontier. The generator should include informative activation, correlated sources, hidden divergent subgroups, abrupt and gradual regime changes, and relevant events outside the normal frontier.
+
+Primary forecast evaluation remains on the complete chronological event stream, not only activated cases. Report untransformed proper score, calibration and interval coverage on the full stream and activated stratum, activation precision and recall for outcome-relevant evidence, missed high-priority events, false posterior merges, posterior fragmentation, effective sample size, changepoint false alarms and delay, posterior invalidation delay, and $`U_t^{\mathrm{omit}}`$ coverage. Conditional on inactivity, the audit draw must be independent of activation-score magnitude under its frozen schedule; compare its expanded forecast with the local forecast and report audit rate, final inclusion probabilities, design-weight stability, and reservoir saturation. Results from naive selective updating must be labeled as activation-conditioned working-posterior results unless conditional ignorability is established.
+
+Runtime reporting includes frontier size, activated count, posterior-hypothesis count, run-length support after pruning, cache hit rate, memory, and 50th, 95th, and 99th percentile latency for $`\mathcal B_0`$ through $`\mathcal B_3`$. Evaluate exact or near-exact streaming updates against capped approximations on short sequences where an oracle is computable. A fixed-resource claim passes only if vector retrieval, graph degrees, active candidates, hypotheses, update rank, audit reservoir, and changepoint state are all bounded and approximation error remains within its preregistered tolerance.
+
+The fifth experiment evaluates property fuzzing. For each field $`\phi_i`$, perturb it across a declared range and compute:
 
 $$
 S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
@@ -1743,21 +1919,21 @@ $$
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
 
-The fifth experiment tests ontology review. Deliberately misassign generated fields and use $`I_{i\rightarrow g}^{\mathrm{model}}`$ to nominate retain, migrate, split, or uncertain states. Report recovery of predictive roles. Evaluate causal-role recovery only in generators whose structural equations and randomized interventions are known.
+The sixth experiment tests ontology review. Deliberately misassign generated fields and use $`I_{i\rightarrow g}^{\mathrm{model}}`$ to nominate retain, migrate, split, or uncertain states. Report recovery of predictive roles. Evaluate causal-role recovery only in generators whose structural equations and randomized interventions are known.
 
-The sixth experiment evaluates confluence, divergence, and audit coverage. Each group retains a traceability frame and a coverage-aware context audit set. Place hidden divergent contexts outside the medoid neighborhood and measure false-negative rate as audit-set size and context-space coverage change. A one-representative baseline should be included to demonstrate why one anchor is insufficient.
+The seventh experiment evaluates confluence, divergence, and audit coverage. Each group retains a traceability frame and a coverage-aware context audit set. Place hidden divergent contexts outside the medoid neighborhood and measure false-negative rate as audit-set size and context-space coverage change. A one-representative baseline should be included to demonstrate why one anchor is insufficient.
 
-The seventh experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional, following the distinction between abrupt, gradual, recurring, and other drift patterns surveyed in [12].
+The eighth experiment evaluates invariant stability over time. Candidate invariants discovered in one trajectory segment should be tested on later segments and under distribution shift. This distinguishes local accidental stability from robust invariance. Report the rate at which candidate invariants remain valid, fail, or become conditional, following the distinction between abrupt, gradual, recurring, and other drift patterns surveyed in [12].
 
-The eighth experiment estimates $`\varepsilon_{\mathrm{lump}}^\star(\pi)`$ over pairs of contexts sharing an operational key and reports a simultaneous upper confidence bound. For each bucket $`K`$, compare $`\widehat D_K^\star`$ with the known external $`D_K^\star`$ in synthetic data, and report the model-only diagnostic $`D_K^{\mathrm{mdl}}`$ separately. This directly tests false merges, divergence missed by incomplete audit coverage, and the failure mode in which a uniformly wrong model falsely appears internally consistent.
+The ninth experiment estimates $`\varepsilon_{\mathrm{lump}}^\star(\pi)`$ over pairs of contexts sharing an operational key and reports a simultaneous upper confidence bound. For each bucket $`K`$, compare $`\widehat D_K^\star`$ with the known external $`D_K^\star`$ in synthetic data, and report the model-only diagnostic $`D_K^{\mathrm{mdl}}`$ separately. This directly tests false merges, divergence missed by incomplete audit coverage, and the failure mode in which a uniformly wrong model falsely appears internally consistent.
 
 The same experiment includes an observed regime shift $`\zeta_a\to\zeta_b`$. Measure $`D_{i,a,b}^{\mathrm{reg}}`$, post-loss increase, detection delay, false alarms, and adaptation cost. A separate randomized generator test may establish whether the regime variable is causal; ordinary conditional divergence may not.
 
-The ninth experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, and memory growth. Report the conditions under which residual lookup approximates constant-time behavior and the conditions under which it fails.
+The tenth experiment evaluates runtime tradeoffs. Measure fast-path latency, slow-path cost, cache update cost, Bayesian update cost, and memory growth. Report the conditions under which residual lookup and bounded Bayesian updating approximate constant-time behavior and the conditions under which either fails.
 
-The tenth experiment evaluates predictive sheaf snapping. Synthetic event networks should include known local miswirings, unnecessary edges, missing regime splits, and deliberately misleading comparison maps. Compare no snapping, the bounded preregistered snap family, a larger-family stress test, and an oracle edit available only in simulation. Candidate generation and selection use the chronological design block; acceptance uses a later untouched block. Report beneficial-, harmful-, false-, and missed-snap rates; edit distance; compatibility-defect change; external future-diameter; unresolved comparison-obligation burden; ordinary and priority-weighted proper-score change; graph churn; rollback frequency; candidate count; selection and confirmation cost; affected-cache fraction; cache-hit recovery time; and fast-path latency before, during, and after publication. Report whether simultaneous coverage remains calibrated under adaptive edge and candidate inspection. Causal-edge recovery is scored only in generators with explicit SCMs, candidate structural equations, and identified interventions; it must compare predictive nomination with causal acceptance so that a useful predictive snap is not counted as a correct causal edit merely because its forecast improved.
+The eleventh experiment evaluates predictive sheaf snapping. Synthetic event networks should include known local miswirings, unnecessary edges, missing regime splits, and deliberately misleading comparison maps. Compare no snapping, the bounded preregistered snap family, a larger-family stress test, and an oracle edit available only in simulation. Candidate generation and selection use the chronological design block; acceptance uses a later untouched block. Report beneficial-, harmful-, false-, and missed-snap rates; edit distance; compatibility-defect change; external future-diameter; unresolved comparison-obligation burden; ordinary and priority-weighted proper-score change; graph churn; rollback frequency; candidate count; selection and confirmation cost; affected-cache and posterior fraction; cache-hit recovery time; and fast-path latency before, during, and after publication. Report whether simultaneous coverage remains calibrated under adaptive edge and candidate inspection. Causal-edge recovery is scored only in generators with explicit SCMs, candidate structural equations, and identified interventions; it must compare predictive nomination with causal acceptance so that a useful predictive snap is not counted as a correct causal edit merely because its forecast improved.
 
-The eleventh experiment evaluates complete staged-execution policies, not merely adjacent stage labels. A policy $`q`$ freezes its admissible invocation sequences, prerequisites, repetition rules, stopping rule, and cost bound before confirmation. Compare preregistered policies including $`\mathcal U_0`$ alone, cumulative one-pass policies through each later stage, and any adaptive policy that may repeat or reorder stages. Report the realized invocation sequence for every case, ordinary proper score, edge-defect calibration, high-priority false-negative rate, probability of harmful correction, snap acceptance and rollback, split/merge churn, budget overruns, and slow-path latency at the 50th, 95th, and 99th percentiles. Results from one policy do not establish the value of another.
+The twelfth experiment evaluates complete staged-execution policies, not merely adjacent stage labels. A policy $`q`$ freezes its admissible invocation sequences, prerequisites, repetition rules, stopping rule, and cost bound before confirmation. Compare preregistered policies including $`\mathcal U_0`$ alone, cumulative one-pass policies through each later stage, the Bayesian ladder $`\mathcal B_0,\ldots,\mathcal B_3`$, and any adaptive policy that may repeat or reorder stages. Report the realized invocation sequence for every case, ordinary proper score, edge-defect calibration, high-priority false-negative rate, probability of harmful correction, snap acceptance and rollback, posterior invalidation, split/merge churn, budget overruns, and slow-path latency at the 50th, 95th, and 99th percentiles. Results from one policy do not establish the value of another.
 
 Average correction alone is not the deployment criterion. On a non-empty evaluation set, let $`p_t^{\mathrm{pri}}\in[0,1]`$ be assigned before the outcome by a rule frozen independently of the stages being compared, let $`w_{\mathrm{pri}}(p)>0`$ be a declared finite importance function, and normalize over evaluation cases:
 
@@ -1818,7 +1994,7 @@ Promotion also requires the paired upper confidence bound on proper-score degrad
 
 or a joint confidence construction with the same coverage, or a separately preregistered critical-risk constraint. If stages, priorities, thresholds, or hardware profiles are selected after inspecting the same evaluation data, the confidence procedure must adjust for those comparisons or use a fresh confirmation set. The weights, normalization, confidence procedure, safety margin, and hardware profile must be fixed before evaluation. This is a proposed decision rule, not evidence that any upgrade stage currently passes it.
 
-Ablation studies should remove one component at a time: residual cache, episodic memory, fuzzing, abstraction, compatibility audit, reconciliation, predictive sheaf snapping, targeted invalidation, rollback, spectral refinement, regime mixtures, and slow-path refinement. The paper should treat negative results as informative. If residual caches fail in a domain, the failure helps characterize when EventFrame is useful. If fuzzing produces unstable invariants, the thresholds or perturbation families may be wrong. If snapping reduces design-block defect but harms untouched proper score or causes persistent cache-hit collapse, the snap policy fails its stated purpose.
+Ablation studies should remove one component at a time: residual cache, episodic memory, Bayesian activation, selection correction, Anti-Pigeon posterior sharing, inactive-event audit, changepoint invalidation, fuzzing, abstraction, compatibility audit, reconciliation, predictive sheaf snapping, targeted invalidation, rollback, spectral refinement, regime mixtures, and slow-path refinement. The paper should treat negative results as informative. If selective updating loses calibration or misses important omitted evidence, the frontier or selection model fails. If residual caches fail in a domain, the failure helps characterize when EventFrame is useful. If fuzzing produces unstable invariants, the thresholds or perturbation families may be wrong. If snapping reduces design-block defect but harms untouched proper score or causes persistent cache-hit collapse, the snap policy fails its stated purpose.
 
 The evaluation plan is deliberately falsifiable. Each claim should be tied to a measurable result. The next section lists open problems that remain even if the initial experiments succeed.
 
@@ -1900,6 +2076,14 @@ The twentieth open problem is priority calibration. Priority weighting can prote
 
 The twenty-first open problem is hardware-aware scheduling. The staged architecture permits deeper refinement as hardware improves, but stage-cost prediction, queue stability, energy use, worst-case deadlines, and post-snap cache recovery remain implementation-dependent. Faster hardware does not relax statistical, causal, or safety prerequisites.
 
+The twenty-second open problem is selective posterior calibration. Activation depends on relevance, novelty, topology, and source structure, so the admitted stream is generally not an ignorable sample. Selection-conditioned likelihoods, inverse-probability methods, doubly robust audits, and conservative working-posterior semantics should be compared under misspecification.
+
+The twenty-third open problem is posterior granularity. Anti-Pigeon supplies an external divergence gate for sharing, but optimal split and merge policies under sparse evidence, multiple horizons, source dependence, and drift remain unknown. Over-sharing creates confident category errors; over-splitting wastes evidence and memory.
+
+The twenty-fourth open problem is bounded changepoint inference. Exact Bayesian online changepoint support grows with stream length. Truncation, pruning, and finite-state approximations require error bounds that remain meaningful under selective activation and delayed labels.
+
+The twenty-fifth open problem is omitted influence. A bounded local frontier can miss weak individual signals whose joint effect is material. Independent inactive-event audits estimate this risk only on sampled candidates; coverage guarantees under adversarial or highly correlated omissions remain open.
+
 These open problems define the boundary of the current paper. The framework is useful if it makes prediction, memory, and abstraction more explicit and testable. It should not be presented as a final cognitive architecture, universal predictor, or complete mathematical theory. The conclusion summarizes the role EventFrame can play as a conservative event-centric substrate.
 
 ## 11. Conclusion
@@ -1916,7 +2100,9 @@ $$
 
 The point operator encodes events into a finite-dimensional tagged self-adjoint operator space, norm-clips the point residual, projects into a declared admissible set, and decodes with a named decoder. That component is undefined when the originating horizon expires without an event. A separately tagged law component drives a full-outcome Markov kernel, explicitly governs probability flow into and out of the no-event atom, and supplies the law evaluated by the proper score. A fixed decision rule aligns the final mark and time with that law; joint forward validation determines whether the auxiliary template fields also help. Runtime packets use an independent packet encoder, residual space, admissible set, and operator $`\oplus_Y`$. The construction takes limited inspiration from CFS self-adjoint operator representations; its clipping and projection are EventFrame definitions, not a CFS action or physical theory.
 
-Episodic memory stores prior cases; residual memory stores prior statistical corrections. Residuals are not causal hypotheses without separate intervention evidence. The fast path performs bounded lookup, typed composition, and pre-risk checks. The slow path evaluates realized scores, updates confidence, runs model-sensitivity audits, and tests abstractions. Causal-edge updates require an explicit structural causal model and identification strategy.
+Episodic memory stores prior cases; residual memory stores prior statistical corrections. Residuals are not causal hypotheses without separate intervention evidence. A selective Bayesian frontier adds bounded vector retrieval, sheaf-inspired neighbors, and as-of graph adjacency. A frozen activation score admits only a bounded subset, while Anti-Pigeon decides which admitted events may share a posterior. Informative selection requires a selection-conditioned likelihood; otherwise the result is explicitly only an activation-conditioned working posterior. Independent inactive-event audits bound omitted influence, and changepoint triggers invalidate posterior and residual epochs before slow recalibration.
+
+The fast path performs bounded lookup, a capped cached posterior update, typed composition, and pre-risk checks. The slow path evaluates realized scores, updates confidence, audits inactive evidence, runs model-sensitivity and changepoint procedures, and tests abstractions. Particle filters, variational sequential Monte Carlo, model comparison, and unrestricted recalibration remain slow-path operations unless a concrete implementation supplies hard resource bounds. Causal-edge updates require an explicit structural causal model and identification strategy; an as-of outgoing edge can nominate a candidate but cannot provide future evidence.
 
 Approximate predictive lumpability compares detailed contexts that map to the same operational abstraction key. Anti-Pigeon rejects buckets whose externally estimated target-law future-diameter exceeds threshold; a candidate model's own forecast agreement is diagnostic and cannot certify itself. Every bucket retains a concrete traceability frame, but divergence testing uses a coverage-aware context audit set because one representative cannot characterize a heterogeneous group. Observed regime divergence is evaluated on common support and supports predictive adaptation, not causal attribution by itself.
 
@@ -1974,9 +2160,17 @@ $`\rho_H^Q`$, $`r_{t,H}^{Q,\mathrm{obs}}`$, $`\mathfrak K_H^Q`$, $`\mathsf Q_t^R
 
 $`s_i`$, $`s_{k_t}`$, $`\mathcal S_{\mathrm{prov}}`$: provenance records for general and exact residual-cache entries and their declared space.
 
-$`\Xi_R`$, $`\Xi_A^{(v)}`$, $`\Lambda_{\mathrm{eval}}`$: residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
+$`\Xi_R`$, $`\Xi_B`$, $`\Xi_A^{(v)}`$, $`\Lambda_{\mathrm{eval}}`$: residual contract, selective Bayesian contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
 $`H_i`$, $`H_{k_t}`$, $`v_{k_t}`$, $`v_t`$, $`\mu_{k_t}`$: cache horizons, cache-entry and active epochs, and materialized compatibility safety margin.
+
+$`\mathcal N_t^B`$, $`\mathcal R_t^{\mathrm{vec}}`$, $`\mathcal N_t^{\mathrm{sh}}`$: bounded Bayesian candidate frontier and its vector-retrieval and sheaf-inspired components.
+
+$`A_t^B`$, $`\tau_t^B`$, $`J_t^{\mathrm{act}}`$: Bayesian activation score, criticality-adjusted threshold, and activation indicator.
+
+$`J_{K,t}^{\mathrm{share}}`$, $`q_{K,t^-}`$, $`q_{K,t}^+`$, $`\mathcal C_{B,t^-}`$: Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
+
+$`J_{K,t}^{\mathrm{cp}}`$, $`J_t^{\mathrm{audit}}`$, $`U_t^{\mathrm{omit}}`$: changepoint trigger, independent inactive-event audit indicator, and upper bound on local-versus-expanded forecast disagreement.
 
 $`X_t`$, $`\mathcal X_{\mathrm{ctx}}`$: compressed runtime state and its domain. This domain is distinct from the auxiliary event-field space $`\mathcal X`$.
 
@@ -2030,6 +2224,8 @@ $`\mathbf v^{(v)}`$, $`\mathcal C_{\mathrm{mem}}^{(v)}`$, $`\mathsf B_{\mathcal 
 
 $`\mathcal U_0,\ldots,\mathcal U_5`$, $`r_n`$, $`d_t(h)`$: baseline/refinement operators, selected stage at invocation $`n`$, and deepest reached stage under hardware profile $`h`$; $`\mathcal U_3`$ is bounded predictive sheaf snapping.
 
+$`\mathcal B_0,\ldots,\mathcal B_3`$: bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle or variational inference stages.
+
 $`p_t^{\mathrm{pri}}`$, $`w_{\mathrm{pri}}`$, $`\mathcal R_{\mathrm{pri}}^D`$, $`\mathcal R_{\mathrm{prop}}^D`$, $`G_{a\rightarrow b}^{\mathrm{pri}}`$: pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
 
 $`\Delta_{\mathrm{pred}}(d)`$, $`\widehat\Delta_{\mathrm{pred}}(d)`$, $`s_{\mathrm{eff}}^{\mathrm{pred}}`$, $`s_{\mathrm{eff}}^{\mathrm{causal}}`$: paired proper-risk effect of ablating distinction $`d`$, its confirmation estimate, the simultaneous-confidence-classified predictive sparsity ratio, and the separately identified causal sparsity ratio.
@@ -2059,5 +2255,12 @@ The assembled paper uses the following numbered bibliography.
 11. D. J. Daley and D. Vere-Jones. *An Introduction to the Theory of Point Processes, Volume I.* Second edition, Springer, 2003. DOI: 10.1007/b97277. <https://doi.org/10.1007/b97277>
 12. Joao Gama, Indre Zliobaite, Albert Bifet, Mykola Pechenizkiy, and Abdelhamid Bouchachia. "A Survey on Concept Drift Adaptation." *ACM Computing Surveys* 46(4), 2014. DOI: 10.1145/2523813. <https://doi.org/10.1145/2523813>
 13. Gabriele D'Acunto, Paolo Di Lorenzo, and Sergio Barbarossa. "Networks of Causal Abstractions: A Sheaf-theoretic Framework." 2026. arXiv:2509.25236v3. <https://arxiv.org/abs/2509.25236v3>
+14. Tamara Broderick, Nicholas Boyd, Andre Wibisono, Ashia C. Wilson, and Michael I. Jordan. "Streaming Variational Bayes." 2013. arXiv:1307.6769v2. <https://arxiv.org/abs/1307.6769v2>
+15. Yuan Zhao, Josue Nassar, Ian Jordan, Monica Bugallo, and Il Memming Park. "Streaming Variational Monte Carlo." *IEEE Transactions on Pattern Analysis and Machine Intelligence* 45(1):1150-1161, 2023; published online 2022. DOI: 10.1109/TPAMI.2022.3153225. <https://doi.org/10.1109/TPAMI.2022.3153225>
+16. Alessandro Mastrototaro and Jimmy Olsson. "Online Variational Sequential Monte Carlo." *Proceedings of the 41st International Conference on Machine Learning*, PMLR 235:35039-35062, 2024. <https://proceedings.mlr.press/v235/mastrototaro24a.html>
+17. Ryan Prescott Adams and David J. C. MacKay. "Bayesian Online Changepoint Detection." 2007. arXiv:0710.3742v1. <https://arxiv.org/abs/0710.3742v1>
+18. Matias Altamirano, Francois-Xavier Briol, and Jeremias Knoblauch. "Robust and Scalable Bayesian Online Changepoint Detection." *Proceedings of the 40th International Conference on Machine Learning*, PMLR 202:642-663, 2023. <https://proceedings.mlr.press/v202/altamirano23a.html>
+19. Elias Alevizos, Alexander Artikis, and Georgios Paliouras. "Event Forecasting with Pattern Markov Chains." 2018. arXiv:1804.10388v1. <https://arxiv.org/abs/1804.10388v1>
+20. Chenxiao Yang, Qitian Wu, Qingsong Wen, Zhiqiang Zhou, Liang Sun, and Junchi Yan. "Towards Out-of-Distribution Sequential Event Prediction: A Causal Treatment." *Advances in Neural Information Processing Systems* 35, 2022. arXiv:2210.13005v2. <https://arxiv.org/abs/2210.13005v2>
 
-References 7--9 support only a limiting thought experiment for physical substrates: CODATA supplies the named physical scales, while Bekenstein and Susskind concern physical information bounds under their stated assumptions. They do not prove a discrete sampling lattice, EventFrame sparsity, or any simulated- or software-substrate claim. The CFS references support only the self-adjoint-operator inspiration; EventFrame's clipping, projection, admissible set, and residual objective are independent definitions and do not implement the CFS causal action. Reference 11 supplies marked point-process background for the finite-horizon marked-event representation. Reference 12 supplies concept-drift taxonomy and adaptation background. Reference 13 motivates compositional compatibility across heterogeneous causal abstractions; EventFrame's predictive compatibility graph is not claimed to reproduce that paper's causal abstraction network or guarantees.
+References 7--9 support only a limiting thought experiment for physical substrates: CODATA supplies the named physical scales, while Bekenstein and Susskind concern physical information bounds under their stated assumptions. They do not prove a discrete sampling lattice, EventFrame sparsity, or any simulated- or software-substrate claim. The CFS references support only the self-adjoint-operator inspiration; EventFrame's clipping, projection, admissible set, and residual objective are independent definitions and do not implement the CFS causal action. Reference 11 supplies marked point-process background for the finite-horizon marked-event representation. Reference 12 supplies concept-drift taxonomy and adaptation background. Reference 13 motivates compositional compatibility across heterogeneous causal abstractions; EventFrame's predictive compatibility graph is not claimed to reproduce that paper's causal abstraction network or guarantees. References 14--16 motivate streaming and sequential approximate Bayesian updates but do not establish EventFrame latency, calibration, or model correctness. References 17 and 18 motivate online changepoint monitoring; constant resource use in EventFrame additionally requires explicit run-length truncation or approximation. Reference 19 applies to declared regular-expression event patterns rather than arbitrary next-event laws. Reference 20 motivates shift-aware latent-context modeling; EventFrame does not inherit its causal identification assumptions or guarantees.

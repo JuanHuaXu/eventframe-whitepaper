@@ -310,7 +310,7 @@ For one context \(C_t\), suppose the baseline law is the row vector \(\mathbf q_
 Take \(\mathscr H=\mathbb R^3\), represent both tagged residual components by diagonal self-adjoint matrices, and use the certified joint cache record
 
 \[
-r_0^E=r_0^Q=\operatorname{diag}(0.10,-0.05,-0.05),
+r_0^E=r_0^Q=\mathrm{diag}(0.10,-0.05,-0.05),
 \qquad
 \mathbf r_0=(r_0^E,r_0^Q,EQ),
 \qquad
@@ -321,7 +321,7 @@ The equality of the two matrices is a convenience of this toy, not a semantic id
 
 \[
 \rho_H^Q(\mathbf q,z)
-=\operatorname{diag}(\mathbf 1_z-\mathbf q),
+=\mathrm{diag}(\mathbf 1_z-\mathbf q),
 \]
 
 where \(\mathbf 1_z\) is the one-hot vector for any \(z\in\mathcal Z_H\), including \(\varnothing\). A separately declared point estimator supplies \(r_0^E\). A cache may store projected or averaged outputs such as \(\mathbf r_0\), together with component-specific estimator identities, horizon, and provenance; the example does not claim that one observation produced either component.
@@ -354,7 +354,7 @@ Set \(\mathfrak K_H^Q(r^Q)(z_i,\{z_j\})=K(r^Q)_{ij}\). Every row sums to one, al
 =(0.60,0.15,0.25).
 \]
 
-The law correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be \(b_t=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\operatorname{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0^E=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+The law correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be \(b_t=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\mathrm{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0^E=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
 
 \[
 d_H(\mathbf q_R)=z_a,

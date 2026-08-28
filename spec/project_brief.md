@@ -10,7 +10,7 @@ Current predictive systems often operate over tokens, vectors, or unstructured h
 
 ## Core Idea
 
-Treat the underlying physical or computational substrate as far denser than any usable event representation. Event frames are coarse-grained records of regions where distinctions matter for prediction or intervention. Fast prediction can use cached residuals and episodic lookup over these compressed frames. Slower computation can refine uncertain predictions, discover invariants by fuzzing event properties, and consolidate memory.
+Treat the underlying physical or computational substrate as far denser than any usable event representation. Event frames are coarse-grained records of regions where distinctions matter for prediction or intervention. Fast prediction can use cached residuals, episodic lookup, and bounded cached Bayesian updates over these compressed frames. A selective frontier limits updates to vector-retrieved, sheaf-inspired, and as-of graph neighbors; Anti-Pigeon controls which events may share a posterior. Slower computation audits omitted evidence, detects regime changes, refines uncertain predictions, discovers invariants by fuzzing event properties, and consolidates memory.
 
 ## Contribution Claims
 
@@ -25,6 +25,7 @@ EventFrame contributes:
 7. An Anti-Pigeon principle for resisting premature collapse into overly broad categories.
 8. A reference runtime model separating fast-path prediction from slow-path refinement.
 9. Experiment designs for evaluating prediction accuracy, cache utility, invariant stability, and abstraction quality.
+10. A selective Bayesian update contract with activation-aware inference, Anti-Pigeon posterior granularity, independent audits, and staged changepoint or particle refinement.
 
 ## Non-goals
 

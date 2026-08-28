@@ -6,18 +6,22 @@ The reference fast path is:
 
 1. Incrementally update \(C_t=e_{t-k+1:t}\).
 2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
-3. Compute baseline law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\), or packet baseline \(B_Y(X_t)\).
-4. Construct the bounded action key \(k_t=\alpha(C_t)\).
-5. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient.
-6. Compose a candidate event output bundle or packet using the shared clipped effective residual.
-7. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
-8. Return the admissible prediction or fall back to the baseline. Do not evaluate realized prediction loss yet.
+3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier \(\mathcal N_t^B\).
+4. Check activation and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update.
+5. Compute baseline law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\), optionally conditioned on the accepted updated belief, or compute packet baseline \(B_Y(X_t)\).
+6. Construct the bounded action key \(k_t=\alpha(C_t)\).
+7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient.
+8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
+9. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
+10. Return the admissible prediction or fall back to the baseline. Do not evaluate realized prediction loss yet.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
 ```mermaid
 flowchart LR
-    C["Context C_t"] --> B["Baseline"]
+    C["Context C_t"] --> N["Bounded Bayesian frontier"]
+    N --> J["Activation and sharing certificates"]
+    J --> B["Cached belief update and baseline"]
     B --> A["Exact-key residual"]
     A -->|accepted| P["Typed composition"]
     A -->|miss| R["General residual cache"]
@@ -29,22 +33,33 @@ flowchart LR
     O --> Z["Observe outcome"]
     Z --> S["Post-observation slow path"]
     S --> U["Update losses and memories"]
+    S --> D["Bayesian audit and changepoint review"]
     S --> F["Sensitivity audit"]
     S --> G["Abstraction and compatibility audit"]
     U --> A
+    D --> N
     F --> G
     G --> A
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, and \(T_{\oplus}\) typed composition. Then:
+Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, and \(T_B^{\mathrm{fast}}\) the selective Bayesian work. Then:
 
 \[
 T_{\mathrm{fast}}
-=T_C+T_B(k)+T_K+T_A+I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
+=T_C+T_B^{\mathrm{fast}}+T_B(k)+T_K+T_A
++I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
 \]
 
-where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the table is unbounded, or lookup falls back to nearest neighbors. Concurrency, hashing, collision handling, and eviction costs must be measured rather than hidden inside the constant.
+where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let \(B_t^A=|\{e\in\mathcal N_t^B:J_t^{\mathrm{act}}(e)=1\}|\), let \(M_B\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_B\) bound retained changepoint run-length states. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+
+\[
+T_B^{\mathrm{fast}}
+=T_{\mathrm{vec}}(k_v)+T_{\mathrm{expand}}(d_{\mathrm{sh}},d_G)
++O(B_t^A M_B R_B)+T_{\mathrm{cert}}.
+\]
+
+This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(B_t^A\), \(M_B\), and \(R_B\) are bounded and when the vector-index query itself has a declared bound. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on particle count, parameter dimension, optimization iterations, graph degree, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, selection-probability evaluation, and eviction costs must be measured rather than hidden inside the constant.
 
 The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 
@@ -52,23 +67,27 @@ The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 2. Evaluate packet component loss when a packet was used.
 3. Estimate observed residuals and update support/confidence.
 4. Consolidate episodic and residual memory.
-5. Run validity-constrained sensitivity tests.
-6. Run causal analysis only when an explicit SCM and identification strategy exist.
-7. Audit bucket coverage and future-diameter estimates.
-8. Accept split, merge, or ontology changes only on independent held-out evidence.
+5. Evaluate inactive audit samples, omitted influence, posterior calibration, and changepoint triggers.
+6. Refit or expand Bayesian posteriors with particle, variational, or model-comparison methods when required.
+7. Run validity-constrained sensitivity tests.
+8. Run causal analysis only when an explicit SCM and identification strategy exist.
+9. Audit bucket coverage and future-diameter estimates.
+10. Accept split, merge, posterior-sharing, or ontology changes only on independent held-out evidence.
 
 A cost decomposition is:
 
 \[
 T_{\mathrm{base}}
 =T_{\mathrm{score}}+T_{\mathrm{residual}}+T_{\mathrm{consolidate}}
++T_{B,\mathrm{audit}}+T_{\mathrm{cp}}
 +\sum_{q=1}^{M_f}T_{\mathrm{predict}}^{(q)}+T_{\mathrm{audit}}
 \]
 
 \[
 T_{\mathrm{upgrade}}
 =T_{\mathrm{comp}}+T_{\mathrm{reconcile}}
-+T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}},
++T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}}
++T_{B,\mathrm{deep}},
 \]
 
 \[
@@ -77,6 +96,24 @@ T_{\mathrm{slow}}=T_{\mathrm{base}}+T_{\mathrm{upgrade}}
 \]
 
 where \(M_f,M_c\in\mathbb N_0\) are the numbers of fuzzing-prediction and causal-analysis invocations. Set \(M_c=0\) when no causal model is available. Slow work must be budgeted, deferred, or batched so it does not silently migrate into the latency-critical path.
+
+The Bayesian upgrade has an orthogonal cumulative ladder that does not renumber the abstraction-refinement stages:
+
+\[
+\begin{aligned}
+\mathcal B_0&=\text{bounded activation, certificate lookup, and cached update},\\
+\mathcal B_1&=\text{bounded robust changepoint monitoring},
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+\mathcal B_2&=\text{declared event-pattern forecast refinement},\\
+\mathcal B_3&=\text{particle, variational SMC, and model recalibration}.
+\end{aligned}
+\]
+
+Only \(\mathcal B_0\), and \(\mathcal B_1\) when its run-length state is explicitly bounded, may be admitted to the direct fast path. \(\mathcal B_2\) is fast only for a bounded precompiled pattern family and state space. \(\mathcal B_3\) is slow-path work. A changepoint, high omitted-influence certificate, missing prior, invalid sharing certificate, high-priority case, or exhausted approximation budget escalates to a predeclared deeper Bayesian stage.
 
 The full upgrade is defined as a staged family rather than one indivisible algorithm. Let \(S_t\) contain the current forecasts, caches, abstraction graph, audit state, and hardware profile \(h\). Define refinement operators:
 
@@ -157,12 +194,15 @@ Here \(T_{\mathrm{generate}}\) includes bounded neighborhood and candidate const
 
 The integration roadmap is cumulative:
 
-1. Specify typed node laws, edge comparison spaces, maps, divergences, confidence procedures, and deterministic fallbacks.
-2. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged fast path.
-3. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
-4. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
-5. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
-6. Add predictive regime mixtures; promote them to causal mixtures only with explicit SCMs and identification assumptions.
-7. Rebenchmark stage costs on each hardware generation and widen activation budgets without weakening validation gates.
+1. Specify typed Bayesian evidence, parameter spaces, activation maps, source model, selection semantics, bounded sufficient statistics, and deterministic fallbacks.
+2. Add shadow-only activation, independent audit sampling, and omitted-influence measurement before allowing production posterior updates.
+3. Materialize Anti-Pigeon posterior-sharing certificates and enable bounded cached updates with atomic posterior-key-epoch publication.
+4. Add bounded robust changepoint monitoring and targeted invalidation; keep particle or unbounded run-length methods asynchronous.
+5. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged residual fast path.
+6. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
+7. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
+8. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
+9. Add predictive regime mixtures and deep Bayesian state-space refinement; promote causal interpretations only with explicit SCMs and identification assumptions.
+10. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
 
-The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, effective support, decoder failures, slow-path delay, selected refinement depth, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
