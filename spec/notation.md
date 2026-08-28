@@ -69,17 +69,19 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathfrak F_R\) | deterministic policy | complete posterior-aware residual selection, composition, and pre-risk fallback map |
 | \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
 | \(\mathfrak E_t^B,\mathcal N_t^B\) | finite sets | bounded candidate universe and nominated Bayesian frontier |
-| \(J_t^{\mathrm{nom}},J_t^{\mathrm{evid}},A_t^B,\tau_t^B,J_t^{\mathrm{act}}\) | indicators and scores | nomination, evidence-readiness, activation score, threshold, and total update-admission decision |
-| \(p_K^{\mathrm{sel}},\underline p_{K,t}^{\mathrm{sel}},p_{\min}^{\mathrm{sel}},\mathfrak H_{K,t}^{\mathrm{sel}}\) | probability, bound, threshold, set | complete selection probability, certified lower bound, positive support floor, and certified selection-support region |
+| \(J_t^{\mathrm{nom}},J_t^{\mathrm{evid}},A_t^B,\tau_t^B,J_t^{\mathrm{act}}\) | indicators and scores | nomination, evidence-readiness, activation score, threshold, and threshold-selective decision |
+| \(q_B,q_{\mathrm{FA}},q_{\mathrm{sel}},J_t^{\mathrm{upd},q_B}\) | policies, indicator | frozen Bayesian policy, frontier-all and selective policies, and complete policy-indexed admission decision |
+| \(\kappa_t^B,\mathcal X_{K,t}^{\mathrm{upd},q_B},L_K^{\mathrm{adm},q_B}\) | map, finite set, likelihood | posterior-key assignment, admitted evidence-packet set, and admission-conditioned likelihood |
+| \(p_K^{\mathrm{adm},q_B},\underline p_{K,t}^{\mathrm{adm},q_B},p_{\min}^{\mathrm{adm}},\mathfrak H_{K,t}^{\mathrm{adm},q_B}\) | probability, bound, threshold, set | complete admission probability, certified lower bound, positive support floor, and certified admission-support region |
 | \(J_{K,t}^{\mathrm{share}}\) | \(\{0,1\}\) | Anti-Pigeon posterior-sharing certificate decision for bucket \(K\) |
 | \(q_{K,t^-},q_{K,t}^+,q_{K,t}^{\mathrm{eff}}\) | probability measures | cached prior, candidate update, and valid posterior actually used for prediction |
-| \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent inactive-event audit indicator |
+| \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent non-admitted-event audit indicator |
 | \(D_{\mathrm{omit}},\Delta_{K,t}^{\mathrm{omit}},U_t^{\mathrm{omit}}\) | divergence and reals | normalized Jensen--Shannon forecast divergence, audit-population mean, and simultaneous upper confidence bound |
 | \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\) | confidence procedure | frozen design-weighted simultaneous confidence sequence for omitted influence |
-| \(N_{\mathrm{audit}}^{\max}\) | non-negative integer | fixed inactive-event audit-reservoir capacity |
-| \(N_t^{\mathrm{act}},M_{\mathrm{hyp}},R_{\mathrm{cp}}\) | non-negative integers | activated count, bounded hypothesis/statistic dimension, and retained changepoint-state count |
-| \(T_{\mathrm{act}},T_{\mathrm{sel}},T_{\mathrm{Bayes}}^{\mathrm{fast}}\) | costs | total activation, complete selection-probability, and bounded direct Bayesian work |
-| \(\mathcal C_{B,t^-},\Xi_B\) | cache, typed contract | as-of posterior cache and complete selective Bayesian contract |
+| \(N_{\mathrm{audit}}^{\max}\) | non-negative integer | fixed non-admitted-event audit-reservoir capacity |
+| \(B_{\max},N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}},R_{\mathrm{cp}}\) | non-negative integers | frontier cap, admitted count, bounded hypothesis/statistic dimension, and retained changepoint-state count |
+| \(T_{\mathrm{adm}},T_{\mathrm{sel}},T_{\mathrm{Bayes}}^{\mathrm{fast}}\) | costs | policy admission, complete admission-probability, and bounded direct Bayesian work |
+| \(\mathcal C_{B,t^-},\Xi_B\) | cache, typed contract | as-of posterior cache and complete bounded Bayesian contract |
 | \(\Sigma_t,B_{\mathrm{pub}},B_{\mathrm{inv}},N_{\mathrm{pub}},N_{\mathrm{inv}}\) | state and counts | coupled versioned learning state, per-evidence-epoch publication/invalidation budgets, and realized counts |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
@@ -469,7 +471,7 @@ In particular,
 
 Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) align a corrected event template with the marked decision. Set \(\hat e_t^H(\mathbf r)=\varnothing\) when \(d_H(\mathsf Q_t^{(\mathbf r)})=\varnothing\), and otherwise set \(\hat e_t^H(\mathbf r)=\mathrm{lift}_H(b_t^0\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)}))\). Then \(\mathcal O_t(\mathbf r)=(\mathsf Q_t^{(\mathbf r)},\hat e_t^H(\mathbf r))\), with \(\mathcal O_t^0=\mathcal O_t(\mathbf0_R)\). The typed pair keeps law and auxiliary-template semantics separate; \(d_H\) and \(\mathrm{lift}_H\) enforce mark/time coherence only. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise \(\mathcal O_t^0\) is returned. Define the deterministic complete-law policy \(\mathfrak F_R(\mathsf Q_t^0,b_t^0,C_t;S_{t^-})=\mathsf Q_t^R\), where \(\mathsf Q_t^R\) is the law component actually returned after residual selection and pre-risk gating. Point-only records cannot support a proper-score claim; law-only records cannot claim auxiliary-field correction. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
 
-## Selective Bayesian Updating
+## Bounded Bayesian Updating
 
 Let \(\mathfrak E_t^B\) be the bounded as-of candidate universe and let the nominated frontier be
 
@@ -504,7 +506,17 @@ J_t^{\mathrm{act}}(e)=J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e)
 \mathbf1\{A_t^B(e)\ge\tau_t^B(e)\}.
 \]
 
-Every score is computed from information available when the update decision is made and before any target whose performance will be claimed. Because \(J_t^{\mathrm{act}}\) is total on \(\mathfrak E_t^B\), its model probability includes nomination, evidence readiness, and threshold admission. The scoring maps, caps, weights, thresholds, tie-breaks, and provenance rules are components of \(\Xi_B\) and are frozen under \(\Lambda_{\mathrm{eval}}\).
+Freeze \(q_B\in\{q_{\mathrm{FA}},q_{\mathrm{sel}}\}\) and define
+
+\[
+J_t^{\mathrm{upd},q_B}(e)=
+\begin{cases}
+J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e),&q_B=q_{\mathrm{FA}},\\
+J_t^{\mathrm{act}}(e),&q_B=q_{\mathrm{sel}}.
+\end{cases}
+\]
+
+Here \(q_{\mathrm{FA}}\) is the reference bounded-frontier-update-all policy and \(q_{\mathrm{sel}}\) is the optional threshold-selective policy. Updating all means all evidence-ready nominated members, never the entire corpus. Every score is computed from information available when the update decision is made and before any target whose performance will be claimed. Because \(J_t^{\mathrm{upd},q_B}\) is total on \(\mathfrak E_t^B\), its model probability includes nomination and evidence readiness under both policies and threshold admission under \(q_{\mathrm{sel}}\). Implementations materialize and score only \(\mathcal N_t^B\), representing the zero branch outside it sparsely. The scoring maps, caps, weights, thresholds, tie-breaks, policy, and provenance rules are components of \(\Xi_B\) and are frozen under \(\Lambda_{\mathrm{eval}}\).
 
 Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a measurable parameter space and \(q_{K,t^-}\in\mathcal P(\Theta_K)\) the cached prior for bucket \(K\). Anti-Pigeon controls posterior granularity through
 
@@ -518,6 +530,13 @@ v_{K,t}=v_t,\quad H_K=H,\quad s_K\text{ is valid}
 
 The certificate uses the external downstream target law, not agreement inside the posterior. Its guarantee is empirical and conditional on valid target-law estimation, audit design, simultaneous coverage, and any declared continuity bound; the framework does not prove those premises. Compatible events may share a bucket posterior; a failed or absent certificate creates a separate posterior key and nominates a slow-path split audit. The fast path reads a materialized certificate and never recomputes the diameter.
 
+Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after this decision and define
+
+\[
+\mathcal X_{K,t}^{\mathrm{upd},q_B}
+=\{\xi_t(e):J_t^{\mathrm{upd},q_B}(e)=1,\ \kappa_t^B(e)=K\}.
+\]
+
 For admitted evidence \(\xi_t\) with history \(h_t^B\), an ordinary Bayesian update is valid only for the normalized likelihood \(L_K\) induced by the displayed joint-model marginal identity and with a positive finite normalizer. Separately modeled components remain modular forecasts:
 
 \[
@@ -526,26 +545,26 @@ q_{K,t}^+(d\theta)=
 {\int_{\Theta_K}L_K(\xi_t\mid\vartheta,h_t^B)q_{K,t^-}(d\vartheta)}.
 \]
 
-If activation is informative, the update instead declares the selection-conditioned likelihood
+If admission is informative, the update instead declares the admission-conditioned likelihood
 
 \[
-L_K^{\mathrm{sel}}(\xi\mid\theta,h,J^{\mathrm{act}}=1)=
-\frac{P_\theta(J^{\mathrm{act}}=1\mid\xi,h)L_K(\xi\mid\theta,h)}
-{P_\theta(J^{\mathrm{act}}=1\mid h)},
+L_K^{\mathrm{adm},q_B}(\xi\mid\theta,h,J^{\mathrm{upd},q_B}=1)=
+\frac{P_\theta(J^{\mathrm{upd},q_B}=1\mid\xi,h)L_K(\xi\mid\theta,h)}
+{P_\theta(J^{\mathrm{upd},q_B}=1\mid h)},
 \]
 
-where both probabilities refer to the complete \(J_t^{\mathrm{act}}=J_t^{\mathrm{nom}}J_t^{\mathrm{evid}}J_t^{\mathrm{thr}}\) process. Define
+where both probabilities refer to the complete policy-indexed admission process. Define
 
 \[
-p_K^{\mathrm{sel}}(\theta,h)=P_\theta(J^{\mathrm{act}}=1\mid h),
+p_K^{\mathrm{adm},q_B}(\theta,h)=P_\theta(J^{\mathrm{upd},q_B}=1\mid h),
 \qquad
-\mathfrak H_{K,t}^{\mathrm{sel}}
-=\{h:\underline p_{K,t}^{\mathrm{sel}}(h)\ge p_{\min}^{\mathrm{sel}}\},
+\mathfrak H_{K,t}^{\mathrm{adm},q_B}
+=\{h:\underline p_{K,t}^{\mathrm{adm},q_B}(h)\ge p_{\min}^{\mathrm{adm}}\},
 \]
 
-where \(p_{\min}^{\mathrm{sel}}>0\) is frozen and \(\underline p_{K,t}^{\mathrm{sel}}(h)\) is an analytic or simultaneously valid lower bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{sel}}(\theta,h)\). A selection-corrected full-stream claim is permitted only on \(\mathfrak H_{K,t}^{\mathrm{sel}}\). A never-nominated or otherwise unsupported history yields a working posterior or no update. Inactive candidates inside \(\mathfrak E_t^B\) may enter the independent audit; objects outside that universe are outside both certificates unless exhaustive coverage or a verified envelope bound extends them.
+where \(p_{\min}^{\mathrm{adm}}>0\) is frozen and \(\underline p_{K,t}^{\mathrm{adm},q_B}(h)\) is an analytic or simultaneously valid lower bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{adm},q_B}(\theta,h)\). An admission-corrected full-stream claim is permitted only on \(\mathfrak H_{K,t}^{\mathrm{adm},q_B}\). Under \(q_{\mathrm{FA}}\), threshold selection disappears but nomination and evidence readiness remain part of admission. A never-nominated or otherwise unsupported history yields a working posterior or no update. Non-admitted candidates inside \(\mathfrak E_t^B\) may enter the independent audit; objects outside that universe are outside both certificates unless exhaustive coverage or a verified envelope bound extends them.
 
-Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly activated evidence set, the contract supplies its joint selection probability; products of one-event selection corrections are valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result. Without either condition and the support bound, the result is called an activation-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
+Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly admitted evidence set, the contract supplies its joint admission probability; products of one-event corrections are valid only under a declared conditional factorization. Admission may be ignored only under a stated conditional-ignorability result. Without either condition and the support bound, the result is called an admission-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
 
 Let \(R_{K,t}\) be a declared changepoint run-length state and
 
@@ -553,7 +572,7 @@ Let \(R_{K,t}\) be a declared changepoint run-length state and
 J_{K,t}^{\mathrm{cp}}=\mathbf1\{P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}\}.
 \]
 
-A trigger invokes the Section 7 dependency closure and its \(\mathsf B_{\mathcal D}\) and \(\mathsf I_{\mathcal D}\) operators, invalidating affected posterior and residual certificates and incrementing posterior-predictive, residual, and graph versions together. It also expands the bounded frontier and queues slow recalibration. A monitor updated only by activated evidence detects changepoints in that selected process; it supports a full-stream regime claim only when the selection model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error.
+A trigger invokes the Section 7 dependency closure and its \(\mathsf B_{\mathcal D}\) and \(\mathsf I_{\mathcal D}\) operators, invalidating affected posterior and residual certificates and incrementing posterior-predictive, residual, and graph versions together. It also expands the bounded frontier and queues slow recalibration. A monitor updated only by admitted evidence detects changepoints in that admission-conditioned process; under frontier-all it still excludes non-nominated and unavailable evidence. It supports a full-stream regime claim only when the complete admission model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error.
 
 Conditional on the inactive candidate set, candidates enter a shadow audit independently of their activation scores with \(J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}})\) under a frozen schedule. If accepted candidates exceed the capacity \(N_{\mathrm{audit}}^{\max}\), a frozen uniform reservoir subsamples them and records each final inclusion probability; audit estimators use the corresponding design weights.
 
@@ -835,7 +854,7 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, nomination and evidence-readiness rules, activation maps and thresholds, the joint evidence-and-outcome family and its displayed marginal identities, source and complete selection models, selection-support floor and simultaneous lower-bound procedure, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint approximation, component-sensitive law and template motion certificates with propagated approximation-error budgets, dependency-closure versioning, atomic publication, and coupled-state publication/invalidation budgets. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, the frontier-all or selective policy, nomination and evidence-readiness rules, activation maps and thresholds, the joint evidence-and-outcome family and its displayed marginal identities, source and complete admission models, admission-support floor and simultaneous lower-bound procedure, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint approximation, component-sensitive law and template motion certificates with propagated approximation-error budgets, dependency-closure versioning, atomic publication, and coupled-state publication/invalidation budgets. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
 
 \[
 \mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,

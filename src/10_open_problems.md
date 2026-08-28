@@ -50,6 +50,6 @@ The twenty-third open problem is posterior granularity. Anti-Pigeon supplies an 
 
 The twenty-fourth open problem is bounded changepoint inference. Exact Bayesian online changepoint support grows with stream length. Truncation, pruning, and finite-state approximations require error bounds that remain meaningful under selective activation and delayed labels.
 
-The twenty-fifth open problem is omitted influence. A bounded local frontier can miss weak individual signals whose joint effect is material. Independent inactive-event audits estimate this risk only on sampled candidates; coverage guarantees under adversarial or highly correlated omissions remain open.
+The twenty-fifth open problem is omitted influence. A bounded local frontier can miss weak individual signals whose joint effect is material. Independent non-admitted-event audits estimate this risk only on sampled candidates; coverage guarantees under adversarial or highly correlated omissions remain open.
 
 These open problems define the boundary of the current paper. The framework is useful if it makes prediction, memory, and abstraction more explicit and testable. It should not be presented as a final cognitive architecture, universal predictor, or complete mathematical theory. The conclusion summarizes the role EventFrame can play as a conservative event-centric substrate.

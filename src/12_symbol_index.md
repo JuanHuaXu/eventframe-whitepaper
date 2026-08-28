@@ -58,15 +58,19 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(s_i\), \(s_{k_t}\), \(\mathcal S_{\mathrm{prov}}\): provenance records for general and exact residual-cache entries and their declared space.
 
-\(\Xi_R\), \(\Xi_B\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, selective Bayesian contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
+\(\Xi_R\), \(\Xi_B\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, bounded Bayesian contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
 \(H_i\), \(H_{k_t}\), \(v_{k_t}\), \(v_t\), \(\mu_{k_t}\): cache horizons, cache-entry and active epochs, and materialized compatibility safety margin.
 
 \(\mathfrak E_t^B\), \(\mathcal N_t^B\), \(\mathcal R_t^{\mathrm{vec}}\), \(\mathcal N_t^{\mathrm{sh}}\): bounded Bayesian candidate universe, nominated frontier, and its vector-retrieval and sheaf-inspired components.
 
-\(J_t^{\mathrm{nom}}\), \(J_t^{\mathrm{evid}}\), \(A_t^B\), \(\tau_t^B\), \(J_t^{\mathrm{act}}\): nomination and evidence-readiness indicators, Bayesian activation score, criticality-adjusted threshold, and total activation indicator.
+\(J_t^{\mathrm{nom}}\), \(J_t^{\mathrm{evid}}\), \(A_t^B\), \(\tau_t^B\), \(J_t^{\mathrm{act}}\): nomination and evidence-readiness indicators, Bayesian activation score, criticality-adjusted threshold, and threshold-selective indicator.
 
-\(p_K^{\mathrm{sel}}\), \(\underline p_{K,t}^{\mathrm{sel}}\), \(p_{\min}^{\mathrm{sel}}\), \(\mathfrak H_{K,t}^{\mathrm{sel}}\): complete selection probability, certified uniform lower bound, positive support floor, and certified selection-support region.
+\(q_B\), \(q_{\mathrm{FA}}\), \(q_{\mathrm{sel}}\), \(J_t^{\mathrm{upd},q_B}\): frozen Bayesian policy, bounded-frontier-update-all and threshold-selective policies, and complete policy-indexed update-admission indicator.
+
+\(\kappa_t^B\), \(\mathcal X_{K,t}^{\mathrm{upd},q_B}\), \(L_K^{\mathrm{adm},q_B}\): Anti-Pigeon-governed posterior-key assignment, admitted evidence-packet set for key \(K\), and complete admission-conditioned likelihood.
+
+\(p_K^{\mathrm{adm},q_B}\), \(\underline p_{K,t}^{\mathrm{adm},q_B}\), \(p_{\min}^{\mathrm{adm}}\), \(\mathfrak H_{K,t}^{\mathrm{adm},q_B}\): complete admission probability, certified uniform lower bound, positive support floor, and certified admission-support region.
 
 \(J_{K,t}^{\mathrm{share}}\), \(q_{K,t^-}\), \(q_{K,t}^+\), \(\mathcal C_{B,t^-}\): Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
 
@@ -74,9 +78,9 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathsf Q_t^{\mathrm{local}}\), \(\mathsf Q_t^{\mathrm{expanded}}(e)\), \(D_{\mathrm{omit}}\), \(\Delta_{K,t}^{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), \(U_t^{\mathrm{omit}}\): complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, and maximum certified omission bound.
 
-\(k_v\), \(d_{\mathrm{sh}}\), \(d_G\), \(N_t^{\mathrm{act}}\), \(M_{\mathrm{hyp}}\), \(R_{\mathrm{cp}}\): vector width, sheaf-inspired and graph degree caps, activated count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
+\(k_v\), \(d_{\mathrm{sh}}\), \(d_G\), \(B_{\max}\), \(N_t^{\mathrm{upd},q_B}\), \(M_{\mathrm{hyp}}\), \(R_{\mathrm{cp}}\): vector width, sheaf-inspired and graph degree caps, frontier cap, admitted update count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
 
-\(T_{\mathrm{act}}\), \(T_{\mathrm{sel}}\), \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\): total activation evaluation, complete selection-probability evaluation, and bounded direct Bayesian cost. \(T_B(k)\) remains the fallback baseline-predictor cost.
+\(T_{\mathrm{adm}}\), \(T_{\mathrm{sel}}\), \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\): policy-indexed admission evaluation, complete admission-probability evaluation, and bounded direct Bayesian cost. \(T_B(k)\) remains the fallback baseline-predictor cost.
 
 \(\Sigma_t\), \(B_{\mathrm{pub}}\), \(B_{\mathrm{inv}}\), \(N_{\mathrm{pub}}(j)\), \(N_{\mathrm{inv}}(j)\): coupled versioned learning state, finite per-evidence-epoch publication and invalidation budgets, and realized counts.
 

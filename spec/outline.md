@@ -62,7 +62,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - KV episodic cache
 - Residual cache
 - Similarity lookup
-- Selective Bayesian candidate frontier
+- Bounded Bayesian candidate frontier with frontier-all and optional selective admission
 - Activation and selection-conditioned updating
 - Anti-Pigeon posterior sharing
 - Independent omitted-influence audit
@@ -109,7 +109,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Compression and intervention tests
 - Controlled perturbation tests
 - Cache hit-rate tests
-- Selective Bayesian calibration and omission tests
+- Bounded Bayesian admission calibration and omission tests
 - Posterior-sharing and changepoint tests
 - Long-horizon prediction
 - Invariant stability tests

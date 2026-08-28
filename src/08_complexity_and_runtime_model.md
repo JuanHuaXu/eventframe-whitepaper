@@ -7,7 +7,7 @@ The reference fast path is:
 1. Incrementally update \(C_t=e_{t-k+1:t}\).
 2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
 3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier \(\mathcal N_t^B\).
-4. Check evidence readiness, the certified positive support bound for the total nomination-and-activation probability, and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update. Unsupported selection correction falls back to working-posterior or no-update semantics.
+4. Apply the frozen update policy: the reference frontier-all policy admits every evidence-ready frontier member, while the optional selective policy additionally requires its activation threshold. Check the certified positive support bound for the complete admission probability and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update. Unsupported admission correction falls back to working-posterior or no-update semantics.
 5. Compute the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\) from the valid effective posterior family, falling back to \(\mathsf Q_B\) and \(B\) only when that family is empty; independently compute packet baseline \(B_Y(X_t)\) when required.
 6. Construct the bounded action key \(k_t=\alpha(C_t)\).
 7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match \((\mathsf Q_t^0,b_t^0)\).
@@ -20,7 +20,7 @@ The packet names memory nodes, graph edges, retrieval lane, compaction risk, res
 ```mermaid
 flowchart LR
     C["Context C_t"] --> N["Bounded Bayesian frontier"]
-    N --> J["Activation and sharing certificates"]
+    N --> J["Admission and sharing certificates"]
     J --> B["Cached belief update"]
     B --> Q0["Posterior-predictive base"]
     Q0 --> A["Posterior-aware exact residual"]
@@ -44,7 +44,7 @@ flowchart LR
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, and \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the selective Bayesian work. Then:
+Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, and \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the bounded-frontier Bayesian work. Then:
 
 \[
 T_{\mathrm{fast}}
@@ -52,17 +52,29 @@ T_{\mathrm{fast}}
 +I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
 \]
 
-where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let \(N_t^{\mathrm{act}}=|\{e\in\mathfrak E_t^B:J_t^{\mathrm{act}}(e)=1\}|\), let \(M_{\mathrm{hyp}}\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_{\mathrm{cp}}\) bound retained changepoint run-length states. Let \(T_{\mathrm{act}}(|\mathfrak E_t^B|)\) evaluate the frozen nomination, readiness, score, and threshold rule, and let \(T_{\mathrm{sel}}(N_t^{\mathrm{act}},M_{\mathrm{hyp}})\) evaluate or approximate the complete nomination-plus-activation probability required by the selected likelihood. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let
 
 \[
-T_{\mathrm{Bayes}}^{\mathrm{fast}}
-=T_{\mathrm{vec}}(k_v)+T_{\mathrm{expand}}(d_{\mathrm{sh}},d_G)
-+T_{\mathrm{act}}(|\mathfrak E_t^B|)
-+T_{\mathrm{sel}}(N_t^{\mathrm{act}},M_{\mathrm{hyp}})
-+O(N_t^{\mathrm{act}}M_{\mathrm{hyp}}R_{\mathrm{cp}})+T_{\mathrm{cert}}.
+N_t^{\mathrm{upd},q_B}
+=\left|\left\{e\in\mathfrak E_t^B:
+J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
+\le |\mathcal N_t^B|\le B_{\max},
 \]
 
-This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(|\mathfrak E_t^B|\), \(N_t^{\mathrm{act}}\), \(M_{\mathrm{hyp}}\), and \(R_{\mathrm{cp}}\) are bounded, when the vector-index query itself has a declared bound, and when \(T_{\mathrm{sel}}\) uses a bounded exact computation or a predeclared bounded approximation. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on particle count, parameter dimension, optimization iterations, graph degree, selection-probability evaluation, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, every term in \(T_{\mathrm{sel}}\), and eviction costs must be measured rather than hidden inside the constant.
+where \(B_{\max}\) is the predeclared frontier cap. Let \(M_{\mathrm{hyp}}\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_{\mathrm{cp}}\) bound retained changepoint run-length states. Let \(T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)\) evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let \(T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)\) evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+
+\[
+\begin{aligned}
+T_{\mathrm{Bayes}}^{\mathrm{fast}}
+={}&T_{\mathrm{vec}}(k_v)+T_{\mathrm{expand}}(d_{\mathrm{sh}},d_G)
++T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)\\
+&+T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)
++O(N_t^{\mathrm{upd},q_B}M_{\mathrm{hyp}}R_{\mathrm{cp}})
++T_{\mathrm{cert}}.
+\end{aligned}
+\]
+
+This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(B_{\max}\), \(M_{\mathrm{hyp}}\), and \(R_{\mathrm{cp}}\) are bounded, when the vector-index query itself has a declared bound, and when \(T_{\mathrm{sel}}\) uses a bounded exact computation or a predeclared bounded approximation. Under \(q_{\mathrm{FA}}\), \(N_t^{\mathrm{upd},q_B}\) is the evidence-ready frontier size; under \(q_{\mathrm{sel}}\), it is no larger. Thus frontier-all changes the bounded multiplicative constant, not the dependence on corpus size. Corpus size may still affect \(T_{\mathrm{vec}}\), index construction, cache maintenance, and storage I/O. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on frontier width, particle count, parameter dimension, optimization iterations, graph degree, selection-probability evaluation, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, frontier or graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, every term in \(T_{\mathrm{sel}}\), and eviction costs must be measured rather than hidden inside the constant.
 
 Continuous publication couples posterior, residual, epoch, graph, and abstraction state. Let
 

@@ -156,13 +156,13 @@ A low-latency residual cache keyed by a compact action signature. It stores a re
 
 A key-value memory structure storing prior event episodes. Keys represent retrieval conditions; values represent event frames, trajectories, or summaries.
 
-## Selective Bayesian Frontier
+## Bounded Bayesian Frontier
 
-A bounded as-of nominated set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. It lies inside a declared finite candidate universe. Graph children may be nominated, but they cannot activate until evidence is available and do not reveal future child outcomes.
+A bounded as-of nominated set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. It lies inside a declared finite candidate universe. The frontier-all reference policy updates every evidence-ready member; an optional selective policy adds an activation threshold. Neither policy updates the entire corpus. Graph children may be nominated, but they cannot update a posterior until evidence is available and do not reveal future child outcomes.
 
 ## Bayesian Activation Score
 
-A frozen weighted score combining vector relevance, neighbor compatibility, novelty, and source independence. Structurally critical candidates may receive a lower clamped threshold. Total activation additionally requires nomination and evidence readiness. Its selection probability covers that complete process.
+A frozen weighted score combining vector relevance, neighbor compatibility, novelty, and source independence. Structurally critical candidates may receive a lower clamped threshold. It is used only by the threshold-selective policy. The complete admission probability still covers nomination and evidence readiness under both policies.
 
 ## Posterior-Predictive Base
 
@@ -172,17 +172,17 @@ The complete marked-time/no-event law obtained by integrating each declared pred
 
 For an ordinary posterior-predictive claim, one declared joint kernel over evidence and next outcome has an evidence marginal dominated by a declared measure and an outcome marginal satisfying the displayed context-sufficiency identity. Because the scored outcome kernel does not separately consume the evidence packet, the joint kernel also factorizes into that evidence density and outcome kernel conditional on the declared parameter and context. If this fails, the predictive kernel must retain the evidence or additional history. Separately modeled components remain modular belief-conditioned forecasts; favorable calibration does not create a missing joint-model identity.
 
-## Certified Selection Support
+## Certified Admission Support
 
-The histories on which an analytic or simultaneously valid lower bound for the complete nomination-and-activation probability exceeds a frozen positive floor uniformly over the declared parameter family. Selection-corrected full-stream claims are limited to this region. Never-nominated histories and objects outside the candidate universe are uncertified unless an independent exhaustive or envelope argument covers them.
+The histories on which an analytic or simultaneously valid lower bound for the complete policy-indexed admission probability exceeds a frozen positive floor uniformly over the declared parameter family. Admission-corrected full-stream claims are limited to this region. Under frontier-all, admission includes nomination and evidence readiness; under selective admission it also includes the threshold. Never-nominated histories and objects outside the candidate universe are uncertified unless an independent exhaustive or envelope argument covers them.
 
 ## Residual Motion Certificate
 
 A fixed-reference certificate that determines whether a residual remains valid after its posterior-predictive base moves. Law-bearing records require a non-negative certified law-motion margin, point-bearing records require a non-negative certified template-motion margin, and joint records require both. Each bound includes statistical uncertainty and posterior-approximation error propagated through the predictive kernel, fusion rule, and applicable template map; a plug-in distance alone is not a certificate.
 
-## Activation-Conditioned Working Posterior
+## Admission-Conditioned Working Posterior
 
-The result of updating only on activated evidence without proving conditional ignorability or using a valid selection-conditioned likelihood. It may be useful operationally, but it is not claimed to be calibrated for the full event stream.
+The result of updating only on admitted evidence without proving conditional ignorability or using a valid admission-conditioned likelihood. It may be useful operationally, but it is not claimed to be calibrated for the full event stream.
 
 ## Anti-Pigeon Posterior Sharing
 

@@ -22,7 +22,7 @@ The conceptual distinction is important. Episodic memory says, "something like t
 
 Prediction combines the two memories by priority rather than by collapse. A reference flow is:
 
-1. Nominate and activate the bounded Bayesian frontier, then retrieve or update valid local posteriors.
+1. Nominate the bounded Bayesian frontier, apply the frozen frontier-all or selective admission policy, then retrieve or update valid local posteriors.
 2. Form the posterior-predictive base \((\mathsf Q_t^0,b_t^0)\), falling back to \((\mathsf Q_B,B)\) when no valid belief bucket exists.
 3. Try action-residual lookup in \(\mathcal{C}_A\), including posterior-predictive version and motion checks.
 4. If that record is not certified, try general residual lookup in \(\mathcal{C}_R\) under the same base-law compatibility requirement.
@@ -48,9 +48,9 @@ Fast-path memory use should be cheap. A practical implementation may use approxi
 
 Representative preservation is a memory responsibility. A single traceability frame prevents a group from becoming an empty label, but boundary detection requires the context audit set, its associated anchor frames, coverage metadata, and sampling history. If these are discarded, the runtime must mark the group unaudited rather than infer stability from one example.
 
-## Selective Bayesian Update Frontier
+## Bounded Bayesian Update Frontier
 
-EventFrame may attach a bounded Bayesian belief state to an event bucket, residual family, latent regime, or declared hypothesis family. It does not update every stored belief after every frame. Let \(\mathfrak E_t^B\) be the finite declared universe of event and hypothesis identities eligible for nomination at \(t\). Vector retrieval and graph locality propose a finite update frontier. Let \(\mathcal R_t^{\mathrm{vec}}\) be at most \(k_v\) candidates returned by the frozen vector-retrieval rule. Let \(\mathcal N_t^{\mathrm{sh}}\) be the bounded neighborhood returned by the abstraction compatibility graph. This is a sheaf-inspired neighborhood, not a sheaf-theoretic neighborhood unless the required restriction identity and composition laws have actually been instantiated.
+EventFrame may attach a bounded Bayesian belief state to an event bucket, residual family, latent regime, or declared hypothesis family. It does not update every stored belief after every frame. Let \(\mathfrak E_t^B\) be the finite declared universe of event and hypothesis identities eligible for nomination at \(t\). Vector retrieval and graph locality propose a finite update frontier. Let \(\mathcal R_t^{\mathrm{vec}}\) be at most \(k_v\) candidates returned by the frozen vector-retrieval rule. Let \(\mathcal N_t^{\mathrm{sh}}\) be the bounded neighborhood returned by the abstraction compatibility graph. This is a sheaf-inspired neighborhood, not a sheaf-theoretic neighborhood unless the required restriction identity and composition laws have actually been instantiated. Updating all members below always means all evidence-ready members of this bounded frontier, not all records in the corpus.
 
 If an explicit SCM \(\mathfrak M\) exists, let \(v_t^E\) be the graph node associated with the current context and use its declared parents and children. A child here is an outgoing relationship already present in the as-of graph, not a future realized event. Without an identified SCM, the corresponding predictive-dependency neighbors may be used but may not be called causal. The candidate frontier is
 
@@ -101,7 +101,18 @@ J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e)
 \mathbf1[A_t^B(e)\ge\tau_t^B(e)].
 \]
 
-All nomination, evidence-readiness, scoring, normalization, weighting, threshold, tie-break, and source-dependence rules are part of \(\Lambda_{\mathrm{eval}}\). A score may use a newly arrived frame once that frame is available, but it may not use a later target outcome, posterior audit, or graph revision. Because \(J_t^{\mathrm{act}}\) is defined on all of \(\mathfrak E_t^B\) and equals zero outside the frontier or before evidence readiness, its model probability includes nomination, evidence readiness, and threshold admission. Activation controls expenditure; it does not establish that candidates are safe to pool.
+Freeze an update policy \(q_B\in\{q_{\mathrm{FA}},q_{\mathrm{sel}}\}\), where \(q_{\mathrm{FA}}\) is bounded-frontier-update-all and \(q_{\mathrm{sel}}\) is threshold-selective. Define the total update-admission indicator
+
+\[
+J_t^{\mathrm{upd},q_B}(e)=
+\begin{cases}
+J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e),
+&q_B=q_{\mathrm{FA}},\\
+J_t^{\mathrm{act}}(e),&q_B=q_{\mathrm{sel}}.
+\end{cases}
+\]
+
+The reference policy is \(q_{\mathrm{FA}}\). The selective policy is admitted only as a measured resource-quality tradeoff; it is not presumed superior merely because it performs fewer updates. All nomination, evidence-readiness, scoring, normalization, weighting, threshold, tie-break, policy-selection, and source-dependence rules are part of \(\Lambda_{\mathrm{eval}}\). A score may use a newly arrived frame once that frame is available, but it may not use a later target outcome, posterior audit, or graph revision. Because \(J_t^{\mathrm{upd},q_B}\) is defined on all of \(\mathfrak E_t^B\) and equals zero outside the frontier or before evidence readiness, its model probability includes the complete admission path. A conforming implementation materializes and scores only \(\mathcal N_t^B\); it represents the zero branch outside that frontier sparsely rather than scanning \(\mathfrak E_t^B\). For \(q_{\mathrm{FA}}\), admission is nomination plus evidence readiness; for \(q_{\mathrm{sel}}\), it additionally includes threshold admission. Admission controls expenditure; it does not establish that candidates are safe to pool.
 
 Anti-Pigeon controls posterior granularity. For a candidate bucket \(K\), let \(v_K^B\) be the abstraction epoch under which its posterior-sharing certificate was produced. Sharing is permitted only when
 
@@ -116,53 +127,62 @@ s_K^B\text{ is valid}
 \right\}.
 \]
 
-The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. Its guarantee is empirical and conditional on the declared target-law estimator, audit design, simultaneous coverage procedure, and any continuity bound actually attaining their stated coverage; EventFrame does not prove those premises from its architecture. The fast path checks a materialized certificate; it does not recompute \(D_K^{\mathrm{cert},\star}\). Active events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
+The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. Its guarantee is empirical and conditional on the declared target-law estimator, audit design, simultaneous coverage procedure, and any continuity bound actually attaining their stated coverage; EventFrame does not prove those premises from its architecture. The fast path checks a materialized certificate; it does not recompute \(D_K^{\mathrm{cert},\star}\). Admitted events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
+
+Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after the Anti-Pigeon decision: admitted events share a key only when the corresponding sharing certificate passes; otherwise each receives a separate key. For each key \(K\), define the admitted evidence-packet set
+
+\[
+\mathcal X_{K,t}^{\mathrm{upd},q_B}
+=\left\{\xi_t(e):
+J_t^{\mathrm{upd},q_B}(e)=1,
+\ \kappa_t^B(e)=K\right\}.
+\]
 
 Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a declared parameter space and let \(q_{K,t^-}\in\mathcal P(\Theta_K)\) be the cached prior available before the update. Let \(\xi_t(e)\) be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family \(\{\mathbb P_{K,\theta}\}\) declared in Section 4: \(L_K\) is exactly its dominated evidence marginal and \(\mathsf P_{H,K}\) is exactly its outcome marginal under the displayed context-sufficiency identity. A modular update and forecast that do not share that family remain modular even after favorable forward validation and may not use ordinary posterior-predictive language.
 
-For an activated, sharing-approved evidence-packet set \(\mathcal X_{K,t}^{\mathrm{act}}\), an ordinary Bayesian update is
+For a non-empty \(\mathcal X_{K,t}^{\mathrm{upd},q_B}\), an ordinary Bayesian update is
 
 \[
 q_{K,t}^{+}(d\theta)=
 \frac{
-L_K^{\mathrm{sel}}(\mathcal X_{K,t}^{\mathrm{act}}\mid\theta,\mathfrak h_t)
+L_K^{\mathrm{adm},q_B}(\mathcal X_{K,t}^{\mathrm{upd},q_B}\mid\theta,\mathfrak h_t)
 q_{K,t^-}(d\theta)}
 {\int_{\Theta_K}
-L_K^{\mathrm{sel}}(\mathcal X_{K,t}^{\mathrm{act}}\mid\vartheta,\mathfrak h_t)
+L_K^{\mathrm{adm},q_B}(\mathcal X_{K,t}^{\mathrm{upd},q_B}\mid\vartheta,\mathfrak h_t)
 q_{K,t^-}(d\vartheta)},
 \]
 
-provided the denominator is finite and strictly positive. Because novelty or compatibility may depend on the arrived event, activation is generally informative. For one evidence packet \(\xi\), the selection-conditioned likelihood is
+provided the denominator is finite and strictly positive. Nomination, evidence readiness, novelty, or compatibility may depend on the arrived event, so admission is generally informative under either policy. For one evidence packet \(\xi\), the admission-conditioned likelihood is
 
 \[
-L_K^{\mathrm{sel}}(\xi\mid\theta,\mathfrak h_t,J^{\mathrm{act}}=1)=
+L_K^{\mathrm{adm},q_B}(\xi\mid\theta,\mathfrak h_t,J^{\mathrm{upd},q_B}=1)=
 \frac{
-P_\theta(J^{\mathrm{act}}=1\mid\xi,\mathfrak h_t)
+P_\theta(J^{\mathrm{upd},q_B}=1\mid\xi,\mathfrak h_t)
 L_K(\xi\mid\theta,\mathfrak h_t)}
-{P_\theta(J^{\mathrm{act}}=1\mid\mathfrak h_t)},
+{P_\theta(J^{\mathrm{upd},q_B}=1\mid\mathfrak h_t)},
 \]
 
 on the domain where the denominator is positive. Reliable correction requires more than pointwise positivity. Let
 
 \[
-p_K^{\mathrm{sel}}(\theta,\mathfrak h)
-=P_\theta(J^{\mathrm{act}}=1\mid\mathfrak h),
+p_K^{\mathrm{adm},q_B}(\theta,\mathfrak h)
+=P_\theta(J^{\mathrm{upd},q_B}=1\mid\mathfrak h),
 \]
 
-let \(\underline p_{K,t}^{\mathrm{sel}}(\mathfrak h)\) be either an analytic lower bound or a simultaneously valid lower confidence bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{sel}}(\theta,\mathfrak h)\), and freeze \(p_{\min}^{\mathrm{sel}}>0\). The certified selection-support region is
+let \(\underline p_{K,t}^{\mathrm{adm},q_B}(\mathfrak h)\) be either an analytic lower bound or a simultaneously valid lower confidence bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{adm},q_B}(\theta,\mathfrak h)\), and freeze \(p_{\min}^{\mathrm{adm}}>0\). The certified admission-support region is
 
 \[
-\mathfrak H_{K,t}^{\mathrm{sel}}
+\mathfrak H_{K,t}^{\mathrm{adm},q_B}
 =\left\{\mathfrak h:
-\underline p_{K,t}^{\mathrm{sel}}(\mathfrak h)
-\ge p_{\min}^{\mathrm{sel}}\right\}.
+\underline p_{K,t}^{\mathrm{adm},q_B}(\mathfrak h)
+\ge p_{\min}^{\mathrm{adm}}\right\}.
 \]
 
-A selection-corrected full-stream posterior claim is permitted only on this region. Outside it, including a structurally never-nominated case, the update is labeled a working posterior or is withheld. An inactive event inside the declared candidate universe may still enter the independent audit population; an event outside \(\mathfrak E_t^B\) is outside both the production selection certificate and that audit unless a separate exhaustive or envelope argument covers it.
+An admission-corrected full-stream posterior claim is permitted only on this region. Under \(q_{\mathrm{FA}}\), threshold selection disappears but nomination and evidence readiness remain part of admission and may still require correction. Outside the certified region, including a structurally never-nominated case, the update is labeled a working posterior or is withheld. A non-admitted event inside the declared candidate universe may still enter the independent audit population; an event outside \(\mathfrak E_t^B\) is outside both the production admission certificate and that audit unless a separate exhaustive or envelope argument covers it.
 
-For a jointly activated evidence set, the contract must model the joint activation probability; multiplying one-event selection corrections is valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result, for example when activation depends exclusively on already conditioned-on pre-evidence variables. If the selection probability cannot be modeled with the required support bound, the result is called an activation-conditioned working posterior, not a calibrated posterior for the full event stream, and must be tested against the independent audit stream.
+For a jointly admitted evidence set, the contract must model the joint admission probability; multiplying one-event admission corrections is valid only under a declared conditional factorization. Admission may be ignored only under a stated conditional-ignorability result, for example when the complete admission process depends exclusively on already conditioned-on pre-evidence variables. If the admission probability cannot be modeled with the required support bound, the result is called an admission-conditioned working posterior, not a calibrated posterior for the full event stream, and must be tested against the independent audit stream.
 
-Because \(J_t^{\mathrm{act}}\) already contains \(J_t^{\mathrm{nom}}\) and \(J_t^{\mathrm{evid}}\), both the numerator and marginal denominator integrate the complete two-stage nomination-and-activation event. Conditioning only on the threshold comparison while treating frontier membership as fixed is valid only under a separately stated conditional design.
+Because \(J_t^{\mathrm{upd},q_B}\) contains nomination and evidence readiness under both policies, both the numerator and marginal denominator integrate the complete admission event. Conditioning only on the selective threshold while treating frontier membership as fixed is valid only under a separately stated conditional design.
 
 The effective posterior consumed by Section 4 is
 
@@ -170,7 +190,7 @@ The effective posterior consumed by Section 4 is
 q_{K,t}^{\mathrm{eff}}=
 \begin{cases}
 q_{K,t}^{+},&
-\mathcal X_{K,t}^{\mathrm{act}}\neq\varnothing
+\mathcal X_{K,t}^{\mathrm{upd},q_B}\neq\varnothing
 \text{ and the update is valid},\\
 q_{K,t^-},&\text{otherwise, provided the cached prior is valid}.
 \end{cases}
@@ -183,7 +203,7 @@ Likewise, a product of conditionally independent likelihoods is ordinary Bayes o
 \[
 q_{K,t}^{+}(d\theta)\propto
 q_{K,t^-}(d\theta)
-\prod_{e\in\mathcal X_{K,t}^{\mathrm{act}}}
+\prod_{e\in\mathcal X_{K,t}^{\mathrm{upd},q_B}}
 L_K(\xi_t(e)\mid\theta,\mathfrak h_t)^{\omega_t(e)},
 \qquad 0\le\omega_t(e)\le1,
 \]
@@ -199,9 +219,9 @@ P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}
 \right].
 \]
 
-When this indicator fires, the runtime applies the dependency-closure bump \(\mathsf B_{\mathcal D}\) and stale-marking operator \(\mathsf I_{\mathcal D}\) from Section 7 to the affected posterior, residual, and graph-version region before expanding the review frontier and routing recalibration to the slow path. A monitor fed only activated evidence detects changes in the selected process. It supports a full-stream regime claim only when its transition and observation model includes the selection mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error.
+When this indicator fires, the runtime applies the dependency-closure bump \(\mathsf B_{\mathcal D}\) and stale-marking operator \(\mathsf I_{\mathcal D}\) from Section 7 to the affected posterior, residual, and graph-version region before expanding the review frontier and routing recalibration to the slow path. A monitor fed only admitted evidence detects changes in the admission-conditioned process. Under frontier-all this still excludes non-nominated and not-yet-ready evidence; under selective admission it also excludes threshold-rejected evidence. The monitor supports a full-stream regime claim only when its transition and observation model includes the complete admission mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error.
 
-Selective retrieval can become self-confirming by never revisiting what it has learned to ignore. EventFrame therefore reserves a predeclared audit probability \(\pi_{\mathrm{audit}}>0\). Conditional on the inactive candidate set and independently of activation-score magnitude, draw
+Bounded retrieval and optional selective admission can become self-confirming by never revisiting what they have learned to ignore. EventFrame therefore reserves a predeclared audit probability \(\pi_{\mathrm{audit}}>0\). Conditional on the non-admitted candidate set and independently of activation-score magnitude, draw
 
 \[
 J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}}).
@@ -209,7 +229,7 @@ J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}}).
 
 If the accepted audit sample exceeds a fixed capacity \(N_{\mathrm{audit}}^{\max}\), a frozen uniform reservoir subsamples it and records every final inclusion probability. Audit estimators use the corresponding design weights; an unweighted capped convenience sample cannot support the omission certificate.
 
-For one audited inactive evidence packet \(e\), let \((q_{K,t}^{\mathrm{loc}})_K\) be the effective posterior family produced by the ordinary frontier and let \((q_{K,t}^{\mathrm{exp}}(e))_K\) be the shadow family after admitting that packet through the same selection-aware update. Section 4 maps these to posterior-predictive bases \((\mathsf Q_t^{0,\mathrm{loc}},b_t^{0,\mathrm{loc}})\) and \((\mathsf Q_t^{0,\mathrm{exp}}(e),b_t^{0,\mathrm{exp}}(e))\). Replay the complete residual policy in each state:
+For one audited non-admitted evidence packet \(e\), let \((q_{K,t}^{\mathrm{loc}})_K\) be the effective posterior family produced by the ordinary frontier policy and let \((q_{K,t}^{\mathrm{exp}}(e))_K\) be the shadow family after admitting that packet through the same admission-aware update. Section 4 maps these to posterior-predictive bases \((\mathsf Q_t^{0,\mathrm{loc}},b_t^{0,\mathrm{loc}})\) and \((\mathsf Q_t^{0,\mathrm{exp}}(e),b_t^{0,\mathrm{exp}}(e))\). Replay the complete residual policy in each state:
 
 \[
 \mathsf Q_t^{\mathrm{local}}=
@@ -255,8 +275,8 @@ If \(\mathfrak K_t^{\mathrm{audit}}=\varnothing\), the system reports no omissio
 Every production or shadow decision records
 
 \[
-(J_t^{\mathrm{nom}},J_t^{\mathrm{evid}},A_t^B,\tau_t^B,
-J_t^{\mathrm{act}},J_{K,t}^{\mathrm{share}},J_t^{\mathrm{audit}},
+(q_B,J_t^{\mathrm{nom}},J_t^{\mathrm{evid}},A_t^B,\tau_t^B,
+J_t^{\mathrm{act}},J_t^{\mathrm{upd},q_B},J_{K,t}^{\mathrm{share}},J_t^{\mathrm{audit}},
 v_t,\upsilon_t^{\mathrm{bel}},H,s_t^{\mathrm{prov}}),
 \]
 
@@ -266,4 +286,4 @@ Before an ordinary posterior update publishes in place, its posterior-predictive
 
 Streaming variational Bayes motivates incremental and asynchronous posterior approximation [14]. Streaming variational Monte Carlo and online variational sequential Monte Carlo provide richer state-space and particle-based alternatives [15,16], but their constant-per-sample or online properties do not make their particle count, parameter dimension, optimization, or hardware cost free. Pattern Markov Chains are relevant only for declared event-pattern completion forecasts, not as a universal next-event Bayesian model [19]. Work on out-of-distribution sequential event prediction motivates latent-context and shift-aware evaluation [20], but EventFrame does not inherit its causal interpretation without the corresponding identification assumptions.
 
-The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. The selective Bayesian frontier updates bounded cached beliefs, while Anti-Pigeon decides which evidence may share one posterior. Slow-path consolidation, changepoint review, and independent audits keep all three memories from turning into overconfident filtered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.
+The memory model supports the overall EventFrame loop. Episodic memory helps interpret and compare cases. Residual memory corrects recurring transition errors. The bounded Bayesian frontier updates cached beliefs under a frontier-all reference policy or an explicitly evaluated selective policy, while Anti-Pigeon decides which evidence may share one posterior. Slow-path consolidation, changepoint review, and independent audits keep all three memories from turning into overconfident filtered history. The next section uses perturbation rather than recall to discover which event properties are stable under prediction.
