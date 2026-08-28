@@ -53,6 +53,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Residual correction model
 - Composition operator
 - Residual reuse
+- Worked finite marked/no-event instantiation
 - Failure modes
 
 ## 5. Memory Model

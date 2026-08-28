@@ -2,7 +2,7 @@
 
 The mathematical framework turns compressed event frames into objects that can be predicted, evaluated, cached, and abstracted. Given a context \(C_t\), the predictor must produce a next-event distribution before the next observation exists. Only after the observation arrives may the runtime compute realized prediction loss and update memory or abstraction.
 
-Let \(\Omega\) denote a dense substrate state space. For a finite region \(A_t\), let \(\omega_{A_t} \in \Omega^{A_t}\) denote the substrate history over that region. At temporal resolution \(\Delta_\tau\), an event frame is produced by:
+Let \(\Omega\) denote a fine-grained substrate state space; fine-grained refers to retained detail and imposes no topology on \(\Omega\). For a finite region \(A_t\), let \(\omega_{A_t} \in \Omega^{A_t}\) denote the substrate history over that region. At temporal resolution \(\Delta_\tau\), an event frame is produced by:
 
 \[
 e_t = \Gamma_{\Delta_\tau}(\omega_{A_t}), \qquad
@@ -35,7 +35,7 @@ Let \(\varnothing\neq\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k\) be the de
 
 Let \(a(x)\) be the time at which observation, label, cache record, or derived object \(x\) becomes available to the runtime. Let \(\mathscr F_t^{\mathrm{pred}}\) be the information available when the prediction at index \(t\) is issued, including \(C_t\) but excluding \(Z_{t+1}\). Mutable runtime state is the left-limit snapshot \(S_{t^-}\), constructed only from objects with \(a(x)\le t\). Every prediction, priority, cache lookup, abstraction decision, and pre-risk value used at time \(t\) must be measurable with respect to \(\mathscr F_t^{\mathrm{pred}}\). For a no-event outcome, \(a(Z_{t+1})\) is no earlier than expiration of horizon \(H\); delayed labels use their actual later availability time.
 
-Let \(\nu(e)\) be the event mark or occurrence type and \(\tau(e)\) its time. Over a prediction horizon \(H>0\), the next outcome is:
+Let \(\nu(e)\) be the event mark or occurrence type. Let \(\tau(e)\in\mathbb R\) be a declared scalar temporal anchor: it is the timestamp for a point event and, by default, the onset for an interval event. A domain may choose another measurable anchor, such as midpoint, but must freeze that convention before fitting and use it consistently in labeling, caching, and evaluation; the complete interval remains available in the event frame. Over a prediction horizon \(H>0\), the next outcome is:
 
 \[
 Z_{t+1}=
@@ -98,15 +98,17 @@ For human-readable diagnostics, let \(\hat Z_{t+1}=d_H(\mathsf Q_\theta(\cdot\mi
 
 Unlike the original timing-only diagnostic, this expression cannot assign zero loss to the wrong event type merely because its timestamp is correct. It remains a diagnostic; model fitting and forecast comparison should use \(\mathcal L_{\mathrm{pred}}\).
 
-For any other field, use a distinct projection \(\psi_i:\mathcal E\rightarrow\mathcal X_i\) and declared distance. The ordinary field loss is conditional on a concrete observed event:
+For any other field, use a distinct projection \(\psi_i:\mathcal E\rightarrow\mathcal X_i\) and declared distance. Bind the coherent structured prediction by \(\hat e_{\theta,t+1}^H:=\hat e_\theta^H(C_t)\). The ordinary field loss is defined only when both the decision and observation are marked events:
 
 \[
-\mathcal L_i(\hat e_{t+1},Z_{t+1})
-=d_i(\psi_i(\hat e_{t+1}),\psi_i(e_{t+1})),
-\qquad Z_{t+1}\neq\varnothing.
+\mathcal L_i(\hat e_{\theta,t+1}^H,Z_{t+1})
+=d_i(\psi_i(\hat e_{\theta,t+1}^H),\psi_i(e_{t+1})),
+\qquad
+\hat e_{\theta,t+1}^H\in\mathcal E,
+\quad Z_{t+1}\neq\varnothing.
 \]
 
-When \(Z_{t+1}=\varnothing\), this field loss is not evaluated unless a separate missing-aware loss with an explicit no-event symbol has been declared.
+When either argument is \(\varnothing\), this field loss is not evaluated unless a separate missing-aware loss on \(\mathcal E_\varnothing\) has been declared. The proper score and event diagnostic still evaluate the no-event decision.
 
 EventFrame uses separate pre-observation and post-observation quantities. For a candidate output bundle \(\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e^H)\), a pre-observation admissibility risk may use only information available at prediction time:
 
@@ -154,7 +156,8 @@ and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a version
 \[
 \begin{aligned}
 \Lambda_{\mathrm{eval}}=
-({}&P_{\mathrm{obj}},P_{\mathrm{conf}},P_\star,
+({}&P_{\mathrm{obj}},P_{\mathrm{conf}},
+\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}},P_\star,
 \mathfrak C_{\mathrm{adm}},d_C,
 \text{targets and divergences},\text{thresholds},
 \\
@@ -165,7 +168,7 @@ and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a version
 \end{aligned}
 \]
 
-Here \(P_{\mathrm{obj}}\) is the design sample used to select a candidate, \(P_{\mathrm{conf}}\) is an untouched confirmation sample or future block, and \(P_\star(Y\mid C)\) is the external target conditional law that the predictor attempts to approximate. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require \(\lambda_{\mathrm{rep}}\ge0\) and \(\mathcal C_{\mathrm{rep}}\ge0\). At the fixed resolution, let:
+Here \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are the design- and confirmation-generating laws. Their realized, chronologically separated samples or trajectory blocks are \(\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}\) and \(\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}\); independence is not assumed unless the sampling design supplies it. The external target conditional law is \(P_\star(Y\mid C)\). This contract is fixed independently of the candidates being compared; a candidate cannot shrink the context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require \(\lambda_{\mathrm{rep}}\ge0\) and \(\mathcal C_{\mathrm{rep}}\ge0\). At the fixed resolution, let:
 
 \[
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
@@ -240,18 +243,18 @@ This value states the desired population property. When \(P_\star\) is unknown i
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)\right].
 \]
 
-Operational selection instead begins with a finite, predeclared candidate family \(\mathfrak G_\Gamma(P_{\mathrm{obj}})\), constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let \(\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}\) and \(\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}\) be the corresponding grouped, as-of empirical risks, and define:
+Operational selection instead begins with a finite, predeclared candidate family \(\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})\), constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let \(\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}\) and \(\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}\) be the corresponding grouped, as-of empirical risks, and define:
 
 \[
 \widehat{\mathfrak F}_{AP}^{\Gamma}=
-\left\{\Theta_\Gamma\in\mathfrak G_\Gamma(P_{\mathrm{obj}}):
+\left\{\Theta_\Gamma\in\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}}):
 \begin{array}{l}
 D_K^{\mathrm{cert},\star}(\pi)\le\epsilon_{AP}
 \text{ for every }K\in\mathfrak K_\pi^+,\\
 \text{the operational factorization through }h_\pi\text{ holds},\\
 \mathrm{UCB}\!\left[
-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
--\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_\Gamma)
+-\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_{\Gamma,0})
 \right]\le\epsilon_{\mathrm{prop}}
 \end{array}
 \right\}.
@@ -263,14 +266,14 @@ If \(\widehat{\mathfrak F}_{AP}^{\Gamma}\neq\varnothing\), the implementable des
 \widehat\Theta_\Gamma\in
 \arg\min_{\Theta_\Gamma\in\widehat{\mathfrak F}_{AP}^{\Gamma}}
 \left[
-\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
+\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}(\Theta_\Gamma)
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)
 \right],
 \]
 
 with a declared deterministic tie-break. If the certified family is empty, the procedure returns no admissible design or a separately declared conservative fallback; it does not relax the thresholds. The confidence guarantees apply to the stated finite-sample constraints, not to attainment of the oracle infimum.
 
-Selection and tuning use only \(P_{\mathrm{obj}}\). After the candidate, preprocessing, thresholds, priority rule, and analysis are frozen, final claims are evaluated once on \(P_{\mathrm{conf}}\). Both samples use rolling-origin or forward-chaining construction, grouped by independent trajectory or entity where applicable, with an embargo long enough to cover context overlap, forecast horizon, and label delay. Weighted results are accompanied by unweighted and priority-stratified results. Oracle feasibility does not guarantee empirical certifiability, and empirical certifiability does not prove unrestricted population feasibility beyond the certificate's assumptions and coverage. Cross-resolution comparisons use the same raw histories and fixed target law; a candidate resolution may not redefine the outcome it is judged against.
+Selection and tuning use only \(\mathcal S_{\mathrm{obj}}\). After the candidate, preprocessing, thresholds, priority rule, and analysis are frozen, final claims are evaluated once on untouched \(\mathcal S_{\mathrm{conf}}\). Both samples use rolling-origin or forward-chaining construction under their named generating laws, grouped by independent trajectory or entity where applicable, with an embargo long enough to cover context overlap, forecast horizon, and label delay. Weighted results are accompanied by unweighted and priority-stratified results. Oracle feasibility does not guarantee empirical certifiability, and empirical certifiability does not prove unrestricted population feasibility beyond the certificate's assumptions and coverage. Cross-resolution comparisons use the same raw histories and fixed target law; a candidate resolution may not redefine the outcome it is judged against.
 
 An event history may be represented by a time-unrolled directed graph:
 
@@ -297,8 +300,8 @@ The event sparsity hypothesis is stated relative to a finite, non-empty declared
 -\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
 \qquad
 \widehat\Delta_{\mathrm{pred}}(d)=
-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
--\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma).
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma).
 \]
 
 With a predeclared threshold \(\eta_{\mathrm{pred}}\ge0\), define the observationally evaluable predictive ratio using a paired simultaneous confidence procedure over the entire declared distinction family:

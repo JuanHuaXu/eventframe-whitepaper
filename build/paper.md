@@ -12,7 +12,7 @@ _Public working paper. This version has not been experimentally validated._
 
 ## Abstract
 
-EventFrame is a framework for event-centric prediction. It represents experience as typed event frames rather than as unstructured sequences alone, but does not treat those frames as fundamental ontology. Event frames are task-relative compressed records. Physical information bounds motivate caution about microscopic descriptions but do not prove a discrete substrate or the framework's sparsity hypothesis.
+EventFrame is a framework for event-centric prediction. It represents experience as typed event frames rather than as unstructured sequences alone, but does not treat those frames as fundamental ontology. Event frames are task-relative compressed records. For physical substrates, physical information bounds motivate a limiting thought experiment about microscopic description; they do not prove a discrete substrate or the framework's sparsity hypothesis, and they do not support claims about simulated or software substrates.
 
 The central object is $`e_t\in\mathcal E_{\Delta_\tau}`$, obtained as $`e_t=\Gamma_{\Delta_\tau}(\omega_{A_t})`$. Temporal resolution may range from seconds to microseconds when measurement supports it. Given $`C_t=e_{t-k+1:t}`$, the predictor returns a distribution over marked event times and a no-event outcome. A strictly proper score is the primary probabilistic-fidelity metric; the governing system-design objective is composite, and bounded event-aware timing error is diagnostic.
 
@@ -22,7 +22,7 @@ EventFrame separates a baseline from cached statistical error correction. A hori
 
 Validity-constrained fuzzing measures model sensitivity, not causality. Causal claims require an explicit structural causal model and identified interventions. Approximate predictive lumpability compares detailed contexts that share an abstract context. Every group retains a traceability frame plus a coverage-aware context audit set; one representative alone cannot establish group stability. A staged compatibility layer can compare heterogeneous abstractions, reconcile local forecasts, perform bounded predictive sheaf snaps after untouched confirmation, apply spectral refinement under explicit linear assumptions, and preserve regime mixtures. Snaps revise predictive organization through atomic graph-key-epoch publication; they do not promote causal edges. Refinement depth is selected by priority, evidence, and measured hardware cost while certified cache reuse remains available.
 
-The paper remains a research framework without implementation results. Its evaluation program uses as-of rolling-origin replay and measures proper forecast quality, residual utility, sensitivity stability, audit coverage, abstraction compatibility, predictive-snap accuracy and churn, priority-weighted correction, regime adaptation, and hardware-indexed runtime tradeoffs.
+The paper remains a research framework without implementation results. A finite worked instantiation demonstrates the residual, no-event, horizon-gate, and operational-selection arithmetic but is not empirical validation. The evaluation program uses as-of rolling-origin replay and measures proper forecast quality, residual utility, sensitivity stability, audit coverage, abstraction compatibility, predictive-snap accuracy and churn, priority-weighted correction, regime adaptation, and hardware-indexed runtime tradeoffs.
 
 ## 1. Introduction
 
@@ -32,7 +32,7 @@ EventFrame begins from a compression premise: a modeled substrate may contain mo
 
 The framework represents experience as event frames selected for predictive and intervention relevance. An event frame is a typed record of an occurrence or transition after compression. It includes the 5W1H fields of who, what, when, where, why, and how, plus auxiliary state and confidence metadata. The goal is not to claim that every domain naturally exposes these fields perfectly. The goal is to create a disciplined representation in which uncertainty, missing fields, competing explanations, and compression choices can still be recorded explicitly.
 
-The core contribution is adaptive event abstraction. The framework minimizes post-observation predictive action and representation cost while constraining within-bucket future divergence. It distinguishes model-sensitivity evidence from causal intervention evidence.
+The core contribution is adaptive event abstraction. At fixed resolution, an external-law population objective defines the constrained oracle benchmark; the operational rule selects from a finite family using certified empirical constraints, post-observation action, and representation cost. It distinguishes model-sensitivity evidence from causal intervention evidence.
 
 Given $`C_t=e_{t-k+1:t}`$, the system predicts a distribution over event identity, event time, and no event within horizon $`H`$. A proper forecast score is the primary probabilistic-fidelity metric because timing-only loss can reward the wrong event at the right time. The complete system design minimizes a separate composite objective under a proper-score guard. Event-aware timing remains an interpretable diagnostic.
 
@@ -40,7 +40,7 @@ The reference prediction procedure has six steps:
 
 1. Form a context $`C_t`$ from the last $`k`$ event frames.
 2. Compute a baseline forecast law $`\mathsf Q_B(\cdot\mid C_t)`$ and conditional event template $`b_t=B(C_t)`$.
-3. From state $`S_{t^-}`$, select an exact-key or general residual $`r_t^{\mathrm{use}}`$ only when its distance, confidence, effective-support, age, epoch, compatibility-margin, and provenance checks pass.
+3. From state $`S_{t^-}`$, select an exact-key or general residual $`r_t^{\mathrm{use}}`$ only when its distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and provenance checks pass.
 4. Clip one horizon-valid residual, use it for both the conditional event-template correction and the declared full-outcome residual kernel, derive the no-event-capable point summary from the corrected law, and apply the pre-observation risk gate to the coherent output bundle.
 5. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
 6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
@@ -67,7 +67,7 @@ These are proposed as a research framework, not as validated results or a fixed 
 
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
-Claim 0. At a fixed resolution, an external target-law constrained population objective defines an oracle benchmark. The operational rule selects from a finite family using certified Anti-Pigeon and proper-score constraints, empirical priority-weighted action, and representation cost. Oracle feasibility and empirical certifiability are distinct; untouched chronological confirmation and as-of runtime admission remain separate.
+Claim 0. At a fixed resolution, an external target-law constrained population objective defines an oracle benchmark. The operational rule selects from a finite family using certified Anti-Pigeon and proper-score constraints, empirical priority-weighted action, and representation cost. Oracle feasibility and empirical certifiability are distinct; generating laws are distinct from their realized design and untouched confirmation samples, and as-of runtime admission remains separate.
 
 Claim 1. Structured event frames are useful predictive units if, for a declared task, they improve interpretability or temporal prediction relative to unstructured sequence records without hiding field-level error.
 
@@ -107,7 +107,7 @@ Claim 8c. Upgrade value is evaluated by predeclared priority-weighted utility be
 
 ## 2. Event Ontology
 
-EventFrame uses event frames as predictive units, not as fundamental ontology. The underlying substrate is assumed to contain more detail than the predictor can retain. That substrate may be physical, simulated, biological, robotic, or software-based. EventFrame treats a frame as a task-relative compressed representation. Physical information bounds motivate caution about microscopic descriptions but do not prove a discrete substrate, a Planck-scale sampling lattice, or the EventFrame sparsity hypothesis.
+EventFrame uses event frames as predictive units, not as fundamental ontology. The underlying substrate is assumed to contain more detail than the predictor can retain. That substrate may be physical, simulated, biological, robotic, or software-based. EventFrame treats a frame as a task-relative compressed representation. For physical substrates, Planck scales and physical information bounds motivate a limiting thought experiment about microscopic description; they do not prove a discrete substrate, a Planck-scale sampling lattice, or the EventFrame sparsity hypothesis. Simulated and software substrates require independent task- and resource-based compression arguments.
 
 An event is therefore a structured representation of a change, occurrence, action, observation, or state transition after coarse-graining. An event frame records that compressed event in fields that can be compared, predicted, fuzzed, cached, and abstracted.
 
@@ -117,11 +117,11 @@ $$
 e_t = (w_t, a_t, \tau_t, \ell_t, m_t, h_t, x_t, c_t)
 $$
 
-where $`w_t`$ denotes participating agents or entities, $`a_t`$ denotes the action or occurrence type, $`\tau_t`$ denotes the time index or interval, $`\ell_t`$ denotes location or spatial context, $`m_t`$ denotes motive, objective, causal explanation, or inferred driver, $`h_t`$ denotes mechanism or process, $`x_t`$ denotes auxiliary state, and $`c_t`$ denotes confidence, provenance, or uncertainty metadata.
+where $`w_t`$ denotes participating agents or entities, $`a_t`$ denotes the action or occurrence type, $`\tau_t`$ denotes the time index or interval, $`\ell_t`$ denotes location or spatial context, $`m_t`$ denotes motive, objective, causal explanation, or inferred driver, $`h_t`$ denotes mechanism or process, $`x_t`$ denotes auxiliary state, and $`c_t`$ denotes confidence, provenance, or uncertainty metadata. When $`\tau_t`$ is an interval, the complete interval remains part of the frame; scalar timing formulas use a separately declared temporal anchor, defaulting to interval onset.
 
 The conceptual role of this ontology is compression. It prevents prediction from treating history as a single undifferentiated sequence, but it also prevents prediction from pretending that every microscopic distinction deserves its own event identity. The fields ask different compressed questions. The "what" field identifies an occurrence type. The "when" field supports temporal prediction loss. The "who" and "where" fields localize the event. The "why" and "how" fields record explanatory hypotheses and mechanisms. The auxiliary state field allows symbolic, vector, graph, or latent variables to travel with the event. The confidence field prevents uncertain extraction from pretending to be certain observation.
 
-Let $`\Omega`$ denote a dense substrate state space and let $`\omega_{A_t}`$ denote the substrate history over a finite region $`A_t`$. A coarse-graining map at temporal resolution $`\Delta_\tau`$:
+Let $`\Omega`$ denote a fine-grained substrate state space and let $`\omega_{A_t}`$ denote the substrate history over a finite region $`A_t`$. The adjective fine-grained describes retained detail and imposes no topology on $`\Omega`$. A coarse-graining map at temporal resolution $`\Delta_\tau`$:
 
 $$
 \Gamma_{\Delta_\tau}: \Omega^{A_t} \rightarrow \mathcal{E}_{\Delta_\tau}
@@ -176,7 +176,7 @@ The main limitation of the ontology is extraction and compression quality. In re
 
 The mathematical framework turns compressed event frames into objects that can be predicted, evaluated, cached, and abstracted. Given a context $`C_t`$, the predictor must produce a next-event distribution before the next observation exists. Only after the observation arrives may the runtime compute realized prediction loss and update memory or abstraction.
 
-Let $`\Omega`$ denote a dense substrate state space. For a finite region $`A_t`$, let $`\omega_{A_t} \in \Omega^{A_t}`$ denote the substrate history over that region. At temporal resolution $`\Delta_\tau`$, an event frame is produced by:
+Let $`\Omega`$ denote a fine-grained substrate state space; fine-grained refers to retained detail and imposes no topology on $`\Omega`$. For a finite region $`A_t`$, let $`\omega_{A_t} \in \Omega^{A_t}`$ denote the substrate history over that region. At temporal resolution $`\Delta_\tau`$, an event frame is produced by:
 
 $$
 e_t = \Gamma_{\Delta_\tau}(\omega_{A_t}), \qquad
@@ -209,7 +209,7 @@ Let $`\varnothing\neq\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k`$ be the de
 
 Let $`a(x)`$ be the time at which observation, label, cache record, or derived object $`x`$ becomes available to the runtime. Let $`\mathscr F_t^{\mathrm{pred}}`$ be the information available when the prediction at index $`t`$ is issued, including $`C_t`$ but excluding $`Z_{t+1}`$. Mutable runtime state is the left-limit snapshot $`S_{t^-}`$, constructed only from objects with $`a(x)\le t`$. Every prediction, priority, cache lookup, abstraction decision, and pre-risk value used at time $`t`$ must be measurable with respect to $`\mathscr F_t^{\mathrm{pred}}`$. For a no-event outcome, $`a(Z_{t+1})`$ is no earlier than expiration of horizon $`H`$; delayed labels use their actual later availability time.
 
-Let $`\nu(e)`$ be the event mark or occurrence type and $`\tau(e)`$ its time. Over a prediction horizon $`H>0`$, the next outcome is:
+Let $`\nu(e)`$ be the event mark or occurrence type. Let $`\tau(e)\in\mathbb R`$ be a declared scalar temporal anchor: it is the timestamp for a point event and, by default, the onset for an interval event. A domain may choose another measurable anchor, such as midpoint, but must freeze that convention before fitting and use it consistently in labeling, caching, and evaluation; the complete interval remains available in the event frame. Over a prediction horizon $`H>0`$, the next outcome is:
 
 $$
 Z_{t+1}=
@@ -272,15 +272,17 @@ $$
 
 Unlike the original timing-only diagnostic, this expression cannot assign zero loss to the wrong event type merely because its timestamp is correct. It remains a diagnostic; model fitting and forecast comparison should use $`\mathcal L_{\mathrm{pred}}`$.
 
-For any other field, use a distinct projection $`\psi_i:\mathcal E\rightarrow\mathcal X_i`$ and declared distance. The ordinary field loss is conditional on a concrete observed event:
+For any other field, use a distinct projection $`\psi_i:\mathcal E\rightarrow\mathcal X_i`$ and declared distance. Bind the coherent structured prediction by $`\hat e_{\theta,t+1}^H:=\hat e_\theta^H(C_t)`$. The ordinary field loss is defined only when both the decision and observation are marked events:
 
 $$
-\mathcal L_i(\hat e_{t+1},Z_{t+1})
-=d_i(\psi_i(\hat e_{t+1}),\psi_i(e_{t+1})),
-\qquad Z_{t+1}\neq\varnothing.
+\mathcal L_i(\hat e_{\theta,t+1}^H,Z_{t+1})
+=d_i(\psi_i(\hat e_{\theta,t+1}^H),\psi_i(e_{t+1})),
+\qquad
+\hat e_{\theta,t+1}^H\in\mathcal E,
+\quad Z_{t+1}\neq\varnothing.
 $$
 
-When $`Z_{t+1}=\varnothing`$, this field loss is not evaluated unless a separate missing-aware loss with an explicit no-event symbol has been declared.
+When either argument is $`\varnothing`$, this field loss is not evaluated unless a separate missing-aware loss on $`\mathcal E_\varnothing`$ has been declared. The proper score and event diagnostic still evaluate the no-event decision.
 
 EventFrame uses separate pre-observation and post-observation quantities. For a candidate output bundle $`\widetilde{\mathcal O}=(\widetilde{\mathsf Q},\tilde e^H)`$, a pre-observation admissibility risk may use only information available at prediction time:
 
@@ -328,7 +330,8 @@ and the candidate abstraction structure as $`\Xi_A^{(v)}`$, containing a version
 $$
 \begin{aligned}
 \Lambda_{\mathrm{eval}}=
-({}&P_{\mathrm{obj}},P_{\mathrm{conf}},P_\star,
+({}&P_{\mathrm{obj}},P_{\mathrm{conf}},
+\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}},P_\star,
 \mathfrak C_{\mathrm{adm}},d_C,
 \text{targets and divergences},\text{thresholds},
 \\
@@ -339,7 +342,7 @@ $$
 \end{aligned}
 $$
 
-Here $`P_{\mathrm{obj}}`$ is the design sample used to select a candidate, $`P_{\mathrm{conf}}`$ is an untouched confirmation sample or future block, and $`P_\star(Y\mid C)`$ is the external target conditional law that the predictor attempts to approximate. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require $`\lambda_{\mathrm{rep}}\ge0`$ and $`\mathcal C_{\mathrm{rep}}\ge0`$. At the fixed resolution, let:
+Here $`P_{\mathrm{obj}}`$ and $`P_{\mathrm{conf}}`$ are the design- and confirmation-generating laws. Their realized, chronologically separated samples or trajectory blocks are $`\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}`$ and $`\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}`$; independence is not assumed unless the sampling design supplies it. The external target conditional law is $`P_\star(Y\mid C)`$. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require $`\lambda_{\mathrm{rep}}\ge0`$ and $`\mathcal C_{\mathrm{rep}}\ge0`$. At the fixed resolution, let:
 
 $$
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
@@ -414,18 +417,18 @@ $$
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)\right].
 $$
 
-Operational selection instead begins with a finite, predeclared candidate family $`\mathfrak G_\Gamma(P_{\mathrm{obj}})`$, constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let $`\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}`$ and $`\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}`$ be the corresponding grouped, as-of empirical risks, and define:
+Operational selection instead begins with a finite, predeclared candidate family $`\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})`$, constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let $`\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}`$ and $`\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}`$ be the corresponding grouped, as-of empirical risks, and define:
 
 $$
 \widehat{\mathfrak F}_{AP}^{\Gamma}=
-\left\{\Theta_\Gamma\in\mathfrak G_\Gamma(P_{\mathrm{obj}}):
+\left\{\Theta_\Gamma\in\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}}):
 \begin{array}{l}
 D_K^{\mathrm{cert},\star}(\pi)\le\epsilon_{AP}
 \text{ for every }K\in\mathfrak K_\pi^+,\\
 \text{the operational factorization through }h_\pi\text{ holds},\\
 \mathrm{UCB}\!\left[
-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
--\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_\Gamma)
+-\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_{\Gamma,0})
 \right]\le\epsilon_{\mathrm{prop}}
 \end{array}
 \right\}.
@@ -437,14 +440,14 @@ $$
 \widehat\Theta_\Gamma\in
 \arg\min_{\Theta_\Gamma\in\widehat{\mathfrak F}_{AP}^{\Gamma}}
 \left[
-\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
+\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}(\Theta_\Gamma)
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)
 \right],
 $$
 
 with a declared deterministic tie-break. If the certified family is empty, the procedure returns no admissible design or a separately declared conservative fallback; it does not relax the thresholds. The confidence guarantees apply to the stated finite-sample constraints, not to attainment of the oracle infimum.
 
-Selection and tuning use only $`P_{\mathrm{obj}}`$. After the candidate, preprocessing, thresholds, priority rule, and analysis are frozen, final claims are evaluated once on $`P_{\mathrm{conf}}`$. Both samples use rolling-origin or forward-chaining construction, grouped by independent trajectory or entity where applicable, with an embargo long enough to cover context overlap, forecast horizon, and label delay. Weighted results are accompanied by unweighted and priority-stratified results. Oracle feasibility does not guarantee empirical certifiability, and empirical certifiability does not prove unrestricted population feasibility beyond the certificate's assumptions and coverage. Cross-resolution comparisons use the same raw histories and fixed target law; a candidate resolution may not redefine the outcome it is judged against.
+Selection and tuning use only $`\mathcal S_{\mathrm{obj}}`$. After the candidate, preprocessing, thresholds, priority rule, and analysis are frozen, final claims are evaluated once on untouched $`\mathcal S_{\mathrm{conf}}`$. Both samples use rolling-origin or forward-chaining construction under their named generating laws, grouped by independent trajectory or entity where applicable, with an embargo long enough to cover context overlap, forecast horizon, and label delay. Weighted results are accompanied by unweighted and priority-stratified results. Oracle feasibility does not guarantee empirical certifiability, and empirical certifiability does not prove unrestricted population feasibility beyond the certificate's assumptions and coverage. Cross-resolution comparisons use the same raw histories and fixed target law; a candidate resolution may not redefine the outcome it is judged against.
 
 An event history may be represented by a time-unrolled directed graph:
 
@@ -471,8 +474,8 @@ $$
 -\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
 \qquad
 \widehat\Delta_{\mathrm{pred}}(d)=
-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
--\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma).
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma).
 $$
 
 With a predeclared threshold $`\eta_{\mathrm{pred}}\ge0`$, define the observationally evaluable predictive ratio using a paired simultaneous confidence procedure over the entire declared distinction family:
@@ -634,18 +637,20 @@ $$
 \mathcal C_{A,t^-}:
 \mathcal K_A\rightharpoonup
 \mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
-\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}.
+\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
+\times\mathcal S_{\mathrm{prov}}.
 $$
 
 For $`k_t=\alpha(C_t)`$, bind the cache entry only when it exists:
 
 $$
  k_t\in\mathrm{dom}(\mathcal C_{A,t^-})
- \quad\Longrightarrow\quad
-\mathcal C_{A,t^-}(k_t)=(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t},H_{k_t}),
+\quad\Longrightarrow\quad
+\mathcal C_{A,t^-}(k_t)=
+(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t},H_{k_t},s_{k_t}),
 $$
 
-where $`n_{k_t}`$ is effective support after accounting for clustered or overlapping trials, $`v_{k_t}`$ is the cache entry's local abstraction epoch, $`v_t`$ is the active as-of epoch for the same dependency region, $`m_{k_t}`$ is the compatibility safety margin materialized by the slow path, and $`H_{k_t}`$ is the horizon under which the residual was estimated. If $`E(k_t)`$ is the declared set of compatibility edges on which the entry depends, for example:
+where $`n_{k_t}`$ is effective support after accounting for clustered or overlapping trials, $`v_{k_t}`$ is the cache entry's local abstraction epoch, $`v_t`$ is the active as-of epoch for the same dependency region, $`m_{k_t}`$ is the compatibility safety margin materialized by the slow path, $`H_{k_t}`$ is the horizon under which the residual was estimated, and $`s_{k_t}`$ records residual identity, censoring convention, and eligible training interval. If $`E(k_t)`$ is the declared set of compatibility edges on which the entry depends, for example:
 
 $$
 m_{k_t}=
@@ -667,7 +672,8 @@ J_t^A=
 \begin{gathered}
 c_{k_t}\ge\gamma_A,\quad n_{k_t}\ge n_{\min},\quad
 \mathrm{age}_t(t_{k_t})\le A_{\max},\\
-v_{k_t}=v_t,\quad H_{k_t}=H,\quad m_{k_t}\ge0
+v_{k_t}=v_t,\quad H_{k_t}=H,\quad m_{k_t}\ge0,\quad
+s_{k_t}\text{ is valid}
 \end{gathered}
 \right],&k_t\in\mathrm{dom}(\mathcal C_{A,t^-}),\\
 0,&k_t\notin\mathrm{dom}(\mathcal C_{A,t^-}).
@@ -773,6 +779,96 @@ $$
 An implementation may try the next lower-precedence residual after a rejected candidate only when that fallback order and every gate were preregistered. No post-observation quantity may enter this decision.
 
 If an implementation supplies only the point operator $`\oplus_E`$ and no declared kernel $`\mathfrak K_E`$, it may claim improvement only on point diagnostics, not on the proper forecast score.
+
+Worked toy instantiation. The following finite example is arithmetic scaffolding, not an experimental result. Let $`H=1`$ second and order the outcome space as
+
+$$
+\mathcal Z_H=\{z_a,z_b,\varnothing\},
+\qquad
+z_a=(\mathrm{move},0.2),
+\qquad
+z_b=(\mathrm{stop},0.8).
+$$
+
+For one context $`C_t`$, suppose the baseline law is the row vector $`\mathbf q_B=(0.50,0.20,0.30)`$.
+
+Take $`\mathscr H=\mathbb R^3`$, represent residuals by diagonal self-adjoint matrices, and use the certified cache residual
+
+$$
+r_0=\operatorname{diag}(0.10,-0.05,-0.05),
+\qquad
+\delta_E=0.20.
+$$
+
+Its Frobenius norm is $`\sqrt{0.015}<\delta_E`$, so clipping leaves it unchanged. For completeness, one distributional estimator on this finite space is
+
+$$
+\rho_H(\mathbf q,z)
+=\operatorname{diag}(\mathbf 1_z-\mathbf q),
+$$
+
+where $`\mathbf 1_z`$ is the one-hot vector for any $`z\in\mathcal Z_H`$, including $`\varnothing`$. A cache may store a projected or averaged estimator output such as $`r_0`$, together with its horizon and provenance; the example does not claim that one observation produced $`r_0`$.
+
+Define
+
+$$
+\lambda(r)=
+\min\!\left(1,
+\max\!\left(0,
+\frac{\langle r,r_0\rangle_F}{\|r_0\|_F^2}
+\right)\right)
+$$
+
+and let the full-outcome kernel, in the displayed outcome order, be the row-stochastic matrix
+
+$$
+K(r)=
+\begin{pmatrix}
+1&0&0\\
+\lambda(r)/4&1-\lambda(r)/4&0\\
+\lambda(r)/6&0&1-\lambda(r)/6
+\end{pmatrix}.
+$$
+
+Set $`\mathfrak K_E(r)(z_i,\{z_j\})=K(r)_{ij}`$. Every row sums to one, all entries are non-negative, and $`K(0)=I`$. At $`r_0`$, the corrected law is
+
+$$
+\mathbf q_R=\mathbf q_BK(r_0)
+=(0.60,0.15,0.25).
+$$
+
+The correction therefore moves $`0.05`$ probability from $`z_b`$ and $`0.05`$ from $`\varnothing`$ to $`z_a`$; the no-event branch is operational rather than pinned. Let $`d_H`$ select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be $`b_t=e_a\in\mathcal E`$, whose mark and anchor correspond to $`z_a`$, and set $`q_E(e_a)=\operatorname{diag}(1,0,0)`$. Let $`\mathcal Q_{E,\mathrm{adm}}`$ be the diagonal probability simplex, let $`\Pi_E`$ be Euclidean projection onto it, and let $`d_E`$ decode its largest coordinate into the corresponding marked template with the same tie-break. Then $`e_a\oplus_Er_0=e_a`$. With $`\mathrm{lift}_H`$ replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+
+$$
+d_H(\mathbf q_R)=z_a,
+\qquad
+\hat e_t^H(r_0)=\mathrm{lift}_H(e_a,z_a)=e_a.
+$$
+
+If $`z_a`$ is observed, logarithmic loss changes from $`-\log(0.50)\approx0.693`$ to $`-\log(0.60)\approx0.511`$. If $`\varnothing`$ is observed, it worsens from $`-\log(0.30)\approx1.204`$ to $`-\log(0.25)\approx1.386`$. This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
+
+Suppose the exact cache entry records $`H_{k_t}=1`$, all other metadata gates pass, and the requested horizon is $`H=1`$. Then $`J_t^A=1`$ and $`r_t^{\mathrm{use}}=r_0`$. The same entry requested at $`H=0.5`$ has $`J_t^A=0`$ solely because $`H_{k_t}\ne H`$, so the expired-horizon correction is not reused.
+
+Finally, let the finite design family built on $`\mathcal S_{\mathrm{obj}}`$ be $`\{\Theta_0,\Theta_1\}`$, where $`\Theta_0`$ is baseline-only and $`\Theta_1`$ includes the certified residual. Take $`\epsilon_{AP}=0.05`$, $`D_K^{\mathrm{cert},\star}(\Theta_0)=0.03`$, $`D_K^{\mathrm{cert},\star}(\Theta_1)=0.04`$, $`\epsilon_{\mathrm{prop}}=0.02`$, and suppose the grouped design-sample calculations are
+
+$$
+\begin{aligned}
+\left(
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_0),
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_1)
+\right)&=(0.80,0.72),\\
+\left(
+\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}(\Theta_0),
+\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}(\Theta_1)
+\right)&=(0.30,0.24),\\
+\left(
+\mathcal C_{\mathrm{rep}}(\Theta_0),
+\mathcal C_{\mathrm{rep}}(\Theta_1)
+\right)&=(0,0.01).
+\end{aligned}
+$$
+
+with $`\mathrm{UCB}[0.72-0.80]=-0.02\le\epsilon_{\mathrm{prop}}`$ and $`\lambda_{\mathrm{rep}}=1`$. Both designs remain feasible, while their empirical composite values are $`0.30`$ and $`0.25`$, so the deterministic operational rule selects $`\widehat\Theta_\Gamma=\Theta_1`$. An untouched $`\mathcal S_{\mathrm{conf}}`$ may then confirm or reject the frozen claim, but it cannot alter the candidate family or the selected residual. These stipulated values demonstrate how to execute the contracts; they are not measurements of EventFrame performance.
 
 A bounded hash table can provide expected $`O(1)`$ lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch $`v_t`$ must increase whenever a dependent comparison map, edge set, threshold, or simultaneous defect bound changes. Local epochs and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap is built against a shadow graph version and published atomically with its affected abstraction-key map and epoch map. A reader uses one immutable graph-key-epoch snapshot for the entire prediction; it must never combine a new graph or abstraction key with old certificates. Entries invalidated by the publication fall back to the baseline or another currently certified cache path until recertified, and rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old epoch identifier.
 
@@ -1558,7 +1654,7 @@ EventFrame's main claims require experiments. The framework should be evaluated 
 
 Every experiment follows one leakage-resistant protocol. Raw trajectories and the target definition are fixed before candidate resolutions or abstractions are compared. Evaluation uses rolling-origin or forward-chaining windows, grouped by independent trajectory or entity. Between training/design and evaluation blocks, impose an embargo at least as long as the maximum context span plus forecast horizon plus outcome-label delay. At every prediction, replay only $`S_{t^-}`$ and objects with availability time at most $`t`$; delayed corrections, cache entries, confidence updates, epochs, audit results, and outcomes are unavailable until their recorded availability times.
 
-All learned preprocessing, feature normalization, priority models, temporal-resolution choices, thresholds, perturbation generators, and policy-selection rules are fitted inside the corresponding training or design window. Candidate selection and all iterative analysis use $`P_{\mathrm{obj}}`$. After those choices and the analysis code are frozen, confirm final claims once on untouched $`P_{\mathrm{conf}}`$. Confidence intervals and tests use trajectory clusters, blocked resampling, or a justified effective sample size rather than treating overlapping contexts as independent. Repeated monitoring uses confidence sequences, alpha spending, or preregistered review times. Random example-level splits are not admissible when contexts overlap in time, entity, source episode, or label construction.
+All learned preprocessing, feature normalization, priority models, temporal-resolution choices, thresholds, perturbation generators, and policy-selection rules are fitted inside the corresponding training or design window. Candidate selection and all iterative analysis use $`\mathcal S_{\mathrm{obj}}`$, drawn under $`P_{\mathrm{obj}}`$. After those choices and the analysis code are frozen, confirm final claims once on untouched $`\mathcal S_{\mathrm{conf}}`$, drawn under $`P_{\mathrm{conf}}`$. Confidence intervals and tests use trajectory clusters, blocked resampling, or a justified effective sample size rather than treating overlapping contexts as independent. Repeated monitoring uses confidence sequences, alpha spending, or preregistered review times. Random example-level splits are not admissible when contexts overlap in time, entity, source episode, or label construction.
 
 A minimal synthetic event world should generate trajectories with known transition rules. Each event should expose the fields:
 
@@ -1786,11 +1882,15 @@ $`H`$, $`Z_{t+1}`$, $`\mathcal Z_H^+`$: prediction horizon, observed marked-time
 
 $`a(x)`$, $`\mathscr F_t^{\mathrm{pred}}`$, $`S_{t^-}`$: availability time, prediction-time information, and mutable state reconstructed immediately before prediction.
 
-$`P_{\mathrm{obj}}`$, $`P_{\mathrm{conf}}`$, $`P_\star`$: design/selection law, untouched confirmation law, and externally fixed target law.
+$`P_{\mathrm{obj}}`$, $`P_{\mathrm{conf}}`$, $`P_\star`$: design-generating law, confirmation-generating law, and externally fixed target law.
 
-$`\nu(e)`$, $`\tau(e)`$: event-mark and event-time extractors.
+$`\mathcal S_{\mathrm{obj}}`$, $`\mathcal S_{\mathrm{conf}}`$: realized design sample or trajectory block and untouched confirmation sample or block.
+
+$`\nu(e)`$, $`\tau(e)`$: event-mark extractor and declared scalar temporal anchor; the anchor is a point timestamp or, by default, interval onset.
 
 $`\mathcal E_\varnothing`$, $`d_H`$: tagged no-event extension of the structured event space and fixed point-decision rule on forecast laws.
+
+$`\hat e_\theta^H(C)`$, $`\hat e_t^H(r)`$, $`\mathrm{lift}_H`$: coherent no-event-capable predictor summary, residual-candidate summary, and map aligning a structured template with a selected marked outcome.
 
 $`\mathsf Q_\theta`$, $`\mathcal O_\theta(C)`$: predictive distribution over marked event times and the no-event outcome, and the typed bundle pairing that law with a coherent no-event-capable structured summary.
 
@@ -1813,6 +1913,8 @@ $`J_t^A`$, $`J_t^R`$, $`r_t^{\mathrm{use}}`$, $`r_{t,H}^{\mathrm{obs}}`$: exact-
 $`\rho_H`$, $`r_{t,H}^{\mathrm{law}}`$: horizon-specific distributional residual estimator and its residual, defined for both marked-event and no-event outcomes.
 
 $`\mathfrak K_E`$, $`\mathsf Q_t^R`$, $`H_i`$, $`H_{k_t}`$: full-outcome residual Markov-kernel map, corrected forecast law, and horizons attached to general and exact cache entries.
+
+$`s_i`$, $`s_{k_t}`$, $`\mathcal S_{\mathrm{prov}}`$: provenance records for general and exact residual-cache entries and their declared space.
 
 $`\Xi_R`$, $`\Xi_A^{(v)}`$, $`\Lambda_{\mathrm{eval}}`$: residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 

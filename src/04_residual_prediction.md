@@ -127,18 +127,20 @@ and define the partial map:
 \mathcal C_{A,t^-}:
 \mathcal K_A\rightharpoonup
 \mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
-\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}.
+\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
+\times\mathcal S_{\mathrm{prov}}.
 \]
 
 For \(k_t=\alpha(C_t)\), bind the cache entry only when it exists:
 
 \[
  k_t\in\mathrm{dom}(\mathcal C_{A,t^-})
- \quad\Longrightarrow\quad
-\mathcal C_{A,t^-}(k_t)=(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t},H_{k_t}),
+\quad\Longrightarrow\quad
+\mathcal C_{A,t^-}(k_t)=
+(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t},H_{k_t},s_{k_t}),
 \]
 
-where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(m_{k_t}\) is the compatibility safety margin materialized by the slow path, and \(H_{k_t}\) is the horizon under which the residual was estimated. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
+where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(m_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, and \(s_{k_t}\) records residual identity, censoring convention, and eligible training interval. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
 
 \[
 m_{k_t}=
@@ -160,7 +162,8 @@ J_t^A=
 \begin{gathered}
 c_{k_t}\ge\gamma_A,\quad n_{k_t}\ge n_{\min},\quad
 \mathrm{age}_t(t_{k_t})\le A_{\max},\\
-v_{k_t}=v_t,\quad H_{k_t}=H,\quad m_{k_t}\ge0
+v_{k_t}=v_t,\quad H_{k_t}=H,\quad m_{k_t}\ge0,\quad
+s_{k_t}\text{ is valid}
 \end{gathered}
 \right],&k_t\in\mathrm{dom}(\mathcal C_{A,t^-}),\\
 0,&k_t\notin\mathrm{dom}(\mathcal C_{A,t^-}).
@@ -266,6 +269,96 @@ The final residual law and bundle are:
 An implementation may try the next lower-precedence residual after a rejected candidate only when that fallback order and every gate were preregistered. No post-observation quantity may enter this decision.
 
 If an implementation supplies only the point operator \(\oplus_E\) and no declared kernel \(\mathfrak K_E\), it may claim improvement only on point diagnostics, not on the proper forecast score.
+
+Worked toy instantiation. The following finite example is arithmetic scaffolding, not an experimental result. Let \(H=1\) second and order the outcome space as
+
+\[
+\mathcal Z_H=\{z_a,z_b,\varnothing\},
+\qquad
+z_a=(\mathrm{move},0.2),
+\qquad
+z_b=(\mathrm{stop},0.8).
+\]
+
+For one context \(C_t\), suppose the baseline law is the row vector \(\mathbf q_B=(0.50,0.20,0.30)\).
+
+Take \(\mathscr H=\mathbb R^3\), represent residuals by diagonal self-adjoint matrices, and use the certified cache residual
+
+\[
+r_0=\operatorname{diag}(0.10,-0.05,-0.05),
+\qquad
+\delta_E=0.20.
+\]
+
+Its Frobenius norm is \(\sqrt{0.015}<\delta_E\), so clipping leaves it unchanged. For completeness, one distributional estimator on this finite space is
+
+\[
+\rho_H(\mathbf q,z)
+=\operatorname{diag}(\mathbf 1_z-\mathbf q),
+\]
+
+where \(\mathbf 1_z\) is the one-hot vector for any \(z\in\mathcal Z_H\), including \(\varnothing\). A cache may store a projected or averaged estimator output such as \(r_0\), together with its horizon and provenance; the example does not claim that one observation produced \(r_0\).
+
+Define
+
+\[
+\lambda(r)=
+\min\!\left(1,
+\max\!\left(0,
+\frac{\langle r,r_0\rangle_F}{\|r_0\|_F^2}
+\right)\right)
+\]
+
+and let the full-outcome kernel, in the displayed outcome order, be the row-stochastic matrix
+
+\[
+K(r)=
+\begin{pmatrix}
+1&0&0\\
+\lambda(r)/4&1-\lambda(r)/4&0\\
+\lambda(r)/6&0&1-\lambda(r)/6
+\end{pmatrix}.
+\]
+
+Set \(\mathfrak K_E(r)(z_i,\{z_j\})=K(r)_{ij}\). Every row sums to one, all entries are non-negative, and \(K(0)=I\). At \(r_0\), the corrected law is
+
+\[
+\mathbf q_R=\mathbf q_BK(r_0)
+=(0.60,0.15,0.25).
+\]
+
+The correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be \(b_t=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\operatorname{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+
+\[
+d_H(\mathbf q_R)=z_a,
+\qquad
+\hat e_t^H(r_0)=\mathrm{lift}_H(e_a,z_a)=e_a.
+\]
+
+If \(z_a\) is observed, logarithmic loss changes from \(-\log(0.50)\approx0.693\) to \(-\log(0.60)\approx0.511\). If \(\varnothing\) is observed, it worsens from \(-\log(0.30)\approx1.204\) to \(-\log(0.25)\approx1.386\). This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
+
+Suppose the exact cache entry records \(H_{k_t}=1\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(r_t^{\mathrm{use}}=r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
+
+Finally, let the finite design family built on \(\mathcal S_{\mathrm{obj}}\) be \(\{\Theta_0,\Theta_1\}\), where \(\Theta_0\) is baseline-only and \(\Theta_1\) includes the certified residual. Take \(\epsilon_{AP}=0.05\), \(D_K^{\mathrm{cert},\star}(\Theta_0)=0.03\), \(D_K^{\mathrm{cert},\star}(\Theta_1)=0.04\), \(\epsilon_{\mathrm{prop}}=0.02\), and suppose the grouped design-sample calculations are
+
+\[
+\begin{aligned}
+\left(
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_0),
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_1)
+\right)&=(0.80,0.72),\\
+\left(
+\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}(\Theta_0),
+\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}(\Theta_1)
+\right)&=(0.30,0.24),\\
+\left(
+\mathcal C_{\mathrm{rep}}(\Theta_0),
+\mathcal C_{\mathrm{rep}}(\Theta_1)
+\right)&=(0,0.01).
+\end{aligned}
+\]
+
+with \(\mathrm{UCB}[0.72-0.80]=-0.02\le\epsilon_{\mathrm{prop}}\) and \(\lambda_{\mathrm{rep}}=1\). Both designs remain feasible, while their empirical composite values are \(0.30\) and \(0.25\), so the deterministic operational rule selects \(\widehat\Theta_\Gamma=\Theta_1\). An untouched \(\mathcal S_{\mathrm{conf}}\) may then confirm or reject the frozen claim, but it cannot alter the candidate family or the selected residual. These stipulated values demonstrate how to execute the contracts; they are not measurements of EventFrame performance.
 
 A bounded hash table can provide expected \(O(1)\) lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch \(v_t\) must increase whenever a dependent comparison map, edge set, threshold, or simultaneous defect bound changes. Local epochs and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap is built against a shadow graph version and published atomically with its affected abstraction-key map and epoch map. A reader uses one immutable graph-key-epoch snapshot for the entire prediction; it must never combine a new graph or abstraction key with old certificates. Entries invalidated by the publication fall back to the baseline or another currently certified cache path until recertified, and rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old epoch identifier.
 

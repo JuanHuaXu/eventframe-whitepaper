@@ -16,14 +16,17 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathfrak C_{\mathrm{adm}}\) | subset of \(\mathcal E^k\) | declared context domain for conditional laws and suprema |
 | \(H\) | positive real | prediction horizon |
 | \(\nu(e)\) | event-mark set | event identity/type extractor |
-| \(\tau(e)\) | temporal set | event-time extractor |
+| \(\tau(e)\) | real | declared scalar temporal anchor; timestamp for point events and interval onset by default |
 | \(Z_{t+1}\) | \(\mathcal Z_H\) | observed marked time or no-event outcome |
 | \(\mathcal Z_H^+\) | subset of \(\mathcal Z_H\) | marked-time branch \(\mathcal Z_H\setminus\{\varnothing\}\) |
 | \(\mathcal E_\varnothing\) | tagged union | structured event space extended by the no-event symbol |
 | \(d_H\) | \(\mathcal P(\mathcal Z_H)\to\mathcal Z_H\) | fixed point-decision rule with declared loss and tie-break |
+| \(\hat e_\theta^H(C)\) | \(\mathcal E_\varnothing\) | structured point summary coherent with \(d_H(\mathsf Q_\theta)\) |
+| \(\mathrm{lift}_H\) | \(\mathcal E\times\mathcal Z_H^+\to\mathcal E\) | aligns a structured event template with a selected marked outcome |
 | \(a(x)\) | time | availability time of datum or state object \(x\) |
 | \(\mathscr F_t^{\mathrm{pred}},S_{t^-}\) | information, state | information and mutable state available immediately before prediction |
-| \(P_{\mathrm{obj}},P_{\mathrm{conf}}\) | laws or samples | design/selection distribution and untouched confirmation distribution |
+| \(P_{\mathrm{obj}},P_{\mathrm{conf}}\) | probability laws | design- and confirmation-generating laws |
+| \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\) | finite samples or trajectory blocks | realized design and untouched confirmation data |
 | \(P_\star(Y\mid C)\) | conditional law | externally fixed target conditional law |
 | \(\mathsf Q_\theta\) | probability kernel | predictive distribution over \(\mathcal Z_H\) |
 | \(\mathcal O_\theta(C)\) | \(\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing\) | typed forecast-law and coherent no-event-capable point-summary bundle |
@@ -44,12 +47,12 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathcal C_{R,t^-}\) | finite cache | as-of general residual cache |
 | \(\mathcal C_{A,t^-}\) | partial map | as-of exact action-key residual cache |
 | \(J_t^R,J_t^A\) | \(\{0,1\}\) | general- and exact-cache acceptance indicators |
-| \(J_t^A\) | \(\{0,1\}\) | exact-cache acceptance indicator |
 | \(r_t^{\mathrm{use}}\) | \(\mathbb H_d\) | exact-to-general selected residual |
 | \(r_{t,H}^{\mathrm{obs}}\) | \(\mathbb H_d\) or undefined | observed point residual only for an event inside the originating horizon |
 | \(\rho_H,r_{t,H}^{\mathrm{law}}\) | estimator, \(\mathbb H_d\) | horizon-specific distributional residual estimator and residual defined on event and no-event outcomes |
 | \(\mathfrak K_E\) | kernel-valued map | residual-induced Markov kernel on \(\mathcal Z_H\) |
 | \(H_i,H_{k_t}\) | positive reals | horizons recorded by general and exact residual-cache entries |
+| \(s_i,s_{k_t}\) | \(\mathcal S_{\mathrm{prov}}\) | provenance records for general and exact residual-cache entries |
 | \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
@@ -142,7 +145,7 @@ C_t=e_{t-k+1:t}\in\mathcal E^k.
 
 All conditional-law suprema range over a declared \(\mathfrak C_{\mathrm{adm}}\) or the support of a named evaluation law; arbitrary zero-probability contexts are excluded unless a conditional-law version is explicitly defined there.
 
-The next outcome over horizon \(H\) is:
+The complete event field may contain a point time or interval. The scalar extractor \(\tau(e)\in\mathbb R\) is the timestamp for a point event and, by default, the onset for an interval event. Another measurable anchor may be declared, but it is frozen before fitting and used consistently in labels, caches, and evaluation. The next outcome over horizon \(H\) is:
 
 \[
 Z_{t+1}=\begin{cases}
@@ -293,10 +296,11 @@ The action cache is typed as:
 \[
 \mathcal C_{A,t^-}:\mathcal K_A\rightharpoonup
 \mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
-\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}.
+\times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
+\times\mathcal S_{\mathrm{prov}}.
 \]
 
-For \(k_t=\alpha(C_t)\), bind the entry only when it exists. Let \(J_t^A\) indicate that confidence, effective support, age, epoch, horizon equality \(H_{k_t}=H\), and compatibility-margin checks pass; set it to zero when the key is absent. The exact-to-general selector is:
+For \(k_t=\alpha(C_t)\), bind the entry only when it exists, including provenance \(s_{k_t}\). Let \(J_t^A\) indicate that confidence, effective support, age, epoch, horizon equality \(H_{k_t}=H\), compatibility-margin, and provenance checks pass; set it to zero when the key is absent. The exact-to-general selector is:
 
 \[
 r_t^{\mathrm{use}}=
@@ -413,8 +417,8 @@ For a finite non-empty distinction set \(\mathcal D_t\), let \(\Theta_\Gamma^{-d
 -\mathcal R_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
 \qquad
 \widehat\Delta_{\mathrm{pred}}(d)=
-\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
--\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{conf}}}(\Theta_\Gamma),
+\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma^{-d})
+-\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma),
 \]
 
 \[
@@ -561,7 +565,7 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes \(P_{\mathrm{obj}},P_{\mathrm{conf}},P_\star\), domains, metrics, targets, thresholds, weights, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, and snap candidate, obligation, and publication rules. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\Xi_R,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, targets, thresholds, weights, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, and snap candidate, obligation, and publication rules. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
 
 \[
 \mathcal R_{\mathrm{pri}}^D(\Theta_\Gamma)=
@@ -585,20 +589,20 @@ h_\pi\text{ factorization holds},\quad
 [\mathcal R_{\mathrm{pri}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)].
 \]
 
-This is an oracle population benchmark. Operational selection uses a finite predeclared \(\mathfrak G_\Gamma(P_{\mathrm{obj}})\). Candidates lacking exhaustive audit coverage or the verified continuity certificate are not certifiable. Define
+This is an oracle population benchmark. Operational selection uses a finite predeclared \(\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})\). Candidates lacking exhaustive audit coverage or the verified continuity certificate are not certifiable. Define
 
 \[
-\widehat{\mathfrak F}_{AP}^{\Gamma}=\left\{\Theta_\Gamma\in\mathfrak G_\Gamma:
+\widehat{\mathfrak F}_{AP}^{\Gamma}=\left\{\Theta_\Gamma\in\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}}):
 \begin{array}{l}
 D_K^{\mathrm{cert},\star}(\pi)\le\epsilon_{AP}\ \forall K\in\mathfrak K_\pi^+,\\
 h_\pi\text{ factorization holds},\\
-\mathrm{UCB}[\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_\Gamma)
--\widehat{\mathcal R}_{\mathrm{prop}}^{P_{\mathrm{obj}}}(\Theta_{\Gamma,0})]
+\mathrm{UCB}[\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_\Gamma)
+-\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}(\Theta_{\Gamma,0})]
 \le\epsilon_{\mathrm{prop}}
 \end{array}\right\}.
 \]
 
-If this family is non-empty, \(\widehat\Theta_\Gamma\) is the deterministic finite argmin of \(\widehat{\mathcal R}_{\mathrm{pri}}^{P_{\mathrm{obj}}}+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}\) over it. Otherwise the procedure reports no certified design or uses a separately declared conservative fallback. Candidate selection uses only \(P_{\mathrm{obj}}\); final frozen claims use untouched \(P_{\mathrm{conf}}\). Both use grouped rolling-origin evaluation, an overlap/horizon/label-delay embargo, and as-of replay. Cross-resolution comparisons use common raw histories and the same external target. Empirical certification does not imply oracle attainment beyond the certificate's assumptions.
+If this family is non-empty, \(\widehat\Theta_\Gamma\) is the deterministic finite argmin of \(\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}\) over it. Otherwise the procedure reports no certified design or uses a separately declared conservative fallback. Candidate selection uses only \(\mathcal S_{\mathrm{obj}}\); final frozen claims use untouched \(\mathcal S_{\mathrm{conf}}\). The samples are generated under \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) and use grouped rolling-origin evaluation, an overlap/horizon/label-delay embargo, and as-of replay. Cross-resolution comparisons use common raw histories and the same external target. Empirical certification does not imply oracle attainment beyond the certificate's assumptions.
 
 The pre-outcome priority rule and all preprocessing are fitted before each evaluated block and frozen independently of candidates. Setting \(w_{\mathrm{pri}}\equiv1\) recovers the unweighted objective. Finite-sample constraints use preregistered one-sided confidence procedures, clustered inference for overlapping contexts, and sequentially valid methods under repeated monitoring.
 

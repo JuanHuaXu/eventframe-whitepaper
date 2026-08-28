@@ -14,11 +14,15 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(a(x)\), \(\mathscr F_t^{\mathrm{pred}}\), \(S_{t^-}\): availability time, prediction-time information, and mutable state reconstructed immediately before prediction.
 
-\(P_{\mathrm{obj}}\), \(P_{\mathrm{conf}}\), \(P_\star\): design/selection law, untouched confirmation law, and externally fixed target law.
+\(P_{\mathrm{obj}}\), \(P_{\mathrm{conf}}\), \(P_\star\): design-generating law, confirmation-generating law, and externally fixed target law.
 
-\(\nu(e)\), \(\tau(e)\): event-mark and event-time extractors.
+\(\mathcal S_{\mathrm{obj}}\), \(\mathcal S_{\mathrm{conf}}\): realized design sample or trajectory block and untouched confirmation sample or block.
+
+\(\nu(e)\), \(\tau(e)\): event-mark extractor and declared scalar temporal anchor; the anchor is a point timestamp or, by default, interval onset.
 
 \(\mathcal E_\varnothing\), \(d_H\): tagged no-event extension of the structured event space and fixed point-decision rule on forecast laws.
+
+\(\hat e_\theta^H(C)\), \(\hat e_t^H(r)\), \(\mathrm{lift}_H\): coherent no-event-capable predictor summary, residual-candidate summary, and map aligning a structured template with a selected marked outcome.
 
 \(\mathsf Q_\theta\), \(\mathcal O_\theta(C)\): predictive distribution over marked event times and the no-event outcome, and the typed bundle pairing that law with a coherent no-event-capable structured summary.
 
@@ -41,6 +45,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(\rho_H\), \(r_{t,H}^{\mathrm{law}}\): horizon-specific distributional residual estimator and its residual, defined for both marked-event and no-event outcomes.
 
 \(\mathfrak K_E\), \(\mathsf Q_t^R\), \(H_i\), \(H_{k_t}\): full-outcome residual Markov-kernel map, corrected forecast law, and horizons attached to general and exact cache entries.
+
+\(s_i\), \(s_{k_t}\), \(\mathcal S_{\mathrm{prov}}\): provenance records for general and exact residual-cache entries and their declared space.
 
 \(\Xi_R\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 

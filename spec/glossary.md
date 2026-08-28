@@ -14,7 +14,7 @@ The physical, simulated, biological, robotic, software, or computational descrip
 
 ## Coarse-Graining
 
-The mapping from a dense substrate history to a lower-dimensional event frame or event trajectory.
+The mapping from a fine-grained substrate history to a lower-dimensional event frame or event trajectory. Fine-grained describes retained detail and does not impose a topology.
 
 ## Intervention-Effective Event
 
@@ -142,7 +142,7 @@ A bounded decision rule that maps an error magnitude to a fixed interval, usuall
 
 ## Residual Cache
 
-A memory structure storing reusable transition corrections. At prediction time only the as-of snapshot may be read, and reuse requires declared distance, confidence, effective-support, age, epoch, compatibility-margin, and provenance gates.
+A memory structure storing reusable transition corrections. At prediction time only the as-of snapshot may be read, and reuse requires declared distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and provenance gates.
 
 ## Residual Lookup
 

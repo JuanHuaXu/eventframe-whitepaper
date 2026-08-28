@@ -4,7 +4,7 @@ Each major claim in the paper should be tracked here and revised conservatively.
 
 ## Claim 0: Adaptive event abstraction is the governing principle
 
-At a fixed resolution, EventFrame uses an external target-law constrained population objective as an oracle benchmark. Operational selection minimizes empirical normalized priority-weighted post-observation action plus non-negative declared representation cost over a finite candidate family whose Anti-Pigeon and proper-score constraints have predeclared certificates. Oracle feasibility and empirical certifiability are distinct. Design and confirmation samples are separate; priority, preprocessing, target, and weights are frozen before outcomes. Prediction-time gating uses a separate pre-observation risk and as-of state.
+At a fixed resolution, EventFrame uses an external target-law constrained population objective as an oracle benchmark. Operational selection minimizes empirical normalized priority-weighted post-observation action plus non-negative declared representation cost over a finite candidate family whose Anti-Pigeon and proper-score constraints have predeclared certificates. Oracle feasibility and empirical certifiability are distinct. The design- and confirmation-generating laws are distinct from their realized chronological samples; priority, preprocessing, target, and weights are frozen before confirmation outcomes. Prediction-time gating uses a separate pre-observation risk and as-of state.
 
 Status: organizing mathematical claim; requires implementation evidence, ablation tests, and future convergence analysis.
 
