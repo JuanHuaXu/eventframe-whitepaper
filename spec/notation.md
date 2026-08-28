@@ -27,7 +27,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathrm{lift}_H\) | \(\mathcal E\times\mathcal Z_H^+\to\mathcal E\) | aligns a structured event template with a selected marked outcome |
 | \(a(x)\) | time | availability time of datum or state object \(x\) |
 | \(\mathscr F_t^{\mathrm{pred}},S_{t^-}\) | information, state | information and mutable state available immediately before prediction |
-| \(\mathfrak h_t,c_k,\mathrm{Replay}_\Theta\) | history, extractor, map | observable prediction history, context extraction, and candidate-specific as-of state replay |
+| \(\mathfrak H_t,\mathfrak h_t,c_k,\mathrm{Replay}_\Theta\) | space, history, extractor, map | observable-history space and one prediction history, context extraction, and candidate-specific as-of state replay |
 | \(P_{\mathrm{obj}},P_{\mathrm{conf}}\) | probability laws | design- and confirmation-generating laws |
 | \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\) | finite samples or trajectory blocks | realized design and untouched confirmation data |
 | \(P_\star(Y\mid C)\) | conditional law | externally fixed target conditional law |
@@ -43,6 +43,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathcal K_t^{\mathrm{bel}}\) | finite set | valid local belief buckets available at prediction time |
 | \(\mathsf P_{H,K},\lambda_{K,t}^{\mathrm{bel}}\) | probability kernel, weight | bucket posterior-predictive kernel and frozen context-dependent mixture weight |
 | \(\mathbb P_{K,\theta}\) | joint model family | coherent bucket model whose evidence marginal and next-outcome conditional induce the ordinary likelihood and predictive kernel |
+| \((\mathcal X_K,\mathscr A_{\mathcal X_K}),\nu_K,\mathbb P_{K,\theta}^{\Xi},\mathbb P_{K,\theta}^{Z}\) | measurable space, measure, marginals | bucket evidence space, dominating measure, and joint-model evidence and outcome marginals |
 | \(\mathsf Q_t^0,b_t^0\) | probability law, event template | belief-conditioned posterior-predictive base law and its aligned template before residual correction |
 | \(B_H^{\mathrm{bel}}\) | measurable map | converts the effective posterior family and context into the base event template |
 | \(\mathscr H\) | finite-dimensional Hilbert space | carrier for operator representation |
@@ -69,6 +70,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
 | \(\mathfrak E_t^B,\mathcal N_t^B\) | finite sets | bounded candidate universe and nominated Bayesian frontier |
 | \(J_t^{\mathrm{nom}},J_t^{\mathrm{evid}},A_t^B,\tau_t^B,J_t^{\mathrm{act}}\) | indicators and scores | nomination, evidence-readiness, activation score, threshold, and total update-admission decision |
+| \(p_K^{\mathrm{sel}},\underline p_{K,t}^{\mathrm{sel}},p_{\min}^{\mathrm{sel}},\mathfrak H_{K,t}^{\mathrm{sel}}\) | probability, bound, threshold, set | complete selection probability, certified lower bound, positive support floor, and certified selection-support region |
 | \(J_{K,t}^{\mathrm{share}}\) | \(\{0,1\}\) | Anti-Pigeon posterior-sharing certificate decision for bucket \(K\) |
 | \(q_{K,t^-},q_{K,t}^+,q_{K,t}^{\mathrm{eff}}\) | probability measures | cached prior, candidate update, and valid posterior actually used for prediction |
 | \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent inactive-event audit indicator |
@@ -78,6 +80,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(N_t^{\mathrm{act}},M_{\mathrm{hyp}},R_{\mathrm{cp}}\) | non-negative integers | activated count, bounded hypothesis/statistic dimension, and retained changepoint-state count |
 | \(T_{\mathrm{act}},T_{\mathrm{sel}},T_{\mathrm{Bayes}}^{\mathrm{fast}}\) | costs | total activation, complete selection-probability, and bounded direct Bayesian work |
 | \(\mathcal C_{B,t^-},\Xi_B\) | cache, typed contract | as-of posterior cache and complete selective Bayesian contract |
+| \(\Sigma_t,B_{\mathrm{pub}},B_{\mathrm{inv}},N_{\mathrm{pub}},N_{\mathrm{inv}}\) | state and counts | coupled versioned learning state, per-evidence-epoch publication/invalidation budgets, and realized counts |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
 | \(\mathcal V_Y\) | normed vector space | packet representation/residual space |
@@ -279,15 +282,52 @@ d_E(\Pi_E(q_E(b)+\mathrm{clip}_{\delta_E}(r))),&r\neq0.
 
 The zero branch makes no correction an exact identity. The decoder is not written as an inverse because the encoder may be lossy.
 
-For the forecast issued at \(t\), let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of valid local belief buckets. For each bucket, let \(q_{K,t}^{\mathrm{eff}}\) be the valid updated posterior when one was accepted and the valid cached prior otherwise. Given a declared measurable posterior-predictive kernel
+For the forecast issued at \(t\), let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of valid local belief buckets. For each bucket, let \(q_{K,t}^{\mathrm{eff}}\) be the valid updated posterior when one was accepted and the valid cached prior otherwise. Let \((\mathcal X_K,\mathscr A_{\mathcal X_K})\) be its evidence space and \(\nu_K\) a sigma-finite dominating measure. Ordinary posterior-predictive semantics require a measurable joint kernel
 
 \[
-\mathsf P_{H,K}:\Theta_K\times\mathcal E^k\to\mathcal P(\mathcal Z_H)
+\mathbb P_{K,\theta}:
+\mathfrak H_t\to\mathcal P(\mathcal X_K\times\mathcal Z_H),
+\qquad
+\mathbb P_{K,\theta}(d\xi,dz\mid\mathfrak h),
+\quad \theta\in\Theta_K.
 \]
 
-be declared.
+The scored outcome kernel has type
 
-For an ordinary Bayesian posterior-predictive claim, \(\Xi_B\) declares one family \(\{\mathbb P_{K,\theta}:\theta\in\Theta_K\}\) over the evidence and next-outcome variables. The likelihood is a version of its evidence marginal density or mass, and \(\mathsf P_{H,K}\) is its next-outcome conditional under the declared context sufficiency and factorization assumptions. If the likelihood and kernel are modular objects not induced by one family, \(\Xi_B\) declares their linking restriction and an untouched forward proper-score and calibration test. Before that test passes, the output is a modular belief-conditioned forecast rather than a posterior predictive.
+\[
+\mathsf P_{H,K}:\Theta_K\times\mathcal E^k
+\to\mathcal P(\mathcal Z_H).
+\]
+
+Define its marginals by
+
+\[
+\mathbb P_{K,\theta}^{\Xi}(D\mid\mathfrak h)
+=\mathbb P_{K,\theta}(D\times\mathcal Z_H\mid\mathfrak h),
+\qquad
+\mathbb P_{K,\theta}^{Z}(A\mid\mathfrak h)
+=\mathbb P_{K,\theta}(\mathcal X_K\times A\mid\mathfrak h).
+\]
+
+The normative coherence identities are
+
+\[
+L_K(\xi\mid\theta,\mathfrak h)
+=\frac{d\mathbb P_{K,\theta}^{\Xi}(\cdot\mid\mathfrak h)}{d\nu_K}(\xi),
+\qquad
+\mathbb P_{K,\theta}^{Z}(A\mid\mathfrak h)
+=\mathsf P_{H,K}(A\mid\theta,c_k(\mathfrak h)).
+\]
+
+The domination condition \(\mathbb P_{K,\theta}^{\Xi}(\cdot\mid\mathfrak h)\ll\nu_K\) holds for every declared \((\theta,\mathfrak h)\). Because the displayed outcome kernel does not consume \(\xi\), require
+
+\[
+\mathbb P_{K,\theta}(d\xi,dz\mid\mathfrak h)
+=L_K(\xi\mid\theta,\mathfrak h)\,\nu_K(d\xi)\,
+\mathsf P_{H,K}(dz\mid\theta,c_k(\mathfrak h)).
+\]
+
+Thus evidence and next outcome are conditionally independent given the declared parameter and context. If this factorization fails, the predictive kernel and the posterior-predictive integral retain \(\xi\) or the additional history. Separately modeled likelihood and forecast components remain modular belief-conditioned forecasts even after favorable proper-score or calibration validation; such validation does not establish a joint-model identity.
 
 With frozen non-negative weights \(\lambda_{K,t}^{\mathrm{bel}}(C_t)\) summing to one, define the pre-residual base law
 
@@ -476,9 +516,9 @@ v_{K,t}=v_t,\quad H_K=H,\quad s_K\text{ is valid}
 \right\}.
 \]
 
-The certificate uses the external downstream target law, not agreement inside the posterior. Compatible events may share a bucket posterior; a failed or absent certificate creates a separate posterior key and nominates a slow-path split audit. The fast path reads a materialized certificate and never recomputes the diameter.
+The certificate uses the external downstream target law, not agreement inside the posterior. Its guarantee is empirical and conditional on valid target-law estimation, audit design, simultaneous coverage, and any declared continuity bound; the framework does not prove those premises. Compatible events may share a bucket posterior; a failed or absent certificate creates a separate posterior key and nominates a slow-path split audit. The fast path reads a materialized certificate and never recomputes the diameter.
 
-For admitted evidence \(\xi_t\) with history \(h_t^B\), an ordinary Bayesian update is valid only for a declared normalized likelihood \(L_K\) with positive finite normalizer. Under the ordinary posterior-predictive contract, \(L_K\) is the evidence marginal density or mass induced by the same \(\mathbb P_{K,\theta}\) whose next-outcome conditional is \(\mathsf P_{H,K}\); a modular pair follows the separately declared linking and forward-validation contract:
+For admitted evidence \(\xi_t\) with history \(h_t^B\), an ordinary Bayesian update is valid only for the normalized likelihood \(L_K\) induced by the displayed joint-model marginal identity and with a positive finite normalizer. Separately modeled components remain modular forecasts:
 
 \[
 q_{K,t}^+(d\theta)=
@@ -494,7 +534,18 @@ L_K^{\mathrm{sel}}(\xi\mid\theta,h,J^{\mathrm{act}}=1)=
 {P_\theta(J^{\mathrm{act}}=1\mid h)},
 \]
 
-where the denominator is positive and both probabilities refer to the complete \(J_t^{\mathrm{act}}=J_t^{\mathrm{nom}}J_t^{\mathrm{evid}}J_t^{\mathrm{thr}}\) process. Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly activated evidence set, the contract supplies its joint selection probability; products of one-event selection corrections are valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result. Without either condition, the result is called an activation-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
+where both probabilities refer to the complete \(J_t^{\mathrm{act}}=J_t^{\mathrm{nom}}J_t^{\mathrm{evid}}J_t^{\mathrm{thr}}\) process. Define
+
+\[
+p_K^{\mathrm{sel}}(\theta,h)=P_\theta(J^{\mathrm{act}}=1\mid h),
+\qquad
+\mathfrak H_{K,t}^{\mathrm{sel}}
+=\{h:\underline p_{K,t}^{\mathrm{sel}}(h)\ge p_{\min}^{\mathrm{sel}}\},
+\]
+
+where \(p_{\min}^{\mathrm{sel}}>0\) is frozen and \(\underline p_{K,t}^{\mathrm{sel}}(h)\) is an analytic or simultaneously valid lower bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{sel}}(\theta,h)\). A selection-corrected full-stream claim is permitted only on \(\mathfrak H_{K,t}^{\mathrm{sel}}\). A never-nominated or otherwise unsupported history yields a working posterior or no update. Inactive candidates inside \(\mathfrak E_t^B\) may enter the independent audit; objects outside that universe are outside both certificates unless exhaustive coverage or a verified envelope bound extends them.
+
+Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly activated evidence set, the contract supplies its joint selection probability; products of one-event selection corrections are valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result. Without either condition and the support bound, the result is called an activation-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
 
 Let \(R_{K,t}\) be a declared changepoint run-length state and
 
@@ -756,6 +807,22 @@ S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
 
 Every invocation has a strictly positive conservative cost bound and every repeat is charged. A strict deadline additionally requires interruptibility and a worst-case reserve or deterministic stop. The reported depth is the maximum stage index reached; the complete sequence, actual cumulative cost, overruns, and stopping reason are also reported.
 
+The coupled learning state visible to readers is
+
+\[
+\Sigma_t=(\mathcal C_{B,t^-},\mathcal C_{R,t^-},\mathbf v_t,\Xi_A^{(v)},G_t).
+\]
+
+Within each evidence epoch \(j\), the frozen stability contract enforces
+
+\[
+N_{\mathrm{pub}}(j)\le B_{\mathrm{pub}},
+\qquad
+N_{\mathrm{inv}}(j)\le B_{\mathrm{inv}},
+\]
+
+with finite budgets, hysteresis, cooldowns, and deterministic conflict ordering. Budget exhaustion freezes further dependent publication and routes the region to slow audit. This bounds same-epoch thrashing but is not a convergence result across a drifting stream.
+
 Priority-normalized evaluation weights are:
 
 \[
@@ -768,7 +835,7 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, nomination and evidence-readiness rules, activation maps and thresholds, one coherent evidence-and-outcome family or a modular linking restriction and validation test, source and complete selection models, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint approximation, component-sensitive law and template motion certificates with propagated approximation-error budgets, dependency-closure versioning, and atomic publication. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, nomination and evidence-readiness rules, activation maps and thresholds, the joint evidence-and-outcome family and its displayed marginal identities, source and complete selection models, selection-support floor and simultaneous lower-bound procedure, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint approximation, component-sensitive law and template motion certificates with propagated approximation-error budgets, dependency-closure versioning, atomic publication, and coupled-state publication/invalidation budgets. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
 
 \[
 \mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,

@@ -13,7 +13,7 @@ Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identit
 The reference prediction procedure has seven steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
-2. Construct the bounded Bayesian candidate frontier, require evidence readiness, apply the recorded total nomination-and-activation rule, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise preserve separate posteriors or defer.
+2. Construct the bounded Bayesian candidate frontier, require evidence readiness and certified positive support for the recorded total nomination-and-activation rule, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise use working-posterior semantics, preserve separate posteriors, or defer.
 3. Map the valid effective posterior family to the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\), using \(\mathsf Q_B\) and \(B\) only when no valid belief bucket is available.
 4. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective support, age, epoch, forecast-horizon equality, compatibility margin, component provenance, posterior-predictive version, and mode-applicable certified law and template motion checks pass.
 5. Clip the separately typed point and law residual components, apply the law kernel after \(\mathsf Q_t^0\), derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.

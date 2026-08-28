@@ -11,14 +11,54 @@ B:\mathcal E^k\rightarrow\mathcal E,
 \qquad b_t=B(C_t).
 \]
 
-The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the selective update in Section 5, let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each \(K\in\mathcal K_t^{\mathrm{bel}}\), let \(q_{K,t}^{\mathrm{eff}}\) be its accepted updated posterior, or its current cached prior when no evidence was admitted. Declare a measurable forecast kernel
+The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the selective update in Section 5, let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each \(K\in\mathcal K_t^{\mathrm{bel}}\), let \(q_{K,t}^{\mathrm{eff}}\) be its accepted updated posterior, or its current cached prior when no evidence was admitted. Let \((\mathcal X_K,\mathscr A_{\mathcal X_K})\) be the bucket evidence space and let \(\nu_K\) be a declared sigma-finite dominating measure on it. Ordinary posterior-predictive semantics require a single measurable joint kernel
+
+\[
+\mathbb P_{K,\theta}:
+\mathfrak H_t\longrightarrow
+\mathcal P(\mathcal X_K\times\mathcal Z_H),
+\qquad
+\mathbb P_{K,\theta}(d\xi,dz\mid\mathfrak h),
+\quad \theta\in\Theta_K.
+\]
+
+The outcome kernel appearing in the scored forecast has type
 
 \[
 \mathsf P_{H,K}:\Theta_K\times\mathcal E^k
-\longrightarrow\mathcal P(\mathcal Z_H)
+\longrightarrow\mathcal P(\mathcal Z_H).
 \]
 
-For an ordinary Bayesian posterior-predictive claim, \(\Xi_B\) declares one model family \(\{\mathbb P_{K,\theta}:\theta\in\Theta_K\}\) over the evidence and next-outcome variables: the likelihood used in Section 5 is a version of that family's evidence marginal density or mass, and \(\mathsf P_{H,K}\) is its next-outcome conditional under the declared context sufficiency and factorization assumptions. If a modular implementation uses a likelihood and forecast kernel that are not induced by one joint family, \(\Xi_B\) must instead declare their linking restriction and an untouched forward proper-score and calibration test; until that test passes, the result is called a modular belief-conditioned forecast, not a posterior predictive by declaration alone.
+Its evidence and outcome marginals are
+
+\[
+\begin{aligned}
+\mathbb P_{K,\theta}^{\Xi}(D\mid\mathfrak h)
+&=\mathbb P_{K,\theta}(D\times\mathcal Z_H\mid\mathfrak h),\\
+\mathbb P_{K,\theta}^{Z}(A\mid\mathfrak h)
+&=\mathbb P_{K,\theta}(\mathcal X_K\times A\mid\mathfrak h),
+\end{aligned}
+\]
+
+for \(D\in\mathscr A_{\mathcal X_K}\) and \(A\in\mathscr A_H\). The likelihood and forecast kernel are linked by the required identities
+
+\[
+L_K(\xi\mid\theta,\mathfrak h)
+=\frac{d\mathbb P_{K,\theta}^{\Xi}(\cdot\mid\mathfrak h)}{d\nu_K}(\xi),
+\qquad
+\mathbb P_{K,\theta}^{Z}(A\mid\mathfrak h)
+=\mathsf P_{H,K}(A\mid\theta,c_k(\mathfrak h)).
+\]
+
+Here \(\mathbb P_{K,\theta}^{\Xi}(\cdot\mid\mathfrak h)\ll\nu_K\) for every declared \((\theta,\mathfrak h)\). Because \(\mathsf P_{H,K}\) below does not separately consume \(\xi\), the ordinary contract additionally requires the conditional factorization
+
+\[
+\mathbb P_{K,\theta}(d\xi,dz\mid\mathfrak h)
+=L_K(\xi\mid\theta,\mathfrak h)\,\nu_K(d\xi)\,
+\mathsf P_{H,K}(dz\mid\theta,c_k(\mathfrak h)).
+\]
+
+This states that evidence and next outcome are conditionally independent given \((\theta,c_k(\mathfrak h))\) under the declared history restriction. If that factorization fails, the predictive kernel must retain \(\xi\) or the additional history and the posterior-predictive integral below must use that conditional kernel. Selection conditioning in Section 5 is derived from the evidence factor and the complete nomination-and-activation event. A likelihood and forecast kernel not induced by one such joint family may still define a modular belief-conditioned forecast, but no proper-score or calibration test turns it into an ordinary posterior predictive; it is excluded from that semantic claim and reported separately.
 
 Use frozen as-of fusion weights \(\lambda_{K,t}^{\mathrm{bel}}\ge0\) satisfying \(\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1\) when the set is non-empty. The posterior-predictive base law is
 

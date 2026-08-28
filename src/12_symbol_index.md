@@ -12,7 +12,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(H\), \((\mathcal N,\mathscr A_{\mathcal N})\), \((\mathcal Z_H,\mathscr A_H)\), \(Z_{t+1}\): prediction horizon, measurable mark space, complete measurable marked-time/no-event space, and observed outcome.
 
-\(a(x)\), \(\mathscr F_t^{\mathrm{pred}}\), \(\mathfrak h_t\), \(c_k\), \(\mathrm{Replay}_\Theta\), \(S_{\Theta,t^-}\): availability time, prediction information, observable history, context extractor, candidate replay operator, and reconstructed candidate state.
+\(a(x)\), \(\mathscr F_t^{\mathrm{pred}}\), \(\mathfrak H_t\), \(\mathfrak h_t\), \(c_k\), \(\mathrm{Replay}_\Theta\), \(S_{\Theta,t^-}\): availability time, prediction information, observable-history space and one history, context extractor, candidate replay operator, and reconstructed candidate state.
 
 \(P_{\mathrm{obj}}\), \(P_{\mathrm{conf}}\), \(P_\star\): design-generating law, confirmation-generating law, and externally fixed target law.
 
@@ -33,6 +33,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(\mathsf Q_B\), \(B\), \(b_t\): fallback forecast law, fallback conditional event-template predictor, and its template. Event buckets use \(K\), never \(B\).
 
 \(\mathcal K_t^{\mathrm{bel}}\), \(q_{K,t}^{\mathrm{eff}}\), \(\mathbb P_{K,\theta}\), \(\mathsf P_{H,K}\), \(\lambda_{K,t}^{\mathrm{bel}}\): valid belief buckets, effective posteriors, coherent joint evidence-and-outcome model family, its declared outcome-predictive kernels, and frozen mixture weights.
+
+\((\mathcal X_K,\mathscr A_{\mathcal X_K})\), \(\nu_K\), \(\mathbb P_{K,\theta}^{\Xi}\), \(\mathbb P_{K,\theta}^{Z}\): measurable bucket evidence space, dominating measure, and the joint model's evidence and outcome marginals.
 
 \(\mathsf Q_t^0\), \(B_H^{\mathrm{bel}}\), \(b_t^0\): posterior-predictive base law, its template map, and aligned pre-residual template. The fallback baseline is used only when the valid belief-bucket set is empty.
 
@@ -64,6 +66,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(J_t^{\mathrm{nom}}\), \(J_t^{\mathrm{evid}}\), \(A_t^B\), \(\tau_t^B\), \(J_t^{\mathrm{act}}\): nomination and evidence-readiness indicators, Bayesian activation score, criticality-adjusted threshold, and total activation indicator.
 
+\(p_K^{\mathrm{sel}}\), \(\underline p_{K,t}^{\mathrm{sel}}\), \(p_{\min}^{\mathrm{sel}}\), \(\mathfrak H_{K,t}^{\mathrm{sel}}\): complete selection probability, certified uniform lower bound, positive support floor, and certified selection-support region.
+
 \(J_{K,t}^{\mathrm{share}}\), \(q_{K,t^-}\), \(q_{K,t}^+\), \(\mathcal C_{B,t^-}\): Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
 
 \(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
@@ -73,6 +77,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(k_v\), \(d_{\mathrm{sh}}\), \(d_G\), \(N_t^{\mathrm{act}}\), \(M_{\mathrm{hyp}}\), \(R_{\mathrm{cp}}\): vector width, sheaf-inspired and graph degree caps, activated count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
 
 \(T_{\mathrm{act}}\), \(T_{\mathrm{sel}}\), \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\): total activation evaluation, complete selection-probability evaluation, and bounded direct Bayesian cost. \(T_B(k)\) remains the fallback baseline-predictor cost.
+
+\(\Sigma_t\), \(B_{\mathrm{pub}}\), \(B_{\mathrm{inv}}\), \(N_{\mathrm{pub}}(j)\), \(N_{\mathrm{inv}}(j)\): coupled versioned learning state, finite per-evidence-epoch publication and invalidation budgets, and realized counts.
 
 \(X_t\), \(\mathcal X_{\mathrm{ctx}}\): compressed runtime state and its domain. This domain is distinct from the auxiliary event-field space \(\mathcal X\).
 

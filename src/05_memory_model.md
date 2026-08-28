@@ -116,9 +116,9 @@ s_K^B\text{ is valid}
 \right\}.
 \]
 
-The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. The fast path checks a materialized certificate; it does not recompute \(D_K^{\mathrm{cert},\star}\). Active events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
+The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. Its guarantee is empirical and conditional on the declared target-law estimator, audit design, simultaneous coverage procedure, and any continuity bound actually attaining their stated coverage; EventFrame does not prove those premises from its architecture. The fast path checks a materialized certificate; it does not recompute \(D_K^{\mathrm{cert},\star}\). Active events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
 
-Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a declared parameter space and let \(q_{K,t^-}\in\mathcal P(\Theta_K)\) be the cached prior available before the update. Let \(\xi_t(e)\) be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family \(\{\mathbb P_{K,\theta}\}\) declared in Section 4: \(p_\theta(\xi\mid\mathfrak h_t)\) is its evidence marginal density or mass, and \(\mathsf P_{H,K}\) is its next-outcome conditional. A modular update and forecast that do not share that family must satisfy the separately declared linking restriction and untouched forward validation before they may use posterior-predictive language.
+Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a declared parameter space and let \(q_{K,t^-}\in\mathcal P(\Theta_K)\) be the cached prior available before the update. Let \(\xi_t(e)\) be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family \(\{\mathbb P_{K,\theta}\}\) declared in Section 4: \(L_K\) is exactly its dominated evidence marginal and \(\mathsf P_{H,K}\) is exactly its outcome marginal under the displayed context-sufficiency identity. A modular update and forecast that do not share that family remain modular even after favorable forward validation and may not use ordinary posterior-predictive language.
 
 For an activated, sharing-approved evidence-packet set \(\mathcal X_{K,t}^{\mathrm{act}}\), an ordinary Bayesian update is
 
@@ -138,11 +138,29 @@ provided the denominator is finite and strictly positive. Because novelty or com
 L_K^{\mathrm{sel}}(\xi\mid\theta,\mathfrak h_t,J^{\mathrm{act}}=1)=
 \frac{
 P_\theta(J^{\mathrm{act}}=1\mid\xi,\mathfrak h_t)
-p_\theta(\xi\mid\mathfrak h_t)}
+L_K(\xi\mid\theta,\mathfrak h_t)}
 {P_\theta(J^{\mathrm{act}}=1\mid\mathfrak h_t)},
 \]
 
-on the domain where the denominator is positive. For a jointly activated evidence set, the contract must model the joint activation probability; multiplying one-event selection corrections is valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result, for example when activation depends exclusively on already conditioned-on pre-evidence variables. If the selection probability cannot be modeled, the result is called an activation-conditioned working posterior, not a calibrated posterior for the full event stream, and must be tested against the independent audit stream.
+on the domain where the denominator is positive. Reliable correction requires more than pointwise positivity. Let
+
+\[
+p_K^{\mathrm{sel}}(\theta,\mathfrak h)
+=P_\theta(J^{\mathrm{act}}=1\mid\mathfrak h),
+\]
+
+let \(\underline p_{K,t}^{\mathrm{sel}}(\mathfrak h)\) be either an analytic lower bound or a simultaneously valid lower confidence bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{sel}}(\theta,\mathfrak h)\), and freeze \(p_{\min}^{\mathrm{sel}}>0\). The certified selection-support region is
+
+\[
+\mathfrak H_{K,t}^{\mathrm{sel}}
+=\left\{\mathfrak h:
+\underline p_{K,t}^{\mathrm{sel}}(\mathfrak h)
+\ge p_{\min}^{\mathrm{sel}}\right\}.
+\]
+
+A selection-corrected full-stream posterior claim is permitted only on this region. Outside it, including a structurally never-nominated case, the update is labeled a working posterior or is withheld. An inactive event inside the declared candidate universe may still enter the independent audit population; an event outside \(\mathfrak E_t^B\) is outside both the production selection certificate and that audit unless a separate exhaustive or envelope argument covers it.
+
+For a jointly activated evidence set, the contract must model the joint activation probability; multiplying one-event selection corrections is valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result, for example when activation depends exclusively on already conditioned-on pre-evidence variables. If the selection probability cannot be modeled with the required support bound, the result is called an activation-conditioned working posterior, not a calibrated posterior for the full event stream, and must be tested against the independent audit stream.
 
 Because \(J_t^{\mathrm{act}}\) already contains \(J_t^{\mathrm{nom}}\) and \(J_t^{\mathrm{evid}}\), both the numerator and marginal denominator integrate the complete two-stage nomination-and-activation event. Conditioning only on the threshold comparison while treating frontier membership as fixed is valid only under a separately stated conditional design.
 
@@ -166,7 +184,7 @@ Likewise, a product of conditionally independent likelihoods is ordinary Bayes o
 q_{K,t}^{+}(d\theta)\propto
 q_{K,t^-}(d\theta)
 \prod_{e\in\mathcal X_{K,t}^{\mathrm{act}}}
-p_\theta(\xi_t(e)\mid\mathfrak h_t)^{\omega_t(e)},
+L_K(\xi_t(e)\mid\theta,\mathfrak h_t)^{\omega_t(e)},
 \qquad 0\le\omega_t(e)\le1,
 \]
 

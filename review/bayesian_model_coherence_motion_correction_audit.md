@@ -1,5 +1,7 @@
 # Bayesian Model-Coherence and Motion-Certificate Audit
 
+Superseded for Bayesian model coherence on 2026-08-28 by `specification_evidence_gap_correction_audit.md`, which replaces the prose-only family declaration and modular-link allowance with explicit joint marginals and a conditional factorization. The motion-certificate findings below remain current.
+
 Date: 2026-08-28
 
 Scope: reviewer findings R1--R3 concerning coherence between Bayesian evidence and prediction models, point-template residual stability, and posterior-approximation error. This is a mathematical integration audit, not empirical validation.
@@ -12,7 +14,7 @@ Scope: reviewer findings R1--R3 concerning coherence between Bayesian evidence a
 
 ## Finding Classification
 
-1. **R1, confirmed:** the likelihood and predictive kernel were separately declared, so the term posterior predictive did not enforce one probabilistic model. The ordinary contract now requires one family \(\{\mathbb P_{K,\theta}\}\) whose evidence marginal induces \(L_K\) and whose next-outcome conditional induces \(\mathsf P_{H,K}\). A modular pair must declare a linking restriction and pass untouched forward proper-score and calibration validation before receiving the weaker modular belief-conditioned label.
+1. **R1, confirmed and later tightened:** the likelihood and predictive kernel were separately declared, so the term posterior predictive did not enforce one probabilistic model. This audit first required one family; the superseding audit now displays its marginal identities and conditional factorization. Separately modeled components remain modular and validation does not create joint-model coherence.
 2. **R2, confirmed:** the fixed-reference motion certificate protected only the scored law. The point template could therefore move while a cached point residual remained anchored to an obsolete template. Motion checks are now component-sensitive: mode \(Q\) requires law stability, mode \(E\) requires template stability, mode \(EQ\) requires both, and the zero record requires neither.
 3. **R3, confirmed:** the prior wording did not explicitly allocate posterior-approximation error. Both certified motion bounds now include approximation error propagated through the outcome kernel and mixture fusion, and through \(B_H^{\mathrm{bel}}\) for the template path, in addition to statistical uncertainty.
 

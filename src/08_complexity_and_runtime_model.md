@@ -7,7 +7,7 @@ The reference fast path is:
 1. Incrementally update \(C_t=e_{t-k+1:t}\).
 2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
 3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier \(\mathcal N_t^B\).
-4. Check evidence readiness, total nomination-and-activation probabilities, and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update.
+4. Check evidence readiness, the certified positive support bound for the total nomination-and-activation probability, and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update. Unsupported selection correction falls back to working-posterior or no-update semantics.
 5. Compute the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\) from the valid effective posterior family, falling back to \(\mathsf Q_B\) and \(B\) only when that family is empty; independently compute packet baseline \(B_Y(X_t)\) when required.
 6. Construct the bounded action key \(k_t=\alpha(C_t)\).
 7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match \((\mathsf Q_t^0,b_t^0)\).
@@ -63,6 +63,23 @@ T_{\mathrm{Bayes}}^{\mathrm{fast}}
 \]
 
 This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(|\mathfrak E_t^B|\), \(N_t^{\mathrm{act}}\), \(M_{\mathrm{hyp}}\), and \(R_{\mathrm{cp}}\) are bounded, when the vector-index query itself has a declared bound, and when \(T_{\mathrm{sel}}\) uses a bounded exact computation or a predeclared bounded approximation. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on particle count, parameter dimension, optimization iterations, graph degree, selection-probability evaluation, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, every term in \(T_{\mathrm{sel}}\), and eviction costs must be measured rather than hidden inside the constant.
+
+Continuous publication couples posterior, residual, epoch, graph, and abstraction state. Let
+
+\[
+\Sigma_t=
+(\mathcal C_{B,t^-},\mathcal C_{R,t^-},\mathbf v_t,\Xi_A^{(v)},G_t)
+\]
+
+be the versioned learning state visible to prediction readers. Index evidence epochs by \(j\), where one epoch contains only publications triggered before the next newly available external evidence item. Freeze finite budgets \(B_{\mathrm{pub}},B_{\mathrm{inv}}\in\mathbb N_0\), hysteresis thresholds, cooldowns, and deterministic conflict ordering. A conforming runtime enforces
+
+\[
+N_{\mathrm{pub}}(j)\le B_{\mathrm{pub}},
+\qquad
+N_{\mathrm{inv}}(j)\le B_{\mathrm{inv}}.
+\]
+
+Exhausting either budget freezes further dependent publication in that region, retains or republishes the last complete valid snapshot, and routes the case to slow audit. These bounds prevent unbounded same-evidence-epoch update and invalidation loops; atomic publication prevents mixed versions. They do not prove convergence across an unbounded or drifting evidence stream. A stronger claim requires a joint state metric or Lyapunov argument covering posterior updates, residual recertification, epoch changes, and abstraction edits together.
 
 The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 

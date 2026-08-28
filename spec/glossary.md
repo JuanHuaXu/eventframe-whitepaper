@@ -170,7 +170,11 @@ The complete marked-time/no-event law obtained by integrating each declared pred
 
 ## Bayesian Model Coherence
 
-For an ordinary posterior-predictive claim, one declared model family over evidence and next outcome induces both the update likelihood and the outcome-predictive kernel under stated context and factorization assumptions. A modular likelihood and forecast kernel instead require a declared linking restriction and untouched forward proper-score and calibration validation; before that validation passes, the result is called a modular belief-conditioned forecast.
+For an ordinary posterior-predictive claim, one declared joint kernel over evidence and next outcome has an evidence marginal dominated by a declared measure and an outcome marginal satisfying the displayed context-sufficiency identity. Because the scored outcome kernel does not separately consume the evidence packet, the joint kernel also factorizes into that evidence density and outcome kernel conditional on the declared parameter and context. If this fails, the predictive kernel must retain the evidence or additional history. Separately modeled components remain modular belief-conditioned forecasts; favorable calibration does not create a missing joint-model identity.
+
+## Certified Selection Support
+
+The histories on which an analytic or simultaneously valid lower bound for the complete nomination-and-activation probability exceeds a frozen positive floor uniformly over the declared parameter family. Selection-corrected full-stream claims are limited to this region. Never-nominated histories and objects outside the candidate universe are uncertified unless an independent exhaustive or envelope argument covers them.
 
 ## Residual Motion Certificate
 
@@ -182,7 +186,11 @@ The result of updating only on activated evidence without proving conditional ig
 
 ## Anti-Pigeon Posterior Sharing
 
-The rule that events may share one cached posterior only while an external target-law divergence certificate, effective-support, horizon, epoch, and provenance checks pass. Divergent or uncertified events receive separate posterior keys.
+The rule that events may share one cached posterior only while an external target-law divergence certificate, effective-support, horizon, epoch, and provenance checks pass. Its guarantee is empirical and conditional on the target-law estimator, audit coverage, simultaneous uncertainty procedure, and any continuity bound attaining their stated coverage. Divergent or uncertified events receive separate posterior keys.
+
+## Coupled Learning State
+
+The versioned posterior, residual, epoch, abstraction, and graph state published atomically to prediction readers. Finite publication and invalidation budgets, hysteresis, cooldowns, and deterministic conflict ordering bound same-evidence-epoch thrashing; they do not prove convergence across an unbounded drifting stream.
 
 ## Omitted-Influence Audit
 
