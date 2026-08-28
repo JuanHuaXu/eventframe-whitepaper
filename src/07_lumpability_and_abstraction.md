@@ -123,7 +123,7 @@ D_K^{\mathrm{cert},\star}=
 +2\overline L_K^{\mathrm{cert}}\delta_K.
 \]
 
-The confidence procedure must jointly cover all adaptively selected audit pairs used by the maximum and any data-estimated continuity bound. A plug-in estimate of \(\overline L_K\) without uncertainty coverage is not a certificate. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify \(D_K^\star\le\epsilon_{AP}\).
+The confidence procedure jointly covers every audit pair selected for the maximum, including adaptive selections, and every data-estimated continuity bound. A plug-in estimate of \(\overline L_K\) without uncertainty coverage is not a certificate. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify \(D_K^\star\le\epsilon_{AP}\).
 
 Observed operating regimes use a distinct symbol \(\zeta_t\in\mathcal Z_{\mathrm{reg}}\). On the common-support domain \(\mathfrak C_{a,b}=\mathrm{supp}(C\mid\zeta_a)\cap\mathrm{supp}(C\mid\zeta_b)\), regime-conditioned predictive divergence is:
 
@@ -247,7 +247,17 @@ D_K^{\mathrm{cert},\star}\le\epsilon_{AP},\\
 \end{aligned}
 \]
 
-Set \(A_t^{\mathrm{snap}}=0\) otherwise. Every outcome-dependent quantity in the indicator is computed exclusively from as-of predictions on \(D_t^{\mathrm{conf}}\); no confirmation outcome may refit the candidate. The predeclared joint confidence procedure covers every displayed stochastic gate after candidate selection. Repeated reviews use fresh blocks or a sequentially valid procedure. On acceptance, relabel the confirmed candidate as version \(v+1\) and write \(\mathcal D_{\Delta,t}=\mathcal D_{\Delta,t}(\Xi_A^{\mathrm{cand}})\). Let \(\mathbf v^{(v)}\) be the local epoch map, let \(\mathcal C_{\mathrm{mem}}^{(v)}=(\mathcal C_A^{(v)},\mathcal C_R^{(v)},\mathcal C_E^{(v)})\), let \(\mathsf B_{\mathcal D}\) monotonically increment epochs in dependency closure \(\mathcal D\), and let \(\mathsf I_{\mathcal D}\) mark every dependent memory entry stale. The publish-or-retain transition is:
+Set \(A_t^{\mathrm{snap}}=0\) otherwise. Every outcome-dependent quantity in the indicator is computed exclusively from as-of predictions on \(D_t^{\mathrm{conf}}\); no confirmation outcome may refit the candidate. The predeclared joint confidence procedure covers every displayed stochastic gate after candidate selection. Repeated reviews use fresh blocks or a sequentially valid procedure. On acceptance, relabel the confirmed candidate as version \(v+1\) and write \(\mathcal D_{\Delta,t}=\mathcal D_{\Delta,t}(\Xi_A^{\mathrm{cand}})\).
+
+Let \(\mathbf v^{(v)}\) be the local version map containing abstraction epochs and posterior-predictive certificate versions. Let
+
+\[
+\mathcal C_{\mathrm{mem}}^{(v)}=
+(\mathcal C_A^{(v)},\mathcal C_R^{(v)},
+\mathcal C_E^{(v)},\mathcal C_B^{(v)}).
+\]
+
+The single dependency-closure operator \(\mathsf B_{\mathcal D}\) monotonically increments every affected graph, abstraction, posterior-predictive, and residual-certificate version, while \(\mathsf I_{\mathcal D}\) marks every dependent memory entry stale. Predictive snaps, changepoints, and posterior updates that leave their certified motion region all use this same transition. The publish-or-retain transition is:
 
 \[
 \left(\Xi_A^{\mathrm{new}},\pi^{\mathrm{new}},
@@ -262,7 +272,7 @@ Set \(A_t^{\mathrm{snap}}=0\) otherwise. Every outcome-dependent quantity in the
 \end{cases}
 \]
 
-The accepted tuple publishes atomically, and the previous complete version remains available for rollback. The invalidation operator preserves unaffected entries and marks affected ones unusable until recertified; it does not silently assign them certificates under the new version. When \(A_t^{\mathrm{snap}}=0\), no candidate component is published. This operation revises predictive organization only. It may nominate a causal hypothesis, but changing an SCM edge additionally requires the paper's intervention and identification conditions; compatibility improvement alone is insufficient.
+The accepted tuple publishes atomically, and the previous complete version remains available for rollback. The invalidation operator preserves unaffected entries and marks affected ones unusable until recertified; it does not silently assign them certificates under the new version. A reader sees one graph-posterior-key-epoch snapshot. When \(A_t^{\mathrm{snap}}=0\), no candidate component is published. This operation revises predictive organization only. It may nominate a causal hypothesis, but changing an SCM edge additionally requires the paper's intervention and identification conditions; compatibility improvement alone is insufficient.
 
 When an explicit SCM exists, an accepted predictive snap may nominate a separate finite family of local SCM edits, such as adding or removing an edge, reversing a direction not fixed by temporal order, or introducing a measured mediator or regime variable. Every causal candidate must specify the resulting structural equations, obey declared temporal and domain constraints, and identify the intervention law under which it will be tested. Candidate generation may use predictive defect, but causal selection and confirmation require independent randomized or otherwise identified intervention evidence with correction for the inspected edit family. Observational fit, lower compatibility defect, or successful predictive gluing cannot by themselves orient or promote a causal edge. Until those tests pass, the published causal graph remains unchanged.
 

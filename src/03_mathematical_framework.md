@@ -176,7 +176,7 @@ The governing principle can now be stated without overloading \(\Omega\). It is 
 
 and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version \(v\) changes only when a validated slow-path revision is published.
 
-The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-inspired, and as-of graph frontier rules; activation and criticality maps; posterior family and likelihood; selection model; Anti-Pigeon sharing certificate; source-dependence treatment; changepoint approximation; independent audit schedule; omitted-influence test; resource caps; and atomic publication rule. Its as-of posterior cache is \(\mathcal C_{B,t^-}\). Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
+The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-inspired, and as-of graph frontier rules; nomination, evidence-readiness, activation, and criticality maps; posterior family and likelihood; complete selection model; posterior-predictive kernels, mixture weights, and template map; Anti-Pigeon sharing certificate; source-dependence treatment; changepoint approximation; independent audit schedule; normalized Jensen--Shannon omitted-influence procedure; posterior-motion certificate; resource caps; and atomic publication rule. Its as-of posterior cache is \(\mathcal C_{B,t^-}\). Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
 
 \[
 \begin{aligned}
@@ -192,7 +192,7 @@ The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-ins
 &\text{packet target and loss},\text{regime-shift rule},
 \text{confidence and map-validity procedures},\\
 &\text{snap candidate, obligation, and publication rules},\\
-&\text{Bayesian activation, selection, audit, changepoint, cap, and publication rules}).
+&\text{Bayesian prediction, activation, selection, omission, motion, cap, and publication rules}).
 \end{aligned}
 \]
 
@@ -210,7 +210,15 @@ Here \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are fixed design- and confir
 \Xi_R,\Xi_B,\Xi_A^{(v)})
 \]
 
-denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{eval}}\). Let \(\mathcal O_{\Theta_\Gamma}(C;S_{\Theta_\Gamma,t^-})\) denote its final typed output bundle from the candidate state reconstructed immediately before prediction time. Let \(\mathfrak K_\pi\) be the buckets induced by \(\pi\), and let \(\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}\) be the active buckets with admissible contexts. For an active bucket \(K\), define its external future-diameter \(D_K^\star(\pi)\) as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to \(\Theta_\Gamma\) only in an implementation that jointly optimizes packet selection.
+denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{eval}}\). For each prediction origin, Section 5 produces the effective posterior family; Section 4 maps it to \((\mathsf Q_t^0,b_t^0)\), applies only a posterior-compatible residual, and returns \(\mathcal O_t^R=(\mathsf Q_t^R,\hat e_t^H)\). Define the scored candidate output explicitly by
+
+\[
+\mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,
+\qquad
+\mathsf Q_{\Theta_\Gamma}(\cdot\mid C_t;S_{\Theta_\Gamma,t^-})=\mathsf Q_t^R(\cdot\mid C_t).
+\]
+
+Thus deleting or changing the Bayesian layer changes the scored law whenever it changes the posterior-predictive base; the residual kernel is calibrated against and applied after that base law. Let \(\mathfrak K_\pi\) be the buckets induced by \(\pi\), and let \(\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}\) be the active buckets with admissible contexts. For an active bucket \(K\), define its external future-diameter \(D_K^\star(\pi)\) as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to \(\Theta_\Gamma\) only in an implementation that jointly optimizes packet selection.
 
 Compression must be operational, not merely decorative. Define retained information by
 

@@ -1,6 +1,6 @@
 # 4. Residual Prediction
 
-Residual prediction separates a first-pass event estimate from a correction. The baseline captures ordinary transition structure; the residual records a recurring statistical prediction error. A residual is not a causal hypothesis unless separate intervention evidence identifies it as causal.
+Residual prediction separates a first-pass event estimate from a correction. The fallback baseline captures ordinary transition structure; when valid Bayesian beliefs exist, their posterior predictive becomes the first-pass base. The residual records a recurring statistical error relative to that recorded base. A residual is not a causal hypothesis unless separate intervention evidence identifies it as causal.
 
 Let the baseline probability law and its conditional structured event template be:
 
@@ -10,6 +10,46 @@ Let the baseline probability law and its conditional structured event template b
 B:\mathcal E^k\rightarrow\mathcal E,
 \qquad b_t=B(C_t).
 \]
+
+The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the selective update in Section 5, let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each \(K\in\mathcal K_t^{\mathrm{bel}}\), let \(q_{K,t}^{\mathrm{eff}}\) be its accepted updated posterior, or its current cached prior when no evidence was admitted. Declare a measurable forecast kernel
+
+\[
+\mathsf P_{H,K}:\Theta_K\times\mathcal E^k
+\longrightarrow\mathcal P(\mathcal Z_H)
+\]
+
+and frozen as-of fusion weights \(\lambda_{K,t}^{\mathrm{bel}}\ge0\) satisfying \(\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1\) when the set is non-empty. The posterior-predictive base law is
+
+\[
+\mathsf Q_t^0(A\mid C_t)=
+\begin{cases}
+\displaystyle
+\sum_{K\in\mathcal K_t^{\mathrm{bel}}}
+\lambda_{K,t}^{\mathrm{bel}}
+\int_{\Theta_K}\mathsf P_{H,K}(A\mid\theta,C_t)
+q_{K,t}^{\mathrm{eff}}(d\theta),
+&\mathcal K_t^{\mathrm{bel}}\neq\varnothing,\\[2mm]
+\mathsf Q_B(A\mid C_t),
+&\mathcal K_t^{\mathrm{bel}}=\varnothing.
+\end{cases}
+\]
+
+Thus \(\mathsf Q_t^0\in\mathcal P(\mathcal Z_H)\). The weights, bucket-eligibility rule, kernels, and any approximation are frozen in \(\Xi_B\). A plug-in implementation is permitted only when \(\Xi_B\) replaces the integral by a declared measurable posterior decision rule and labels it as plug-in prediction.
+
+For auxiliary structured fields, declare a measurable posterior-aware template map \(B_H^{\mathrm{bel}}\). Set
+
+\[
+b_t^0=
+\begin{cases}
+B_H^{\mathrm{bel}}\!\left(C_t,
+(q_{K,t}^{\mathrm{eff}})_{K\in\mathcal K_t^{\mathrm{bel}}},
+(\lambda_{K,t}^{\mathrm{bel}})_{K\in\mathcal K_t^{\mathrm{bel}}}\right),
+&\mathcal K_t^{\mathrm{bel}}\neq\varnothing,\\
+B(C_t),&\mathcal K_t^{\mathrm{bel}}=\varnothing.
+\end{cases}
+\]
+
+The canonical order is fixed: construct the frontier, admit evidence, update or retrieve posteriors, form \((\mathsf Q_t^0,b_t^0)\), select only residuals certified for that base, apply the residual kernel, and then score the resulting law.
 
 To make structured correction type-correct, choose a finite-dimensional Hilbert space \(\mathscr H\). Let \(\mathbb H_d^E\) and \(\mathbb H_d^Q\) be separately tagged copies of the real vector space of self-adjoint operators on \(\mathscr H\), each equipped with the Frobenius norm \(\|\cdot\|_F\). The superscripts distinguish point-template semantics from forecast-law semantics even when an implementation uses the same matrix representation. Define:
 
@@ -54,7 +94,7 @@ Residuals are estimated after observation and are indexed by the forecast horizo
 
 \[
 r_{t,H}^{E,\mathrm{obs}}=
-q_E(e_{t+1})-q_E(b_t),
+q_E(e_{t+1})-q_E(b_t^0),
 \qquad
 0<\tau(e_{t+1})-\tau(e_t)\le H.
 \]
@@ -65,7 +105,7 @@ If \(Z_{t+1}=\varnothing\), then \(r_{t,H}^{E,\mathrm{obs}}\) is undefined for t
 \rho_H^Q:\mathcal P(\mathcal Z_H)\times\mathcal Z_H\rightarrow\mathbb H_d^Q,
 \qquad
 r_{t,H}^{Q,\mathrm{obs}}=
-\rho_H^Q\!\left(\mathsf Q_B(\cdot\mid C_t),Z_{t+1}\right).
+\rho_H^Q\!\left(\mathsf Q_t^0(\cdot\mid C_t),Z_{t+1}\right).
 \]
 
 Its objective may be a proper-score gradient, a constrained law update, or another predeclared rule, but it must be defined at \(Z_{t+1}=\varnothing\), fitted without future leakage, and evaluated on later outcomes. Define the residual mode set \(\mathcal M_R=\{\varnothing,E,Q,EQ\}\) and a typed residual record
@@ -82,13 +122,24 @@ The mode says which components are semantically present; an absent component is 
 The general residual cache available immediately before prediction is:
 
 \[
-\mathcal C_{R,t^-}=\{(\kappa_i,\mathbf r_i,c_i,n_i,t_i,v_i,\mu_i,H_i,s_i)\}_{i=1}^{N_t},
+\mathcal C_{R,t^-}=
+\{(\kappa_i,\mathbf r_i,c_i,n_i,t_i,v_i,\mu_i,H_i,
+\upsilon_i^{\mathrm{bel}},\mu_i^{\mathrm{bel}},s_i)\}_{i=1}^{N_t},
 \qquad
 \kappa:\mathcal E^k\rightarrow\mathcal K_R,
 \qquad \mathbf r_i\in\mathcal V_R,
 \]
 
-where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(\mu_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, and \(s_i\) is provenance including component modes, estimator identities, censoring convention, and eligible training interval. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
+where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(\mu_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, \(\upsilon_i^{\mathrm{bel}}\) is the posterior-predictive certificate version against which it was calibrated, and \(\mu_i^{\mathrm{bel}}\) is its materialized base-law motion margin. The provenance \(s_i\) includes component modes, estimator identities, censoring convention, eligible training interval, posterior-predictive reference identity, and permitted law-motion radius. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
+
+For each residual entry, freeze a bounded law metric \(D_{\mathrm{res}}\), a posterior-predictive reference law \(\mathsf Q_i^{0,\mathrm{ref}}\), and a permitted radius \(\epsilon_i^{\mathrm{bel}}\). Let \(\overline D_{i,t}^{\mathrm{bel}}\) be either an analytic bound or a simultaneously valid upper confidence bound for \(D_{\mathrm{res}}(\mathsf Q_t^0,\mathsf Q_i^{0,\mathrm{ref}})\), and materialize
+
+\[
+\mu_i^{\mathrm{bel}}=
+\epsilon_i^{\mathrm{bel}}-\overline D_{i,t}^{\mathrm{bel}}.
+\]
+
+A plug-in distance without uncertainty coverage is not a residual-survival certificate. Ordinary posterior updates remain inside version \(\upsilon_t^{\mathrm{bel}}\) only while the bound to that version's fixed reference and every dependent residual margin remain valid. Otherwise the dependency-closure transition in Section 7 bumps the local version and marks affected residual entries stale before the new posterior becomes readable.
 
 \[
 j_t=\min\!\left(\arg\min_{1\le i\le N_t}
@@ -105,7 +156,9 @@ J_t^R=
 d_{\mathcal K_R}(\kappa(C_t),\kappa_{j_t})\le\epsilon_R,\quad
 c_{j_t}\ge\gamma_R,\quad n_{j_t}\ge n_{\min}^R,\\
 \mathrm{age}_t(t_{j_t})\le A_{\max}^R,\quad
-v_{j_t}=v_t,\quad H_{j_t}=H,\quad \mu_{j_t}\ge0,\quad s_{j_t}\text{ is valid}
+v_{j_t}=v_t,\quad H_{j_t}=H,\quad \mu_{j_t}\ge0,\\
+\upsilon_{j_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}},\quad
+\mu_{j_t}^{\mathrm{bel}}\ge0,\quad s_{j_t}\text{ is valid}
 \end{array}
 \right],&N_t>0,\\
 0,&N_t=0.
@@ -137,6 +190,7 @@ and define the partial map:
 \mathcal K_A\rightharpoonup
 \mathcal V_R\times[0,1]\times\mathbb N_0\times\mathcal T
 \times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
+\times\mathbb N_0\times\mathbb R
 \times\mathcal S_{\mathrm{prov}}.
 \]
 
@@ -146,10 +200,11 @@ For \(k_t=\alpha(C_t)\), bind the cache entry only when it exists:
  k_t\in\mathrm{dom}(\mathcal C_{A,t^-})
 \quad\Longrightarrow\quad
 \mathcal C_{A,t^-}(k_t)=
-(\mathbf r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},\mu_{k_t},H_{k_t},s_{k_t}),
+(\mathbf r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},\mu_{k_t},H_{k_t},
+\upsilon_{k_t}^{\mathrm{bel}},\mu_{k_t}^{\mathrm{bel}},s_{k_t}),
 \]
 
-where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(\mu_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, and \(s_{k_t}\) records component modes, estimator identities, censoring convention, and eligible training interval. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
+where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(\mu_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, \(\upsilon_{k_t}^{\mathrm{bel}}\) is its posterior-predictive certificate version, and \(\mu_{k_t}^{\mathrm{bel}}\) is its materialized base-law motion margin. The provenance \(s_{k_t}\) records component modes, estimator identities, censoring convention, eligible training interval, posterior-predictive reference identity, and permitted law-motion radius. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
 
 \[
 \mu_{k_t}=
@@ -171,7 +226,9 @@ J_t^A=
 \begin{gathered}
 c_{k_t}\ge\gamma_A,\quad n_{k_t}\ge n_{\min},\quad
 \mathrm{age}_t(t_{k_t})\le A_{\max},\\
-v_{k_t}=v_t,\quad H_{k_t}=H,\quad \mu_{k_t}\ge0,\quad
+v_{k_t}=v_t,\quad H_{k_t}=H,\quad \mu_{k_t}\ge0,\\
+\upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}},\quad
+\mu_{k_t}^{\mathrm{bel}}\ge0,\quad
 s_{k_t}\text{ is valid}
 \end{gathered}
 \right],&k_t\in\mathrm{dom}(\mathcal C_{A,t^-}),\\
@@ -231,7 +288,7 @@ For every \(A\in\mathscr A_H\), define:
 \[
 \mathsf Q_t^{(\mathbf r)}(A\mid C_t)=
 \int_{\mathcal Z_H}\mathfrak K_H^Q(\bar r^Q)(z,A)
-\,\mathsf Q_B(dz\mid C_t).
+\,\mathsf Q_t^0(dz\mid C_t).
 \]
 
 Because \(\mathfrak K_H^Q(r^Q)\) is a Markov kernel, \(\mathsf Q_t^{(\mathbf r)}\) is a probability law. Its no-event mass is explicitly:
@@ -240,10 +297,10 @@ Because \(\mathfrak K_H^Q(r^Q)\) is a Markov kernel, \(\mathsf Q_t^{(\mathbf r)}
 \begin{aligned}
 \mathsf Q_t^{(\mathbf r)}(\{\varnothing\}\mid C_t)
 ={}&\mathfrak K_H^Q(\bar r^Q)(\varnothing,\{\varnothing\})
-\mathsf Q_B(\{\varnothing\}\mid C_t)\\
+\mathsf Q_t^0(\{\varnothing\}\mid C_t)\\
 &+\int_{\mathcal Z_H^+}
 \mathfrak K_H^Q(\bar r^Q)(z,\{\varnothing\})
-\,\mathsf Q_B(dz\mid C_t).
+\,\mathsf Q_t^0(dz\mid C_t).
 \end{aligned}
 \]
 
@@ -254,7 +311,7 @@ Thus a nonzero residual may change the no-event probability by moving mass in ei
 \begin{cases}
 \varnothing,
 &d_H(\mathsf Q_t^{(\mathbf r)})=\varnothing,\\
-\mathrm{lift}_H\!\left(b_t\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)})\right),
+\mathrm{lift}_H\!\left(b_t^0\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)})\right),
 &d_H(\mathsf Q_t^{(\mathbf r)})\in\mathcal Z_H^+.
 \end{cases}
 \]
@@ -265,7 +322,7 @@ Thus a nonzero residual may change the no-event probability by moving mass in ei
 \in\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing.
 \]
 
-The residual record pairs two independently typed semantics. The law component controls the proper forecast, while the point component controls auxiliary structured fields. The fixed \(d_H\) and \(\mathrm{lift}_H\) keep the final mark and time coherent with the corrected law, but they do not prove that auxiliary fields improved; a joint record must pass forward validation of the complete output bundle. The baseline bundle is exactly \(\mathcal O_t^B=\mathcal O_t(\mathbf 0_R)=(\mathsf Q_B(\cdot\mid C_t),\hat e_t^H(\mathbf 0_R))\). Form the selected candidate \(\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(\mathbf r_t^{\mathrm{use}})\), and accept it only from current information:
+The residual record pairs two independently typed semantics. The law component controls the proper forecast, while the point component controls auxiliary structured fields. The fixed \(d_H\) and \(\mathrm{lift}_H\) keep the final mark and time coherent with the corrected law, but they do not prove that auxiliary fields improved; a joint record must pass forward validation of the complete output bundle. The no-residual bundle is exactly \(\mathcal O_t^0=\mathcal O_t(\mathbf 0_R)=(\mathsf Q_t^0(\cdot\mid C_t),\hat e_t^H(\mathbf 0_R))\). It equals the original baseline bundle only when \(\mathcal K_t^{\mathrm{bel}}=\varnothing\). Form the selected candidate \(\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(\mathbf r_t^{\mathrm{use}})\), and accept it only from current information:
 
 \[
 J_t^{\mathrm{pre}}=
@@ -281,15 +338,23 @@ The final residual law and bundle are:
 \mathcal O_t^R=
 \begin{cases}
 \mathcal O_t^{\mathrm{cand}},&J_t^{\mathrm{pre}}=1,\\
-\mathcal O_t^B,&J_t^{\mathrm{pre}}=0,
+\mathcal O_t^0,&J_t^{\mathrm{pre}}=0,
 \end{cases}
 \qquad
 \mathsf Q_t^R=
 \begin{cases}
 \mathsf Q_t^{(\mathbf r_t^{\mathrm{use}})},&J_t^{\mathrm{pre}}=1,\\
-\mathsf Q_B,&J_t^{\mathrm{pre}}=0.
+\mathsf Q_t^0,&J_t^{\mathrm{pre}}=0.
 \end{cases}
 \]
+
+Define the deterministic scored residual-policy map \(\mathfrak F_R\) by
+
+\[
+\mathfrak F_R(\mathsf Q_t^0,b_t^0,C_t;S_{t^-})=\mathsf Q_t^R.
+\]
+
+It includes posterior-aware cache selection, the full-outcome residual kernel, and the pre-observation fallback. This map is reused by the omitted-influence audit in Section 5; therefore that audit compares complete scored laws rather than detached posterior states.
 
 An implementation may try the next lower-precedence residual after a rejected candidate only when that fallback order and every gate were preregistered. No post-observation quantity may enter this decision.
 
@@ -305,7 +370,7 @@ z_a=(\mathrm{move},0.2),
 z_b=(\mathrm{stop},0.8).
 \]
 
-For one context \(C_t\), suppose the baseline law is the row vector \(\mathbf q_B=(0.50,0.20,0.30)\).
+For one context \(C_t\), suppose \(\mathcal K_t^{\mathrm{bel}}=\varnothing\), so the posterior-predictive fallback is the row vector \(\mathsf Q_t^0=\mathbf q_B=(0.50,0.20,0.30)\) and \(b_t^0=B(C_t)\).
 
 Take \(\mathscr H=\mathbb R^3\), represent both tagged residual components by diagonal self-adjoint matrices, and use the certified joint cache record
 
@@ -354,7 +419,7 @@ Set \(\mathfrak K_H^Q(r^Q)(z_i,\{z_j\})=K(r^Q)_{ij}\). Every row sums to one, al
 =(0.60,0.15,0.25).
 \]
 
-The law correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be \(b_t=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\mathrm{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0^E=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+The law correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let \(b_t^0=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\mathrm{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0^E=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
 
 \[
 d_H(\mathbf q_R)=z_a,
@@ -364,7 +429,7 @@ d_H(\mathbf q_R)=z_a,
 
 If \(z_a\) is observed, logarithmic loss changes from \(-\log(0.50)\approx0.693\) to \(-\log(0.60)\approx0.511\). If \(\varnothing\) is observed, it worsens from \(-\log(0.30)\approx1.204\) to \(-\log(0.25)\approx1.386\). This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
 
-Suppose the exact cache entry records \(H_{k_t}=1\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(\mathbf r_t^{\mathrm{use}}=\mathbf r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
+Suppose the exact cache entry records \(H_{k_t}=1\), \(\upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}}\), \(\mu_{k_t}^{\mathrm{bel}}\ge0\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(\mathbf r_t^{\mathrm{use}}=\mathbf r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
 
 Finally, let the finite design family built on \(\mathcal S_{\mathrm{obj}}\) be \(\{\Theta_0,\Theta_1\}\), where \(\Theta_0\) is baseline-only and \(\Theta_1\) includes the certified residual. Take \(\epsilon_{AP}=0.05\), \(D_K^{\mathrm{cert},\star}(\Theta_0)=0.03\), \(D_K^{\mathrm{cert},\star}(\Theta_1)=0.04\), \(\epsilon_{\mathrm{prop}}=0.02\), and suppose the grouped design-sample calculations are
 
@@ -387,12 +452,12 @@ Finally, let the finite design family built on \(\mathcal S_{\mathrm{obj}}\) be 
 
 with \(\mathrm{UCB}[0.72-0.80]=-0.02\le\epsilon_{\mathrm{prop}}\) and \(\lambda_{\mathrm{rep}}=1\). Both designs remain feasible, while their empirical composite values are \(0.30\) and \(0.25\), so the deterministic operational rule selects \(\widehat\Theta_\Gamma=\Theta_1\). An untouched \(\mathcal S_{\mathrm{conf}}\) may then confirm or reject the frozen claim, but it cannot alter the candidate family or the selected residual. These stipulated values demonstrate how to execute the contracts; they are not measurements of EventFrame performance.
 
-A bounded hash table can provide expected \(O(1)\) lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch \(v_t\) must increase whenever a dependent comparison map, edge set, threshold, or simultaneous defect bound changes. Local epochs and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap is built against a shadow graph version and published atomically with its affected abstraction-key map and epoch map. A reader uses one immutable graph-key-epoch snapshot for the entire prediction; it must never combine a new graph or abstraction key with old certificates. Entries invalidated by the publication fall back to the baseline or another currently certified cache path until recertified, and rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old epoch identifier.
+A bounded hash table can provide expected \(O(1)\) lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal, posterior-motion certification, and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch \(v_t\) or posterior-predictive version \(\upsilon_t^{\mathrm{bel}}\) must increase whenever its dependent graph contract or certified law-motion region changes. Local versions and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap or out-of-tolerance posterior update is built against shadow state and published atomically with its affected keys and epoch map. A reader uses one immutable graph-posterior-key-epoch snapshot for the entire prediction. Entries invalidated by publication fall back to the current posterior-predictive no-residual law or another currently certified cache path until recertified; rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old identifier.
 
 After observation, evaluate the particular residual candidate stored for key \(k\), either on a deployed trial or in shadow mode. Set \(I_{t,k}=1\) when
 
 \[
-\mathcal A_{\mathrm{post}}(\mathcal O_t^B,Z_{t+1})
+\mathcal A_{\mathrm{post}}(\mathcal O_t^0,Z_{t+1})
 -\mathcal A_{\mathrm{post}}(\mathcal O_t(\mathbf r_k),Z_{t+1})
 \ge\delta_A,
 \]

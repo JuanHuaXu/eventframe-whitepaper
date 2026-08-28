@@ -13,10 +13,10 @@ Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identit
 The reference prediction procedure has seven steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
-2. Compute a baseline forecast law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\).
-3. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and component-provenance checks pass.
-4. Construct a bounded Bayesian update frontier, apply the recorded activation rule, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise preserve separate posteriors or defer.
-5. Clip the separately typed point and law residual components, apply each only to its declared semantics, derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
+2. Construct the bounded Bayesian candidate frontier, require evidence readiness, apply the recorded total nomination-and-activation rule, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise preserve separate posteriors or defer.
+3. Map the valid effective posterior family to the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\), using \(\mathsf Q_B\) and \(B\) only when no valid belief bucket is available.
+4. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective support, age, epoch, forecast-horizon equality, compatibility margin, component provenance, posterior-predictive version, and certified belief-motion checks pass.
+5. Clip the separately typed point and law residual components, apply the law kernel after \(\mathsf Q_t^0\), derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
 6. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
 7. Use a slower refinement process to audit selective updates, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology.
 

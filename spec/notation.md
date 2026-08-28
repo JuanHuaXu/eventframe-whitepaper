@@ -40,6 +40,10 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathcal A_{\mathrm{post}}\) | \([0,1]\) | post-observation realized event action |
 | \(\mathsf Q_B\) | \(\mathcal E^k\to\mathcal P(\mathcal Z_H)\) | baseline probability-law predictor |
 | \(B\) | \(\mathcal E^k\to\mathcal E\) | baseline conditional event-template predictor |
+| \(\mathcal K_t^{\mathrm{bel}}\) | finite set | valid local belief buckets available at prediction time |
+| \(\mathsf P_{H,K},\lambda_{K,t}^{\mathrm{bel}}\) | probability kernel, weight | bucket posterior-predictive kernel and frozen context-dependent mixture weight |
+| \(\mathsf Q_t^0,b_t^0\) | probability law, event template | belief-conditioned posterior-predictive base law and its aligned template before residual correction |
+| \(B_H^{\mathrm{bel}}\) | measurable map | converts the effective posterior family and context into the base event template |
 | \(\mathscr H\) | finite-dimensional Hilbert space | carrier for operator representation |
 | \(\mathbb H_d^E,\mathbb H_d^Q\) | tagged vector spaces | point-template and forecast-law copies of the self-adjoint operators on \(\mathscr H\) |
 | \(\mathcal Q_{E,\mathrm{adm}}\) | closed subset of \(\mathbb H_d^E\) | admissible event representations |
@@ -57,13 +61,20 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(\mathfrak K_H^Q\) | kernel-valued map | law-residual-induced Markov kernel on \((\mathcal Z_H,\mathscr A_H)\) |
 | \(H_i,H_{k_t}\) | positive reals | horizons recorded by general and exact residual-cache entries |
 | \(s_i,s_{k_t}\) | \(\mathcal S_{\mathrm{prov}}\) | provenance records for general and exact residual-cache entries |
+| \(D_{\mathrm{res}},\mathsf Q_i^{0,\mathrm{ref}},\epsilon_i^{\mathrm{bel}},\overline D_{i,t}^{\mathrm{bel}}\) | distance, law, reals | frozen residual-reference distance, fixed base-law reference, allowed motion, and certified upper motion bound |
+| \(\upsilon_i^{\mathrm{bel}},\mu_i^{\mathrm{bel}}\) | version, real | posterior-predictive certificate version and residual-survival margin |
+| \(\mathfrak F_R\) | deterministic policy | complete posterior-aware residual selection, composition, and pre-risk fallback map |
 | \(\Xi_R\) | typed contract tuple | complete residual representation, kernel, key, and gate contract |
-| \(\mathcal N_t^B\) | finite set | bounded Bayesian candidate frontier from vector, sheaf-inspired, and as-of graph neighborhoods |
-| \(A_t^B,\tau_t^B,J_t^{\mathrm{act}}\) | scores and indicator | activation score, criticality-adjusted threshold, and update-admission decision |
+| \(\mathfrak E_t^B,\mathcal N_t^B\) | finite sets | bounded candidate universe and nominated Bayesian frontier |
+| \(J_t^{\mathrm{nom}},J_t^{\mathrm{evid}},A_t^B,\tau_t^B,J_t^{\mathrm{act}}\) | indicators and scores | nomination, evidence-readiness, activation score, threshold, and total update-admission decision |
 | \(J_{K,t}^{\mathrm{share}}\) | \(\{0,1\}\) | Anti-Pigeon posterior-sharing certificate decision for bucket \(K\) |
-| \(q_{K,t^-},q_{K,t}^+\) | probability measures | cached prior and updated posterior for a certified Bayesian bucket |
+| \(q_{K,t^-},q_{K,t}^+,q_{K,t}^{\mathrm{eff}}\) | probability measures | cached prior, candidate update, and valid posterior actually used for prediction |
 | \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent inactive-event audit indicator |
-| \(U_t^{\mathrm{omit}}\) | non-negative real | simultaneous upper bound on local-versus-expanded forecast disagreement |
+| \(D_{\mathrm{omit}},\Delta_{K,t}^{\mathrm{omit}},U_t^{\mathrm{omit}}\) | divergence and reals | normalized Jensen--Shannon forecast divergence, audit-population mean, and simultaneous upper confidence bound |
+| \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\) | confidence procedure | frozen design-weighted simultaneous confidence sequence for omitted influence |
+| \(N_{\mathrm{audit}}^{\max}\) | non-negative integer | fixed inactive-event audit-reservoir capacity |
+| \(N_t^{\mathrm{act}},M_{\mathrm{hyp}},R_{\mathrm{cp}}\) | non-negative integers | activated count, bounded hypothesis/statistic dimension, and retained changepoint-state count |
+| \(T_{\mathrm{act}},T_{\mathrm{sel}},T_{\mathrm{Bayes}}^{\mathrm{fast}}\) | costs | total activation, complete selection-probability, and bounded direct Bayesian work |
 | \(\mathcal C_{B,t^-},\Xi_B\) | cache, typed contract | as-of posterior cache and complete selective Bayesian contract |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
@@ -266,10 +277,44 @@ d_E(\Pi_E(q_E(b)+\mathrm{clip}_{\delta_E}(r))),&r\neq0.
 
 The zero branch makes no correction an exact identity. The decoder is not written as an inverse because the encoder may be lossy.
 
-For the forecast issued at \(t\), the point residual is defined only on an in-horizon event:
+For the forecast issued at \(t\), let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of valid local belief buckets. For each bucket, let \(q_{K,t}^{\mathrm{eff}}\) be the valid updated posterior when one was accepted and the valid cached prior otherwise. Given a declared measurable posterior-predictive kernel
 
 \[
-r_{t,H}^{E,\mathrm{obs}}=q_E(e_{t+1})-q_E(b_t),
+\mathsf P_{H,K}:\Theta_K\times\mathcal E^k\to\mathcal P(\mathcal Z_H)
+\]
+
+and frozen non-negative weights \(\lambda_{K,t}^{\mathrm{bel}}(C_t)\) summing to one, define the pre-residual base law
+
+\[
+\mathsf Q_t^0(A\mid C_t)=
+\begin{cases}
+\displaystyle\sum_{K\in\mathcal K_t^{\mathrm{bel}}}
+\lambda_{K,t}^{\mathrm{bel}}(C_t)
+\int_{\Theta_K}\mathsf P_{H,K}(A\mid\theta,C_t)q_{K,t}^{\mathrm{eff}}(d\theta),
+&\mathcal K_t^{\mathrm{bel}}\ne\varnothing,\\
+\mathsf Q_B(A\mid C_t),&\mathcal K_t^{\mathrm{bel}}=\varnothing.
+\end{cases}
+\]
+
+A plug-in posterior predictive is allowed only when its decision rule is declared and its output is labeled as plug-in. The aligned base template is
+
+\[
+b_t^0=
+\begin{cases}
+B_H^{\mathrm{bel}}\!\left(C_t,
+(q_{K,t}^{\mathrm{eff}})_{K\in\mathcal K_t^{\mathrm{bel}}},
+(\lambda_{K,t}^{\mathrm{bel}})_{K\in\mathcal K_t^{\mathrm{bel}}}\right),
+&\mathcal K_t^{\mathrm{bel}}\ne\varnothing,\\
+B(C_t),&\mathcal K_t^{\mathrm{bel}}=\varnothing,
+\end{cases}
+\]
+
+with \(b_t^0=B(C_t)\) on the empty-belief fallback. Thus the canonical scored order is posterior update, posterior-predictive base law, posterior-aware residual selection, then residual-kernel composition.
+
+The point residual is defined only on an in-horizon event and against the base template actually forecast:
+
+\[
+r_{t,H}^{E,\mathrm{obs}}=q_E(e_{t+1})-q_E(b_t^0),
 \qquad 0<\tau(e_{t+1})-\tau(e_t)\le H.
 \]
 
@@ -280,7 +325,7 @@ A distributional residual may be learned on either outcome branch through a decl
 \[
 \rho_H^Q:\mathcal P(\mathcal Z_H)\times\mathcal Z_H\to\mathbb H_d^Q,
 \qquad
-r_{t,H}^{Q,\mathrm{obs}}=\rho_H^Q(\mathsf Q_B(\cdot\mid C_t),Z_{t+1}).
+r_{t,H}^{Q,\mathrm{obs}}=\rho_H^Q(\mathsf Q_t^0(\cdot\mid C_t),Z_{t+1}).
 \]
 
 It is defined at \(\varnothing\), and cache provenance distinguishes it from \(r_{t,H}^{E,\mathrm{obs}}\). Let \(\mathcal M_R=\{\varnothing,E,Q,EQ\}\), \(\mathcal V_R=\mathbb H_d^E\times\mathbb H_d^Q\times\mathcal M_R\), and \(\mathbf r=(r^E,r^Q,m)\in\mathcal V_R\). The mode is authoritative about component presence. Point and law components have independent semantics; a joint record requires forward validation of the complete output bundle and does not assert that its components are equal.
@@ -290,13 +335,14 @@ It is defined at \(\varnothing\), and cache provenance distinguishes it from \(r
 Both caches are reconstructed as of \(S_{t^-}\); no later entry, outcome, confidence update, epoch, or audit result may be read. The general cache is:
 
 \[
-\mathcal C_{R,t^-}=\{(\kappa_i,\mathbf r_i,c_i,n_i,t_i,v_i,\mu_i,H_i,s_i)\}_{i=1}^{N_t},
+\mathcal C_{R,t^-}=\{(\kappa_i,\mathbf r_i,c_i,n_i,t_i,v_i,\mu_i,H_i,
+\upsilon_i^{\mathrm{bel}},\mu_i^{\mathrm{bel}},s_i)\}_{i=1}^{N_t},
 \quad
 \kappa:\mathcal E^k\to\mathcal K_R,
 \quad \mathbf r_i\in\mathcal V_R.
 \]
 
-For \(N_t>0\), \(j_t\) is the deterministic nearest-key selection. Let \(J_t^R\) indicate that distance, confidence, effective support, age, epoch, horizon equality \(H_i=H\), compatibility margin, and provenance gates all pass; set it to zero when the cache is empty. Then
+For \(N_t>0\), \(j_t\) is the deterministic nearest-key selection. Let \(J_t^R\) indicate that distance, confidence, effective support, age, epoch, horizon equality \(H_i=H\), compatibility margin, provenance, posterior-predictive version \(\upsilon_i^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}}\), and belief-motion margin \(\mu_i^{\mathrm{bel}}\ge0\) all pass; set it to zero when the cache is empty. Then
 
 \[
 \mathbf r_t^*=\begin{cases}
@@ -311,10 +357,10 @@ The action cache is typed as:
 \mathcal C_{A,t^-}:\mathcal K_A\rightharpoonup
 \mathcal V_R\times[0,1]\times\mathbb N_0\times\mathcal T
 \times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
-\times\mathcal S_{\mathrm{prov}}.
+\times\mathbb N_0\times\mathbb R\times\mathcal S_{\mathrm{prov}}.
 \]
 
-For \(k_t=\alpha(C_t)\), bind the entry only when it exists, including provenance \(s_{k_t}\). Let \(J_t^A\) indicate that confidence, effective support, age, epoch, horizon equality \(H_{k_t}=H\), compatibility-margin, and provenance checks pass; set it to zero when the key is absent. The exact-to-general selector is:
+For \(k_t=\alpha(C_t)\), bind the entry only when it exists, including provenance \(s_{k_t}\), posterior-predictive version \(\upsilon_{k_t}^{\mathrm{bel}}\), and belief-motion margin \(\mu_{k_t}^{\mathrm{bel}}\). Let \(J_t^A\) indicate that confidence, effective support, age, epoch, horizon equality \(H_{k_t}=H\), compatibility margin, provenance, posterior-predictive version equality, and non-negative belief-motion margin all pass; set it to zero when the key is absent. The exact-to-general selector is:
 
 \[
 \mathbf r_t^{\mathrm{use}}=
@@ -326,6 +372,16 @@ For \(k_t=\alpha(C_t)\), bind the entry only when it exists, including provenanc
 \]
 
 This indicator distinguishes an accepted zero residual from a cache miss. To obtain a corrected forecast law, declare:
+
+Each residual certificate is calibrated against a fixed posterior-predictive reference law \(\mathsf Q_i^{0,\mathrm{ref}}\). Freeze a bounded law distance \(D_{\mathrm{res}}\), a tolerance \(\epsilon_i^{\mathrm{bel}}\), and a simultaneous upper confidence or analytic bound \(\overline D_{i,t}^{\mathrm{bel}}\) for
+
+\[
+D_{\mathrm{res}}(\mathsf Q_t^0,\mathsf Q_i^{0,\mathrm{ref}}),
+\qquad
+\mu_i^{\mathrm{bel}}=\epsilon_i^{\mathrm{bel}}-\overline D_{i,t}^{\mathrm{bel}}.
+\]
+
+A plug-in distance without uncertainty coverage is not a certificate. An ordinary posterior update may retain \(\upsilon_t^{\mathrm{bel}}\) only while every dependent residual remains bound to the same fixed reference law and its margin stays non-negative. Otherwise the dependency-closure operators \(\mathsf B_{\mathcal D}\) and \(\mathsf I_{\mathcal D}\) in Section 7 bump the posterior-predictive, residual, and graph versions and stale the affected entries.
 
 \[
 \mathfrak K_H^Q:\mathbb H_d^Q\to\mathrm{Ker}(\mathcal Z_H),
@@ -340,7 +396,7 @@ For \(\mathbf r=(r^E,r^Q,m)\), let \(\bar r^E\) and \(\bar r^Q\) be the correspo
 \[
 \mathsf Q_t^{(\mathbf r)}(A\mid C_t)=
 \int_{\mathcal Z_H}\mathfrak K_H^Q(\bar r^Q)(z,A)
-\,\mathsf Q_B(dz\mid C_t).
+\,\mathsf Q_t^0(dz\mid C_t).
 \]
 
 In particular,
@@ -349,17 +405,17 @@ In particular,
 \begin{aligned}
 \mathsf Q_t^{(\mathbf r)}(\{\varnothing\}\mid C_t)
 ={}&\mathfrak K_H^Q(\bar r^Q)(\varnothing,\{\varnothing\})
-\mathsf Q_B(\{\varnothing\}\mid C_t)\\
+\mathsf Q_t^0(\{\varnothing\}\mid C_t)\\
 &+\int_{\mathcal Z_H^+}\mathfrak K_H^Q(\bar r^Q)(z,\{\varnothing\})
-\,\mathsf Q_B(dz\mid C_t).
+\,\mathsf Q_t^0(dz\mid C_t).
 \end{aligned}
 \]
 
-Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) align a corrected event template with the marked decision. Set \(\hat e_t^H(\mathbf r)=\varnothing\) when \(d_H(\mathsf Q_t^{(\mathbf r)})=\varnothing\), and otherwise set \(\hat e_t^H(\mathbf r)=\mathrm{lift}_H(b_t\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)}))\). Then \(\mathcal O_t(\mathbf r)=(\mathsf Q_t^{(\mathbf r)},\hat e_t^H(\mathbf r))\). The typed pair keeps law and auxiliary-template semantics separate; \(d_H\) and \(\mathrm{lift}_H\) enforce mark/time coherence only. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise \(\mathcal O_t(\mathbf 0_R)\) is returned. Point-only records cannot support a proper-score claim; law-only records cannot claim auxiliary-field correction. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
+Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) align a corrected event template with the marked decision. Set \(\hat e_t^H(\mathbf r)=\varnothing\) when \(d_H(\mathsf Q_t^{(\mathbf r)})=\varnothing\), and otherwise set \(\hat e_t^H(\mathbf r)=\mathrm{lift}_H(b_t^0\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)}))\). Then \(\mathcal O_t(\mathbf r)=(\mathsf Q_t^{(\mathbf r)},\hat e_t^H(\mathbf r))\), with \(\mathcal O_t^0=\mathcal O_t(\mathbf0_R)\). The typed pair keeps law and auxiliary-template semantics separate; \(d_H\) and \(\mathrm{lift}_H\) enforce mark/time coherence only. The selected candidate is returned only if its pre-observation gate passes from \(S_{t^-}\); otherwise \(\mathcal O_t^0\) is returned. Define the deterministic complete-law policy \(\mathfrak F_R(\mathsf Q_t^0,b_t^0,C_t;S_{t^-})=\mathsf Q_t^R\), where \(\mathsf Q_t^R\) is the law component actually returned after residual selection and pre-risk gating. Point-only records cannot support a proper-score claim; law-only records cannot claim auxiliary-field correction. Confidence updates include only outcomes already available, use clustered or effective support for overlapping contexts, and use sequentially valid inference when monitored repeatedly.
 
 ## Selective Bayesian Updating
 
-Let the bounded as-of candidate frontier be
+Let \(\mathfrak E_t^B\) be the bounded as-of candidate universe and let the nominated frontier be
 
 \[
 \mathcal N_t^B=
@@ -373,20 +429,26 @@ Let the bounded as-of candidate frontier be
 
 Here \(\mathcal R_t^{\mathrm{vec}}\) is bounded vector retrieval, \(\mathcal N_t^{\mathrm{sh}}\) is a bounded sheaf-inspired compatibility neighborhood, and the final two sets are bounded incoming and outgoing relationships already present in the as-of graph. They scope candidate updates only: an outgoing edge is not evidence about an unrealized child outcome. The graph terms are called causal only when an explicit SCM and identification contract justify that label; otherwise they are predictive-dependency neighbors.
 
-For \(e\in\mathcal N_t^B\), let \(v_t^B(e),n_t^B(e),u_t^B(e),s_t^B(e),c_t^B(e)\in[0,1]\) be frozen vector relevance, neighbor compatibility, novelty, source-independence, and structural-criticality scores. With non-negative weights summing to one, define
+Define \(J_t^{\mathrm{nom}}(e)=\mathbf1\{e\in\mathcal N_t^B\}\) and \(J_t^{\mathrm{evid}}(e)=\mathbf1\{\xi_t(e)\text{ exists and }a(\xi_t(e))\le t\}\) on all \(e\in\mathfrak E_t^B\). A declared graph child or other hypothesis without an available frame may be nominated but is not activatable. Let \(v_t^B(e),n_t^B(e),u_t^B(e),s_t^B(e),c_t^B(e)\in[0,1]\) be frozen vector relevance, neighbor compatibility, novelty, source-independence, and structural-criticality scores when evidence is ready. With non-negative weights summing to one, define
 
 \[
-A_t^B(e)=\alpha_Bv_t^B(e)+\beta_Bn_t^B(e)+\gamma_Bu_t^B(e)+\delta_Bs_t^B(e),
+A_t^B(e)=
+\begin{cases}
+\alpha_Bv_t^B(e)+\beta_Bn_t^B(e)+\gamma_Bu_t^B(e)+\delta_Bs_t^B(e),
+&J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e)=1,\\
+0,&\text{otherwise},
+\end{cases}
 \]
 
 \[
 \tau_t^B(e)=\min\!\left(\tau_{\max},
 \max\!\left(\tau_{\min},\tau_0-\lambda_{\mathrm{crit}}c_t^B(e)\right)\right),
 \qquad
-J_t^{\mathrm{act}}(e)=\mathbf1\{A_t^B(e)\ge\tau_t^B(e)\}.
+J_t^{\mathrm{act}}(e)=J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e)
+\mathbf1\{A_t^B(e)\ge\tau_t^B(e)\}.
 \]
 
-Every score is computed from information available when the update decision is made and before any target whose performance will be claimed. The scoring maps, caps, weights, thresholds, tie-breaks, and provenance rules are components of \(\Xi_B\) and are frozen under \(\Lambda_{\mathrm{eval}}\).
+Every score is computed from information available when the update decision is made and before any target whose performance will be claimed. Because \(J_t^{\mathrm{act}}\) is total on \(\mathfrak E_t^B\), its model probability includes nomination, evidence readiness, and threshold admission. The scoring maps, caps, weights, thresholds, tie-breaks, and provenance rules are components of \(\Xi_B\) and are frozen under \(\Lambda_{\mathrm{eval}}\).
 
 Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a measurable parameter space and \(q_{K,t^-}\in\mathcal P(\Theta_K)\) the cached prior for bucket \(K\). Anti-Pigeon controls posterior granularity through
 
@@ -416,7 +478,7 @@ L_K^{\mathrm{sel}}(\xi\mid\theta,h,J^{\mathrm{act}}=1)=
 {P_\theta(J^{\mathrm{act}}=1\mid h)},
 \]
 
-where the denominator is positive. For a jointly activated evidence set, the contract supplies its joint selection probability; products of one-event selection corrections are valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result. Without either condition, the result is called an activation-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model.
+where the denominator is positive and both probabilities refer to the complete \(J_t^{\mathrm{act}}=J_t^{\mathrm{nom}}J_t^{\mathrm{evid}}J_t^{\mathrm{thr}}\) process. Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly activated evidence set, the contract supplies its joint selection probability; products of one-event selection corrections are valid only under a declared conditional factorization. Selection may be ignored only under a stated conditional-ignorability result. Without either condition, the result is called an activation-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
 
 Let \(R_{K,t}\) be a declared changepoint run-length state and
 
@@ -424,17 +486,36 @@ Let \(R_{K,t}\) be a declared changepoint run-length state and
 J_{K,t}^{\mathrm{cp}}=\mathbf1\{P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}\}.
 \]
 
-A trigger invalidates the affected posterior and residual certificates, increments their shared epoch, expands the bounded frontier, and queues slow recalibration. A monitor updated only by activated evidence detects changepoints in that selected process; it supports a full-stream regime claim only when the selection model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error.
+A trigger invokes the Section 7 dependency closure and its \(\mathsf B_{\mathcal D}\) and \(\mathsf I_{\mathcal D}\) operators, invalidating affected posterior and residual certificates and incrementing posterior-predictive, residual, and graph versions together. It also expands the bounded frontier and queues slow recalibration. A monitor updated only by activated evidence detects changepoints in that selected process; it supports a full-stream regime claim only when the selection model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error.
 
-Conditional on the inactive candidate set, candidates enter a shadow audit independently of their activation scores with \(J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}})\) under a frozen schedule. If accepted candidates exceed the audit budget, a frozen uniform reservoir subsamples them and records each final inclusion probability; audit estimators use the corresponding design weights. Let
+Conditional on the inactive candidate set, candidates enter a shadow audit independently of their activation scores with \(J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}})\) under a frozen schedule. If accepted candidates exceed the capacity \(N_{\mathrm{audit}}^{\max}\), a frozen uniform reservoir subsamples them and records each final inclusion probability; audit estimators use the corresponding design weights.
+
+Let \(\mathsf Q_t^{\mathrm{local}}\) be the complete scored law obtained by applying \(\mathfrak F_R\) to the posterior-predictive base from ordinary frontier updates. For audited inactive candidate \(e\), let \(\mathsf Q_t^{\mathrm{expanded}}(e)\) be the complete scored law obtained after adding that candidate's as-of evidence in the shadow state and then rerunning the same posterior-predictive and residual policy. Define normalized Jensen--Shannon divergence, with natural logarithms,
 
 \[
-U_t^{\mathrm{omit}}=\mathrm{UCB}_{\mathrm{sim}}\!\left[
-D_B(\mathsf Q_t^{\mathrm{local}},\mathsf Q_t^{\mathrm{expanded}})
-\right].
+D_{\mathrm{omit}}(P,Q)=
+\frac{\mathrm{KL}(P\|M)+\mathrm{KL}(Q\|M)}{2\log 2},
+\qquad M=\tfrac12(P+Q),
 \]
 
-Selective locality is certified only while \(U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}\). Activation, sharing, audit inclusion probability, provenance, horizon, posterior version, and changepoint state are logged. Publication atomically replaces the posterior, posterior key, dependent residual state, and epoch; readers observe either the old complete version or the new complete version. Posterior storage has a declared capacity and eviction rule; eviction removes reuse eligibility but does not erase immutable audit provenance.
+which lies in \([0,1]\) for probability laws on \((\mathcal Z_H,\mathscr A_H)\). Under the frozen audit design law \(P_{\mathrm{audit},K,t}\), let
+
+\[
+\Delta_{K,t}^{\mathrm{omit}}
+=\mathbb E_{e\sim P_{\mathrm{audit},K,t}}
+\!\left[D_{\mathrm{omit}}(\mathsf Q_t^{\mathrm{local}},\mathsf Q_t^{\mathrm{expanded}}(e))\right].
+\]
+
+The predeclared design-weighted procedure \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}(\alpha_{\mathrm{omit}})\) provides simultaneous sequential coverage over audited buckets, candidate expansions, and repeated audit decisions. If \(\mathfrak K_t^{\mathrm{audit}}\) is the set of buckets with effective audit support, define
+
+\[
+U_t^{\mathrm{omit}}=
+\max_{K\in\mathfrak K_t^{\mathrm{audit}}}
+\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}(\alpha_{\mathrm{omit}})
+[\Delta_{K,t}^{\mathrm{omit}}].
+\]
+
+If that set is empty, no certificate is reported. Selective locality is certified only for the declared audit population while \(U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}\); a universal claim additionally requires exhaustive audit coverage or a verified continuity or envelope bound. A plug-in divergence, unweighted capped sample, or pointwise interval is not a certificate. Activation, nomination, evidence readiness, sharing, audit inclusion probability, provenance, horizon, posterior version, and changepoint state are logged. Publication checks the fixed-reference residual-motion certificate, then atomically replaces the posterior, posterior key, dependent residual state, graph version, and epoch; readers observe either the old complete version or the new complete version. Posterior storage has a declared capacity and eviction rule; eviction removes reuse eligibility but does not erase immutable audit provenance.
 
 ## Runtime Packet
 
@@ -671,7 +752,15 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian frontier caps, activation maps and thresholds, source and selection models, posterior-sharing certificates, audit sampling, omitted-influence divergence, changepoint approximation, epoch invalidation, and atomic publication. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, nomination and evidence-readiness rules, activation maps and thresholds, source and complete selection models, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint approximation, residual posterior-motion certificate, dependency-closure versioning, and atomic publication. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
+
+\[
+\mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,
+\qquad
+\mathsf Q_{\Theta_\Gamma}(\cdot\mid C_t;S_{\Theta_\Gamma,t^-})=\mathsf Q_t^R(\cdot\mid C_t),
+\]
+
+where Section 5 first supplies the effective posterior family, Section 4 constructs \((\mathsf Q_t^0,b_t^0)\), and the residual policy acts after that base. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, posterior-predictive maps, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
 
 \[
 \mathcal R_{\mathrm{pri}}^D(\Theta_\Gamma)=

@@ -7,13 +7,13 @@ The reference fast path is:
 1. Incrementally update \(C_t=e_{t-k+1:t}\).
 2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
 3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier \(\mathcal N_t^B\).
-4. Check activation and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update.
-5. Compute baseline law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\), optionally conditioned on the accepted updated belief, or compute packet baseline \(B_Y(X_t)\).
+4. Check evidence readiness, total nomination-and-activation probabilities, and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update.
+5. Compute the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\) from the valid effective posterior family, falling back to \(\mathsf Q_B\) and \(B\) only when that family is empty; independently compute packet baseline \(B_Y(X_t)\) when required.
 6. Construct the bounded action key \(k_t=\alpha(C_t)\).
-7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient.
+7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version and certified belief-motion margin to match \(\mathsf Q_t^0\).
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
-10. Return the admissible prediction or fall back to the baseline. Do not evaluate realized prediction loss yet.
+10. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). Do not evaluate realized prediction loss yet.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
@@ -21,8 +21,9 @@ The packet names memory nodes, graph edges, retrieval lane, compaction risk, res
 flowchart LR
     C["Context C_t"] --> N["Bounded Bayesian frontier"]
     N --> J["Activation and sharing certificates"]
-    J --> B["Cached belief update and baseline"]
-    B --> A["Exact-key residual"]
+    J --> B["Cached belief update"]
+    B --> Q0["Posterior-predictive base"]
+    Q0 --> A["Posterior-aware exact residual"]
     A -->|accepted| P["Typed composition"]
     A -->|miss| R["General residual cache"]
     R -->|accepted| P
@@ -43,23 +44,25 @@ flowchart LR
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, and \(T_B^{\mathrm{fast}}\) the selective Bayesian work. Then:
+Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, and \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the selective Bayesian work. Then:
 
 \[
 T_{\mathrm{fast}}
-=T_C+T_B^{\mathrm{fast}}+T_B(k)+T_K+T_A
+=T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
 +I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
 \]
 
-where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let \(B_t^A=|\{e\in\mathcal N_t^B:J_t^{\mathrm{act}}(e)=1\}|\), let \(M_B\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_B\) bound retained changepoint run-length states. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let \(N_t^{\mathrm{act}}=|\{e\in\mathfrak E_t^B:J_t^{\mathrm{act}}(e)=1\}|\), let \(M_{\mathrm{hyp}}\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_{\mathrm{cp}}\) bound retained changepoint run-length states. Let \(T_{\mathrm{act}}(|\mathfrak E_t^B|)\) evaluate the frozen nomination, readiness, score, and threshold rule, and let \(T_{\mathrm{sel}}(N_t^{\mathrm{act}},M_{\mathrm{hyp}})\) evaluate or approximate the complete nomination-plus-activation probability required by the selected likelihood. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
 
 \[
-T_B^{\mathrm{fast}}
+T_{\mathrm{Bayes}}^{\mathrm{fast}}
 =T_{\mathrm{vec}}(k_v)+T_{\mathrm{expand}}(d_{\mathrm{sh}},d_G)
-+O(B_t^A M_B R_B)+T_{\mathrm{cert}}.
++T_{\mathrm{act}}(|\mathfrak E_t^B|)
++T_{\mathrm{sel}}(N_t^{\mathrm{act}},M_{\mathrm{hyp}})
++O(N_t^{\mathrm{act}}M_{\mathrm{hyp}}R_{\mathrm{cp}})+T_{\mathrm{cert}}.
 \]
 
-This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(B_t^A\), \(M_B\), and \(R_B\) are bounded and when the vector-index query itself has a declared bound. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on particle count, parameter dimension, optimization iterations, graph degree, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, selection-probability evaluation, and eviction costs must be measured rather than hidden inside the constant.
+This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(|\mathfrak E_t^B|\), \(N_t^{\mathrm{act}}\), \(M_{\mathrm{hyp}}\), and \(R_{\mathrm{cp}}\) are bounded, when the vector-index query itself has a declared bound, and when \(T_{\mathrm{sel}}\) uses a bounded exact computation or a predeclared bounded approximation. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on particle count, parameter dimension, optimization iterations, graph degree, selection-probability evaluation, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, every term in \(T_{\mathrm{sel}}\), and eviction costs must be measured rather than hidden inside the constant.
 
 The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 
@@ -79,7 +82,7 @@ A cost decomposition is:
 \[
 T_{\mathrm{base}}
 =T_{\mathrm{score}}+T_{\mathrm{residual}}+T_{\mathrm{consolidate}}
-+T_{B,\mathrm{audit}}+T_{\mathrm{cp}}
++T_{\mathrm{Bayes},\mathrm{audit}}+T_{\mathrm{cp}}
 +\sum_{q=1}^{M_f}T_{\mathrm{predict}}^{(q)}+T_{\mathrm{audit}}
 \]
 
@@ -87,7 +90,7 @@ T_{\mathrm{base}}
 T_{\mathrm{upgrade}}
 =T_{\mathrm{comp}}+T_{\mathrm{reconcile}}
 +T_{\mathrm{snap}}+T_{\mathrm{spectral}}+T_{\mathrm{mixture}}
-+T_{B,\mathrm{deep}},
++T_{\mathrm{Bayes},\mathrm{deep}},
 \]
 
 \[
@@ -102,12 +105,7 @@ The Bayesian upgrade has an orthogonal cumulative ladder that does not renumber 
 \[
 \begin{aligned}
 \mathcal B_0&=\text{bounded activation, certificate lookup, and cached update},\\
-\mathcal B_1&=\text{bounded robust changepoint monitoring},
-\end{aligned}
-\]
-
-\[
-\begin{aligned}
+\mathcal B_1&=\text{bounded robust changepoint monitoring},\\
 \mathcal B_2&=\text{declared event-pattern forecast refinement},\\
 \mathcal B_3&=\text{particle, variational SMC, and model recalibration}.
 \end{aligned}

@@ -1,5 +1,7 @@
 # Bayesian Upgrade Math Bug Hunt
 
+> Superseded for the scored-law integration boundary by `bayesian_scored_pipeline_correction_audit.md`. The original audit did not test whether the posterior entered the scored law and therefore overstated its P1/P2 result.
+
 Date: 2026-08-28
 
 Scope: the selective Bayesian frontier, activation rule, Anti-Pigeon posterior sharing, selection-aware inference, changepoint monitoring, inactive-event audits, runtime bounds, staged integration, and their interaction with the pre-existing residual, abstraction, and evaluation contracts.

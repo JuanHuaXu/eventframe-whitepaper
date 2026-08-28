@@ -118,7 +118,7 @@ A prediction strategy that stores a horizon-indexed typed record with independen
 
 ## Residual Composition
 
-The typed point-template operation \(\oplus_E\) encodes a baseline event, norm-clips a point residual, projects into an admissible operator set, and decodes the result. A separately tagged law residual drives a declared full-outcome Markov kernel whose no-event transitions are explicit. The components are not semantically interchangeable; a fixed decision rule aligns mark and time, while joint forward tests validate the complete bundle.
+The typed point-template operation \(\oplus_E\) encodes the posterior-aware base template, norm-clips a point residual, projects into an admissible operator set, and decodes the result. A separately tagged law residual drives a declared full-outcome Markov kernel after the posterior-predictive base law; its no-event transitions are explicit. The components are not semantically interchangeable; a fixed decision rule aligns mark and time, while joint forward tests validate the complete bundle.
 
 ## Temporal Loss
 
@@ -158,11 +158,15 @@ A key-value memory structure storing prior event episodes. Keys represent retrie
 
 ## Selective Bayesian Frontier
 
-A bounded as-of candidate set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. Graph children nominate where to update; they do not reveal future child outcomes.
+A bounded as-of nominated set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. It lies inside a declared finite candidate universe. Graph children may be nominated, but they cannot activate until evidence is available and do not reveal future child outcomes.
 
 ## Bayesian Activation Score
 
-A frozen weighted score combining vector relevance, neighbor compatibility, novelty, and source independence. Structurally critical candidates may receive a lower clamped threshold. The score decides whether evidence is admitted to a local Bayesian update.
+A frozen weighted score combining vector relevance, neighbor compatibility, novelty, and source independence. Structurally critical candidates may receive a lower clamped threshold. Total activation additionally requires nomination and evidence readiness. Its selection probability covers that complete process.
+
+## Posterior-Predictive Base
+
+The complete marked-time/no-event law obtained by integrating each declared predictive kernel against its valid effective posterior and combining the bucket laws with frozen weights. It is the base law corrected by the residual kernel and scored by the proper loss; the original baseline is used only when no valid belief bucket is available.
 
 ## Activation-Conditioned Working Posterior
 
@@ -174,7 +178,7 @@ The rule that events may share one cached posterior only while an external targe
 
 ## Omitted-Influence Audit
 
-An independent shadow sample of inactive candidates used to compare a local forecast with an expanded-neighborhood forecast. A simultaneous upper bound on their disagreement limits claims that selective locality is harmless.
+An independent, design-weighted shadow sample of inactive candidates used to compare the complete scored local forecast with the forecast after one audited expansion. The declared metric is normalized Jensen--Shannon divergence, and a simultaneous sequential upper confidence procedure covers buckets, expansions, and repeated decisions. A plug-in disagreement is not a certificate.
 
 ## Bayesian Update Ladder
 

@@ -30,7 +30,11 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathcal R_{\mathrm{pre}}\), \(\mathcal A_{\mathrm{post}}\): pre-observation admission risk and post-observation realized event action.
 
-\(\mathsf Q_B\), \(B\), \(b_t\): baseline forecast law, conditional event-template predictor, and its template. Event buckets use \(K\), never \(B\).
+\(\mathsf Q_B\), \(B\), \(b_t\): fallback forecast law, fallback conditional event-template predictor, and its template. Event buckets use \(K\), never \(B\).
+
+\(\mathcal K_t^{\mathrm{bel}}\), \(q_{K,t}^{\mathrm{eff}}\), \(\mathsf P_{H,K}\), \(\lambda_{K,t}^{\mathrm{bel}}\): valid belief buckets, effective posteriors, declared bucket predictive kernels, and frozen mixture weights.
+
+\(\mathsf Q_t^0\), \(B_H^{\mathrm{bel}}\), \(b_t^0\): posterior-predictive base law, its template map, and aligned pre-residual template. The fallback baseline is used only when the valid belief-bucket set is empty.
 
 \(\mathscr H\), \(\mathbb H_d^E\), \(\mathbb H_d^Q\): finite-dimensional Hilbert space and separately tagged point-template and forecast-law copies of its self-adjoint operator representation space.
 
@@ -44,7 +48,9 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(J_t^A\), \(J_t^R\), \(\mathbf r_t^{\mathrm{use}}\), \(r_{t,H}^{E,\mathrm{obs}}\): cache acceptance indicators, selected record, and point residual defined only for an in-horizon event.
 
-\(\rho_H^Q\), \(r_{t,H}^{Q,\mathrm{obs}}\), \(\mathfrak K_H^Q\), \(\mathsf Q_t^R\): law-residual estimator, observed law residual, measurable full-outcome kernel map, and corrected law.
+\(\rho_H^Q\), \(r_{t,H}^{Q,\mathrm{obs}}\), \(\mathfrak K_H^Q\), \(\mathfrak F_R\), \(\mathsf Q_t^R\): law-residual estimator, observed law residual, measurable full-outcome kernel map, deterministic complete residual policy, and final scored corrected law.
+
+\(D_{\mathrm{res}}\), \(\mathsf Q_i^{0,\mathrm{ref}}\), \(\epsilon_i^{\mathrm{bel}}\), \(\overline D_{i,t}^{\mathrm{bel}}\), \(\mu_i^{\mathrm{bel}}\), \(\upsilon_i^{\mathrm{bel}}\): fixed residual-reference law distance, reference base law, allowed motion, certified upper motion bound, residual survival margin, and posterior-predictive certificate version.
 
 \(s_i\), \(s_{k_t}\), \(\mathcal S_{\mathrm{prov}}\): provenance records for general and exact residual-cache entries and their declared space.
 
@@ -52,13 +58,19 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(H_i\), \(H_{k_t}\), \(v_{k_t}\), \(v_t\), \(\mu_{k_t}\): cache horizons, cache-entry and active epochs, and materialized compatibility safety margin.
 
-\(\mathcal N_t^B\), \(\mathcal R_t^{\mathrm{vec}}\), \(\mathcal N_t^{\mathrm{sh}}\): bounded Bayesian candidate frontier and its vector-retrieval and sheaf-inspired components.
+\(\mathfrak E_t^B\), \(\mathcal N_t^B\), \(\mathcal R_t^{\mathrm{vec}}\), \(\mathcal N_t^{\mathrm{sh}}\): bounded Bayesian candidate universe, nominated frontier, and its vector-retrieval and sheaf-inspired components.
 
-\(A_t^B\), \(\tau_t^B\), \(J_t^{\mathrm{act}}\): Bayesian activation score, criticality-adjusted threshold, and activation indicator.
+\(J_t^{\mathrm{nom}}\), \(J_t^{\mathrm{evid}}\), \(A_t^B\), \(\tau_t^B\), \(J_t^{\mathrm{act}}\): nomination and evidence-readiness indicators, Bayesian activation score, criticality-adjusted threshold, and total activation indicator.
 
 \(J_{K,t}^{\mathrm{share}}\), \(q_{K,t^-}\), \(q_{K,t}^+\), \(\mathcal C_{B,t^-}\): Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
 
-\(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(U_t^{\mathrm{omit}}\): changepoint trigger, independent inactive-event audit indicator, and upper bound on local-versus-expanded forecast disagreement.
+\(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
+
+\(\mathsf Q_t^{\mathrm{local}}\), \(\mathsf Q_t^{\mathrm{expanded}}(e)\), \(D_{\mathrm{omit}}\), \(\Delta_{K,t}^{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), \(U_t^{\mathrm{omit}}\): complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, and maximum certified omission bound.
+
+\(k_v\), \(d_{\mathrm{sh}}\), \(d_G\), \(N_t^{\mathrm{act}}\), \(M_{\mathrm{hyp}}\), \(R_{\mathrm{cp}}\): vector width, sheaf-inspired and graph degree caps, activated count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
+
+\(T_{\mathrm{act}}\), \(T_{\mathrm{sel}}\), \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\): total activation evaluation, complete selection-probability evaluation, and bounded direct Bayesian cost. \(T_B(k)\) remains the fallback baseline-predictor cost.
 
 \(X_t\), \(\mathcal X_{\mathrm{ctx}}\): compressed runtime state and its domain. This domain is distinct from the auxiliary event-field space \(\mathcal X\).
 
