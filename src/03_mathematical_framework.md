@@ -176,7 +176,7 @@ The governing principle can now be stated without overloading \(\Omega\). It is 
 
 and the candidate abstraction structure as \(\Xi_A^{(v)}\), containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version \(v\) changes only when a validated slow-path revision is published.
 
-The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-inspired, and as-of graph frontier rules; nomination, evidence-readiness, activation, and criticality maps; posterior family and likelihood; complete selection model; posterior-predictive kernels, mixture weights, and template map; Anti-Pigeon sharing certificate; source-dependence treatment; changepoint approximation; independent audit schedule; normalized Jensen--Shannon omitted-influence procedure; posterior-motion certificate; resource caps; and atomic publication rule. Its as-of posterior cache is \(\mathcal C_{B,t^-}\). Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
+The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-inspired, and as-of graph frontier rules; nomination, evidence-readiness, activation, and criticality maps; one coherent evidence-and-outcome model family whose evidence marginal and outcome conditional induce the ordinary likelihood and posterior-predictive kernel, or a declared modular linking restriction and untouched validation test; the complete selection model; mixture weights and template map; Anti-Pigeon sharing certificate; source-dependence treatment; changepoint approximation; independent audit schedule; normalized Jensen--Shannon omitted-influence procedure; component-sensitive law and template motion certificates including propagated approximation error; resource caps; and atomic publication rule. Its as-of posterior cache is \(\mathcal C_{B,t^-}\). Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
 
 \[
 \begin{aligned}
@@ -192,7 +192,8 @@ The selective Bayesian contract \(\Xi_B\) contains the bounded vector, sheaf-ins
 &\text{packet target and loss},\text{regime-shift rule},
 \text{confidence and map-validity procedures},\\
 &\text{snap candidate, obligation, and publication rules},\\
-&\text{Bayesian prediction, activation, selection, omission, motion, cap, and publication rules}).
+&\text{Bayesian model coherence, prediction, selection, and omission rules},\\
+&\text{Bayesian motion, cap, and publication rules}).
 \end{aligned}
 \]
 

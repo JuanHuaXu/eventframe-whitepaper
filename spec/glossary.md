@@ -168,6 +168,14 @@ A frozen weighted score combining vector relevance, neighbor compatibility, nove
 
 The complete marked-time/no-event law obtained by integrating each declared predictive kernel against its valid effective posterior and combining the bucket laws with frozen weights. It is the base law corrected by the residual kernel and scored by the proper loss; the original baseline is used only when no valid belief bucket is available.
 
+## Bayesian Model Coherence
+
+For an ordinary posterior-predictive claim, one declared model family over evidence and next outcome induces both the update likelihood and the outcome-predictive kernel under stated context and factorization assumptions. A modular likelihood and forecast kernel instead require a declared linking restriction and untouched forward proper-score and calibration validation; before that validation passes, the result is called a modular belief-conditioned forecast.
+
+## Residual Motion Certificate
+
+A fixed-reference certificate that determines whether a residual remains valid after its posterior-predictive base moves. Law-bearing records require a non-negative certified law-motion margin, point-bearing records require a non-negative certified template-motion margin, and joint records require both. Each bound includes statistical uncertainty and posterior-approximation error propagated through the predictive kernel, fusion rule, and applicable template map; a plug-in distance alone is not a certificate.
+
 ## Activation-Conditioned Working Posterior
 
 The result of updating only on activated evidence without proving conditional ignorability or using a valid selection-conditioned likelihood. It may be useful operationally, but it is not claimed to be calibrated for the full event stream.

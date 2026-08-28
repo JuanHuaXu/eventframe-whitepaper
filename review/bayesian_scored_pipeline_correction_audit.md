@@ -1,5 +1,7 @@
 # Bayesian Scored-Pipeline Correction Audit
 
+Supplemented on 2026-08-28 by `bayesian_model_coherence_motion_correction_audit.md`, which tightens the model-coherence contract and extends residual motion certification from the law alone to mode-applicable law and template components.
+
 Date: 2026-08-28
 
 Scope: reviewer findings P1.1--P2.4 and adjacent P3 notation issues introduced by the selective Bayesian upgrade. This audit is limited to mathematical formulation and cross-section integration; it is not empirical validation.
@@ -15,7 +17,7 @@ Scope: reviewer findings P1.1--P2.4 and adjacent P3 notation issues introduced b
 1. **P1.1, confirmed:** the posterior was not an input to the scored law. The correction defines a posterior-predictive kernel and finite mixture, producing \(\mathsf Q_t^0\), and binds the final scored object to the posterior-aware residual output \(\mathsf Q_t^R\).
 2. **P1.2, confirmed:** \(D_B\), the compared laws, and simultaneous coverage were undefined. The correction replaces \(D_B\) with normalized Jensen--Shannon divergence \(D_{\mathrm{omit}}\), defines complete local and shadow-expanded scored laws, and names a design-weighted simultaneous confidence sequence.
 3. **P2.1, confirmed:** the introduction and runtime chapter disagreed about whether the posterior existed before residual selection. Both now use one canonical order: nominate, activate, update, form the posterior-predictive base, select a compatible residual, compose, gate, and score.
-4. **P2.2, confirmed:** residual certificates could silently survive an in-place posterior change. Each entry now binds to a fixed posterior-predictive reference and version with a certified law-motion margin. Out-of-tolerance motion uses the same dependency-closure bump and stale-marking operators as snapping and changepoints.
+4. **P2.2, confirmed:** residual certificates could silently survive an in-place posterior change. Each entry now binds to a fixed posterior-predictive reference and version. The supplementary model-coherence audit extends this to a law-motion margin for law-bearing records and a template-motion margin for point-bearing records. Out-of-tolerance motion uses the same dependency-closure bump and stale-marking operators as snapping and changepoints.
 5. **P2.3, confirmed:** the selection likelihood modeled threshold activation without making frontier nomination total. Nomination and evidence-readiness indicators now extend activation by zero over the finite candidate universe; the selection probability covers the complete process.
 6. **P2.4, confirmed:** the fast-path formula omitted selection-probability cost. \(T_{\mathrm{act}}\) and \(T_{\mathrm{sel}}\) are now explicit, and history-independent cost requires bounded exact evaluation or a predeclared bounded approximation.
 7. **P3, confirmed in part:** evidence-less graph children are nomination-only; the Bayesian ladder is one aligned object; audit-capacity and Bayesian runtime notation no longer overload the fallback-baseline symbol; all new load-bearing operators are indexed.
@@ -35,13 +37,13 @@ Scope: reviewer findings P1.1--P2.4 and adjacent P3 notation issues introduced b
 
 Deleting the Bayesian layer leaves the scored law unchanged only in a declared degenerate case: no valid belief bucket, a posterior-predictive map equal to the fallback, or predictive kernels whose posterior mixtures coincide.
 
-**Residual validity.** A residual calibrated at reference \(\mathsf Q_i^{0,\mathrm{ref}}\) is reusable only when its posterior-predictive version matches and
+**Residual validity.** A law-bearing residual calibrated at reference \(\mathsf Q_i^{0,\mathrm{ref}}\) is reusable only when its posterior-predictive version matches and
 
 \[
 \overline D_{i,t}^{\mathrm{bel}}\le\epsilon_i^{\mathrm{bel}}.
 \]
 
-A plug-in distance without analytic or simultaneous uncertainty coverage cannot satisfy this certificate.
+A point-bearing record additionally requires the template margin defined in the supplementary model-coherence audit; a joint record requires both. A plug-in distance without analytic or simultaneous uncertainty coverage cannot satisfy either certificate.
 
 **Selective evidence.** \(J_t^{\mathrm{act}}=1\) implies nomination, evidence readiness, and threshold admission. A declared future graph child with no available frame can therefore consume nomination capacity but cannot enter the likelihood.
 
@@ -53,4 +55,4 @@ The direct Bayesian cost now contains candidate construction, activation evaluat
 
 ## Residual Risk
 
-The paper remains a specification. Correct wiring does not establish calibration, useful correction, simultaneous-coverage performance, or latency. Experiment 4 now includes posterior-predictive deletion, posterior-motion invalidation, and omission-certificate falsifiers.
+The paper remains a specification. Correct wiring does not establish calibration, useful correction, simultaneous-coverage performance, or latency. Experiment 4 now includes posterior-predictive deletion, component-motion invalidation, and omission-certificate falsifiers.

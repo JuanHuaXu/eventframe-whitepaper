@@ -32,7 +32,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathsf Q_B\), \(B\), \(b_t\): fallback forecast law, fallback conditional event-template predictor, and its template. Event buckets use \(K\), never \(B\).
 
-\(\mathcal K_t^{\mathrm{bel}}\), \(q_{K,t}^{\mathrm{eff}}\), \(\mathsf P_{H,K}\), \(\lambda_{K,t}^{\mathrm{bel}}\): valid belief buckets, effective posteriors, declared bucket predictive kernels, and frozen mixture weights.
+\(\mathcal K_t^{\mathrm{bel}}\), \(q_{K,t}^{\mathrm{eff}}\), \(\mathbb P_{K,\theta}\), \(\mathsf P_{H,K}\), \(\lambda_{K,t}^{\mathrm{bel}}\): valid belief buckets, effective posteriors, coherent joint evidence-and-outcome model family, its declared outcome-predictive kernels, and frozen mixture weights.
 
 \(\mathsf Q_t^0\), \(B_H^{\mathrm{bel}}\), \(b_t^0\): posterior-predictive base law, its template map, and aligned pre-residual template. The fallback baseline is used only when the valid belief-bucket set is empty.
 
@@ -50,7 +50,9 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\rho_H^Q\), \(r_{t,H}^{Q,\mathrm{obs}}\), \(\mathfrak K_H^Q\), \(\mathfrak F_R\), \(\mathsf Q_t^R\): law-residual estimator, observed law residual, measurable full-outcome kernel map, deterministic complete residual policy, and final scored corrected law.
 
-\(D_{\mathrm{res}}\), \(\mathsf Q_i^{0,\mathrm{ref}}\), \(\epsilon_i^{\mathrm{bel}}\), \(\overline D_{i,t}^{\mathrm{bel}}\), \(\mu_i^{\mathrm{bel}}\), \(\upsilon_i^{\mathrm{bel}}\): fixed residual-reference law distance, reference base law, allowed motion, certified upper motion bound, residual survival margin, and posterior-predictive certificate version.
+\(D_{\mathrm{res}}\), \(\mathsf Q_i^{0,\mathrm{ref}}\), \(\epsilon_i^{\mathrm{bel}}\), \(\overline D_{i,t}^{\mathrm{bel}}\), \(\mu_i^{\mathrm{bel}}\): fixed residual-reference law distance, reference base law, allowed law motion, certified upper law-motion bound, and law-component survival margin.
+
+\(D_{\mathrm{tmpl}}\), \(b_i^{0,\mathrm{ref}}\), \(\epsilon_i^{\mathrm{tmpl}}\), \(\overline D_{i,t}^{\mathrm{tmpl}}\), \(\mu_i^{\mathrm{tmpl}}\), \(\upsilon_i^{\mathrm{bel}}\): fixed template distance, reference base template, allowed template motion, certified upper template-motion bound, point-component survival margin, and posterior-predictive certificate version.
 
 \(s_i\), \(s_{k_t}\), \(\mathcal S_{\mathrm{prov}}\): provenance records for general and exact residual-cache entries and their declared space.
 

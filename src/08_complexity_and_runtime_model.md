@@ -10,7 +10,7 @@ The reference fast path is:
 4. Check evidence readiness, total nomination-and-activation probabilities, and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update.
 5. Compute the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\) from the valid effective posterior family, falling back to \(\mathsf Q_B\) and \(B\) only when that family is empty; independently compute packet baseline \(B_Y(X_t)\) when required.
 6. Construct the bounded action key \(k_t=\alpha(C_t)\).
-7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version and certified belief-motion margin to match \(\mathsf Q_t^0\).
+7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match \((\mathsf Q_t^0,b_t^0)\).
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
 10. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). Do not evaluate realized prediction loss yet.

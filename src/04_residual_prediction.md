@@ -18,7 +18,9 @@ The baseline is a fallback, not the final scored input when valid Bayesian belie
 \longrightarrow\mathcal P(\mathcal Z_H)
 \]
 
-and frozen as-of fusion weights \(\lambda_{K,t}^{\mathrm{bel}}\ge0\) satisfying \(\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1\) when the set is non-empty. The posterior-predictive base law is
+For an ordinary Bayesian posterior-predictive claim, \(\Xi_B\) declares one model family \(\{\mathbb P_{K,\theta}:\theta\in\Theta_K\}\) over the evidence and next-outcome variables: the likelihood used in Section 5 is a version of that family's evidence marginal density or mass, and \(\mathsf P_{H,K}\) is its next-outcome conditional under the declared context sufficiency and factorization assumptions. If a modular implementation uses a likelihood and forecast kernel that are not induced by one joint family, \(\Xi_B\) must instead declare their linking restriction and an untouched forward proper-score and calibration test; until that test passes, the result is called a modular belief-conditioned forecast, not a posterior predictive by declaration alone.
+
+Use frozen as-of fusion weights \(\lambda_{K,t}^{\mathrm{bel}}\ge0\) satisfying \(\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1\) when the set is non-empty. The posterior-predictive base law is
 
 \[
 \mathsf Q_t^0(A\mid C_t)=
@@ -124,22 +126,34 @@ The general residual cache available immediately before prediction is:
 \[
 \mathcal C_{R,t^-}=
 \{(\kappa_i,\mathbf r_i,c_i,n_i,t_i,v_i,\mu_i,H_i,
-\upsilon_i^{\mathrm{bel}},\mu_i^{\mathrm{bel}},s_i)\}_{i=1}^{N_t},
+\upsilon_i^{\mathrm{bel}},\mu_i^{\mathrm{bel}},
+\mu_i^{\mathrm{tmpl}},s_i)\}_{i=1}^{N_t},
 \qquad
 \kappa:\mathcal E^k\rightarrow\mathcal K_R,
 \qquad \mathbf r_i\in\mathcal V_R,
 \]
 
-where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(\mu_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, \(\upsilon_i^{\mathrm{bel}}\) is the posterior-predictive certificate version against which it was calibrated, and \(\mu_i^{\mathrm{bel}}\) is its materialized base-law motion margin. The provenance \(s_i\) includes component modes, estimator identities, censoring convention, eligible training interval, posterior-predictive reference identity, and permitted law-motion radius. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
+where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(\mu_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, \(\upsilon_i^{\mathrm{bel}}\) is the posterior-predictive certificate version against which it was calibrated, \(\mu_i^{\mathrm{bel}}\) is its materialized base-law motion margin, and \(\mu_i^{\mathrm{tmpl}}\) is its base-template motion margin. The provenance \(s_i\) includes component modes, estimator identities, censoring convention, eligible training interval, posterior-predictive law and template reference identities, and permitted motion radii. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
 
-For each residual entry, freeze a bounded law metric \(D_{\mathrm{res}}\), a posterior-predictive reference law \(\mathsf Q_i^{0,\mathrm{ref}}\), and a permitted radius \(\epsilon_i^{\mathrm{bel}}\). Let \(\overline D_{i,t}^{\mathrm{bel}}\) be either an analytic bound or a simultaneously valid upper confidence bound for \(D_{\mathrm{res}}(\mathsf Q_t^0,\mathsf Q_i^{0,\mathrm{ref}})\), and materialize
+For each residual entry, freeze a bounded law metric \(D_{\mathrm{res}}\), a posterior-predictive reference law \(\mathsf Q_i^{0,\mathrm{ref}}\), and a permitted radius \(\epsilon_i^{\mathrm{bel}}\). For point-bearing modes also freeze a bounded template metric \(D_{\mathrm{tmpl}}\), reference template \(b_i^{0,\mathrm{ref}}\), and radius \(\epsilon_i^{\mathrm{tmpl}}\). Let \(\overline D_{i,t}^{\mathrm{bel}}\) and \(\overline D_{i,t}^{\mathrm{tmpl}}\) be analytic or simultaneously valid upper bounds for the respective motions, and materialize
 
 \[
 \mu_i^{\mathrm{bel}}=
-\epsilon_i^{\mathrm{bel}}-\overline D_{i,t}^{\mathrm{bel}}.
+\epsilon_i^{\mathrm{bel}}-\overline D_{i,t}^{\mathrm{bel}},
+\qquad
+\mu_i^{\mathrm{tmpl}}=
+\epsilon_i^{\mathrm{tmpl}}-\overline D_{i,t}^{\mathrm{tmpl}},
 \]
 
-A plug-in distance without uncertainty coverage is not a residual-survival certificate. Ordinary posterior updates remain inside version \(\upsilon_t^{\mathrm{bel}}\) only while the bound to that version's fixed reference and every dependent residual margin remain valid. Otherwise the dependency-closure transition in Section 7 bumps the local version and marks affected residual entries stale before the new posterior becomes readable.
+where the bounded quantities cover
+
+\[
+D_{\mathrm{res}}(\mathsf Q_t^0,\mathsf Q_i^{0,\mathrm{ref}}),
+\qquad
+D_{\mathrm{tmpl}}(b_t^0,b_i^{0,\mathrm{ref}}).
+\]
+
+Each bound includes the declared posterior-approximation error propagated through \(\mathsf P_{H,K}\), fusion, and, for the point path, \(B_H^{\mathrm{bel}}\), in addition to statistical uncertainty. A plug-in distance or approximation estimate without uncertainty coverage is not a residual-survival certificate. Ordinary posterior updates remain inside version \(\upsilon_t^{\mathrm{bel}}\) only while every applicable fixed-reference margin remains valid. Otherwise the dependency-closure transition in Section 7 bumps the local version and marks affected residual entries stale before the new posterior becomes readable.
 
 \[
 j_t=\min\!\left(\arg\min_{1\le i\le N_t}
@@ -158,7 +172,9 @@ c_{j_t}\ge\gamma_R,\quad n_{j_t}\ge n_{\min}^R,\\
 \mathrm{age}_t(t_{j_t})\le A_{\max}^R,\quad
 v_{j_t}=v_t,\quad H_{j_t}=H,\quad \mu_{j_t}\ge0,\\
 \upsilon_{j_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}},\quad
-\mu_{j_t}^{\mathrm{bel}}\ge0,\quad s_{j_t}\text{ is valid}
+\bigl(m_{j_t}\notin\{Q,EQ\}\text{ or }\mu_{j_t}^{\mathrm{bel}}\ge0\bigr),\\
+\bigl(m_{j_t}\notin\{E,EQ\}\text{ or }\mu_{j_t}^{\mathrm{tmpl}}\ge0\bigr),\quad
+s_{j_t}\text{ is valid}
 \end{array}
 \right],&N_t>0,\\
 0,&N_t=0.
@@ -190,7 +206,7 @@ and define the partial map:
 \mathcal K_A\rightharpoonup
 \mathcal V_R\times[0,1]\times\mathbb N_0\times\mathcal T
 \times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
-\times\mathbb N_0\times\mathbb R
+\times\mathbb N_0\times\mathbb R\times\mathbb R
 \times\mathcal S_{\mathrm{prov}}.
 \]
 
@@ -201,10 +217,11 @@ For \(k_t=\alpha(C_t)\), bind the cache entry only when it exists:
 \quad\Longrightarrow\quad
 \mathcal C_{A,t^-}(k_t)=
 (\mathbf r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},\mu_{k_t},H_{k_t},
-\upsilon_{k_t}^{\mathrm{bel}},\mu_{k_t}^{\mathrm{bel}},s_{k_t}),
+\upsilon_{k_t}^{\mathrm{bel}},\mu_{k_t}^{\mathrm{bel}},
+\mu_{k_t}^{\mathrm{tmpl}},s_{k_t}),
 \]
 
-where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(\mu_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, \(\upsilon_{k_t}^{\mathrm{bel}}\) is its posterior-predictive certificate version, and \(\mu_{k_t}^{\mathrm{bel}}\) is its materialized base-law motion margin. The provenance \(s_{k_t}\) records component modes, estimator identities, censoring convention, eligible training interval, posterior-predictive reference identity, and permitted law-motion radius. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
+where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(\mu_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, \(\upsilon_{k_t}^{\mathrm{bel}}\) is its posterior-predictive certificate version, and \(\mu_{k_t}^{\mathrm{bel}},\mu_{k_t}^{\mathrm{tmpl}}\) are its materialized law and template motion margins. The provenance \(s_{k_t}\) records component modes, estimator identities, censoring convention, eligible training interval, posterior-predictive law and template reference identities, and permitted motion radii. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
 
 \[
 \mu_{k_t}=
@@ -228,7 +245,8 @@ c_{k_t}\ge\gamma_A,\quad n_{k_t}\ge n_{\min},\quad
 \mathrm{age}_t(t_{k_t})\le A_{\max},\\
 v_{k_t}=v_t,\quad H_{k_t}=H,\quad \mu_{k_t}\ge0,\\
 \upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}},\quad
-\mu_{k_t}^{\mathrm{bel}}\ge0,\quad
+\bigl(m_{k_t}\notin\{Q,EQ\}\text{ or }\mu_{k_t}^{\mathrm{bel}}\ge0\bigr),\\
+\bigl(m_{k_t}\notin\{E,EQ\}\text{ or }\mu_{k_t}^{\mathrm{tmpl}}\ge0\bigr),\quad
 s_{k_t}\text{ is valid}
 \end{gathered}
 \right],&k_t\in\mathrm{dom}(\mathcal C_{A,t^-}),\\
@@ -429,7 +447,7 @@ d_H(\mathbf q_R)=z_a,
 
 If \(z_a\) is observed, logarithmic loss changes from \(-\log(0.50)\approx0.693\) to \(-\log(0.60)\approx0.511\). If \(\varnothing\) is observed, it worsens from \(-\log(0.30)\approx1.204\) to \(-\log(0.25)\approx1.386\). This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
 
-Suppose the exact cache entry records \(H_{k_t}=1\), \(\upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}}\), \(\mu_{k_t}^{\mathrm{bel}}\ge0\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(\mathbf r_t^{\mathrm{use}}=\mathbf r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
+Suppose the exact joint cache entry records \(H_{k_t}=1\), \(\upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}}\), \(\mu_{k_t}^{\mathrm{bel}}\ge0\), \(\mu_{k_t}^{\mathrm{tmpl}}\ge0\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(\mathbf r_t^{\mathrm{use}}=\mathbf r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
 
 Finally, let the finite design family built on \(\mathcal S_{\mathrm{obj}}\) be \(\{\Theta_0,\Theta_1\}\), where \(\Theta_0\) is baseline-only and \(\Theta_1\) includes the certified residual. Take \(\epsilon_{AP}=0.05\), \(D_K^{\mathrm{cert},\star}(\Theta_0)=0.03\), \(D_K^{\mathrm{cert},\star}(\Theta_1)=0.04\), \(\epsilon_{\mathrm{prop}}=0.02\), and suppose the grouped design-sample calculations are
 
@@ -452,7 +470,7 @@ Finally, let the finite design family built on \(\mathcal S_{\mathrm{obj}}\) be 
 
 with \(\mathrm{UCB}[0.72-0.80]=-0.02\le\epsilon_{\mathrm{prop}}\) and \(\lambda_{\mathrm{rep}}=1\). Both designs remain feasible, while their empirical composite values are \(0.30\) and \(0.25\), so the deterministic operational rule selects \(\widehat\Theta_\Gamma=\Theta_1\). An untouched \(\mathcal S_{\mathrm{conf}}\) may then confirm or reject the frozen claim, but it cannot alter the candidate family or the selected residual. These stipulated values demonstrate how to execute the contracts; they are not measurements of EventFrame performance.
 
-A bounded hash table can provide expected \(O(1)\) lookup after the bounded key has been constructed. The epoch and margin are constant-size certificate checks; graph traversal, posterior-motion certification, and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch \(v_t\) or posterior-predictive version \(\upsilon_t^{\mathrm{bel}}\) must increase whenever its dependent graph contract or certified law-motion region changes. Local versions and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap or out-of-tolerance posterior update is built against shadow state and published atomically with its affected keys and epoch map. A reader uses one immutable graph-posterior-key-epoch snapshot for the entire prediction. Entries invalidated by publication fall back to the current posterior-predictive no-residual law or another currently certified cache path until recertified; rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old identifier.
+A bounded hash table can provide expected \(O(1)\) lookup after the bounded key has been constructed. The epoch and margins are constant-size certificate checks; graph traversal, component-motion certification, and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch \(v_t\) or posterior-predictive version \(\upsilon_t^{\mathrm{bel}}\) must increase whenever its dependent graph contract or any certified law or template motion region changes. Local versions and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap or out-of-tolerance posterior update is built against shadow state and published atomically with its affected keys and epoch map. A reader uses one immutable graph-posterior-key-epoch snapshot for the entire prediction. Entries invalidated by publication fall back to the current posterior-predictive no-residual law or another currently certified cache path until recertified; rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old identifier.
 
 After observation, evaluate the particular residual candidate stored for key \(k\), either on a deployed trial or in shadow mode. Set \(I_{t,k}=1\) when
 
