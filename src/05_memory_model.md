@@ -24,7 +24,7 @@ Prediction combines the two memories by priority rather than by collapse. A refe
 
 1. Compute the baseline \(b_t = B(C_t)\).
 2. Try action-residual lookup in \(\mathcal{C}_A\).
-3. If the action residual is valid under confidence, age, and pre-risk checks, compose \(\hat{e}_{t+1}=b_t\oplus_E r_t^A\).
+3. If the action residual record is valid under confidence, age, horizon, provenance, and pre-risk checks, apply its point and law components to their separately declared outputs.
 4. If confidence is insufficient, try residual lookup in \(\mathcal{C}_R\).
 5. If residual confidence is still insufficient, retrieve episodic cases from \(\mathcal{C}_E\) and use them to refine the baseline, explain uncertainty, or schedule slow-path review.
 6. After observation, update episodic memory, residual confidence, and any action-residual entry that was used or falsified.

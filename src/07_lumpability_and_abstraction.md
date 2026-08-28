@@ -100,18 +100,18 @@ D_K^{\mathrm{audit},\star}=
 
 where \(\widehat D_{R,R'}^{K,\star}\) estimates target-law disagreement from observed outcomes without using the candidate forecast as ground truth. The audit reports \(\widehat D_K^\star\), coverage, and statistical uncertainty. The deterministic relation is \(D_K^{\mathrm{audit},\star}\le D_K^\star\); no sample-wise ordering between \(\widehat D_K^\star\) and \(D_K^\star\) is asserted. A statistically significant large pairwise divergence is evidence to split or mark the bucket. Representational coverage alone does not make a small estimate a certificate of unseen future behavior.
 
-To obtain a certified upper bound from a non-exhaustive audit, require that \(D\) obey the triangle inequality and verify a continuity bound for the forecast map on \(\mathfrak C_K\). For example, if a certified constant \(\overline L_K\) satisfies:
+To obtain a certified upper bound from a non-exhaustive audit, require that \(D\) obey the triangle inequality and verify a continuity bound for the forecast map on \(\mathfrak C_K\). Let \(\overline L_K^{\mathrm{cert}}\) be either a deterministic uniform bound established analytically or a simultaneous upper confidence bound produced by a predeclared procedure. It must satisfy, at the certificate's stated confidence level:
 
 \[
 D\!\left(P_\star(Y\mid C),P_\star(Y\mid R)\right)
-\le\overline L_Kd_C(C,R)
+\le\overline L_K^{\mathrm{cert}}d_C(C,R)
 \qquad\text{for all }C,R\in\mathfrak C_K,
 \]
 
 then the coverage rule implies:
 
 \[
-D_K^\star(\pi)\le D_K^{\mathrm{audit},\star}+2\overline L_K\delta_K.
+D_K^\star(\pi)\le D_K^{\mathrm{audit},\star}+2\overline L_K^{\mathrm{cert}}\delta_K.
 \]
 
 With statistical estimation, a simultaneous upper confidence certificate is:
@@ -120,10 +120,10 @@ With statistical estimation, a simultaneous upper confidence certificate is:
 D_K^{\mathrm{cert},\star}=
 \max_{R,R'\in\mathcal R_C(K)}
 \mathrm{UCB}_{\mathrm{sim}}[D_{R,R'}^{K,\star}]
-+2\overline L_K\delta_K.
++2\overline L_K^{\mathrm{cert}}\delta_K.
 \]
 
-The confidence procedure must cover all adaptively selected audit pairs used by the maximum. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify \(D_K^\star\le\epsilon_{AP}\).
+The confidence procedure must jointly cover all adaptively selected audit pairs used by the maximum and any data-estimated continuity bound. A plug-in estimate of \(\overline L_K\) without uncertainty coverage is not a certificate. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify \(D_K^\star\le\epsilon_{AP}\).
 
 Observed operating regimes use a distinct symbol \(\zeta_t\in\mathcal Z_{\mathrm{reg}}\). On the common-support domain \(\mathfrak C_{a,b}=\mathrm{supp}(C\mid\zeta_a)\cap\mathrm{supp}(C\mid\zeta_b)\), regime-conditioned predictive divergence is:
 
@@ -135,7 +135,7 @@ P_\star(Y\mid C_i,\zeta_b)
 \right).
 \]
 
-This quantity is evaluated only for \(C_i\in\mathfrak C_{a,b}\). Outside common support it requires a declared overlap and transport model; otherwise it is unidentified and no comparison is reported. If it exceeds \(\epsilon_{AP}^{\mathrm{reg}}\) repeatedly on held-out contexts, the system has evidence that a shared predictive bucket is stale. It may split by regime, condition the cache key on \(\zeta\), decay the residual, or mark the abstraction as divergence-sensitive. This adaptation problem is related to concept-drift detection and response [12]. The conditional difference supports predictive adaptation; it is not evidence that \(\zeta\) is causal unless intervention or identification assumptions establish that fact.
+This quantity is evaluated only for \(C_i\in\mathfrak C_{a,b}\). Outside common support it requires a declared overlap and transport model; otherwise it is unidentified and no comparison is reported. The evaluation contract freezes a held-out review window \(W_{\mathrm{reg}}\), the minimum number \(m_{\mathrm{reg}}\) of multiplicity-adjusted exceedances of \(\epsilon_{AP}^{\mathrm{reg}}\), and the resulting action before candidate inspection. Meeting that rule is evidence that a shared predictive bucket is stale; the predeclared action may split by regime, condition the cache key on \(\zeta\), decay the residual, or mark the abstraction as divergence-sensitive. Post hoc changes to the window, repetition count, threshold, or action invalidate the claim. This adaptation problem is related to concept-drift detection and response [12]. The conditional difference supports predictive adaptation; it is not evidence that \(\zeta\) is causal unless intervention or identification assumptions establish that fact.
 
 A split operator returns \(\{K_1,\ldots,K_m\}\) such that every non-empty active child has sufficient effective support and either exhaustive verification or \(D_{K_j}^{\mathrm{cert},\star}\le\epsilon_{AP}\). Singleton buckets always satisfy an empirical pairwise bound, so representation cost, minimum support, untouched confirmation performance, and coverage of future contexts are required to prevent trivial memorization.
 
@@ -179,7 +179,7 @@ Here the simultaneous confidence procedure must cover the family of inspected or
 
 The closest mathematical prior work for this extension is D'Acunto, Di Lorenzo, and Barbarossa's *Networks of Causal Abstractions: A Sheaf-theoretic Framework* [13]. Their causal abstraction network coordinates heterogeneous causal models using network sheaves and cosheaves, restriction maps, a connection Laplacian, global sections, and mixture causal models. EventFrame adapts the local-to-global compatibility pattern to event-centered predictive laws, then combines it with within-bucket Anti-Pigeon tests, residual-cache certification, and priority-aware staged execution. It does not inherit their causal semantics, consistency results, convergence results, or mixture-learning guarantees.
 
-Accordingly, the EventFrame construction is described only as a sheaf-compatible scaffold. It should be called a sheaf only after its assigned spaces and restriction maps satisfy the required identity and composition laws. EventFrame does not assume those laws merely because local forecasts are connected by a graph.
+Accordingly, the EventFrame construction is described only as a sheaf-inspired compatibility scaffold. It should be called a sheaf only after its assigned spaces and restriction maps satisfy the required identity and composition laws. EventFrame does not assume those laws merely because local forecasts are connected by a graph.
 
 EventFrame calls a validated local revision of this scaffold a **predictive sheaf snap**. This is paper-specific terminology, not a standard sheaf-theoretic operation. Write the published compatibility structure at version \(v\) as:
 
@@ -271,15 +271,15 @@ The network defect complements rather than replaces Anti-Pigeon. \(D_K^\star\) t
 When simple rejection would discard useful local information, a local reconciliation stage may solve:
 
 \[
-\overline{\mathsf Q}_{\mathcal N}
-\in\arg\min_{\{\widetilde{\mathsf Q}_i:i\in\mathcal N\}}
+(\overline{\mathsf Q}_i)_{i\in\mathcal N}
+\in\arg\min_{(\widetilde{\mathsf Q}_i)_{i\in\mathcal N}\in\mathfrak Q_{\mathcal N}}
 \left[
 \sum_{i\in\mathcal N}a_iD_i(\widetilde{\mathsf Q}_i,\mathsf Q_i)
 +\lambda_A\sum_{e\in E^{+}(\mathcal N)}w_e\delta_e(\widetilde{\mathsf Q})
 \right],
 \]
 
-where \(\mathcal N\subseteq V_t^A\) is an affected neighborhood, \(E^{+}(\mathcal N)=\{e\in E_t^A:e\cap\mathcal N\neq\varnothing\}\) includes both internal and boundary edges, forecasts outside \(\mathcal N\) remain fixed, \(a_i,w_e\ge0\), and every divergence and tie-breaking rule is declared. The first term preserves each local forecast; the second penalizes incompatibility without hiding damage at the neighborhood boundary. A minimizer is asserted only when the feasible family is compact and the objective is lower semicontinuous, or under another stated existence theorem; otherwise the algorithm must return a declared approximate minimizer with an optimality gap. Reconciliation is not unqualified averaging, and the unreconciled forecasts and defects remain available for audit.
+where \(\mathcal N\subseteq V_t^A\) is an affected neighborhood, \(\mathfrak Q_{\mathcal N}\subseteq\prod_{i\in\mathcal N}\mathcal P(\mathcal Y_i)\) is the declared feasible forecast-tuple family, and \(E^{+}(\mathcal N)=\{e\in E_t^A:e\cap\mathcal N\neq\varnothing\}\) includes both internal and boundary edges. Forecasts outside \(\mathcal N\) remain fixed and \(a_i,w_e\ge0\). Each \(D_i:\mathcal P(\mathcal Y_i)\times\mathcal P(\mathcal Y_i)\to[0,+\infty]\) is a declared fidelity divergence with \(D_i(Q,Q)=0\); every divergence and tie-breaking rule is frozen by the evaluation contract. The first term preserves each local forecast; the second penalizes incompatibility without hiding damage at the neighborhood boundary. A minimizer is asserted only when \(\mathfrak Q_{\mathcal N}\) is compact and the objective is lower semicontinuous, or under another stated existence theorem; otherwise the algorithm must return a declared approximate tuple with an optimality gap. Reconciliation is not unqualified averaging, and the unreconciled forecasts and defects remain available for audit.
 
 For a fixed graph with finite-dimensional embeddings \(x_i=\phi_i(\mathsf Q_i)\) and linear restrictions \(R_{ie}\), define the boundary operator on edge \(e=\{i,j\}\) by:
 

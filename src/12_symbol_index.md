@@ -10,9 +10,9 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(e_t\), \(C_t\), \(\mathfrak C_{\mathrm{adm}}\): event frame, length-\(k\) event context, and declared context domain for conditional laws and suprema.
 
-\(H\), \(Z_{t+1}\), \(\mathcal Z_H^+\): prediction horizon, observed marked-time or no-event outcome, and its marked-time branch.
+\(H\), \((\mathcal N,\mathscr A_{\mathcal N})\), \((\mathcal Z_H,\mathscr A_H)\), \(Z_{t+1}\): prediction horizon, measurable mark space, complete measurable marked-time/no-event space, and observed outcome.
 
-\(a(x)\), \(\mathscr F_t^{\mathrm{pred}}\), \(S_{t^-}\): availability time, prediction-time information, and mutable state reconstructed immediately before prediction.
+\(a(x)\), \(\mathscr F_t^{\mathrm{pred}}\), \(\mathfrak h_t\), \(c_k\), \(\mathrm{Replay}_\Theta\), \(S_{\Theta,t^-}\): availability time, prediction information, observable history, context extractor, candidate replay operator, and reconstructed candidate state.
 
 \(P_{\mathrm{obj}}\), \(P_{\mathrm{conf}}\), \(P_\star\): design-generating law, confirmation-generating law, and externally fixed target law.
 
@@ -22,7 +22,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathcal E_\varnothing\), \(d_H\): tagged no-event extension of the structured event space and fixed point-decision rule on forecast laws.
 
-\(\hat e_\theta^H(C)\), \(\hat e_t^H(r)\), \(\mathrm{lift}_H\): coherent no-event-capable predictor summary, residual-candidate summary, and map aligning a structured template with a selected marked outcome.
+\(\hat e_\theta^H(C)\), \(\hat e_t^H(\mathbf r)\), \(\mathrm{lift}_H\): coherent no-event-capable predictor summary, residual-record summary, and map aligning a structured template with a selected marked outcome.
 
 \(\mathsf Q_\theta\), \(\mathcal O_\theta(C)\): predictive distribution over marked event times and the no-event outcome, and the typed bundle pairing that law with a coherent no-event-capable structured summary.
 
@@ -32,25 +32,25 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathsf Q_B\), \(B\), \(b_t\): baseline forecast law, conditional event-template predictor, and its template. Event buckets use \(K\), never \(B\).
 
-\(\mathscr H\), \(\mathbb H_d\): finite-dimensional Hilbert space and its self-adjoint operator representation space.
+\(\mathscr H\), \(\mathbb H_d^E\), \(\mathbb H_d^Q\): finite-dimensional Hilbert space and separately tagged point-template and forecast-law copies of its self-adjoint operator representation space.
 
-\(q_E\), \(d_E\), \(\Pi_E\), \(\delta_E\): event encoder, decoder, admissibility projection, and clipping radius.
+\(q_E\), \(d_E\), \(\Pi_E\), \(\delta_E\), \(\delta_Q\): event encoder, decoder, admissibility projection, and point/law clipping radii.
 
-\(\oplus_E\): typed event residual composition \(\mathcal E\times\mathbb H_d\to\mathcal E\).
+\(\oplus_E\): typed event residual composition \(\mathcal E\times\mathbb H_d^E\to\mathcal E\).
 
 \(\mathcal C_{A,t^-}\), \(\mathcal C_{R,t^-}\), \(\mathcal C_E\): as-of exact-key residual, as-of general residual, and episodic caches.
 
-\(J_t^A\), \(J_t^R\), \(r_t^{\mathrm{use}}\), \(r_{t,H}^{\mathrm{obs}}\): exact- and general-cache acceptance indicators, selected residual, and observed point residual defined only for an event inside the originating horizon.
+\(\mathcal M_R\), \(\mathcal V_R\), \(\mathbf r\), \(\mathbf0_R\): residual-component mode set, typed record space, residual record, and no-correction record.
 
-\(\rho_H\), \(r_{t,H}^{\mathrm{law}}\): horizon-specific distributional residual estimator and its residual, defined for both marked-event and no-event outcomes.
+\(J_t^A\), \(J_t^R\), \(\mathbf r_t^{\mathrm{use}}\), \(r_{t,H}^{E,\mathrm{obs}}\): cache acceptance indicators, selected record, and point residual defined only for an in-horizon event.
 
-\(\mathfrak K_E\), \(\mathsf Q_t^R\), \(H_i\), \(H_{k_t}\): full-outcome residual Markov-kernel map, corrected forecast law, and horizons attached to general and exact cache entries.
+\(\rho_H^Q\), \(r_{t,H}^{Q,\mathrm{obs}}\), \(\mathfrak K_H^Q\), \(\mathsf Q_t^R\): law-residual estimator, observed law residual, measurable full-outcome kernel map, and corrected law.
 
 \(s_i\), \(s_{k_t}\), \(\mathcal S_{\mathrm{prov}}\): provenance records for general and exact residual-cache entries and their declared space.
 
 \(\Xi_R\), \(\Xi_A^{(v)}\), \(\Lambda_{\mathrm{eval}}\): residual contract, published versioned abstraction-compatibility structure, and the externally frozen evaluation contract.
 
-\(v_{k_t}\), \(v_t\), \(m_{k_t}\): cache-entry epoch, active local abstraction epoch, and materialized compatibility safety margin.
+\(H_i\), \(H_{k_t}\), \(v_{k_t}\), \(v_t\), \(\mu_{k_t}\): cache horizons, cache-entry and active epochs, and materialized compatibility safety margin.
 
 \(X_t\), \(\mathcal X_{\mathrm{ctx}}\): compressed runtime state and its domain. This domain is distinct from the auxiliary event-field space \(\mathcal X\).
 
@@ -70,6 +70,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(D_K^\star\), \(D_K^{\mathrm{mdl}}\), \(D_K^{\mathrm{audit},\star}\), \(\widehat D_K^\star\), \(D_K^{\mathrm{cert},\star}\): external target-law future-diameter, model-only diagnostic diameter, restricted external diameter, its estimator, and simultaneous statistical-plus-continuity certificate.
 
+\(\overline L_K^{\mathrm{cert}}\): analytic uniform continuity bound or simultaneous upper confidence bound included in the bucket certificate.
+
 \(D_Y^{\mathrm{law}}\): distance between probability laws. It is distinct from packet decoder \(d_Y\).
 
 \(\mathcal G_t^A=(V_t^A,E_t^A)\): abstraction compatibility graph.
@@ -79,6 +81,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(g_{ie}\), \(\mathsf r_{ie}\): measurable node-to-edge comparison map and its pushforward restriction on predictive laws.
 
 \(\delta_e\), \(\Delta_{\mathrm{comp}}\): edge compatibility defect and maximum defect upper confidence bound.
+
+\(\mathfrak Q_{\mathcal N}\), \(D_i\), \((\overline{\mathsf Q}_i)_{i\in\mathcal N}\): reconciliation feasible tuple family, local fidelity divergences, and returned reconciled forecast tuple.
 
 \(\partial_A\), \(L_A\): compatibility boundary and Laplacian, defined only for the stated finite-dimensional linear representation.
 

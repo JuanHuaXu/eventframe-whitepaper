@@ -114,11 +114,11 @@ The future interval \(H\) over which marked events or the no-event outcome are f
 
 ## Residual Prediction
 
-A prediction strategy that estimates a horizon-indexed difference between a baseline transition and an eligible observed transition. A post-horizon event cannot retroactively become the point residual of an expired forecast.
+A prediction strategy that stores a horizon-indexed typed record with independently interpreted point-template and forecast-law correction components. A post-horizon event cannot retroactively become the point residual of an expired forecast.
 
 ## Residual Composition
 
-The typed point-template operation \(\oplus_E\) that encodes a baseline event, norm-clips a residual, projects into an admissible operator set, and decodes the result. Correcting a probability forecast additionally requires a declared full-outcome Markov kernel whose no-event transitions are explicit; a fixed decision rule then derives a coherent no-event-capable point summary.
+The typed point-template operation \(\oplus_E\) encodes a baseline event, norm-clips a point residual, projects into an admissible operator set, and decodes the result. A separately tagged law residual drives a declared full-outcome Markov kernel whose no-event transitions are explicit. The components are not semantically interchangeable; a fixed decision rule aligns mark and time, while joint forward tests validate the complete bundle.
 
 ## Temporal Loss
 
@@ -200,9 +200,9 @@ A graph whose nodes hold predictive laws at possibly different event groups, res
 
 A declared divergence between two node forecasts after both are pushed into the comparison space of their shared edge. It measures predictive agreement unless explicit SCM semantics make a causal comparison valid.
 
-## Sheaf-Compatible Scaffold
+## Sheaf-Inspired Compatibility Scaffold
 
-An abstraction compatibility graph designed so that restriction-map identity and composition laws can be stated and tested. It is not called a sheaf until those laws and the required assigned structures actually hold.
+An abstraction compatibility graph inspired by local-to-global sheaf reasoning and designed so restriction-map identity and composition laws can later be stated and tested. It is not called a sheaf-theoretic construction until those laws and the required assigned structures actually hold.
 
 ## Predictive Sheaf Snap
 

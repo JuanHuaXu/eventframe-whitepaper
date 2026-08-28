@@ -28,7 +28,7 @@ Status: representational design claim; requires measurement assumptions and comp
 
 ## Claim 2: Residual caches can reduce prediction cost
 
-When similar contexts or action signatures produce similar transition errors, certified as-of residual caches can approximate corrections without recomputing the full transition. A point residual is defined only for an event inside its originating horizon; a separately declared distributional estimator is defined on both marked and no-event outcomes. Point-template and forecast-law correction use one clipped, horizon-valid selected residual. The full-outcome kernel explicitly governs probability flow into and out of the no-event atom, and the final point summary is derived coherently from the corrected law. Proper-score improvement requires the law correction and all metadata gates to pass.
+When similar contexts or action signatures produce similar transition errors, certified as-of residual caches can approximate corrections without recomputing the full transition. A point residual is defined only for an event inside its originating horizon; a separately declared law estimator is defined on both marked and no-event outcomes. A typed record carries independently interpreted point-template and forecast-law components. The full-outcome kernel explicitly governs probability flow into and out of the no-event atom, and the final mark and time are derived coherently from the corrected law. Proper-score improvement requires the law correction and all metadata gates to pass; a joint claim additionally requires complete-bundle validation.
 
 Status: plausible systems claim; requires cache hit-rate, confidence, validity, and accuracy evaluation. Residual composition should be framed as Causal Fermion Systems-inspired structure, not as a claim that the physical theory directly applies.
 
@@ -96,7 +96,7 @@ Status: design property; requires implementation validation and adversarial test
 
 Event groups, resolutions, sensors, local models, or agents may be compared by mapping their predictive laws into declared edge spaces. Edge defects complement within-bucket future-diameter and must preserve unreconciled disagreement for audit.
 
-Status: architectural and mathematical proposal; requires map-validity tests, confidence calibration, and comparison against bucket-only Anti-Pigeon. It is sheaf-compatible only when the required map laws hold and causal only when SCM semantics are supplied.
+Status: architectural and mathematical proposal; requires map-validity tests, confidence calibration, and comparison against bucket-only Anti-Pigeon. It is currently a sheaf-inspired compatibility scaffold; it becomes sheaf-theoretic only when the required map laws hold and causal only when SCM semantics are supplied.
 
 ## Claim 8a: Full refinement can be integrated without redefining the fast path
 

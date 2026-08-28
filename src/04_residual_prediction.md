@@ -11,15 +11,15 @@ B:\mathcal E^k\rightarrow\mathcal E,
 \qquad b_t=B(C_t).
 \]
 
-To make structured correction type-correct, choose a finite-dimensional Hilbert space \(\mathscr H\) and let \(\mathbb H_d\) be the real vector space of self-adjoint operators on \(\mathscr H\), equipped with the Frobenius norm \(\|\cdot\|_F\). Define:
+To make structured correction type-correct, choose a finite-dimensional Hilbert space \(\mathscr H\). Let \(\mathbb H_d^E\) and \(\mathbb H_d^Q\) be separately tagged copies of the real vector space of self-adjoint operators on \(\mathscr H\), each equipped with the Frobenius norm \(\|\cdot\|_F\). The superscripts distinguish point-template semantics from forecast-law semantics even when an implementation uses the same matrix representation. Define:
 
 \[
-q_E:\mathcal E\rightarrow\mathbb H_d,
+q_E:\mathcal E\rightarrow\mathbb H_d^E,
 \qquad
 d_E:\mathcal Q_{E,\mathrm{adm}}\rightarrow\mathcal E,
 \]
 
-where \(\mathcal Q_{E,\mathrm{adm}}\subseteq\mathbb H_d\) is a non-empty closed admissible set and \(d_E\) is a decoder, not an inverse of the lossy encoder. For a radius \(\delta_E>0\), define norm clipping by:
+where \(\mathcal Q_{E,\mathrm{adm}}\subseteq\mathbb H_d^E\) is a non-empty closed admissible set and \(d_E\) is a decoder, not an inverse of the lossy encoder. For a radius \(\delta_E>0\), define point-residual norm clipping by:
 
 \[
 \mathrm{clip}_{\delta_E}(r)=
@@ -43,7 +43,7 @@ b\oplus_E r=
 b, & r=0,\\
 d_E\!\left(\Pi_E\!\left(q_E(b)+\mathrm{clip}_{\delta_E}(r)\right)\right), & r\neq0,
 \end{cases}
-\qquad r\in\mathbb H_d.
+\qquad r\in\mathbb H_d^E.
 \]
 
 Thus zero is an exact identity even when the encoder is lossy or the baseline encoding is outside the admissible set.
@@ -53,33 +53,42 @@ This construction takes limited inspiration from the use of self-adjoint operato
 Residuals are estimated after observation and are indexed by the forecast horizon that generated their label. For the forecast issued at \(t\), a simple point-representation residual exists only when the concrete next event lies inside that same horizon:
 
 \[
-r_{t,H}^{\mathrm{obs}}=
+r_{t,H}^{E,\mathrm{obs}}=
 q_E(e_{t+1})-q_E(b_t),
 \qquad
 0<\tau(e_{t+1})-\tau(e_t)\le H.
 \]
 
-If \(Z_{t+1}=\varnothing\), then \(r_{t,H}^{\mathrm{obs}}\) is undefined for that forecast origin. A concrete event observed after \(H\) may label a later forecast origin, but it must not retroactively become the point residual of the expired \(H\)-horizon forecast. To learn a law correction from either branch, declare a measurable horizon-specific distributional residual estimator
+If \(Z_{t+1}=\varnothing\), then \(r_{t,H}^{E,\mathrm{obs}}\) is undefined for that forecast origin. A concrete event observed after \(H\) may label a later forecast origin, but it must not retroactively become the point residual of the expired \(H\)-horizon forecast. To learn a law correction from either branch, declare a measurable horizon-specific distributional residual estimator with a separately tagged codomain
 
 \[
-\rho_H:\mathcal P(\mathcal Z_H)\times\mathcal Z_H\rightarrow\mathbb H_d,
+\rho_H^Q:\mathcal P(\mathcal Z_H)\times\mathcal Z_H\rightarrow\mathbb H_d^Q,
 \qquad
-r_{t,H}^{\mathrm{law}}=
-\rho_H\!\left(\mathsf Q_B(\cdot\mid C_t),Z_{t+1}\right).
+r_{t,H}^{Q,\mathrm{obs}}=
+\rho_H^Q\!\left(\mathsf Q_B(\cdot\mid C_t),Z_{t+1}\right).
 \]
 
-Its objective may be a proper-score gradient, a constrained alignment, or another predeclared rule, but it must be defined at \(Z_{t+1}=\varnothing\), fitted without future leakage, and evaluated on later outcomes. The point residual \(r_{t,H}^{\mathrm{obs}}\) and law residual \(r_{t,H}^{\mathrm{law}}\) are distinct estimators even though both inhabit \(\mathbb H_d\); cache provenance records which estimator produced an entry. A no-event observation must not be silently encoded as a concrete event. Every cache entry records its horizon and censoring convention; reuse across horizons requires a separately validated transport rule. In all cases, a stored residual is a reusable correction candidate whose utility must be re-evaluated on later observations.
+Its objective may be a proper-score gradient, a constrained law update, or another predeclared rule, but it must be defined at \(Z_{t+1}=\varnothing\), fitted without future leakage, and evaluated on later outcomes. Define the residual mode set \(\mathcal M_R=\{\varnothing,E,Q,EQ\}\) and a typed residual record
+
+\[
+\mathbf r=(r^E,r^Q,m)
+\in\mathbb H_d^E\times\mathbb H_d^Q\times\mathcal M_R.
+\]
+
+Write \(\mathcal V_R=\mathbb H_d^E\times\mathbb H_d^Q\times\mathcal M_R\) and \(\mathbf 0_R=(0_E,0_Q,\varnothing)\).
+
+The mode says which components are semantically present; an absent component is stored as zero, but zero remains a valid present correction when its mode includes that component. A point-only record \(m=E\) may support point diagnostics but cannot change the forecast law. A law-only record \(m=Q\) may change the law and proper score while leaving non-mark, non-time template fields at baseline. A joint record \(m=EQ\) contains separately estimated components and must pass joint forward validation of the resulting bundle; it does not assert \(r^E=r^Q\) or infer one component's semantics from the other. A no-event observation must not be silently encoded as a concrete point residual. Every cache entry records its mode, estimator identities, horizon, and censoring convention; reuse across horizons requires a separately validated transport rule. In all cases, a stored record is a reusable correction candidate whose utility must be re-evaluated on later observations.
 
 The general residual cache available immediately before prediction is:
 
 \[
-\mathcal C_{R,t^-}=\{(\kappa_i,r_i,c_i,n_i,t_i,v_i,m_i,H_i,s_i)\}_{i=1}^{N_t},
+\mathcal C_{R,t^-}=\{(\kappa_i,\mathbf r_i,c_i,n_i,t_i,v_i,\mu_i,H_i,s_i)\}_{i=1}^{N_t},
 \qquad
 \kappa:\mathcal E^k\rightarrow\mathcal K_R,
-\qquad r_i\in\mathbb H_d,
+\qquad \mathbf r_i\in\mathcal V_R,
 \]
 
-where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(m_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, and \(s_i\) is provenance including residual identity, censoring convention, and eligible training interval. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
+where \(c_i\) is residual confidence, \(n_i\) is effective support, \(t_i\) is the last certified update time, \(v_i\) is its abstraction epoch, \(\mu_i\) is its compatibility safety margin, \(H_i\) is its forecast horizon, and \(s_i\) is provenance including component modes, estimator identities, censoring convention, and eligible training interval. Only entries whose availability time is at most \(t\) may occur in \(\mathcal C_{R,t^-}\). For \(N_t>0\), let:
 
 \[
 j_t=\min\!\left(\arg\min_{1\le i\le N_t}
@@ -96,7 +105,7 @@ J_t^R=
 d_{\mathcal K_R}(\kappa(C_t),\kappa_{j_t})\le\epsilon_R,\quad
 c_{j_t}\ge\gamma_R,\quad n_{j_t}\ge n_{\min}^R,\\
 \mathrm{age}_t(t_{j_t})\le A_{\max}^R,\quad
-v_{j_t}=v_t,\quad H_{j_t}=H,\quad m_{j_t}\ge0,\quad s_{j_t}\text{ is valid}
+v_{j_t}=v_t,\quad H_{j_t}=H,\quad \mu_{j_t}\ge0,\quad s_{j_t}\text{ is valid}
 \end{array}
 \right],&N_t>0,\\
 0,&N_t=0.
@@ -106,10 +115,10 @@ v_{j_t}=v_t,\quad H_{j_t}=H,\quad m_{j_t}\ge0,\quad s_{j_t}\text{ is valid}
 The retrieved residual is:
 
 \[
-r_t^*=
+\mathbf r_t^*=
 \begin{cases}
-r_{j_t}, & J_t^R=1,\\
-0_{\mathbb H_d}, & \text{otherwise.}
+\mathbf r_{j_t}, & J_t^R=1,\\
+\mathbf 0_R, & \text{otherwise.}
 \end{cases}
 \]
 
@@ -126,7 +135,7 @@ and define the partial map:
 \[
 \mathcal C_{A,t^-}:
 \mathcal K_A\rightharpoonup
-\mathbb H_d\times[0,1]\times\mathbb N_0\times\mathcal T
+\mathcal V_R\times[0,1]\times\mathbb N_0\times\mathcal T
 \times\mathbb N_0\times\mathbb R\times\mathbb R_{>0}
 \times\mathcal S_{\mathrm{prov}}.
 \]
@@ -137,13 +146,13 @@ For \(k_t=\alpha(C_t)\), bind the cache entry only when it exists:
  k_t\in\mathrm{dom}(\mathcal C_{A,t^-})
 \quad\Longrightarrow\quad
 \mathcal C_{A,t^-}(k_t)=
-(r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},m_{k_t},H_{k_t},s_{k_t}),
+(\mathbf r_{k_t},c_{k_t},n_{k_t},t_{k_t},v_{k_t},\mu_{k_t},H_{k_t},s_{k_t}),
 \]
 
-where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(m_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, and \(s_{k_t}\) records residual identity, censoring convention, and eligible training interval. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
+where \(n_{k_t}\) is effective support after accounting for clustered or overlapping trials, \(v_{k_t}\) is the cache entry's local abstraction epoch, \(v_t\) is the active as-of epoch for the same dependency region, \(\mu_{k_t}\) is the compatibility safety margin materialized by the slow path, \(H_{k_t}\) is the horizon under which the residual was estimated, and \(s_{k_t}\) records component modes, estimator identities, censoring convention, and eligible training interval. If \(E(k_t)\) is the declared set of compatibility edges on which the entry depends, for example:
 
 \[
-m_{k_t}=
+\mu_{k_t}=
 \begin{cases}
 \epsilon_{\mathrm{merge}}^{\mathrm{comp}}, & E(k_t)=\varnothing,\\
 \epsilon_{\mathrm{merge}}^{\mathrm{comp}}
@@ -162,7 +171,7 @@ J_t^A=
 \begin{gathered}
 c_{k_t}\ge\gamma_A,\quad n_{k_t}\ge n_{\min},\quad
 \mathrm{age}_t(t_{k_t})\le A_{\max},\\
-v_{k_t}=v_t,\quad H_{k_t}=H,\quad m_{k_t}\ge0,\quad
+v_{k_t}=v_t,\quad H_{k_t}=H,\quad \mu_{k_t}\ge0,\quad
 s_{k_t}\text{ is valid}
 \end{gathered}
 \right],&k_t\in\mathrm{dom}(\mathcal C_{A,t^-}),\\
@@ -173,51 +182,67 @@ s_{k_t}\text{ is valid}
 Then:
 
 \[
-r_t^A=
+\mathbf r_t^A=
 \begin{cases}
-r_{k_t}, & J_t^A=1,\\
-0_{\mathbb H_d}, & \text{otherwise.}
+\mathbf r_{k_t}, & J_t^A=1,\\
+\mathbf 0_R, & \text{otherwise.}
 \end{cases}
 \]
 
 A valid zero residual is now distinguishable from a miss because \(J_t^A\), not the residual value, records acceptance. The exact-to-general selection is:
 
 \[
-r_t^{\mathrm{use}}=
+\mathbf r_t^{\mathrm{use}}=
 \begin{cases}
-r_t^A, & J_t^A=1,\\
-r_t^*, & J_t^A=0\text{ and }J_t^R=1,\\
-0_{\mathbb H_d},&\text{otherwise.}
+\mathbf r_t^A, & J_t^A=1,\\
+\mathbf r_t^*, & J_t^A=0\text{ and }J_t^R=1,\\
+\mathbf 0_R,&\text{otherwise.}
 \end{cases}
 \]
 
-To connect point correction to the probability law evaluated by the proper score, let \(\mathrm{Ker}(\mathcal Z_H)\) denote Markov kernels on \(\mathcal Z_H\), and declare a measurable map:
+To connect a law residual to the probability law evaluated by the proper score, choose \(\delta_Q>0\), define \(\mathrm{clip}_{\delta_Q}\) on \(\mathbb H_d^Q\) by the same norm-clipping rule as above, and let \(\mathrm{Ker}(\mathcal Z_H)\) denote Markov kernels on the measurable space \((\mathcal Z_H,\mathscr A_H)\). Declare:
 
 \[
-\mathfrak K_E:\mathbb H_d\rightarrow\mathrm{Ker}(\mathcal Z_H),
+\mathfrak K_H^Q:\mathbb H_d^Q\rightarrow\mathrm{Ker}(\mathcal Z_H),
 \qquad
-\mathfrak K_E(0)(z,A)=\mathbf 1_A(z).
+\mathfrak K_H^Q(0_Q)(z,A)=\mathbf 1_A(z).
 \]
 
-The declaration covers every \(z\in\mathcal Z_H\), including \(\varnothing\), for every effective residual. Write \(\mathcal Z_H^+=\mathcal Z_H\setminus\{\varnothing\}\). The implementation must explicitly specify both \(\mathfrak K_E(\bar r)(\varnothing,\{\varnothing\})\) and \(\mathfrak K_E(\bar r)(z,\{\varnothing\})\) for \(z\in\mathcal Z_H^+\); preservation of the no-event atom is not a default assumption.
+For every \(A\in\mathscr A_H\), the evaluation map \((r^Q,z)\mapsto\mathfrak K_H^Q(r^Q)(z,A)\) must be jointly measurable on \(\mathbb H_d^Q\times\mathcal Z_H\); for fixed \(r^Q\), it must be a Markov kernel. These conditions supply the measurable structure actually used below without requiring an unspecified sigma-algebra on a function space. The declaration covers every \(z\in\mathcal Z_H\), including \(\varnothing\), for every effective residual. The implementation must explicitly specify both \(\mathfrak K_H^Q(\bar r^Q)(\varnothing,\{\varnothing\})\) and \(\mathfrak K_H^Q(\bar r^Q)(z,\{\varnothing\})\) for \(z\in\mathcal Z_H^+\); preservation of the no-event atom is not a default assumption.
 
-For every measurable \(A\subseteq\mathcal Z_H\) and candidate residual \(r\in\mathbb H_d\), first set \(\bar r=\mathrm{clip}_{\delta_E}(r)\) and define:
+For \(\mathbf r=(r^E,r^Q,m)\), define the effective components
 
 \[
-\mathsf Q_t^{(r)}(A\mid C_t)=
-\int_{\mathcal Z_H}\mathfrak K_E(\bar r)(z,A)
+\bar r^E=
+\begin{cases}
+\mathrm{clip}_{\delta_E}(r^E),&m\in\{E,EQ\},\\
+0_E,&m\in\{\varnothing,Q\},
+\end{cases}
+\qquad
+\bar r^Q=
+\begin{cases}
+\mathrm{clip}_{\delta_Q}(r^Q),&m\in\{Q,EQ\},\\
+0_Q,&m\in\{\varnothing,E\}.
+\end{cases}
+\]
+
+For every \(A\in\mathscr A_H\), define:
+
+\[
+\mathsf Q_t^{(\mathbf r)}(A\mid C_t)=
+\int_{\mathcal Z_H}\mathfrak K_H^Q(\bar r^Q)(z,A)
 \,\mathsf Q_B(dz\mid C_t).
 \]
 
-Because \(\mathfrak K_E(r)\) is a Markov kernel, \(\mathsf Q_t^{(r)}\) is a probability law. Its no-event mass is explicitly:
+Because \(\mathfrak K_H^Q(r^Q)\) is a Markov kernel, \(\mathsf Q_t^{(\mathbf r)}\) is a probability law. Its no-event mass is explicitly:
 
 \[
 \begin{aligned}
-\mathsf Q_t^{(r)}(\{\varnothing\}\mid C_t)
-={}&\mathfrak K_E(\bar r)(\varnothing,\{\varnothing\})
+\mathsf Q_t^{(\mathbf r)}(\{\varnothing\}\mid C_t)
+={}&\mathfrak K_H^Q(\bar r^Q)(\varnothing,\{\varnothing\})
 \mathsf Q_B(\{\varnothing\}\mid C_t)\\
 &+\int_{\mathcal Z_H^+}
-\mathfrak K_E(\bar r)(z,\{\varnothing\})
+\mathfrak K_H^Q(\bar r^Q)(z,\{\varnothing\})
 \,\mathsf Q_B(dz\mid C_t).
 \end{aligned}
 \]
@@ -225,22 +250,22 @@ Because \(\mathfrak K_E(r)\) is a Markov kernel, \(\mathsf Q_t^{(r)}\) is a prob
 Thus a nonzero residual may change the no-event probability by moving mass in either direction. Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) be a declared measurable map that aligns a structured event template with the mark and time selected by \(d_H\). Define the no-event-capable structured point summary:
 
 \[
-\hat e_t^H(r)=
+\hat e_t^H(\mathbf r)=
 \begin{cases}
 \varnothing,
-&d_H(\mathsf Q_t^{(r)})=\varnothing,\\
-\mathrm{lift}_H\!\left(b_t\oplus_E\bar r,d_H(\mathsf Q_t^{(r)})\right),
-&d_H(\mathsf Q_t^{(r)})\in\mathcal Z_H^+.
+&d_H(\mathsf Q_t^{(\mathbf r)})=\varnothing,\\
+\mathrm{lift}_H\!\left(b_t\oplus_E\bar r^E,d_H(\mathsf Q_t^{(\mathbf r)})\right),
+&d_H(\mathsf Q_t^{(\mathbf r)})\in\mathcal Z_H^+.
 \end{cases}
 \]
 
 \[
-\mathcal O_t(r)=
-\left(\mathsf Q_t^{(r)}(\cdot\mid C_t),\hat e_t^H(r)\right)
+\mathcal O_t(\mathbf r)=
+\left(\mathsf Q_t^{(\mathbf r)}(\cdot\mid C_t),\hat e_t^H(\mathbf r)\right)
 \in\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing.
 \]
 
-The same effective residual \(\bar r\) parameterizes both the law correction and the conditional event-template correction, while the fixed rule \(d_H\) makes the final point decision coherent with the corrected law. The baseline bundle is exactly \(\mathcal O_t^B=\mathcal O_t(0)=(\mathsf Q_B(\cdot\mid C_t),\hat e_t^H(0))\). Form the selected candidate \(\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(r_t^{\mathrm{use}})\), and accept it only from current information:
+The residual record pairs two independently typed semantics. The law component controls the proper forecast, while the point component controls auxiliary structured fields. The fixed \(d_H\) and \(\mathrm{lift}_H\) keep the final mark and time coherent with the corrected law, but they do not prove that auxiliary fields improved; a joint record must pass forward validation of the complete output bundle. The baseline bundle is exactly \(\mathcal O_t^B=\mathcal O_t(\mathbf 0_R)=(\mathsf Q_B(\cdot\mid C_t),\hat e_t^H(\mathbf 0_R))\). Form the selected candidate \(\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(\mathbf r_t^{\mathrm{use}})\), and accept it only from current information:
 
 \[
 J_t^{\mathrm{pre}}=
@@ -261,14 +286,14 @@ The final residual law and bundle are:
 \qquad
 \mathsf Q_t^R=
 \begin{cases}
-\mathsf Q_t^{(r_t^{\mathrm{use}})},&J_t^{\mathrm{pre}}=1,\\
+\mathsf Q_t^{(\mathbf r_t^{\mathrm{use}})},&J_t^{\mathrm{pre}}=1,\\
 \mathsf Q_B,&J_t^{\mathrm{pre}}=0.
 \end{cases}
 \]
 
 An implementation may try the next lower-precedence residual after a rejected candidate only when that fallback order and every gate were preregistered. No post-observation quantity may enter this decision.
 
-If an implementation supplies only the point operator \(\oplus_E\) and no declared kernel \(\mathfrak K_E\), it may claim improvement only on point diagnostics, not on the proper forecast score.
+If an implementation supplies only the point operator \(\oplus_E\) and no declared law component and kernel \(\mathfrak K_H^Q\), it may claim improvement only on point diagnostics, not on the proper forecast score. Conversely, a law-only record may support a proper-score claim but does not claim correction of auxiliary template fields.
 
 Worked toy instantiation. The following finite example is arithmetic scaffolding, not an experimental result. Let \(H=1\) second and order the outcome space as
 
@@ -282,62 +307,64 @@ z_b=(\mathrm{stop},0.8).
 
 For one context \(C_t\), suppose the baseline law is the row vector \(\mathbf q_B=(0.50,0.20,0.30)\).
 
-Take \(\mathscr H=\mathbb R^3\), represent residuals by diagonal self-adjoint matrices, and use the certified cache residual
+Take \(\mathscr H=\mathbb R^3\), represent both tagged residual components by diagonal self-adjoint matrices, and use the certified joint cache record
 
 \[
-r_0=\operatorname{diag}(0.10,-0.05,-0.05),
+r_0^E=r_0^Q=\operatorname{diag}(0.10,-0.05,-0.05),
 \qquad
-\delta_E=0.20.
+\mathbf r_0=(r_0^E,r_0^Q,EQ),
+\qquad
+\delta_E=\delta_Q=0.20.
 \]
 
-Its Frobenius norm is \(\sqrt{0.015}<\delta_E\), so clipping leaves it unchanged. For completeness, one distributional estimator on this finite space is
+The equality of the two matrices is a convenience of this toy, not a semantic identification. Their Frobenius norm is \(\sqrt{0.015}<0.20\), so clipping leaves both unchanged. For completeness, one distributional estimator on this finite space is
 
 \[
-\rho_H(\mathbf q,z)
+\rho_H^Q(\mathbf q,z)
 =\operatorname{diag}(\mathbf 1_z-\mathbf q),
 \]
 
-where \(\mathbf 1_z\) is the one-hot vector for any \(z\in\mathcal Z_H\), including \(\varnothing\). A cache may store a projected or averaged estimator output such as \(r_0\), together with its horizon and provenance; the example does not claim that one observation produced \(r_0\).
+where \(\mathbf 1_z\) is the one-hot vector for any \(z\in\mathcal Z_H\), including \(\varnothing\). A separately declared point estimator supplies \(r_0^E\). A cache may store projected or averaged outputs such as \(\mathbf r_0\), together with component-specific estimator identities, horizon, and provenance; the example does not claim that one observation produced either component.
 
 Define
 
 \[
-\lambda(r)=
+\lambda(r^Q)=
 \min\!\left(1,
 \max\!\left(0,
-\frac{\langle r,r_0\rangle_F}{\|r_0\|_F^2}
+\frac{\langle r^Q,r_0^Q\rangle_F}{\|r_0^Q\|_F^2}
 \right)\right)
 \]
 
 and let the full-outcome kernel, in the displayed outcome order, be the row-stochastic matrix
 
 \[
-K(r)=
+K(r^Q)=
 \begin{pmatrix}
 1&0&0\\
-\lambda(r)/4&1-\lambda(r)/4&0\\
-\lambda(r)/6&0&1-\lambda(r)/6
+\lambda(r^Q)/4&1-\lambda(r^Q)/4&0\\
+\lambda(r^Q)/6&0&1-\lambda(r^Q)/6
 \end{pmatrix}.
 \]
 
-Set \(\mathfrak K_E(r)(z_i,\{z_j\})=K(r)_{ij}\). Every row sums to one, all entries are non-negative, and \(K(0)=I\). At \(r_0\), the corrected law is
+Set \(\mathfrak K_H^Q(r^Q)(z_i,\{z_j\})=K(r^Q)_{ij}\). Every row sums to one, all entries are non-negative, and \(K(0_Q)=I\). At \(r_0^Q\), the corrected law is
 
 \[
-\mathbf q_R=\mathbf q_BK(r_0)
+\mathbf q_R=\mathbf q_BK(r_0^Q)
 =(0.60,0.15,0.25).
 \]
 
-The correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be \(b_t=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\operatorname{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+The law correction therefore moves \(0.05\) probability from \(z_b\) and \(0.05\) from \(\varnothing\) to \(z_a\); the no-event branch is operational rather than pinned. Let \(d_H\) select a mode under zero-one loss with the displayed order as tie-break. Let the baseline event template be \(b_t=e_a\in\mathcal E\), whose mark and anchor correspond to \(z_a\), and set \(q_E(e_a)=\operatorname{diag}(1,0,0)\). Let \(\mathcal Q_{E,\mathrm{adm}}\) be the diagonal probability simplex, let \(\Pi_E\) be Euclidean projection onto it, and let \(d_E\) decode its largest coordinate into the corresponding marked template with the same tie-break. Then \(e_a\oplus_Er_0^E=e_a\). With \(\mathrm{lift}_H\) replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
 
 \[
 d_H(\mathbf q_R)=z_a,
 \qquad
-\hat e_t^H(r_0)=\mathrm{lift}_H(e_a,z_a)=e_a.
+\hat e_t^H(\mathbf r_0)=\mathrm{lift}_H(e_a,z_a)=e_a.
 \]
 
 If \(z_a\) is observed, logarithmic loss changes from \(-\log(0.50)\approx0.693\) to \(-\log(0.60)\approx0.511\). If \(\varnothing\) is observed, it worsens from \(-\log(0.30)\approx1.204\) to \(-\log(0.25)\approx1.386\). This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
 
-Suppose the exact cache entry records \(H_{k_t}=1\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(r_t^{\mathrm{use}}=r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
+Suppose the exact cache entry records \(H_{k_t}=1\), all other metadata gates pass, and the requested horizon is \(H=1\). Then \(J_t^A=1\) and \(\mathbf r_t^{\mathrm{use}}=\mathbf r_0\). The same entry requested at \(H=0.5\) has \(J_t^A=0\) solely because \(H_{k_t}\ne H\), so the expired-horizon correction is not reused.
 
 Finally, let the finite design family built on \(\mathcal S_{\mathrm{obj}}\) be \(\{\Theta_0,\Theta_1\}\), where \(\Theta_0\) is baseline-only and \(\Theta_1\) includes the certified residual. Take \(\epsilon_{AP}=0.05\), \(D_K^{\mathrm{cert},\star}(\Theta_0)=0.03\), \(D_K^{\mathrm{cert},\star}(\Theta_1)=0.04\), \(\epsilon_{\mathrm{prop}}=0.02\), and suppose the grouped design-sample calculations are
 
@@ -366,7 +393,7 @@ After observation, evaluate the particular residual candidate stored for key \(k
 
 \[
 \mathcal A_{\mathrm{post}}(\mathcal O_t^B,Z_{t+1})
--\mathcal A_{\mathrm{post}}(\mathcal O_t(r_k),Z_{t+1})
+-\mathcal A_{\mathrm{post}}(\mathcal O_t(\mathbf r_k),Z_{t+1})
 \ge\delta_A,
 \]
 

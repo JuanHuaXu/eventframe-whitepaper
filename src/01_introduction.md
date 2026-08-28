@@ -14,8 +14,8 @@ The reference prediction procedure has six steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
 2. Compute a baseline forecast law \(\mathsf Q_B(\cdot\mid C_t)\) and conditional event template \(b_t=B(C_t)\).
-3. From state \(S_{t^-}\), select an exact-key or general residual \(r_t^{\mathrm{use}}\) only when its distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and provenance checks pass.
-4. Clip one horizon-valid residual, use it for both the conditional event-template correction and the declared full-outcome residual kernel, derive the no-event-capable point summary from the corrected law, and apply the pre-observation risk gate to the coherent output bundle.
+3. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective-support, age, epoch, forecast-horizon equality, compatibility-margin, and component-provenance checks pass.
+4. Clip its separately typed point and law components, apply each only to its declared semantics, derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
 5. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
 6. Use a slower refinement process to update residuals, test invariants, revise abstractions, or revise the event ontology.
 
