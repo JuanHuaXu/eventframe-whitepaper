@@ -2,6 +2,25 @@
 
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
+The current experiment ledger labels a proposition Validated in fixture when its frozen test met the declared target, Falsified in fixture when it failed, and Not tested when no reported experiment addresses it. These labels are local to the stated generator, hardware, metric, and evaluation window. A fixture-level validation is not universal proof, and a fixture-level falsification rejects the tested proposition or configuration rather than every possible implementation of the broader claim.
+
+| Claim | Tested proposition | Result | Evidence and boundary |
+| --- | --- | --- | --- |
+| 2b | Frontier-all improves candidate-level probability quality over no Bayesian update. | Validated in fixture | Priority-weighted Brier loss improved by 9.29% in the frozen 20-candidate synthetic frontier. |
+| 2b | The tested 5%-activation selective policy retains the quality gain of frontier-all. | Falsified in fixture | Selective admission improved priority-weighted Brier by only 0.16%, versus 9.29% for frontier-all. |
+| 2b | The tested Bayesian policies repair post-shift ranking at recall at 10. | Falsified in fixture | Every tested policy had post-shift recall at 10 of 0.3000. |
+| 2 | A reusable residual improves probability quality under a stable recurring bias. | Validated in fixture | The repeated-bias fixture reduced Brier loss by 29.81% over 40 untouched outcomes. |
+| 2 | Residual reuse adds predictive gain in the original frontier experiment. | Falsified in fixture | The selective-plus-residual policy produced no incremental gain over selective admission alone. |
+| 6 | Correctly separating a deliberately invalid broad group improves probability quality. | Validated, mechanism only | An oracle two-bucket split reduced Brier loss by 29.41%; oracle labels mean the Anti-Pigeon certificate procedure itself was not tested. |
+| 2b, 6 | The bounded comparator nominates behaviorally divergent groups. | Validated in fixture | Strong split: 100%, 95% Wilson [94.34%, 100%]; moderate split: 87.5%, [77.23%, 93.53%]. No false share was observed in either divergent scenario; each scenario's upper endpoint is 5.66%. |
+| 2b, 6 | The bounded comparator positively recognizes ordinary compatible noisy groups at the tested support. | Falsified in fixture | All 64 compatible 0.8/0.8 groups remained uncertain at 100 outcomes per member. |
+| 2b, 6 | Bayesian comparison preserves Anti-Pigeon authority. | Validated in integration fixture | The comparison reached share and split branches without changing a posterior key or certificate. |
+| 2b | The original run-length-zero detector reliably handles noisy abrupt, gradual, and recurring drift. | Falsified in fixture | Miss rates were 96.88%, 100%, and 93.75%, respectively. |
+| 2b | The revised v4 monitor materially improves drift recovery under its declared windows. | Validated in fixture | Abrupt: 87.5%, 95% Wilson [77.23%, 93.53%]; recurring: 77.34%, [69.36%, 83.74%]; gradual: 93.75%, [85.00%, 97.54%]. |
+| 2b | The revised v4 monitor is ready for production drift guarantees. | Falsified in fixture | One stable unmatched alarm; 0.2656, 0.3281, and 0.1563 unmatched alarms per trajectory in noisy abrupt, recurring, and gradual scenarios; recurring misses; and long gradual delay violate readiness. |
+| 7, 7a | The frontier-all policy change remains below 100 ms local sequential p99 recall in the declared fixture. | Validated, narrow benchmark | Measured p99 was 9.043 ms at 1,000 stored events; transport, external embeddings, concurrency, cold start, and full service load were excluded. |
+| 0, 1, 1b, 2a, 3--5b, 6a, 8--8c | All remaining empirical propositions. | Not tested | The paper specifies protocols, but reports no claim-validating experiment for these propositions yet. Claim 1a is a scope statement rather than an empirical performance claim. |
+
 Claim 0. At a fixed resolution, an external target-law constrained population objective defines an oracle benchmark. The operational rule selects from a finite family using certified Anti-Pigeon and proper-score constraints, empirical priority-weighted action, and representation cost. Oracle feasibility and empirical certifiability are distinct; generating laws are distinct from their realized design and untouched confirmation samples, and as-of runtime admission remains separate.
 
 Claim 1. Structured event frames are useful predictive units if, for a declared task, they improve interpretability or temporal prediction relative to unstructured sequence records without hiding field-level error.

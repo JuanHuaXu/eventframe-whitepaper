@@ -1,5 +1,26 @@
 # Claims Register
 
+## Current Experiment Results
+
+The result labels are local to the declared fixture. **Validated in fixture** means the frozen proposition met its stated test; **Falsified in fixture** means it failed; **Not tested** means no reported experiment addresses it. Neither fixture-level outcome is automatically universal.
+
+| Claim | Tested proposition | Result | Evidence and boundary |
+| --- | --- | --- | --- |
+| 2b | Frontier-all improves candidate-level probability quality over no Bayesian update. | Validated in fixture | Priority-weighted Brier improved by 9.29% in the frozen bounded-frontier experiment. |
+| 2b | The tested 5%-activation selective policy retains the frontier-all quality gain. | Falsified in fixture | It improved priority-weighted Brier by 0.16%, versus 9.29% for frontier-all. |
+| 2b | The tested Bayesian policies repair post-shift recall at 10. | Falsified in fixture | Every policy measured 0.3000 after the shift. |
+| 2 | Stable recurring residual bias is correctable. | Validated in fixture | Brier loss fell by 29.81% in the repeated-bias fixture. |
+| 2 | Residual reuse adds gain in the original frontier generator. | Falsified in fixture | The measured incremental gain was zero. |
+| 6 | A correct split improves an invalid broad bucket. | Validated, mechanism only | Oracle splitting improved Brier by 29.41%; certificate coverage was not tested. |
+| 2b, 6 | The comparator nominates divergent groups. | Validated in fixture | Strong: 100%, 95% Wilson [94.34%, 100%]; moderate: 87.5%, [77.23%, 93.53%]. No false share was observed; each 64-trajectory divergent scenario has an upper endpoint of 5.66%. |
+| 2b, 6 | The comparator positively recognizes compatible noisy groups at tested support. | Falsified in fixture | All compatible noisy groups remained uncertain. |
+| 2b, 6 | The comparator preserves Anti-Pigeon authority. | Validated in integration fixture | It did not mutate posterior keys or certificates. |
+| 2b | The original changepoint detector handles noisy and gradual drift. | Falsified in fixture | Miss rates reached 96.88%, 100%, and 93.75%. |
+| 2b | The v4 monitor materially improves declared-window recovery. | Validated in fixture | Abrupt: 87.5%, 95% Wilson [77.23%, 93.53%]; recurring: 77.34%, [69.36%, 83.74%]; gradual: 93.75%, [85.00%, 97.54%]. |
+| 2b | The v4 monitor is production-ready. | Falsified in fixture | Unmatched-alarm burdens were 0.0156 per stable trajectory and 0.2656, 0.3281, and 0.1563 per noisy abrupt, recurring, and gradual trajectory; misses and gradual delay also remain. |
+| 7, 7a | Frontier-all remains below 100 ms local sequential p99 in the declared fixture. | Validated, narrow benchmark | p99 was 9.043 ms at 1,000 events with major service costs excluded. |
+| Other empirical claims | All propositions not listed above. | Not tested | Their protocols remain proposed future work. |
+
 Each major claim in the paper should be tracked here and revised conservatively.
 
 ## Claim 0: Adaptive event abstraction is the governing principle
