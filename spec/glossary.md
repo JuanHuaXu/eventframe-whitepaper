@@ -188,6 +188,14 @@ The result of updating only on admitted evidence without proving conditional ign
 
 The rule that events may share one cached posterior only while an external target-law divergence certificate, effective-support, horizon, epoch, and provenance checks pass. Its guarantee is empirical and conditional on the target-law estimator, audit coverage, simultaneous uncertainty procedure, and any continuity bound attaining their stated coverage. Divergent or uncertified events receive separate posterior keys.
 
+## Bayesian Group Comparison
+
+A bounded shared-versus-split marginal-evidence diagnostic over member-level sufficient statistics. It may propose share, split, or uncertain, but cannot publish an Anti-Pigeon certificate or mutate posterior keys. Positive sharing still requires independent external target-law evidence.
+
+## Bounded Changepoint Monitor
+
+A capped Bayesian run-length monitor combined with a frozen-warm-up, two-sided cumulative detector and cooldown. It can invalidate dependent local state and nominate recalibration, but its claims are limited to the admitted or independently audited stream that feeds it.
+
 ## Coupled Learning State
 
 The versioned posterior, residual, epoch, abstraction, and graph state published atomically to prediction readers. Finite publication and invalidation budgets, hysteresis, cooldowns, and deterministic conflict ordering bound same-evidence-epoch thrashing; they do not prove convergence across an unbounded drifting stream.
@@ -198,7 +206,7 @@ An independent, design-weighted shadow sample of inactive candidates used to com
 
 ## Bayesian Update Ladder
 
-Four resource-aware stages: bounded cached updating, bounded changepoint monitoring, optional event-pattern refinement, and deep particle, variational, or model-comparison inference. Only stages with declared deterministic caps belong on a hard-latency fast path.
+Four resource-aware stages: bounded cached updating, bounded changepoint monitoring, optional event-pattern refinement, and deep particle, variational, or unrestricted model-comparison inference. The bounded proposal-only group comparator is a slow-path diagnostic with a declared group cap. Only stages with declared deterministic caps belong on a hard-latency fast path.
 
 ## Property Fuzzing
 

@@ -65,8 +65,9 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Bounded Bayesian candidate frontier with frontier-all and optional selective admission
 - Activation and selection-conditioned updating
 - Anti-Pigeon posterior sharing
+- Proposal-only Bayesian shared-versus-split comparison
 - Independent omitted-influence audit
-- Changepoint invalidation
+- Bounded run-length and cumulative changepoint invalidation
 - Consolidation
 - Cache pollution
 
@@ -110,7 +111,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Controlled perturbation tests
 - Cache hit-rate tests
 - Bounded Bayesian admission calibration and omission tests
-- Posterior-sharing and changepoint tests
+- Posterior-sharing proposal and changepoint detection tests
 - Long-horizon prediction
 - Invariant stability tests
 - Confluence and divergence tests

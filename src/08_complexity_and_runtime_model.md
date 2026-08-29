@@ -100,11 +100,12 @@ The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 3. Estimate observed residuals and update support/confidence.
 4. Consolidate episodic and residual memory.
 5. Evaluate inactive audit samples, omitted influence, posterior calibration, and changepoint triggers.
-6. Refit or expand Bayesian posteriors with particle, variational, or model-comparison methods when required.
-7. Run validity-constrained sensitivity tests.
-8. Run causal analysis only when an explicit SCM and identification strategy exist.
-9. Audit bucket coverage and future-diameter estimates.
-10. Accept split, merge, posterior-sharing, or ontology changes only on independent held-out evidence.
+6. Run bounded shared-versus-split marginal-evidence comparisons as proposal-only slow-path diagnostics; only an external Anti-Pigeon certificate may change sharing.
+7. Refit or expand Bayesian posteriors with particle, variational, or unrestricted model-comparison methods when required.
+8. Run validity-constrained sensitivity tests.
+9. Run causal analysis only when an explicit SCM and identification strategy exist.
+10. Audit bucket coverage and future-diameter estimates.
+11. Accept split, merge, posterior-sharing, or ontology changes only on independent held-out evidence.
 
 A cost decomposition is:
 
@@ -129,6 +130,8 @@ T_{\mathrm{slow}}=T_{\mathrm{base}}+T_{\mathrm{upgrade}}
 
 where \(M_f,M_c\in\mathbb N_0\) are the numbers of fuzzing-prediction and causal-analysis invocations. Set \(M_c=0\) when no causal model is available. Slow work must be budgeted, deferred, or batched so it does not silently migrate into the latency-critical path.
 
+For the Beta-Bernoulli group comparison in Section 5, retrieving already materialized member sufficient statistics and evaluating both marginal evidences costs \(O(|K|)\) time and \(O(1)\) additional accumulator space, subject to a declared group-size cap \(|K|\le K_{\max}\). This cost is independent of accumulated history only because each member retains bounded sufficient statistics. It is not placed on ordinary recall, and it excludes the external audit and confirmation work required to issue an Anti-Pigeon certificate.
+
 The Bayesian upgrade has an orthogonal cumulative ladder that does not renumber the abstraction-refinement stages:
 
 \[
@@ -136,7 +139,7 @@ The Bayesian upgrade has an orthogonal cumulative ladder that does not renumber 
 \mathcal B_0&=\text{bounded activation, certificate lookup, and cached update},\\
 \mathcal B_1&=\text{bounded robust changepoint monitoring},\\
 \mathcal B_2&=\text{declared event-pattern forecast refinement},\\
-\mathcal B_3&=\text{particle, variational SMC, and model recalibration}.
+\mathcal B_3&=\text{particle, variational SMC, unrestricted comparison, and model recalibration}.
 \end{aligned}
 \]
 
@@ -224,12 +227,13 @@ The integration roadmap is cumulative:
 1. Specify typed Bayesian evidence, parameter spaces, activation maps, source model, selection semantics, bounded sufficient statistics, and deterministic fallbacks.
 2. Add shadow-only activation, independent audit sampling, and omitted-influence measurement before allowing production posterior updates.
 3. Materialize Anti-Pigeon posterior-sharing certificates and enable bounded cached updates with atomic posterior-key-epoch publication.
-4. Add bounded robust changepoint monitoring and targeted invalidation; keep particle or unbounded run-length methods asynchronous.
-5. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged residual fast path.
-6. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
-7. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
-8. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
-9. Add predictive regime mixtures and deep Bayesian state-space refinement; promote causal interpretations only with explicit SCMs and identification assumptions.
-10. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
+4. Add bounded robust changepoint monitoring, warm-up, cooldown, and targeted invalidation; keep particle or unbounded run-length methods asynchronous.
+5. Add proposal-only bounded shared-versus-split comparison while retaining Anti-Pigeon as the sole posterior-sharing authority.
+6. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged residual fast path.
+7. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
+8. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.
+9. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
+10. Add predictive regime mixtures and deep Bayesian state-space refinement; promote causal interpretations only with explicit SCMs and identification assumptions.
+11. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
 
 The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.

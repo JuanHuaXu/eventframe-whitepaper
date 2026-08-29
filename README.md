@@ -14,6 +14,8 @@ The repository is intentionally independent of any specific agent, chatbot, prod
 - [EventFrame Whitepaper (PDF)](EventFrame_Whitepaper.pdf)
 - [EventFrame Whitepaper (Markdown)](paper.md)
 
+Synthetic reports cited by the paper are preserved under [`evidence/`](evidence/). They are mechanism evidence, not independent or real-world validation.
+
 ## Intended Output
 
 A publishable concept-and-math white paper covering:

@@ -129,6 +129,45 @@ s_K^B\text{ is valid}
 
 The certificate concerns externally evaluated downstream target-law disagreement, not agreement among the candidate model's own posteriors. Its guarantee is empirical and conditional on the declared target-law estimator, audit design, simultaneous coverage procedure, and any continuity bound actually attaining their stated coverage; EventFrame does not prove those premises from its architecture. The fast path checks a materialized certificate; it does not recompute \(D_K^{\mathrm{cert},\star}\). Admitted events in a certified bucket may update one shared posterior. If the certificate fails or is unavailable, each event retains or receives a separate posterior and the case may be routed to slow-path split review. Unrelated events are ignored by the production update except for the audit and changepoint mechanisms below.
 
+A bounded Bayesian comparison may nominate a sharing or splitting review, but it does not certify its own abstraction. In the Bernoulli retrieval-usefulness specialization, retain member-level sufficient statistics \((u_e,v_e)\) even when a current certificate lets members share one operational posterior, where \(u_e\) and \(v_e\) are the design-weighted useful and not-useful counts available in the current evidence epoch. Under a common \(\mathrm{Beta}(a_0,b_0)\) prior, the log marginal evidence for one shared rate and for independent member rates is
+
+\[
+\begin{aligned}
+\ell_K^{\mathrm{share}}
+&=\log\frac{\mathrm B\!\left(a_0+\sum_{e\in K}u_e,
+b_0+\sum_{e\in K}v_e\right)}{\mathrm B(a_0,b_0)},\\
+\ell_K^{\mathrm{split}}
+&=\sum_{e\in K}
+\log\frac{\mathrm B(a_0+u_e,b_0+v_e)}{\mathrm B(a_0,b_0)}.
+\end{aligned}
+\]
+
+For a frozen split prior \(\pi_K^{\mathrm{split}}\in(0,1)\), define
+
+\[
+p_K^{\mathrm{split}}
+=\mathrm{logistic}\!\left(
+\log\frac{\pi_K^{\mathrm{split}}}{1-\pi_K^{\mathrm{split}}}
++\ell_K^{\mathrm{split}}-\ell_K^{\mathrm{share}}
+\right).
+\]
+
+With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum member support \(n_{B,\mathrm{cmp}}>0\), and frozen \(\tau_{B,\mathrm{cmp}}\in(1/2,1)\), the diagnostic proposal is
+
+\[
+G_{K,t}^{B}=\begin{cases}
+\mathrm{split},&
+\min_{e\in K}n_e^{\mathrm{eff}}\ge n_{B,\mathrm{cmp}}
+\text{ and }p_K^{\mathrm{split}}\ge\tau_{B,\mathrm{cmp}},\\
+\mathrm{share},&
+\min_{e\in K}n_e^{\mathrm{eff}}\ge n_{B,\mathrm{cmp}}
+\text{ and }p_K^{\mathrm{split}}\le1-\tau_{B,\mathrm{cmp}},\\
+\mathrm{uncertain},&\text{otherwise.}
+\end{cases}
+\]
+
+The comparison includes the shared-versus-independent complexity tradeoff through marginal evidence, but its conclusion remains model-dependent. Formally, \(G_{K,t}^{B}\) cannot set \(J_{K,t}^{\mathrm{share}}\), publish \(s_K^B\), or mutate \(\kappa_t^B\). A \(\mathrm{share}\) proposal still requires the external target-law certificate above; a \(\mathrm{split}\) proposal may suspend reuse or request review under a frozen safety policy, but final bucket revision remains an independently validated slow-path transition. This prevents a posterior fitted inside a bad bucket from authorizing that same bucket by self-agreement.
+
 Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after the Anti-Pigeon decision: admitted events share a key only when the corresponding sharing certificate passes; otherwise each receives a separate key. For each key \(K\), define the admitted evidence-packet set
 
 \[
@@ -210,16 +249,41 @@ L_K(\xi_t(e)\mid\theta,\mathfrak h_t)^{\omega_t(e)},
 
 defines a generalized or power posterior unless it is derived from a joint generative model. Source-independence scoring therefore cannot by itself justify multiplying evidence as if it were independent.
 
-For cheap regime monitoring, a bucket may maintain a bounded approximation to a Bayesian online changepoint run-length posterior [17,18]. Let \(R_{K,t}\in\mathbb N_0\) be run length and define
+For cheap regime monitoring, a bucket may maintain a bounded approximation to a Bayesian online changepoint run-length posterior [17,18]. Let \(R_{K,t}\in\mathbb N_0\) be run length. The simplest trigger uses only posterior mass at run length zero, but noisy changes can spread mass over several recent run lengths and gradual changes need not produce a sharp reset. A bounded Bernoulli specialization therefore combines the run-length statistic with a two-sided cumulative detector.
+
+Let \(Y_{K,t}\in\{0,1\}\) be the currently available usefulness outcome. During a frozen warm-up of \(n_{\mathrm{warm}}\) outcomes, estimate the reference mean by the ordinary running mean and hold both cumulative statistics at zero. After warm-up, update the slow reference with \(0<\eta_s<1\),
+
+\[
+m_{K,t}^{s}=(1-\eta_s)m_{K,t-1}^{s}+\eta_sY_{K,t},
+\]
+
+and, using the pre-update reference in the residual, define
+
+\[
+\begin{aligned}
+C_{K,t}^{+}&=\max\!\left(0,
+C_{K,t-1}^{+}+Y_{K,t}-m_{K,t-1}^{s}-\delta_{\mathrm C}\right),\\
+C_{K,t}^{-}&=\min\!\left(0,
+C_{K,t-1}^{-}+Y_{K,t}-m_{K,t-1}^{s}+\delta_{\mathrm C}\right),
+\end{aligned}
+\]
+
+where \(\delta_{\mathrm C}>0\) absorbs small fluctuations. With run-length threshold \(\gamma_{\mathrm{cp}}\), cumulative boundary \(h_{\mathrm C}>0\), and cooldown counter \(d_{K,t}^{\mathrm{cool}}\), define
 
 \[
 J_{K,t}^{\mathrm{cp}}=
 \mathbf1\!\left[
+ d_{K,t}^{\mathrm{cool}}=0
+\text{ and }
+\left(
 P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}
+\text{ or }C_{K,t}^{+}\ge h_{\mathrm C}
+\text{ or }-C_{K,t}^{-}\ge h_{\mathrm C}
+\right)
 \right].
 \]
 
-When this indicator fires, the runtime applies the dependency-closure bump \(\mathsf B_{\mathcal D}\) and stale-marking operator \(\mathsf I_{\mathcal D}\) from Section 7 to the affected posterior, residual, and graph-version region before expanding the review frontier and routing recalibration to the slow path. A monitor fed only admitted evidence detects changes in the admission-conditioned process. Under frontier-all this still excludes non-nominated and not-yet-ready evidence; under selective admission it also excludes threshold-rejected evidence. The monitor supports a full-stream regime claim only when its transition and observation model includes the complete admission mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error.
+When this indicator fires, the runtime resets the affected posterior and monitor onto the triggering outcome, starts a fixed cooldown during which state may update but no new trigger may fire, and applies the dependency-closure bump \(\mathsf B_{\mathcal D}\) and stale-marking operator \(\mathsf I_{\mathcal D}\) from Section 7 to the affected posterior, residual, and graph-version region before expanding the review frontier and routing recalibration to the slow path. The warm-up, cap, thresholds, cooldown, and repeated-trigger scoring rule are frozen before confirmation. A monitor fed only admitted evidence detects changes in the admission-conditioned process. Under frontier-all this still excludes non-nominated and not-yet-ready evidence; under selective admission it also excludes threshold-rejected evidence. The monitor supports a full-stream regime claim only when its transition and observation model includes the complete admission mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error. The CUSUM state is constant-size; the capped run-length update remains linear in the retained run-length support.
 
 Bounded retrieval and optional selective admission can become self-confirming by never revisiting what they have learned to ignore. EventFrame therefore reserves a predeclared audit probability \(\pi_{\mathrm{audit}}>0\). Conditional on the non-admitted candidate set and independently of activation-score magnitude, draw
 

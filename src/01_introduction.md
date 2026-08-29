@@ -18,7 +18,7 @@ The reference prediction procedure has seven steps:
 4. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective support, age, epoch, forecast-horizon equality, compatibility margin, component provenance, posterior-predictive version, and mode-applicable certified law and template motion checks pass.
 5. Clip the separately typed point and law residual components, apply the law kernel after \(\mathsf Q_t^0\), derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
 6. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
-7. Use a slower refinement process to audit omitted frontier or corpus influence, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology.
+7. Use a slower refinement process to audit omitted frontier or corpus influence, run proposal-only shared-versus-split comparison, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology. Only an external Anti-Pigeon certificate may authorize posterior sharing.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
@@ -29,7 +29,7 @@ The contributions of this paper are therefore:
 1. A compressed event-frame ontology for prediction-oriented representation.
 2. A governing optimization principle for adaptive event abstraction.
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
-4. A bounded Bayesian update frontier with a frontier-all reference policy, optional selective admission, Anti-Pigeon posterior-sharing control, selection-aware semantics, changepoint invalidation, and independent audit sampling.
+4. A bounded Bayesian update frontier with a frontier-all reference policy, optional selective admission, Anti-Pigeon posterior-sharing control, a proposal-only shared-versus-split diagnostic, selection-aware semantics, bounded cumulative changepoint invalidation, and independent audit sampling.
 5. A combined episodic, residual, and bounded belief-memory architecture.
 6. A validity-constrained sensitivity method for conditional invariants and ontology review.
 7. A lumpability-based approach to abstraction.

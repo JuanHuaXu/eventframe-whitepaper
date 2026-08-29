@@ -74,7 +74,13 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(J_{K,t}^{\mathrm{share}}\), \(q_{K,t^-}\), \(q_{K,t}^+\), \(\mathcal C_{B,t^-}\): Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
 
-\(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
+\(u_e\), \(v_e\), \(n_e^{\mathrm{eff}}\), \(\ell_K^{\mathrm{share}}\), \(\ell_K^{\mathrm{split}}\), \(p_K^{\mathrm{split}}\), \(G_{K,t}^{B}\): member useful/not-useful statistics, effective support, shared/split log marginal evidence, posterior split probability, and proposal-only group-comparison decision.
+
+\(\pi_K^{\mathrm{split}}\), \(\tau_{B,\mathrm{cmp}}\), \(n_{B,\mathrm{cmp}}\), \(K_{\max}\): frozen split prior, comparison threshold, minimum member support, and group-size cap.
+
+\(Y_{K,t}\), \(m_{K,t}^{s}\), \(C_{K,t}^{+}\), \(C_{K,t}^{-}\), \(\delta_{\mathrm C}\), \(h_{\mathrm C}\), \(d_{K,t}^{\mathrm{cool}}\), \(n_{\mathrm{warm}}\): observed usefulness, slow reference mean, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
+
+\(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): combined changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
 
 \(\mathsf Q_t^{\mathrm{local}}\), \(\mathsf Q_t^{\mathrm{expanded}}(e)\), \(D_{\mathrm{omit}}\), \(\Delta_{K,t}^{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), \(U_t^{\mathrm{omit}}\): complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, and maximum certified omission bound.
 
@@ -136,7 +142,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathcal U_0,\ldots,\mathcal U_5\), \(r_n\), \(d_t(h)\): baseline/refinement operators, selected stage at invocation \(n\), and deepest reached stage under hardware profile \(h\); \(\mathcal U_3\) is bounded predictive sheaf snapping.
 
-\(\mathcal B_0,\ldots,\mathcal B_3\): bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle or variational inference stages.
+\(\mathcal B_0,\ldots,\mathcal B_3\): bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle, variational, or unrestricted-comparison stages.
 
 \(p_t^{\mathrm{pri}}\), \(w_{\mathrm{pri}}\), \(\mathcal R_{\mathrm{pri}}^D\), \(\mathcal R_{\mathrm{prop}}^D\), \(G_{a\rightarrow b}^{\mathrm{pri}}\): pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
 

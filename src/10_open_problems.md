@@ -34,7 +34,7 @@ The fifteenth open problem is evaluation design. Synthetic worlds are useful bec
 
 The sixteenth open problem is causal identification. Model graph perturbations measure sensitivity. Future work must specify structural equations, intervention targets, identification assumptions, and transport conditions before promoting predictive dependencies to causal edges.
 
-The seventeenth open problem is empirical evidence. The bibliography and mathematical distinctions are now explicit, but implementation, ablation, and controlled real-world validation remain absent.
+The seventeenth open problem is empirical evidence. A Go reference implementation, synthetic mechanism experiments, and a narrow local sequential benchmark now exist, but complete marked-time/no-event scoring, independent replication, controlled real-world validation, and service-level load evidence remain absent.
 
 The eighteenth open problem is compatibility-map validity. Pairwise comparison maps may be learned incorrectly, may fail to compose, or may erase exactly the distinctions that Anti-Pigeon is intended to protect. A graph of forecasts is not automatically a sheaf, and low edge defect under bad maps is not evidence of global coherence.
 
@@ -46,9 +46,9 @@ The twenty-first open problem is hardware-aware scheduling. The staged architect
 
 The twenty-second open problem is selective posterior calibration. Activation depends on relevance, novelty, topology, and source structure, so the admitted stream is generally not an ignorable sample. Selection-conditioned likelihoods, inverse-probability methods, doubly robust audits, and conservative working-posterior semantics should be compared under misspecification.
 
-The twenty-third open problem is posterior granularity. Anti-Pigeon supplies an external divergence gate for sharing, but optimal split and merge policies under sparse evidence, multiple horizons, source dependence, and drift remain unknown. Over-sharing creates confident category errors; over-splitting wastes evidence and memory.
+The twenty-third open problem is posterior granularity. Anti-Pigeon supplies an external divergence gate for sharing, and the bounded Beta-Bernoulli comparator now supplies a conservative proposal mechanism. In the reported synthetic confirmation it identified strong and most moderate splits but left ordinary compatible noisy groups uncertain. Reliable positive sharing evidence, optimal split and merge policies, and external certificate coverage under sparse evidence, multiple horizons, source dependence, and drift remain unknown. Over-sharing creates confident category errors; over-splitting wastes evidence and memory.
 
-The twenty-fourth open problem is bounded changepoint inference. Exact Bayesian online changepoint support grows with stream length. Truncation, pruning, and finite-state approximations require error bounds that remain meaningful under selective activation and delayed labels.
+The twenty-fourth open problem is bounded changepoint inference. Exact Bayesian online changepoint support grows with stream length. The implemented capped run-length plus two-sided cumulative detector improved synthetic detection, but still produced misses, unmatched alarms, and long gradual-change delay. Truncation, pruning, finite-state approximation, cooldown, and cumulative thresholds require error and stability bounds that remain meaningful under selective activation, delayed labels, and repeated changes.
 
 The twenty-fifth open problem is omitted influence. A bounded local frontier can miss weak individual signals whose joint effect is material. Independent non-admitted-event audits estimate this risk only on sampled candidates; coverage guarantees under adversarial or highly correlated omissions remain open.
 

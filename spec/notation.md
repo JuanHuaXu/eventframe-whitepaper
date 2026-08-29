@@ -75,6 +75,9 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(p_K^{\mathrm{adm},q_B},\underline p_{K,t}^{\mathrm{adm},q_B},p_{\min}^{\mathrm{adm}},\mathfrak H_{K,t}^{\mathrm{adm},q_B}\) | probability, bound, threshold, set | complete admission probability, certified lower bound, positive support floor, and certified admission-support region |
 | \(J_{K,t}^{\mathrm{share}}\) | \(\{0,1\}\) | Anti-Pigeon posterior-sharing certificate decision for bucket \(K\) |
 | \(q_{K,t^-},q_{K,t}^+,q_{K,t}^{\mathrm{eff}}\) | probability measures | cached prior, candidate update, and valid posterior actually used for prediction |
+| \(u_e,v_e,n_e^{\mathrm{eff}},\ell_K^{\mathrm{share}},\ell_K^{\mathrm{split}},p_K^{\mathrm{split}},G_{K,t}^{B}\) | counts, reals, decision | member sufficient statistics, shared/split evidence, split probability, and proposal-only group decision |
+| \(\pi_K^{\mathrm{split}},\tau_{B,\mathrm{cmp}},n_{B,\mathrm{cmp}},K_{\max}\) | constants | frozen split prior, decision threshold, minimum member support, and group-size cap |
+| \(Y_{K,t},m_{K,t}^{s},C_{K,t}^{+},C_{K,t}^{-},\delta_{\mathrm C},h_{\mathrm C},d_{K,t}^{\mathrm{cool}},n_{\mathrm{warm}}\) | outcome, states, constants | observed usefulness, slow reference, cumulative detector, slack, boundary, cooldown, and warm-up |
 | \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent non-admitted-event audit indicator |
 | \(D_{\mathrm{omit}},\Delta_{K,t}^{\mathrm{omit}},U_t^{\mathrm{omit}}\) | divergence and reals | normalized Jensen--Shannon forecast divergence, audit-population mean, and simultaneous upper confidence bound |
 | \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\) | confidence procedure | frozen design-weighted simultaneous confidence sequence for omitted influence |
@@ -530,6 +533,21 @@ v_{K,t}=v_t,\quad H_K=H,\quad s_K\text{ is valid}
 
 The certificate uses the external downstream target law, not agreement inside the posterior. Its guarantee is empirical and conditional on valid target-law estimation, audit design, simultaneous coverage, and any declared continuity bound; the framework does not prove those premises. Compatible events may share a bucket posterior; a failed or absent certificate creates a separate posterior key and nominates a slow-path split audit. The fast path reads a materialized certificate and never recomputes the diameter.
 
+For a Bernoulli retrieval-usefulness specialization, retain member statistics \((u_e,v_e)\) and define
+
+\[
+\begin{aligned}
+\ell_K^{\mathrm{share}}
+&=\log\frac{\mathrm B\!\left(a_0+\sum_{e\in K}u_e,b_0+\sum_{e\in K}v_e\right)}{\mathrm B(a_0,b_0)},\\
+\ell_K^{\mathrm{split}}
+&=\sum_{e\in K}\log\frac{\mathrm B(a_0+u_e,b_0+v_e)}{\mathrm B(a_0,b_0)},\\
+p_K^{\mathrm{split}}
+&=\mathrm{logistic}\!\left(\log\frac{\pi_K^{\mathrm{split}}}{1-\pi_K^{\mathrm{split}}}+\ell_K^{\mathrm{split}}-\ell_K^{\mathrm{share}}\right).
+\end{aligned}
+\]
+
+With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum support \(n_{B,\mathrm{cmp}}\), and threshold \(\tau_{B,\mathrm{cmp}}>1/2\), \(G_{K,t}^{B}\) proposes split above \(\tau_{B,\mathrm{cmp}}\), share below \(1-\tau_{B,\mathrm{cmp}}\), and uncertain otherwise; either directional proposal also requires every member to meet minimum support. The group cap is \(|K|\le K_{\max}\). This comparison is model-dependent and proposal-only: it cannot set \(J_{K,t}^{\mathrm{share}}\), publish a certificate, or mutate \(\kappa_t^B\). A share proposal still requires the external target-law certificate; a split proposal may suspend reuse or request independent review under a frozen safety rule.
+
 Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after this decision and define
 
 \[
@@ -566,13 +584,28 @@ where \(p_{\min}^{\mathrm{adm}}>0\) is frozen and \(\underline p_{K,t}^{\mathrm{
 
 Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly admitted evidence set, the contract supplies its joint admission probability; products of one-event corrections are valid only under a declared conditional factorization. Admission may be ignored only under a stated conditional-ignorability result. Without either condition and the support bound, the result is called an admission-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
 
-Let \(R_{K,t}\) be a declared changepoint run-length state and
+Let \(R_{K,t}\) be a declared changepoint run-length state and \(Y_{K,t}\in\{0,1\}\) the currently available usefulness outcome. During a frozen warm-up of \(n_{\mathrm{warm}}\) outcomes, estimate \(m_{K,t}^{s}\) by the ordinary running mean and hold cumulative state at zero. Thereafter, with \(0<\eta_s<1\), update the slow reference and two-sided cumulative state by
 
 \[
-J_{K,t}^{\mathrm{cp}}=\mathbf1\{P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}\}.
+\begin{aligned}
+m_{K,t}^{s}&=(1-\eta_s)m_{K,t-1}^{s}+\eta_sY_{K,t},\\
+C_{K,t}^{+}&=\max\!\left(0,C_{K,t-1}^{+}+Y_{K,t}-m_{K,t-1}^{s}-\delta_{\mathrm C}\right),\\
+C_{K,t}^{-}&=\min\!\left(0,C_{K,t-1}^{-}+Y_{K,t}-m_{K,t-1}^{s}+\delta_{\mathrm C}\right).
+\end{aligned}
 \]
 
-A trigger invokes the Section 7 dependency closure and its \(\mathsf B_{\mathcal D}\) and \(\mathsf I_{\mathcal D}\) operators, invalidating affected posterior and residual certificates and incrementing posterior-predictive, residual, and graph versions together. It also expands the bounded frontier and queues slow recalibration. A monitor updated only by admitted evidence detects changepoints in that admission-conditioned process; under frontier-all it still excludes non-nominated and unavailable evidence. It supports a full-stream regime claim only when the complete admission model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error.
+The combined trigger is
+
+\[
+J_{K,t}^{\mathrm{cp}}=\mathbf1\!\left[
+d_{K,t}^{\mathrm{cool}}=0\ \text{and}\
+\left(P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}
+\ \text{or}\ C_{K,t}^{+}\ge h_{\mathrm C}
+\ \text{or}\ -C_{K,t}^{-}\ge h_{\mathrm C}\right)
+\right].
+\]
+
+A trigger resets the affected posterior and monitor onto the triggering outcome, starts a frozen cooldown, and invokes the Section 7 dependency closure and its \(\mathsf B_{\mathcal D}\) and \(\mathsf I_{\mathcal D}\) operators, invalidating affected posterior and residual certificates and incrementing posterior-predictive, residual, and graph versions together. It also expands the bounded frontier and queues slow recalibration. A monitor updated only by admitted evidence detects changepoints in that admission-conditioned process; under frontier-all it still excludes non-nominated and unavailable evidence. It supports a full-stream regime claim only when the complete admission model or independent audit stream is incorporated. Exact run-length support grows with history; a fixed-resource implementation must declare truncation, pruning, or a finite-state approximation and report its approximation error. The cumulative state is constant-size; the capped run-length update is linear in retained support.
 
 Conditional on the inactive candidate set, candidates enter a shadow audit independently of their activation scores with \(J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}})\) under a frozen schedule. If accepted candidates exceed the capacity \(N_{\mathrm{audit}}^{\max}\), a frozen uniform reservoir subsamples them and records each final inclusion probability; audit estimators use the corresponding design weights.
 
@@ -854,7 +887,7 @@ G_{a\rightarrow b}^{\mathrm{pri}}=\sum_t\widetilde w_t(L_t^{[q_a]}-L_t^{[q_b]}).
 
 ## Governing Objective
 
-At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, the frontier-all or selective policy, nomination and evidence-readiness rules, activation maps and thresholds, the joint evidence-and-outcome family and its displayed marginal identities, source and complete admission models, admission-support floor and simultaneous lower-bound procedure, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint approximation, component-sensitive law and template motion certificates with propagated approximation-error budgets, dependency-closure versioning, atomic publication, and coupled-state publication/invalidation budgets. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
+At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\mathcal C_A,\mathcal C_R,\mathcal C_E,\mathcal C_B,\Xi_R,\Xi_B,\Xi_A^{(v)})\). The frozen \(\Lambda_{\mathrm{eval}}\) includes generating laws \(P_{\mathrm{obj}},P_{\mathrm{conf}}\), realized blocks \(\mathcal S_{\mathrm{obj}},\mathcal S_{\mathrm{conf}}\), \(P_\star\), domains, metrics, complete diagnostics or finite admissible classes and fitting rules, targets, thresholds, weights, \(g_{\mathrm{pred}}\), packet target/loss, priority model, regime-shift rule, \(\lambda_{\mathrm{rep}}\ge0\), cost definition, confidence rules, map-validity tests, snap candidate, obligation, and publication rules. It also freezes Bayesian candidate-universe and frontier caps, the frontier-all or selective policy, nomination and evidence-readiness rules, activation maps and thresholds, the joint evidence-and-outcome family and its displayed marginal identities, source and complete admission models, admission-support floor and simultaneous lower-bound procedure, posterior-predictive kernels, mixture weights and template map, posterior-sharing certificates, proposal-only group-comparison prior, support, threshold, statistics, and group cap, audit design law and reservoir, \(D_{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), changepoint run-length cap, warm-up, cumulative-detector parameters, cooldown and reset rule, component-sensitive law and template motion certificates with propagated approximation-error budgets, dependency-closure versioning, atomic publication, and coupled-state publication/invalidation budgets. Let \(\mathfrak h_t\in\mathfrak H_t\) be the observable prediction history excluding the next outcome, \(c_k(\mathfrak h_t)=C_t\), and \(S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t)\). The laws \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are over \((\mathfrak h_t,Z_{t+1})\), so candidate-specific cache, posterior, epoch, changepoint, and confidence state is reconstructed from the same raw history. For EventFrame, the final scored output is the Section 4 bundle
 
 \[
 \mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,
