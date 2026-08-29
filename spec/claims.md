@@ -2,22 +2,26 @@
 
 ## Current Experiment Results
 
-The result labels are local to the declared fixture. **Validated in fixture** means the frozen proposition met its stated test; **Falsified in fixture** means it failed; **Not tested** means no reported experiment addresses it. Neither fixture-level outcome is automatically universal.
+The result labels are local to the declared fixture. **Validated in fixture** means the frozen proposition met its stated test; **Falsified in fixture** means it failed; **Inconclusive** means the declared evidence requirement was not met; **Not tested** means no reported experiment addresses it. None of these local outcomes is automatically universal.
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
 | 2b | Frontier-all improves candidate-level probability quality over no Bayesian update. | Validated in fixture | Priority-weighted Brier improved by 9.29% in the frozen bounded-frontier experiment. |
-| 2b | The tested 5%-activation selective policy retains the frontier-all quality gain. | Falsified in fixture | It improved priority-weighted Brier by 0.16%, versus 9.29% for frontier-all. |
+| 2b | The tested 5%-activation selective policy retains the frontier-all quality gain. | Falsified in fixture | It improved priority-weighted Brier by 0.16%, versus 9.29% for frontier-all; paired stress Brier was 0.02891 worse than update-all. |
 | 2b | The tested Bayesian policies repair post-shift recall at 10. | Falsified in fixture | Every policy measured 0.3000 after the shift. |
 | 2 | Stable recurring residual bias is correctable. | Validated in fixture | Brier loss fell by 29.81% in the repeated-bias fixture. |
 | 2 | Residual reuse adds gain in the original frontier generator. | Falsified in fixture | The measured incremental gain was zero. |
+| 2 | Heterogeneous residual reuse meets gain and false-reuse safety criteria. | Falsified in fixture | Mean gain was 0.01931, 95% bootstrap [0.00614, 0.03280], but harmful reuse was 41.34%, 95% Wilson [38.90%, 43.82%], above the 5% ceiling. |
 | 6 | A correct split improves an invalid broad bucket. | Validated, mechanism only | Oracle splitting improved Brier by 29.41%; certificate coverage was not tested. |
-| 2b, 6 | The comparator nominates divergent groups. | Validated in fixture | Strong: 100%, 95% Wilson [94.34%, 100%]; moderate: 87.5%, [77.23%, 93.53%]. No false share was observed; each 64-trajectory divergent scenario has an upper endpoint of 5.66%. |
+| 2b, 6 | The comparator nominates divergent groups. | Validated in fixture | Independent confirmation split 64/64 strong and 58/64 moderate groups without a false share. |
 | 2b, 6 | The comparator positively recognizes compatible noisy groups at tested support. | Falsified in fixture | All compatible noisy groups remained uncertain. |
 | 2b, 6 | The comparator preserves Anti-Pigeon authority. | Validated in integration fixture | It did not mutate posterior keys or certificates. |
 | 2b | The original changepoint detector handles noisy and gradual drift. | Falsified in fixture | Miss rates reached 96.88%, 100%, and 93.75%. |
-| 2b | The v4 monitor materially improves declared-window recovery. | Validated in fixture | Abrupt: 87.5%, 95% Wilson [77.23%, 93.53%]; recurring: 77.34%, [69.36%, 83.74%]; gradual: 93.75%, [85.00%, 97.54%]. |
-| 2b | The v4 monitor is production-ready. | Falsified in fixture | Unmatched-alarm burdens were 0.0156 per stable trajectory and 0.2656, 0.3281, and 0.1563 per noisy abrupt, recurring, and gradual trajectory; misses and gradual delay also remain. |
+| 2b | The revised monitor meets the frozen v5 synthetic scenario criteria. | Validated in fixture | V6 confirmation passed all six cases: noisy abrupt 87.5%, gradual 95.31%, recurring 79.69%. |
+| 2b | Omitted-influence certificates attain declared empirical coverage. | Inconclusive; estimator absent | The runtime validates supplied records but does not estimate shadow-audit coverage or never-nominated influence. |
+| 8b | Accepted snaps improve scored forecasts in the current runtime. | Falsified in integration fixture | Graph and dependent versions changed, but scores, rank deltas, templates, and forecast laws did not. |
+| 1 | Structured frames improve the reserved chronological block. | Inconclusive | Only two independent trajectories and no interpretability ratings were available. |
+| 8c | Priority weighting reduces high-priority misses. | Inconclusive | Baseline and EventFrame both had a 7.5% high-priority miss rate in the two-trajectory block. |
 | 7, 7a | Frontier-all remains below 100 ms local sequential p99 in the declared fixture. | Validated, narrow benchmark | p99 was 9.043 ms at 1,000 events with major service costs excluded. |
 | Other empirical claims | All propositions not listed above. | Not tested | Their protocols remain proposed future work. |
 
@@ -63,7 +67,7 @@ Status: operational architecture claim; requires usefulness scoring, residual-co
 
 Vector retrieval, sheaf-inspired compatibility expansion, and as-of causal or predictive adjacency may nominate a bounded belief-update frontier. The reference policy updates every evidence-ready nominated member; an optional selective policy adds a frozen activation threshold. Neither policy updates the corpus outside the frontier. A current Anti-Pigeon certificate controls whether admitted events may share a posterior. A bounded shared-versus-split marginal-evidence comparison may nominate share, split, or uncertain, but cannot authorize sharing or mutate posterior keys. Ordinary posterior-predictive semantics require one declared joint evidence-and-outcome model whose displayed marginals induce the likelihood and outcome kernel; separately modeled components remain modular forecasts. The valid effective posterior family is mapped to the base law that the residual kernel subsequently corrects and the proper score evaluates. A near-constant update claim requires explicit caps on retrieval width, graph degree, candidate universe, frontier size, group size, hypothesis or sufficient-statistic dimension, retained changepoint state, update iterations, and complete admission-probability evaluation. Informative nomination and activation are included in the likelihood and satisfy a certified positive admission-support condition, or the result is labeled an admission-conditioned working posterior. Independent design-weighted non-admitted-event audits use a simultaneous sequential bound on normalized Jensen--Shannon disagreement between complete scored local and shadow-expanded laws, only for their declared audit population. Law-bearing residual reuse requires a certified law-motion bound; point-bearing reuse requires a certified template-motion bound; both include propagated approximation error. Initial synthetic evidence favors frontier-all over the tested 5%-activation policy for candidate-level probability quality and demonstrates bounded grouping and drift mechanisms, without establishing certificate coverage, full-stream calibration, or real-world performance.
 
-Status: architectural and mathematical proposal with initial synthetic mechanism and local runtime evidence; requires posterior-calibration tests on the full stream, independent changepoint replication, certificate-coverage studies, and ablation against unconditional and non-sharing baselines.
+Status: architectural and mathematical proposal with synthetic mechanism and local runtime evidence. Frontier-all remains the reference policy; the tested selective policy lost material probability quality, omitted-influence estimation is absent, and controlled full-stream calibration remains untested. Independent changepoint replication, certificate-coverage studies, and ablation against unconditional and non-sharing baselines remain required.
 
 ## Claim 3: Episodic memory and residual cache serve different roles
 

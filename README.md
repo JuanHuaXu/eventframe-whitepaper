@@ -14,7 +14,7 @@ The repository is intentionally independent of any specific agent, chatbot, prod
 - [EventFrame Whitepaper (PDF)](EventFrame_Whitepaper.pdf)
 - [EventFrame Whitepaper (Markdown)](paper.md)
 
-Synthetic reports cited by the paper are preserved under [`evidence/`](evidence/). They are mechanism evidence, not independent or real-world validation.
+Synthetic reports and privacy-reduced aggregate chronological results cited by the paper are preserved under [`evidence/`](evidence/). They are mechanism and implementation evidence, not independent or controlled real-world validation. The latest retained claim-completion round is under [`evidence/claims-completion/`](evidence/claims-completion/).
 
 ## Intended Output
 

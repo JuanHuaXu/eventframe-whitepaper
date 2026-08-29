@@ -1,0 +1,8 @@
+{"Time":"2026-08-29T13:41:56.843714-04:00","Action":"start","Package":"github.com/JuanHuaXu/eventframed/internal/service"}
+{"Time":"2026-08-29T13:41:57.132833-04:00","Action":"run","Package":"github.com/JuanHuaXu/eventframed/internal/service","Test":"TestPredictiveSnapDoesNotYetChangeRecallLaw"}
+{"Time":"2026-08-29T13:41:57.132912-04:00","Action":"output","Package":"github.com/JuanHuaXu/eventframed/internal/service","Test":"TestPredictiveSnapDoesNotYetChangeRecallLaw","Output":"=== RUN   TestPredictiveSnapDoesNotYetChangeRecallLaw\n","OutputType":"frame"}
+{"Time":"2026-08-29T13:41:57.133304-04:00","Action":"output","Package":"github.com/JuanHuaXu/eventframed/internal/service","Test":"TestPredictiveSnapDoesNotYetChangeRecallLaw","Output":"--- PASS: TestPredictiveSnapDoesNotYetChangeRecallLaw (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-08-29T13:41:57.13331-04:00","Action":"pass","Package":"github.com/JuanHuaXu/eventframed/internal/service","Test":"TestPredictiveSnapDoesNotYetChangeRecallLaw","Elapsed":0}
+{"Time":"2026-08-29T13:41:57.133324-04:00","Action":"output","Package":"github.com/JuanHuaXu/eventframed/internal/service","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-08-29T13:41:57.133872-04:00","Action":"output","Package":"github.com/JuanHuaXu/eventframed/internal/service","Output":"ok  \tgithub.com/JuanHuaXu/eventframed/internal/service\t0.290s\n"}
+{"Time":"2026-08-29T13:41:57.133899-04:00","Action":"pass","Package":"github.com/JuanHuaXu/eventframed/internal/service","Elapsed":0.29}
