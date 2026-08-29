@@ -13,12 +13,12 @@ Given \(C_t=e_{t-k+1:t}\), the system predicts a distribution over event identit
 The reference prediction procedure has seven steps:
 
 1. Form a context \(C_t\) from the last \(k\) event frames.
-2. Construct the bounded Bayesian candidate frontier. Under the reference frontier-all policy, admit every evidence-ready frontier member; under the optional selective policy, additionally apply the frozen activation threshold. Require certified positive support for the complete recorded admission process, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise use working-posterior semantics, preserve separate posteriors, or defer.
+2. Construct the bounded Bayesian candidate frontier and apply the reference frontier-all cheap update to every evidence-ready member. A frozen activation score may select expensive deep review, but does not suppress the cheap update unless a separately evaluated resource-quality policy explicitly replaces the reference. Require certified positive support for the complete recorded nomination and evidence-readiness process, and share a cached posterior only under a current Anti-Pigeon certificate; otherwise use working-posterior semantics, preserve separate posteriors, or defer.
 3. Map the valid effective posterior family to the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\), using \(\mathsf Q_B\) and \(B\) only when no valid belief bucket is available.
 4. From candidate-specific state \(S_{\Theta,t^-}\), select an exact-key or general residual record \(\mathbf r_t^{\mathrm{use}}\) only when its distance, confidence, effective support, age, epoch, forecast-horizon equality, compatibility margin, component provenance, posterior-predictive version, and mode-applicable certified law and template motion checks pass.
 5. Clip the separately typed point and law residual components, apply the law kernel after \(\mathsf Q_t^0\), derive a mark/time-coherent no-event-capable summary from the corrected law, and apply the pre-observation risk gate to the complete output bundle.
 6. Observe the next marked event or no-event outcome and evaluate proper predictive loss.
-7. Use a slower refinement process to audit omitted frontier or corpus influence, run proposal-only shared-versus-split comparison, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology. Only an external Anti-Pigeon certificate may authorize posterior sharing.
+7. Use a slower refinement process to audit a declared omitted population, run proposal-only practical-equivalence comparison, detect changepoints, recalibrate beliefs, update residuals, test invariants, revise abstractions, or revise the event ontology. Only an external Anti-Pigeon certificate may authorize posterior sharing.
 
 This procedure explains why the framework includes both memory and residual prediction. Episodic memory stores prior cases. A residual cache stores reusable corrections to a baseline transition. The distinction matters because recalling a similar event and applying a similar error correction are not the same operation. The first supports case-based reasoning; the second supports low-latency approximation when similar contexts produce similar transition errors.
 
@@ -29,7 +29,7 @@ The contributions of this paper are therefore:
 1. A compressed event-frame ontology for prediction-oriented representation.
 2. A governing optimization principle for adaptive event abstraction.
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
-4. A bounded Bayesian update frontier with a frontier-all reference policy, optional selective admission, Anti-Pigeon posterior-sharing control, a proposal-only shared-versus-split diagnostic, selection-aware semantics, bounded cumulative changepoint invalidation, and independent audit sampling.
+4. A bounded Bayesian update frontier with a frontier-all cheap-update reference policy, selective deep review, Anti-Pigeon posterior-sharing control, a practical-equivalence split/share diagnostic with bounded borrowing, selection-aware semantics, bounded cumulative changepoint invalidation, and independent audit sampling.
 5. A combined episodic, residual, and bounded belief-memory architecture.
 6. A validity-constrained sensitivity method for conditional invariants and ontology review.
 7. A lumpability-based approach to abstraction.

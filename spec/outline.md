@@ -65,7 +65,7 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Bounded Bayesian candidate frontier with frontier-all and optional selective admission
 - Activation and selection-conditioned updating
 - Anti-Pigeon posterior sharing
-- Proposal-only Bayesian shared-versus-split comparison
+- Proposal-only Bayesian practical-equivalence comparison and bounded borrowing
 - Independent omitted-influence audit
 - Bounded run-length and cumulative changepoint invalidation
 - Consolidation

@@ -7,7 +7,7 @@ The reference fast path is:
 1. Incrementally update \(C_t=e_{t-k+1:t}\).
 2. Optionally form \(X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)\).
 3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier \(\mathcal N_t^B\).
-4. Apply the frozen update policy: the reference frontier-all policy admits every evidence-ready frontier member, while the optional selective policy additionally requires its activation threshold. Check the certified positive support bound for the complete admission probability and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update. Unsupported admission correction falls back to working-posterior or no-update semantics.
+4. Apply the frontier-all cheap update to every evidence-ready frontier member. Use the frozen activation threshold to select bounded deep work, not to suppress the cheap update, unless a separately validated selective-update policy is explicitly in force. Check the certified positive support bound for the complete nomination probability and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update. Unsupported admission correction falls back to working-posterior or no-update semantics.
 5. Compute the posterior-predictive base law \(\mathsf Q_t^0(\cdot\mid C_t)\) and aligned template \(b_t^0\) from the valid effective posterior family, falling back to \(\mathsf Q_B\) and \(B\) only when that family is empty; independently compute packet baseline \(B_Y(X_t)\) when required.
 6. Construct the bounded action key \(k_t=\alpha(C_t)\).
 7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match \((\mathsf Q_t^0,b_t^0)\).
@@ -100,7 +100,7 @@ The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 3. Estimate observed residuals and update support/confidence.
 4. Consolidate episodic and residual memory.
 5. Evaluate inactive audit samples, omitted influence, posterior calibration, and changepoint triggers.
-6. Run bounded shared-versus-split marginal-evidence comparisons as proposal-only slow-path diagnostics; only an external Anti-Pigeon certificate may change sharing.
+6. Run bounded practical-equivalence split/share comparisons and calculate proposal-only borrowing weights; only an external Anti-Pigeon certificate may change sharing.
 7. Refit or expand Bayesian posteriors with particle, variational, or unrestricted model-comparison methods when required.
 8. Run validity-constrained sensitivity tests.
 9. Run causal analysis only when an explicit SCM and identification strategy exist.
@@ -228,7 +228,7 @@ The integration roadmap is cumulative:
 2. Add shadow-only activation, independent audit sampling, and omitted-influence measurement before allowing production posterior updates.
 3. Materialize Anti-Pigeon posterior-sharing certificates and enable bounded cached updates with atomic posterior-key-epoch publication.
 4. Add bounded robust changepoint monitoring, warm-up, cooldown, and targeted invalidation; keep particle or unbounded run-length methods asynchronous.
-5. Add proposal-only bounded shared-versus-split comparison while retaining Anti-Pigeon as the sole posterior-sharing authority.
+5. Add proposal-only bounded practical-equivalence comparison and partial-pooling advice while retaining Anti-Pigeon as the sole posterior-sharing authority.
 6. Add read-only compatibility auditing and materialize epoch/margin certificates for the unchanged residual fast path.
 7. Enable local reconciliation only on held-out evidence that it improves priority-weighted utility without unacceptable harm.
 8. Add bounded predictive sheaf snapping with shadow construction, targeted invalidation, atomic publication, and rollback.

@@ -22,7 +22,7 @@ The conceptual distinction is important. Episodic memory says, "something like t
 
 Prediction combines the two memories by priority rather than by collapse. A reference flow is:
 
-1. Nominate the bounded Bayesian frontier, apply the frozen frontier-all or selective admission policy, then retrieve or update valid local posteriors.
+1. Nominate the bounded Bayesian frontier, apply the frontier-all cheap update to every evidence-ready member, and use the frozen activation score only to nominate bounded deep review unless a separately validated selective-update policy is in force.
 2. Form the posterior-predictive base \((\mathsf Q_t^0,b_t^0)\), falling back to \((\mathsf Q_B,B)\) when no valid belief bucket exists.
 3. Try action-residual lookup in \(\mathcal{C}_A\), including posterior-predictive version and motion checks.
 4. If that record is not certified, try general residual lookup in \(\mathcal{C}_R\) under the same base-law compatibility requirement.
@@ -112,7 +112,7 @@ J_t^{\mathrm{act}}(e),&q_B=q_{\mathrm{sel}}.
 \end{cases}
 \]
 
-The reference policy is \(q_{\mathrm{FA}}\). The selective policy is admitted only as a measured resource-quality tradeoff; it is not presumed superior merely because it performs fewer updates. All nomination, evidence-readiness, scoring, normalization, weighting, threshold, tie-break, policy-selection, and source-dependence rules are part of \(\Lambda_{\mathrm{eval}}\). A score may use a newly arrived frame once that frame is available, but it may not use a later target outcome, posterior audit, or graph revision. Because \(J_t^{\mathrm{upd},q_B}\) is defined on all of \(\mathfrak E_t^B\) and equals zero outside the frontier or before evidence readiness, its model probability includes the complete admission path. A conforming implementation materializes and scores only \(\mathcal N_t^B\); it represents the zero branch outside that frontier sparsely rather than scanning \(\mathfrak E_t^B\). For \(q_{\mathrm{FA}}\), admission is nomination plus evidence readiness; for \(q_{\mathrm{sel}}\), it additionally includes threshold admission. Admission controls expenditure; it does not establish that candidates are safe to pool.
+The reference policy is \(q_{\mathrm{FA}}\). Under the implemented replacement, \(J_t^{\mathrm{act}}\) nominates bounded deep work such as model comparison, particle refinement, graph expansion, or recalibration while every evidence-ready frontier member still receives the cheap update. A selective cheap-update policy is admitted only as a measured resource-quality tradeoff; it is not presumed superior merely because it performs fewer updates. All nomination, evidence-readiness, scoring, normalization, weighting, threshold, tie-break, policy-selection, and source-dependence rules are part of \(\Lambda_{\mathrm{eval}}\). A score may use a newly arrived frame once that frame is available, but it may not use a later target outcome, posterior audit, or graph revision. Because \(J_t^{\mathrm{upd},q_B}\) is defined on all of \(\mathfrak E_t^B\) and equals zero outside the frontier or before evidence readiness, its model probability includes the complete admission path. A conforming implementation materializes and scores only \(\mathcal N_t^B\); it represents the zero branch outside that frontier sparsely rather than scanning \(\mathfrak E_t^B\). For \(q_{\mathrm{FA}}\), admission is nomination plus evidence readiness; for \(q_{\mathrm{sel}}\), it additionally includes threshold admission. Admission controls expenditure; it does not establish that candidates are safe to pool.
 
 Anti-Pigeon controls posterior granularity. For a candidate bucket \(K\), let \(v_K^B\) be the abstraction epoch under which its posterior-sharing certificate was produced. Sharing is permitted only when
 
@@ -152,7 +152,18 @@ p_K^{\mathrm{split}}
 \right).
 \]
 
-With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum member support \(n_{B,\mathrm{cmp}}>0\), and frozen \(\tau_{B,\mathrm{cmp}}\in(1/2,1)\), the diagnostic proposal is
+Exact equality is unnecessarily strict for operational pooling. Freeze a region-of-practical-equivalence width \(\epsilon_{B,\mathrm{eq}}>0\) and a declared posterior calculation, exact or approximation-controlled, for
+
+\[
+p_K^{\mathrm{eq}}=
+P\!\left(
+\max_{e,e'\in K}|\theta_e-\theta_{e'}|
+\le\epsilon_{B,\mathrm{eq}}
+\,\middle|\,(u_e,v_e)_{e\in K}
+\right).
+\]
+
+With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum member support \(n_{B,\mathrm{cmp}}>0\), frozen \(\tau_{B,\mathrm{cmp}}\in(1/2,1)\), and frozen equivalence threshold \(\tau_{B,\mathrm{eq}}\in(1/2,1)\), the diagnostic gives split evidence precedence:
 
 \[
 G_{K,t}^{B}=\begin{cases}
@@ -161,12 +172,22 @@ G_{K,t}^{B}=\begin{cases}
 \text{ and }p_K^{\mathrm{split}}\ge\tau_{B,\mathrm{cmp}},\\
 \mathrm{share},&
 \min_{e\in K}n_e^{\mathrm{eff}}\ge n_{B,\mathrm{cmp}}
-\text{ and }p_K^{\mathrm{split}}\le1-\tau_{B,\mathrm{cmp}},\\
+\text{ and }p_K^{\mathrm{eq}}\ge\tau_{B,\mathrm{eq}},\\
 \mathrm{uncertain},&\text{otherwise.}
 \end{cases}
 \]
 
-The comparison includes the shared-versus-independent complexity tradeoff through marginal evidence, but its conclusion remains model-dependent. Formally, \(G_{K,t}^{B}\) cannot set \(J_{K,t}^{\mathrm{share}}\), publish \(s_K^B\), or mutate \(\kappa_t^B\). A \(\mathrm{share}\) proposal still requires the external target-law certificate above; a \(\mathrm{split}\) proposal may suspend reuse or request review under a frozen safety policy, but final bucket revision remains an independently validated slow-path transition. This prevents a posterior fitted inside a bad bucket from authorizing that same bucket by self-agreement.
+For frozen \(w_{B,\max}\in[0,1]\), an optional proposal-only borrowing weight may be
+
+\[
+w_{K,t}^{B}=\begin{cases}
+0,&G_{K,t}^{B}=\mathrm{split},\\
+p_K^{\mathrm{eq}},&G_{K,t}^{B}=\mathrm{share},\\
+\min(w_{B,\max},w_{B,\max}p_K^{\mathrm{eq}}),&G_{K,t}^{B}=\mathrm{uncertain}.
+\end{cases}
+\]
+
+This is partial-pooling advice, not grouping authority. The comparison includes the shared-versus-independent complexity tradeoff and practical-equivalence evidence, but its conclusion remains model-dependent. Formally, \(G_{K,t}^{B}\) and \(w_{K,t}^{B}\) cannot set \(J_{K,t}^{\mathrm{share}}\), publish \(s_K^B\), or mutate \(\kappa_t^B\). A \(\mathrm{share}\) proposal still requires the external target-law certificate above; a \(\mathrm{split}\) proposal forces zero borrowing and may suspend reuse or request review, but final bucket revision remains an independently validated slow-path transition.
 
 Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after the Anti-Pigeon decision: admitted events share a key only when the corresponding sharing certificate passes; otherwise each receives a separate key. For each key \(K\), define the admitted evidence-packet set
 

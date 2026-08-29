@@ -158,7 +158,7 @@ A key-value memory structure storing prior event episodes. Keys represent retrie
 
 ## Bounded Bayesian Frontier
 
-A bounded as-of nominated set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. It lies inside a declared finite candidate universe. The frontier-all reference policy updates every evidence-ready member; an optional selective policy adds an activation threshold. Neither policy updates the entire corpus. Graph children may be nominated, but they cannot update a posterior until evidence is available and do not reveal future child outcomes.
+A bounded as-of nominated set formed from vector retrieval, sheaf-inspired compatibility neighbors, and incoming or outgoing relationships already present in the event graph. It lies inside a declared finite candidate universe. The frontier-all reference policy cheaply updates every evidence-ready member; an activation threshold selects bounded deep review without suppressing that update. Neither operation updates the entire corpus. Graph children may be nominated, but they cannot update a posterior until evidence is available and do not reveal future child outcomes.
 
 ## Bayesian Activation Score
 
@@ -190,7 +190,7 @@ The rule that events may share one cached posterior only while an external targe
 
 ## Bayesian Group Comparison
 
-A bounded shared-versus-split marginal-evidence diagnostic over member-level sufficient statistics. It may propose share, split, or uncertain, but cannot publish an Anti-Pigeon certificate or mutate posterior keys. Positive sharing still requires independent external target-law evidence.
+A bounded practical-equivalence diagnostic over member-level sufficient statistics. It may propose share, split, uncertain, and a bounded borrowing weight, but cannot publish an Anti-Pigeon certificate or mutate posterior keys. Positive sharing still requires independent external target-law evidence.
 
 ## Bounded Changepoint Monitor
 

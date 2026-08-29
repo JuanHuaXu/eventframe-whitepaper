@@ -74,7 +74,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(J_{K,t}^{\mathrm{share}}\), \(q_{K,t^-}\), \(q_{K,t}^+\), \(\mathcal C_{B,t^-}\): Anti-Pigeon posterior-sharing decision, cached prior, updated posterior, and as-of posterior cache.
 
-\(u_e\), \(v_e\), \(n_e^{\mathrm{eff}}\), \(\ell_K^{\mathrm{share}}\), \(\ell_K^{\mathrm{split}}\), \(p_K^{\mathrm{split}}\), \(G_{K,t}^{B}\): member useful/not-useful statistics, effective support, shared/split log marginal evidence, posterior split probability, and proposal-only group-comparison decision.
+\(u_e\), \(v_e\), \(n_e^{\mathrm{eff}}\), \(\ell_K^{\mathrm{share}}\), \(\ell_K^{\mathrm{split}}\), \(p_K^{\mathrm{split}}\), \(p_K^{\mathrm{eq}}\), \(G_{K,t}^{B}\), \(w_{K,t}^{B}\): member useful/not-useful statistics, effective support, shared/split log marginal evidence, posterior split and practical-equivalence probabilities, proposal-only group decision, and bounded borrowing weight.
 
 \(\pi_K^{\mathrm{split}}\), \(\tau_{B,\mathrm{cmp}}\), \(n_{B,\mathrm{cmp}}\), \(K_{\max}\): frozen split prior, comparison threshold, minimum member support, and group-size cap.
 
