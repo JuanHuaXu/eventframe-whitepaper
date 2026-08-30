@@ -78,6 +78,8 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\pi_K^{\mathrm{split}}\), \(\tau_{B,\mathrm{cmp}}\), \(n_{B,\mathrm{cmp}}\), \(K_{\max}\): frozen split prior, comparison threshold, minimum member support, and group-size cap.
 
+\(\omega_{B,\mathrm{pool}}\), \(J_t^{\mathrm{val}}(e)\), \(J_{K,t}^{\mathrm{shock}}\), \(A_{K,t}^{\mathrm{rev}}\): shared-posterior evidence discount, structural-revision evidence eligibility, validated Anti-Pigeon split-shock indicator, and fail-closed retain/reset/split action.
+
 \(Y_{K,t}\), \(m_{K,t}^{s}\), \(C_{K,t}^{+}\), \(C_{K,t}^{-}\), \(\delta_{\mathrm C}\), \(h_{\mathrm C}\), \(d_{K,t}^{\mathrm{cool}}\), \(n_{\mathrm{warm}}\): observed usefulness, slow reference mean, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
 
 \(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): combined changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
@@ -87,6 +89,12 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(k_v\), \(d_{\mathrm{sh}}\), \(d_G\), \(B_{\max}\), \(N_t^{\mathrm{upd},q_B}\), \(M_{\mathrm{hyp}}\), \(R_{\mathrm{cp}}\): vector width, sheaf-inspired and graph degree caps, frontier cap, admitted update count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
 
 \(T_{\mathrm{adm}}\), \(T_{\mathrm{sel}}\), \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\): policy-indexed admission evaluation, complete admission-probability evaluation, and bounded direct Bayesian cost. \(T_B(k)\) remains the fallback baseline-predictor cost.
+
+\(s_{(j),t}^{\mathrm{ret}}\), \(P_t\), \(N_t\), \(\varepsilon_s\), \(c_t^{\mathrm{pack}}\): external retrieval score at initial rank \(j\), packing-count boundary, returned frontier size, score normalization floor, and rank-domain packing-boundary certainty.
+
+\(d_{i,t}^{\mathrm{raw}}\), \(r_{i,t}^{\mathrm{corr}}\), \(\lambda_{\min}\), \(\lambda_{\max}\), \(\lambda_{i,t}^{\mathrm{el}}\): raw EventFrame rank correction, independently accepted correction reliability, frozen certainty-modulation bounds, and resulting elastic multiplier.
+
+\(\Delta_{\max}\), \(\Delta_{i,t}^{\mathrm{rank}}\), \(s_{i,t}^{\mathrm{final}}\), \(T_{\mathrm{rank}}(N_t)\): absolute rank-correction cap, applied elastic rank delta, final pre-packing score, and bounded ranking-stage cost.
 
 \(\Sigma_t\), \(B_{\mathrm{pub}}\), \(B_{\mathrm{inv}}\), \(N_{\mathrm{pub}}(j)\), \(N_{\mathrm{inv}}(j)\): coupled versioned learning state, finite per-evidence-epoch publication and invalidation budgets, and realized counts.
 

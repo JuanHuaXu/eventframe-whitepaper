@@ -189,6 +189,52 @@ p_K^{\mathrm{eq}},&G_{K,t}^{B}=\mathrm{share},\\
 
 This is partial-pooling advice, not grouping authority. The comparison includes the shared-versus-independent complexity tradeoff and practical-equivalence evidence, but its conclusion remains model-dependent. Formally, \(G_{K,t}^{B}\) and \(w_{K,t}^{B}\) cannot set \(J_{K,t}^{\mathrm{share}}\), publish \(s_K^B\), or mutate \(\kappa_t^B\). A \(\mathrm{share}\) proposal still requires the external target-law certificate above; a \(\mathrm{split}\) proposal forces zero borrowing and may suspend reuse or request review, but final bucket revision remains an independently validated slow-path transition.
 
+### Anti-Pigeon shock revocation
+
+Positive sharing and revocation are asymmetric. Only a valid external Anti-Pigeon certificate may create a shared key, but sufficiently strong later evidence may invalidate that certificate without certifying any replacement merge. To keep a shared posterior from becoming confident faster than its member-level divergence test, freeze a pooled-evidence factor \(\omega_{B,\mathrm{pool}}\in(0,1]\). For an available Bernoulli outcome \(Y_{e,t}\), inclusion weight \(w_{e,t}\), and active shared bucket \(K\), update the pooled posterior by
+
+\[
+(\alpha_{K,t},\beta_{K,t})
+=(\alpha_{K,t-1},\beta_{K,t-1})
++\omega_{B,\mathrm{pool}}w_{e,t}(Y_{e,t},1-Y_{e,t}),
+\]
+
+while retaining full-strength member statistics
+
+\[
+(u_{e,t},v_{e,t})
+=(u_{e,t-1},v_{e,t-1})
++w_{e,t}(Y_{e,t},1-Y_{e,t}).
+\]
+
+The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule.
+
+Let \(J_t^{\mathrm{val}}(e)=1\) only for a full-stream outcome or an independently selected audit outcome whose inclusion semantics are valid for revision. Define the split-shock indicator
+
+\[
+J_{K,t}^{\mathrm{shock}}(e)
+=J_{K,t}^{\mathrm{share}}J_t^{\mathrm{val}}(e)
+\mathbf1\!\left[
+\min_{e'\in K}n_{e'}^{\mathrm{eff}}\ge n_{B,\mathrm{cmp}},
+\ p_K^{\mathrm{split}}\ge\tau_{B,\mathrm{cmp}}
+\right].
+\]
+
+This is called a shock because it authorizes a structural response stronger than an ordinary posterior nudge. Combined with the changepoint indicator, the fail-closed revision action is
+
+\[
+A_{K,t}^{\mathrm{rev}}=
+\begin{cases}
+\mathrm{split\_reset},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{split},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=0,\\
+\mathrm{shared\_reset},&J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{individual\_reset},&J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{retain},&\text{otherwise.}
+\end{cases}
+\]
+
+A split transition atomically revokes the old sharing certificate, marks its shared posterior and dependent residuals inactive, advances the affected posterior, residual, abstraction, graph, and epoch versions through the dependency-closure mechanism, and materializes event-local posteriors from the retained member statistics. A split-reset additionally resets the triggering member onto the revealing outcome. Revocation is not positive regrouping: no branch above may publish a replacement Anti-Pigeon certificate. Selected-only evidence may update a working or shared posterior but cannot make this structural decision self-certifying.
+
 Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after the Anti-Pigeon decision: admitted events share a key only when the corresponding sharing certificate passes; otherwise each receives a separate key. For each key \(K\), define the admitted evidence-packet set
 
 \[
@@ -257,6 +303,49 @@ q_{K,t^-},&\text{otherwise, provided the cached prior is valid}.
 \]
 
 Buckets without either valid branch are excluded from \(\mathcal K_t^{\mathrm{bel}}\). Section 4 maps the resulting finite posterior family into \(\mathsf Q_t^0\), applies only residuals certified against that base law, and scores the final \(\mathsf Q_t^R\).
+
+### Bayesian elastic rank delta
+
+Probability prediction and retrieval ordering are related but different contracts. Let a bounded external retrieval contract return \(N_t\) candidates in initial order with finite scores \(s_{(1),t}^{\mathrm{ret}},\ldots,s_{(N_t),t}^{\mathrm{ret}}\), and let \(P_t\le N_t\) be the packing-count boundary before token-budget truncation. Define rank-domain answer certainty by
+
+\[
+c_t^{\mathrm{pack}}=
+\begin{cases}
+1,&P_t=N_t,\\
+\mathrm{clip}_{[0,1]}\!\left(
+\dfrac{s_{(P_t),t}^{\mathrm{ret}}-s_{(P_t+1),t}^{\mathrm{ret}}}
+{\max\{|s_{(P_t),t}^{\mathrm{ret}}|,
+|s_{(P_t+1),t}^{\mathrm{ret}}|,\varepsilon_s\}}
+\right),&P_t<N_t,
+\end{cases}
+\]
+
+for a fixed \(\varepsilon_s>0\). A small boundary gap means the current top packet is unsettled; a large gap means the boundary is comparatively stable. This number is not the posterior probability that an answer is true or useful.
+
+For candidate \(i\), let \(d_{i,t}^{\mathrm{raw}}\) be the bounded EventFrame correction relative to its frozen local scoring baseline, and let \(r_{i,t}^{\mathrm{corr}}\in[0,1]\) be an independently declared correction-reliability value. A conforming implementation sets \(r_{i,t}^{\mathrm{corr}}=0\) unless an accepted Bayesian posterior, certified residual, or versioned graph-compatibility path actually generated the correction. With frozen \(0\le\lambda_{\min}\le\lambda_{\max}\), define
+
+\[
+\lambda_{i,t}^{\mathrm{el}}
+=r_{i,t}^{\mathrm{corr}}
+\left[\lambda_{\min}
++(\lambda_{\max}-\lambda_{\min})(1-c_t^{\mathrm{pack}})\right],
+\]
+
+and apply
+
+\[
+\Delta_{i,t}^{\mathrm{rank}}
+=\mathrm{clip}_{[-\Delta_{\max},\Delta_{\max}]}
+\left(\lambda_{i,t}^{\mathrm{el}}d_{i,t}^{\mathrm{raw}}\right),
+\qquad
+s_{i,t}^{\mathrm{final}}
+=\mathrm{clip}_{[0,1]}
+\left(s_{i,t}^{\mathrm{ret}}+\Delta_{i,t}^{\mathrm{rank}}\right).
+\]
+
+The same rule handles promotion and demotion. An uncertain boundary permits a larger authorized move; a clear boundary suppresses it. Reliability remains a mandatory gate even when certainty modulation is disabled, in which case \(\lambda_{i,t}^{\mathrm{el}}=r_{i,t}^{\mathrm{corr}}\). Anti-Pigeon shock revocation can invalidate the shared posterior or residual that supplied \(d_{i,t}^{\mathrm{raw}}\); version checks then force the delta to zero or regeneration. Elasticity cannot create a correction and cannot bypass \(\Delta_{\max}\).
+
+This ranking operator runs after the retrieval contract and before packing. It does not alter \(\mathsf Q_t^R\), its proper score, or its calibration. A monotone probability-calibration map is separately fitted on chronological design data and must bind the complete nomination and gating fingerprint. If that fingerprint changes, the map is stale and must fail closed or return to shadow evaluation. Calibrated usefulness was an unsuitable plasticity signal because it coupled a probability claim to a rank-boundary control; \(c_t^{\mathrm{pack}}\) and \(r_{i,t}^{\mathrm{corr}}\) make those roles explicit.
 
 Likewise, a product of conditionally independent likelihoods is ordinary Bayes only when the declared source model justifies that factorization. Tempering correlated-source contributions,
 

@@ -192,6 +192,22 @@ The rule that events may share one cached posterior only while an external targe
 
 A bounded practical-equivalence diagnostic over member-level sufficient statistics. It may propose share, split, uncertain, and a bounded borrowing weight, but cannot publish an Anti-Pigeon certificate or mutate posterior keys. Positive sharing still requires independent external target-law evidence.
 
+## Anti-Pigeon Shock Revocation
+
+A fail-closed transition that removes an already active sharing certificate when full-stream or independently audited member evidence crosses the frozen split threshold, optionally together with a changepoint. It materializes separate posteriors and invalidates shared residual state but cannot certify a replacement merge. Shared pooled evidence may be discounted while member-level divergence statistics retain full weight.
+
+## Bayesian Elastic Rank Delta
+
+A hard-capped correction applied after bounded external retrieval and before packing. Packing-boundary score separation controls plasticity, while an independent accepted-path reliability value authorizes the move. Rank certainty is not a posterior probability and the operator does not alter the proper-scored forecast law.
+
+## Packing-Boundary Certainty
+
+The clipped normalized score gap between the last initially packed candidate and the first initially excluded candidate. It measures how settled the rank boundary is under the returned retrieval scores, not whether an answer is true.
+
+## Correction Reliability
+
+A separately declared value in \([0,1]\) that is zero unless an accepted Bayesian posterior, certified residual, or versioned graph-compatibility path generated the raw rank correction. It gates the correction even when certainty modulation is disabled.
+
 ## Bounded Changepoint Monitor
 
 A capped Bayesian run-length monitor combined with a frozen-warm-up, two-sided cumulative detector and cooldown. It can invalidate dependent local state and nominate recalibration, but its claims are limited to the admitted or independently audited stream that feeds it.

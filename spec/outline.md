@@ -66,6 +66,8 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Activation and selection-conditioned updating
 - Anti-Pigeon posterior sharing
 - Proposal-only Bayesian practical-equivalence comparison and bounded borrowing
+- Discounted pooled confidence with full-strength member evidence
+- Anti-Pigeon shock revocation and atomic split/reset transitions
 - Independent omitted-influence audit
 - Bounded run-length and cumulative changepoint invalidation
 - Consolidation
@@ -96,6 +98,8 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 ## 8. Complexity and Runtime Model
 
 - Fast path
+- Reliability-gated elastic rank delta before packing
+- Packing-boundary certainty distinct from posterior probability
 - Slow path
 - Background refinement
 - Complexity sketch
@@ -119,6 +123,8 @@ Briefly introduce event-centric prediction, structured event frames, residual pr
 - Priority-weighted correction utility
 - Hardware-indexed stage benchmarks
 - Bayesian update-ladder benchmarks
+- Anti-Pigeon shock-transition controls
+- Fixed, probability-modulated, and boundary-modulated rank-delta ablations
 - Ablation studies
 
 ## Discussion: Innovation and Scientific Refinement

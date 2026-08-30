@@ -77,6 +77,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(q_{K,t^-},q_{K,t}^+,q_{K,t}^{\mathrm{eff}}\) | probability measures | cached prior, candidate update, and valid posterior actually used for prediction |
 | \(u_e,v_e,n_e^{\mathrm{eff}},\ell_K^{\mathrm{share}},\ell_K^{\mathrm{split}},p_K^{\mathrm{split}},p_K^{\mathrm{eq}},G_{K,t}^{B},w_{K,t}^{B}\) | counts, reals, decision | member sufficient statistics, shared/split evidence, split and practical-equivalence probabilities, proposal-only group decision, and bounded borrowing weight |
 | \(\pi_K^{\mathrm{split}},\tau_{B,\mathrm{cmp}},n_{B,\mathrm{cmp}},K_{\max}\) | constants | frozen split prior, decision threshold, minimum member support, and group-size cap |
+| \(\omega_{B,\mathrm{pool}},J_t^{\mathrm{val}},J_{K,t}^{\mathrm{shock}},A_{K,t}^{\mathrm{rev}}\) | weight, indicators, action | pooled-evidence discount, revision-valid evidence, Anti-Pigeon split shock, and fail-closed revision action |
 | \(Y_{K,t},m_{K,t}^{s},C_{K,t}^{+},C_{K,t}^{-},\delta_{\mathrm C},h_{\mathrm C},d_{K,t}^{\mathrm{cool}},n_{\mathrm{warm}}\) | outcome, states, constants | observed usefulness, slow reference, cumulative detector, slack, boundary, cooldown, and warm-up |
 | \(J_{K,t}^{\mathrm{cp}},J_t^{\mathrm{audit}}\) | \(\{0,1\}\) | changepoint trigger and independent non-admitted-event audit indicator |
 | \(D_{\mathrm{omit}},\Delta_{K,t}^{\mathrm{omit}},U_t^{\mathrm{omit}}\) | divergence and reals | normalized Jensen--Shannon forecast divergence, audit-population mean, and simultaneous upper confidence bound |
@@ -85,6 +86,7 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 | \(B_{\max},N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}},R_{\mathrm{cp}}\) | non-negative integers | frontier cap, admitted count, bounded hypothesis/statistic dimension, and retained changepoint-state count |
 | \(T_{\mathrm{adm}},T_{\mathrm{sel}},T_{\mathrm{Bayes}}^{\mathrm{fast}}\) | costs | policy admission, complete admission-probability, and bounded direct Bayesian work |
 | \(\mathcal C_{B,t^-},\Xi_B\) | cache, typed contract | as-of posterior cache and complete bounded Bayesian contract |
+| \(c_t^{\mathrm{pack}},r_{i,t}^{\mathrm{corr}},\lambda_{i,t}^{\mathrm{el}},d_{i,t}^{\mathrm{raw}},\Delta_{i,t}^{\mathrm{rank}},s_{i,t}^{\mathrm{final}}\) | reals | packing-boundary certainty, independent correction reliability, elastic scale, raw correction, hard-capped rank delta, and final retrieval score |
 | \(\Sigma_t,B_{\mathrm{pub}},B_{\mathrm{inv}},N_{\mathrm{pub}},N_{\mathrm{inv}}\) | state and counts | coupled versioned learning state, per-evidence-epoch publication/invalidation budgets, and realized counts |
 | \(X_t\) | \(\mathcal X_{\mathrm{ctx}}\) | compressed runtime context state |
 | \(\mathcal Y_{\mathrm{pkt}}\) | product set | runtime packet space |
@@ -546,7 +548,18 @@ p_K^{\mathrm{split}}
 \end{aligned}
 \]
 
-With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum support \(n_{B,\mathrm{cmp}}\), and threshold \(\tau_{B,\mathrm{cmp}}>1/2\), \(G_{K,t}^{B}\) proposes split above \(\tau_{B,\mathrm{cmp}}\), share below \(1-\tau_{B,\mathrm{cmp}}\), and uncertain otherwise; either directional proposal also requires every member to meet minimum support. The group cap is \(|K|\le K_{\max}\). This comparison is model-dependent and proposal-only: it cannot set \(J_{K,t}^{\mathrm{share}}\), publish a certificate, or mutate \(\kappa_t^B\). A share proposal still requires the external target-law certificate; a split proposal may suspend reuse or request independent review under a frozen safety rule.
+With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum support \(n_{B,\mathrm{cmp}}\), and threshold \(\tau_{B,\mathrm{cmp}}>1/2\), \(G_{K,t}^{B}\) proposes split above \(\tau_{B,\mathrm{cmp}}\), share below \(1-\tau_{B,\mathrm{cmp}}\), and uncertain otherwise; either directional proposal also requires every member to meet minimum support. The group cap is \(|K|\le K_{\max}\). This comparison is model-dependent and cannot create sharing: it cannot set \(J_{K,t}^{\mathrm{share}}\), publish a certificate, or positively merge posterior keys. A share proposal still requires the external target-law certificate.
+
+For an already certified shared bucket, freeze \(\omega_{B,\mathrm{pool}}\in(0,1]\). The pooled Beta posterior receives \(\omega_{B,\mathrm{pool}}w_{e,t}\) per outcome while member statistics \((u_e,v_e)\) retain the full inclusion weight \(w_{e,t}\). Let \(J_t^{\mathrm{val}}(e)\) identify full-stream or independent-audit evidence eligible to revoke sharing, and define
+
+\[
+J_{K,t}^{\mathrm{shock}}(e)=
+J_{K,t}^{\mathrm{share}}J_t^{\mathrm{val}}(e)
+\mathbf1\!\left[\min_{e'\in K}n_{e'}^{\mathrm{eff}}\ge n_{B,\mathrm{cmp}},
+p_K^{\mathrm{split}}\ge\tau_{B,\mathrm{cmp}}\right].
+\]
+
+The revision action \(A_{K,t}^{\mathrm{rev}}\) is split-reset when both split shock and changepoint fire, split for split shock alone, shared-reset for a changepoint in a shared bucket, individual-reset for a changepoint outside sharing, and retain otherwise. Split atomically revokes the old certificate, disables the shared posterior and residual, advances the dependency versions, and materializes event-local posteriors. It never certifies a replacement group. Selected-only evidence is ineligible for this revocation transition.
 
 Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after this decision and define
 
@@ -583,6 +596,32 @@ p_K^{\mathrm{adm},q_B}(\theta,h)=P_\theta(J^{\mathrm{upd},q_B}=1\mid h),
 where \(p_{\min}^{\mathrm{adm}}>0\) is frozen and \(\underline p_{K,t}^{\mathrm{adm},q_B}(h)\) is an analytic or simultaneously valid lower bound for \(\inf_{\theta\in\Theta_K}p_K^{\mathrm{adm},q_B}(\theta,h)\). An admission-corrected full-stream claim is permitted only on \(\mathfrak H_{K,t}^{\mathrm{adm},q_B}\). Under \(q_{\mathrm{FA}}\), threshold selection disappears but nomination and evidence readiness remain part of admission. A never-nominated or otherwise unsupported history yields a working posterior or no update. Non-admitted candidates inside \(\mathfrak E_t^B\) may enter the independent audit; objects outside that universe are outside both certificates unless exhaustive coverage or a verified envelope bound extends them.
 
 Conditioning only on the threshold comparison while treating nomination as fixed requires a separately stated conditional-design result. For a jointly admitted evidence set, the contract supplies its joint admission probability; products of one-event corrections are valid only under a declared conditional factorization. Admission may be ignored only under a stated conditional-ignorability result. Without either condition and the support bound, the result is called an admission-conditioned working posterior and no full-stream calibration claim is made. Tempered or source-weighted likelihoods are called generalized Bayesian updates unless derived from a coherent joint source model. The effective posterior \(q_{K,t}^{\mathrm{eff}}\) equals the valid accepted update when one exists and the valid prior otherwise; an invalid bucket is excluded from \(\mathcal K_t^{\mathrm{bel}}\).
+
+For bounded retrieval ranking, let \(s_{(j),t}^{\mathrm{ret}}\) be the external contract score at initial rank \(j\), \(P_t\) the pack boundary, and \(\varepsilon_s>0\). Define
+
+\[
+c_t^{\mathrm{pack}}=
+\begin{cases}
+1,&P_t=N_t,\\
+\mathrm{clip}_{[0,1]}\!\left(
+\dfrac{s_{(P_t),t}^{\mathrm{ret}}-s_{(P_t+1),t}^{\mathrm{ret}}}
+{\max\{|s_{(P_t),t}^{\mathrm{ret}}|,|s_{(P_t+1),t}^{\mathrm{ret}}|,\varepsilon_s\}}
+\right),&P_t<N_t.
+\end{cases}
+\]
+
+For raw correction \(d_{i,t}^{\mathrm{raw}}\), independent reliability \(r_{i,t}^{\mathrm{corr}}\in[0,1]\), and frozen scales \(0\le\lambda_{\min}\le\lambda_{\max}\),
+
+\[
+\lambda_{i,t}^{\mathrm{el}}=r_{i,t}^{\mathrm{corr}}\,
+[\lambda_{\min}+(\lambda_{\max}-\lambda_{\min})(1-c_t^{\mathrm{pack}})],
+\quad
+\Delta_{i,t}^{\mathrm{rank}}=
+\mathrm{clip}_{[-\Delta_{\max},\Delta_{\max}]}
+(\lambda_{i,t}^{\mathrm{el}}d_{i,t}^{\mathrm{raw}}),
+\]
+
+and \(s_{i,t}^{\mathrm{final}}=\mathrm{clip}_{[0,1]}(s_{i,t}^{\mathrm{ret}}+\Delta_{i,t}^{\mathrm{rank}})\). Reliability is zero unless an accepted Bayesian, residual, or versioned graph path generated the correction. It remains mandatory when certainty modulation is disabled. The rank operator is after external retrieval and before packing; it does not alter the scored law or its calibration. Any probability-calibration map binds the complete nomination and gating fingerprint under which it was fitted.
 
 Let \(R_{K,t}\) be a declared changepoint run-length state and \(Y_{K,t}\in\{0,1\}\) the currently available usefulness outcome. During a frozen warm-up of \(n_{\mathrm{warm}}\) outcomes, estimate \(m_{K,t}^{s}\) by the ordinary running mean and hold cumulative state at zero. Thereafter, with \(0<\eta_s<1\), update the slow reference and two-sided cumulative state by
 
@@ -895,7 +934,7 @@ At fixed \(\Gamma_{\Delta_\tau}\), let \(\Theta_\Gamma=(\mathsf Q_\theta,B,\pi,\
 \mathsf Q_{\Theta_\Gamma}(\cdot\mid C_t;S_{\Theta_\Gamma,t^-})=\mathsf Q_t^R(\cdot\mid C_t),
 \]
 
-where Section 5 first supplies the effective posterior family, Section 4 constructs \((\mathsf Q_t^0,b_t^0)\), and the residual policy acts after that base. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, posterior-predictive maps, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
+where Section 5 first supplies the effective posterior family, Section 4 constructs \((\mathsf Q_t^0,b_t^0)\), and the residual policy acts after that base. The frozen Bayesian contract also declares the pooled-evidence discount, revision-valid evidence classes, shock and changepoint action table, atomic invalidation rule, elastic rank scales and cap, independent correction-reliability rule, and the complete fingerprint required by any score-calibration map. These retrieval-order controls are outside \(\mathcal O_{\Theta_\Gamma}\) and cannot change the proper-scored law. Define \(h_\pi(C)=(\pi^k(C),s_\pi(C))\). The predictor, baseline, posterior-predictive maps, and cache keys must factor through \(h_\pi\), and the side information is charged to \(\mathcal C_{\mathrm{rep}}\):
 
 \[
 \mathcal R_{\mathrm{pri}}^D(\Theta_\Gamma)=

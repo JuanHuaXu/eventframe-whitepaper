@@ -13,7 +13,8 @@ The reference fast path is:
 7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match \((\mathsf Q_t^0,b_t^0)\).
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
-10. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). Do not evaluate realized prediction loss yet.
+10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute \(c_t^{\mathrm{pack}}\), apply only reliability-gated elastic deltas, sort by \(s_{i,t}^{\mathrm{final}}\), and then enforce packing-count and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act.
+11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). Do not evaluate realized prediction loss yet.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
@@ -44,12 +45,13 @@ flowchart LR
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, and \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the bounded-frontier Bayesian work. Then:
+Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the bounded-frontier Bayesian work, and \(T_{\mathrm{rank}}(N_t)\) the boundary-certainty, delta-application, and bounded sorting cost. Then:
 
 \[
 T_{\mathrm{fast}}
 =T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
-+I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}},
++I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}}
++T_{\mathrm{rank}}(N_t),
 \]
 
 where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let
@@ -60,6 +62,8 @@ N_t^{\mathrm{upd},q_B}
 J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
 \le |\mathcal N_t^B|\le B_{\max},
 \]
+
+For a frontier cap \(N_t\le B_{\max}\), certainty and delta application are \(O(N_t)\), and comparison sorting is \(O(N_t\log N_t)\) unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called \(O(1)\). Rank-delta cache lookup remains expected \(O(1)\) only under the same bounded-key and bounded-table assumptions as the residual cache.
 
 where \(B_{\max}\) is the predeclared frontier cap. Let \(M_{\mathrm{hyp}}\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_{\mathrm{cp}}\) bound retained changepoint run-length states. Let \(T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)\) evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let \(T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)\) evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
 
@@ -100,7 +104,7 @@ The slow path starts after \(Z_{t+1}\) or the audited packet target exists:
 3. Estimate observed residuals and update support/confidence.
 4. Consolidate episodic and residual memory.
 5. Evaluate inactive audit samples, omitted influence, posterior calibration, and changepoint triggers.
-6. Run bounded practical-equivalence split/share comparisons and calculate proposal-only borrowing weights; only an external Anti-Pigeon certificate may change sharing.
+6. Run bounded practical-equivalence split/share comparisons and calculate proposal-only borrowing weights. Only external Anti-Pigeon evidence may create sharing; validated full-stream or independent-audit shock evidence may revoke an existing certificate, split the bucket, and invalidate dependent residuals without certifying a replacement merge.
 7. Refit or expand Bayesian posteriors with particle, variational, or unrestricted model-comparison methods when required.
 8. Run validity-constrained sensitivity tests.
 9. Run causal analysis only when an explicit SCM and identification strategy exist.
