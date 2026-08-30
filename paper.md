@@ -218,7 +218,7 @@ The main limitation of the ontology is extraction and compression quality. In re
 
 The mathematical framework turns compressed event frames into objects that can be predicted, evaluated, cached, and abstracted. Given a context `C_t`, the predictor must produce a next-event distribution before the next observation exists. Only after the observation arrives may the runtime compute realized prediction loss and update memory or abstraction.
 
-Let `\Omega` denote a fine-grained substrate state space; fine-grained refers to retained detail and imposes no topology on `\Omega`. For a finite region `A_t`, let $`\omega_{A_t} \in \Omega^{A_t}`$ denote the substrate history over that region. At temporal resolution `\Delta_\tau`, an event frame is produced by:
+Let `\Omega` denote a fine-grained substrate state space; fine-grained refers to retained detail and imposes no topology on `\Omega`. For a finite region `A_t`, let `\omega_{A_t} \in \Omega^{A_t}` denote the substrate history over that region. At temporal resolution `\Delta_\tau`, an event frame is produced by:
 
 ```math
 e_t = \Gamma_{\Delta_\tau}(\omega_{A_t}), \qquad
@@ -284,7 +284,7 @@ where `\mathcal P(\mathcal Z_H)` denotes probability measures on `(\mathcal Z_H,
 d_H:\mathcal P(\mathcal Z_H)\rightarrow\mathcal Z_H
 ```
 
-returns the no-event decision or a marked time, with a declared loss and deterministic tie-break. Let $`\hat e_\theta^H(C_t)\in\mathcal E_\varnothing`$ be a structured summary coherent with that decision: it equals `\varnothing` exactly when $`d_H(\mathsf Q_\theta(\cdot\mid C_t))=\varnothing`$, and otherwise its mark and time agree with the marked decision. The typed predictor output is the bundle:
+returns the no-event decision or a marked time, with a declared loss and deterministic tie-break. Let `\hat e_\theta^H(C_t)\in\mathcal E_\varnothing` be a structured summary coherent with that decision: it equals `\varnothing` exactly when $`d_H(\mathsf Q_\theta(\cdot\mid C_t))=\varnothing`$, and otherwise its mark and time agree with the marked decision. The typed predictor output is the bundle:
 
 ```math
 \mathcal O_\theta(C_t)=
@@ -299,7 +299,7 @@ The primary probabilistic-fidelity objective is a declared strictly proper scori
 =S_{\mathrm{prop}}\!\left(\mathsf Q_\theta(\cdot\mid C_t),Z_{t+1}\right).
 ```
 
-Fix a dominating reference measure `\mu_H` on the marked-time branch, including declared units for time, and let $`q_\theta=d\mathsf Q_\theta^{\mathrm{event}}/d\mu_H`$ be the event subdensity. Its integral equals $`1-\mathsf Q_\theta(\{\varnothing\}\mid C_t)`$. Relative to this fixed reference measure, the logarithmic score is one implementation:
+Fix a dominating reference measure `\mu_H` on the marked-time branch, including declared units for time, and let $`q_\theta=d\mathsf Q_\theta^{\mathrm{event}}/d\mu_H`$ be the event subdensity. Its integral equals `1-\mathsf Q_\theta(\{\varnothing\}\mid C_t)`. Relative to this fixed reference measure, the logarithmic score is one implementation:
 
 ```math
 \mathcal L_{\log}(\theta;t)=
@@ -325,7 +325,7 @@ For human-readable diagnostics, let $`\hat Z_{t+1}=d_H(\mathsf Q_\theta(\cdot\mi
 
 Unlike the original timing-only diagnostic, this expression cannot assign zero loss to the wrong event type merely because its timestamp is correct. It remains a diagnostic; model fitting and forecast comparison should use `\mathcal L_{\mathrm{pred}}`.
 
-For any other field, use a distinct projection `\psi_i:\mathcal E\rightarrow\mathcal X_i` and declared distance. Bind the coherent structured prediction by $`\hat e_{\theta,t+1}^H:=\hat e_\theta^H(C_t)`$. The ordinary field loss is defined only when both the decision and observation are marked events:
+For any other field, use a distinct projection `\psi_i:\mathcal E\rightarrow\mathcal X_i` and declared distance. Bind the coherent structured prediction by `\hat e_{\theta,t+1}^H:=\hat e_\theta^H(C_t)`. The ordinary field loss is defined only when both the decision and observation are marked events:
 
 ```math
 \mathcal L_i(\hat e_{\theta,t+1}^H,Z_{t+1})
@@ -377,7 +377,7 @@ Constant or order-reversing transforms are inadmissible. Unless `g_{\mathrm{pred
 \end{aligned}
 ```
 
-Every post-observation component lies in `[0,1]`, the four post weights are non-negative and sum to one, and therefore $`\mathcal A_{\mathrm{post}}\in[0,1]`$.
+Every post-observation component lies in `[0,1]`, the four post weights are non-negative and sum to one, and therefore `\mathcal A_{\mathrm{post}}\in[0,1]`.
 
 The evaluation contract supplies the complete measurable definitions of `D_{\mathrm{abs}}^{\mathrm{pre}}`, `D_{\mathrm{edge}}^{\mathrm{pre}}`, `U^{\mathrm{pre}}`, their post-observation counterparts, and every target, normalization, missing-value rule, threshold, and weight they use. Alternatively it may supply finite admissible classes plus a design-sample fitting and deterministic tie-breaking procedure. Packet-target construction, packet component loss, priority-model class and fitting rule, and regime-shift detection window, repetition rule, threshold, and resulting action are frozen under the same requirement. None may be selected or retuned from confirmation outcomes or separately for the candidate it scores. A learned component is fitted using only the designated design history, charged to representation or fitting cost when appropriate, and frozen before confirmation.
 
@@ -413,13 +413,13 @@ The bounded Bayesian contract `\Xi_B` contains the vector, sheaf-inspired, and a
 \end{aligned}
 ```
 
-Let $`\mathfrak h_t\in\mathfrak H_t`$ denote the complete observable history available at prediction origin `t`, including timestamps and object-availability metadata but excluding `Z_{t+1}`. The context extractor is `c_k(\mathfrak h_t)=C_t`. For each complete design `\Theta`, a measurable deterministic as-of replay operator reconstructs its candidate-specific mutable state:
+Let `\mathfrak h_t\in\mathfrak H_t` denote the complete observable history available at prediction origin `t`, including timestamps and object-availability metadata but excluding `Z_{t+1}`. The context extractor is `c_k(\mathfrak h_t)=C_t`. For each complete design `\Theta`, a measurable deterministic as-of replay operator reconstructs its candidate-specific mutable state:
 
 ```math
 S_{\Theta,t^-}=\mathrm{Replay}_\Theta(\mathfrak h_t).
 ```
 
-Here `P_{\mathrm{obj}}` and `P_{\mathrm{conf}}` are fixed design- and confirmation-generating laws on prediction instances `(\mathfrak h_t,Z_{t+1})`. Their realized, chronologically separated samples or trajectory blocks are $`\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}`$ and $`\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}`$; independence is not assumed unless the sampling design supplies it. Replaying each candidate on the same raw history permits its caches, posteriors, epochs, changepoint states, confidence, and prior updates to differ without treating state as an unintegrated free variable. The external target conditional law is `P_\star(Y\mid C)`. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the history or context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require $`\lambda_{\mathrm{rep}}\ge0`$ and $`\mathcal C_{\mathrm{rep}}\ge0`$. At the fixed resolution, let:
+Here `P_{\mathrm{obj}}` and `P_{\mathrm{conf}}` are fixed design- and confirmation-generating laws on prediction instances `(\mathfrak h_t,Z_{t+1})`. Their realized, chronologically separated samples or trajectory blocks are $`\mathcal S_{\mathrm{obj}}\sim P_{\mathrm{obj}}`$ and $`\mathcal S_{\mathrm{conf}}\sim P_{\mathrm{conf}}`$; independence is not assumed unless the sampling design supplies it. Replaying each candidate on the same raw history permits its caches, posteriors, epochs, changepoint states, confidence, and prior updates to differ without treating state as an unintegrated free variable. The external target conditional law is `P_\star(Y\mid C)`. This contract is fixed independently of the candidates being compared; a candidate cannot shrink the history or context domain, relax its thresholds, choose its own weights, redefine the target, or validate its own comparison maps. Require `\lambda_{\mathrm{rep}}\ge0` and `\mathcal C_{\mathrm{rep}}\ge0`. At the fixed resolution, let:
 
 ```math
 \Theta_\Gamma=(\mathsf Q_\theta,B,\pi,
@@ -427,7 +427,7 @@ Here `P_{\mathrm{obj}}` and `P_{\mathrm{conf}}` are fixed design- and confirmati
 \Xi_R,\Xi_B,\Xi_A^{(v)})
 ```
 
-denote the complete event-prediction design evaluated under `\Lambda_{\mathrm{eval}}`. For each prediction origin, Section 5 produces the effective posterior family; Section 4 maps it to `(\mathsf Q_t^0,b_t^0)`, applies only a posterior-compatible residual, and returns $`\mathcal O_t^R=(\mathsf Q_t^R,\hat e_t^H)`$. Define the scored candidate output explicitly by
+denote the complete event-prediction design evaluated under `\Lambda_{\mathrm{eval}}`. For each prediction origin, Section 5 produces the effective posterior family; Section 4 maps it to `(\mathsf Q_t^0,b_t^0)`, applies only a posterior-compatible residual, and returns `\mathcal O_t^R=(\mathsf Q_t^R,\hat e_t^H)`. Define the scored candidate output explicitly by
 
 ```math
 \mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,
@@ -443,9 +443,9 @@ Compression must be operational, not merely decorative. Define retained informat
 h_\pi(C)=\bigl(\pi^{(k)}(C),s_\pi(C)\bigr),
 ```
 
-where `s_\pi` is declared side information. There must exist measurable maps $`\widetilde{\mathsf Q}_\theta,\widetilde B,\widetilde\alpha,\widetilde\kappa`$ such that $`\mathsf Q_\theta=\widetilde{\mathsf Q}_\theta\circ h_\pi`$, $`B=\widetilde B\circ h_\pi`$, $`\alpha=\widetilde\alpha\circ h_\pi`$, and $`\kappa=\widetilde\kappa\circ h_\pi`$. The storage and acquisition cost of `s_\pi` is charged to `\mathcal C_{\mathrm{rep}}`. Without this factorization, `\pi` may remain an interpretive annotation, but the system must not claim operational compression through `\pi`.
+where `s_\pi` is declared side information. There must exist measurable maps `\widetilde{\mathsf Q}_\theta,\widetilde B,\widetilde\alpha,\widetilde\kappa` such that $`\mathsf Q_\theta=\widetilde{\mathsf Q}_\theta\circ h_\pi`$, `B=\widetilde B\circ h_\pi`, `\alpha=\widetilde\alpha\circ h_\pi`, and `\kappa=\widetilde\kappa\circ h_\pi`. The storage and acquisition cost of `s_\pi` is charged to `\mathcal C_{\mathrm{rep}}`. Without this factorization, `\pi` may remain an interpretive annotation, but the system must not claim operational compression through `\pi`.
 
-Let $`p^{\mathrm{pri}}(C;S_{\Theta,t^-})\in[0,1]`$ be priority assigned from information available at prediction time and let `w_{\mathrm{pri}}(p)>0` be a declared importance function with finite, positive mean. The priority model, its preprocessing, and the weight function are fitted only on data available before the evaluated block and are frozen independently of the candidates. The unweighted objective is recovered by setting $`w_{\mathrm{pri}}\equiv1`$. For $`D\in\{P_{\mathrm{obj}},P_{\mathrm{conf}}\}`$, define trajectory-instance risk:
+Let `p^{\mathrm{pri}}(C;S_{\Theta,t^-})\in[0,1]` be priority assigned from information available at prediction time and let `w_{\mathrm{pri}}(p)>0` be a declared importance function with finite, positive mean. The priority model, its preprocessing, and the weight function are fitted only on data available before the evaluated block and are frozen independently of the candidates. The unweighted objective is recovered by setting `w_{\mathrm{pri}}\equiv1`. For `D\in\{P_{\mathrm{obj}},P_{\mathrm{conf}}\}`, define trajectory-instance risk:
 
 ```math
 \mathcal R_{\mathrm{pri}}^{D}(\Theta_\Gamma)=
@@ -483,7 +483,7 @@ D_K^\star(\pi)\le\epsilon_{AP}
 \rbrace.
 ```
 
-Here `\Theta_{\Gamma,0}` is a frozen reference predictor and $`\epsilon_{\mathrm{prop}}\ge0`$ is declared in advance. The oracle governing value is:
+Here `\Theta_{\Gamma,0}` is a frozen reference predictor and `\epsilon_{\mathrm{prop}}\ge0` is declared in advance. The oracle governing value is:
 
 ```math
 \boxed{
@@ -503,7 +503,7 @@ This value states the desired population property. When `P_\star` is unknown it 
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)\right].
 ```
 
-Operational selection instead begins with a finite, predeclared candidate family `\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})`, constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let $`\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}`$ and $`\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}`$ be the corresponding grouped, as-of empirical risks, and define:
+Operational selection instead begins with a finite, predeclared candidate family `\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})`, constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let `\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}` and `\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}` be the corresponding grouped, as-of empirical risks, and define:
 
 ```math
 \widehat{\mathfrak F}_{AP}^{\Gamma}=
@@ -543,7 +543,7 @@ G_t=(V_t,R_t),
 
 where `V_t\subset\mathcal E` and edges in `R_t` are typed as temporal, predictive-dependency, or causal. The graph is acyclic only after time-unrolling; feedback in the physical system is represented through edges across successive times. Predictive-dependency edges must not be interpreted as causal edges without a structural causal model.
 
-For causal language, EventFrame requires an explicit structural causal model $`\mathfrak M=(U,V,F,P_U)`$. An intervention such as `do(V_j=v')` replaces the structural equation for `V_j`; only then is
+For causal language, EventFrame requires an explicit structural causal model `\mathfrak M=(U,V,F,P_U)`. An intervention such as `do(V_j=v')` replaces the structural equation for `V_j`; only then is
 
 ```math
 \Delta_Y^{\mathrm{causal}}(v';P_{\mathrm{ref}})=
@@ -564,7 +564,7 @@ The event sparsity hypothesis is stated relative to a finite, non-empty declared
 -\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{conf}}}(\Theta_\Gamma).
 ```
 
-With a predeclared threshold $`\eta_{\mathrm{pred}}\ge0`$, define the observationally evaluable predictive ratio using a paired simultaneous confidence procedure over the entire declared distinction family:
+With a predeclared threshold `\eta_{\mathrm{pred}}\ge0`, define the observationally evaluable predictive ratio using a paired simultaneous confidence procedure over the entire declared distinction family:
 
 ```math
 s_{\mathrm{eff}}^{\mathrm{pred}}=
@@ -573,7 +573,7 @@ s_{\mathrm{eff}}^{\mathrm{pred}}=
 {|\mathcal D_t|}.
 ```
 
-The confidence bound is constructed from `\widehat\Delta_{\mathrm{pred}}(d)`. Confirmation outcomes may classify the frozen distinctions but may not refit, regenerate, or select the candidate family. This is a predictive association under the fixed ablation and evaluation distribution, not a causal effect. If $`\mathcal I_{\mathrm{eff}}^{\mathrm{causal}}(Y,\eta_Y)\subseteq\mathcal D_t`$ contains distinctions whose randomized or otherwise identified intervention-effect magnitude exceeds `\eta_Y`, define separately:
+The confidence bound is constructed from `\widehat\Delta_{\mathrm{pred}}(d)`. Confirmation outcomes may classify the frozen distinctions but may not refit, regenerate, or select the candidate family. This is a predictive association under the fixed ablation and evaluation distribution, not a causal effect. If `\mathcal I_{\mathrm{eff}}^{\mathrm{causal}}(Y,\eta_Y)\subseteq\mathcal D_t` contains distinctions whose randomized or otherwise identified intervention-effect magnitude exceeds `\eta_Y`, define separately:
 
 ```math
 s_{\mathrm{eff}}^{\mathrm{causal}}=
@@ -607,7 +607,7 @@ B:\mathcal E^k\rightarrow\mathcal E,
 \qquad b_t=B(C_t).
 ```
 
-The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the selective update in Section 5, let `\mathcal K_t^{\mathrm{bel}}` be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each $`K\in\mathcal K_t^{\mathrm{bel}}`$, let `q_{K,t}^{\mathrm{eff}}` be its accepted updated posterior, or its current cached prior when no evidence was admitted. Let `(\mathcal X_K,\mathscr A_{\mathcal X_K})` be the bucket evidence space and let `\nu_K` be a declared sigma-finite dominating measure on it. Ordinary posterior-predictive semantics require a single measurable joint kernel
+The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the selective update in Section 5, let `\mathcal K_t^{\mathrm{bel}}` be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each `K\in\mathcal K_t^{\mathrm{bel}}`, let `q_{K,t}^{\mathrm{eff}}` be its accepted updated posterior, or its current cached prior when no evidence was admitted. Let `(\mathcal X_K,\mathscr A_{\mathcal X_K})` be the bucket evidence space and let `\nu_K` be a declared sigma-finite dominating measure on it. Ordinary posterior-predictive semantics require a single measurable joint kernel
 
 ```math
 \mathbb P_{K,\theta}:
@@ -636,7 +636,7 @@ Its evidence and outcome marginals are
 \end{aligned}
 ```
 
-for $`D\in\mathscr A_{\mathcal X_K}`$ and `A\in\mathscr A_H`. The likelihood and forecast kernel are linked by the required identities
+for `D\in\mathscr A_{\mathcal X_K}` and `A\in\mathscr A_H`. The likelihood and forecast kernel are linked by the required identities
 
 ```math
 L_K(\xi\mid\theta,\mathfrak h)
@@ -656,7 +656,7 @@ Here $`\mathbb P_{K,\theta}^{\Xi}(\cdot\mid\mathfrak h)\ll\nu_K`$ for every decl
 
 This states that evidence and next outcome are conditionally independent given `(\theta,c_k(\mathfrak h))` under the declared history restriction. If that factorization fails, the predictive kernel must retain `\xi` or the additional history and the posterior-predictive integral below must use that conditional kernel. Selection conditioning in Section 5 is derived from the evidence factor and the complete nomination-and-activation event. A likelihood and forecast kernel not induced by one such joint family may still define a modular belief-conditioned forecast, but no proper-score or calibration test turns it into an ordinary posterior predictive; it is excluded from that semantic claim and reported separately.
 
-Use frozen as-of fusion weights $`\lambda_{K,t}^{\mathrm{bel}}\ge0`$ satisfying $`\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1`$ when the set is non-empty. The posterior-predictive base law is
+Use frozen as-of fusion weights `\lambda_{K,t}^{\mathrm{bel}}\ge0` satisfying $`\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1`$ when the set is non-empty. The posterior-predictive base law is
 
 ```math
 \mathsf Q_t^0(A\mid C_t)=
@@ -672,7 +672,7 @@ q_{K,t}^{\mathrm{eff}}(d\theta),
 \end{cases}
 ```
 
-Thus $`\mathsf Q_t^0\in\mathcal P(\mathcal Z_H)`$. The weights, bucket-eligibility rule, kernels, and any approximation are frozen in `\Xi_B`. A plug-in implementation is permitted only when `\Xi_B` replaces the integral by a declared measurable posterior decision rule and labels it as plug-in prediction.
+Thus `\mathsf Q_t^0\in\mathcal P(\mathcal Z_H)`. The weights, bucket-eligibility rule, kernels, and any approximation are frozen in `\Xi_B`. A plug-in implementation is permitted only when `\Xi_B` replaces the integral by a declared measurable posterior decision rule and labels it as plug-in prediction.
 
 For auxiliary structured fields, declare a measurable posterior-aware template map `B_H^{\mathrm{bel}}`. Set
 
@@ -746,14 +746,14 @@ r_{t,H}^{Q,\mathrm{obs}}=
 \rho_H^Q\!\left(\mathsf Q_t^0(\cdot\mid C_t),Z_{t+1}\right).
 ```
 
-Its objective may be a proper-score gradient, a constrained law update, or another predeclared rule, but it must be defined at `Z_{t+1}=\varnothing`, fitted without future leakage, and evaluated on later outcomes. Define the residual mode set $`\mathcal M_R=\{\varnothing,E,Q,EQ\}`$ and a typed residual record
+Its objective may be a proper-score gradient, a constrained law update, or another predeclared rule, but it must be defined at `Z_{t+1}=\varnothing`, fitted without future leakage, and evaluated on later outcomes. Define the residual mode set `\mathcal M_R=\{\varnothing,E,Q,EQ\}` and a typed residual record
 
 ```math
 \mathbf r=(r^E,r^Q,m)
 \in\mathbb H_d^E\times\mathbb H_d^Q\times\mathcal M_R.
 ```
 
-Write $`\mathcal V_R=\mathbb H_d^E\times\mathbb H_d^Q\times\mathcal M_R`$ and $`\mathbf 0_R=(0_E,0_Q,\varnothing)`$.
+Write $`\mathcal V_R=\mathbb H_d^E\times\mathbb H_d^Q\times\mathcal M_R`$ and `\mathbf 0_R=(0_E,0_Q,\varnothing)`.
 
 The mode says which components are semantically present; an absent component is stored as zero, but zero remains a valid present correction when its mode includes that component. A point-only record `m=E` may support point diagnostics but cannot change the forecast law. A law-only record `m=Q` may change the law and proper score while leaving non-mark, non-time template fields at baseline. A joint record `m=EQ` contains separately estimated components and must pass joint forward validation of the resulting bundle; it does not assert `r^E=r^Q` or infer one component's semantics from the other. A no-event observation must not be silently encoded as a concrete point residual. Every cache entry records its mode, estimator identities, horizon, and censoring convention; reuse across horizons requires a separately validated transport rule. In all cases, a stored record is a reusable correction candidate whose utility must be re-evaluated on later observations.
 
@@ -919,7 +919,7 @@ To connect a law residual to the probability law evaluated by the proper score, 
 \mathfrak K_H^Q(0_Q)(z,A)=\mathbf 1_A(z).
 ```
 
-For every `A\in\mathscr A_H`, the evaluation map $`(r^Q,z)\mapsto\mathfrak K_H^Q(r^Q)(z,A)`$ must be jointly measurable on `\mathbb H_d^Q\times\mathcal Z_H`; for fixed `r^Q`, it must be a Markov kernel. These conditions supply the measurable structure actually used below without requiring an unspecified sigma-algebra on a function space. The declaration covers every `z\in\mathcal Z_H`, including `\varnothing`, for every effective residual. The implementation must explicitly specify both $`\mathfrak K_H^Q(\bar r^Q)(\varnothing,\{\varnothing\})`$ and `\mathfrak K_H^Q(\bar r^Q)(z,\{\varnothing\})` for `z\in\mathcal Z_H^+`; preservation of the no-event atom is not a default assumption.
+For every `A\in\mathscr A_H`, the evaluation map `(r^Q,z)\mapsto\mathfrak K_H^Q(r^Q)(z,A)` must be jointly measurable on `\mathbb H_d^Q\times\mathcal Z_H`; for fixed `r^Q`, it must be a Markov kernel. These conditions supply the measurable structure actually used below without requiring an unspecified sigma-algebra on a function space. The declaration covers every `z\in\mathcal Z_H`, including `\varnothing`, for every effective residual. The implementation must explicitly specify both `\mathfrak K_H^Q(\bar r^Q)(\varnothing,\{\varnothing\})` and `\mathfrak K_H^Q(\bar r^Q)(z,\{\varnothing\})` for `z\in\mathcal Z_H^+`; preservation of the no-event atom is not a default assumption.
 
 For `\mathbf r=(r^E,r^Q,m)`, define the effective components
 
@@ -976,7 +976,7 @@ Thus a nonzero residual may change the no-event probability by moving mass in ei
 \in\mathcal P(\mathcal Z_H)\times\mathcal E_\varnothing.
 ```
 
-The residual record pairs two independently typed semantics. The law component controls the proper forecast, while the point component controls auxiliary structured fields. The fixed `d_H` and `\mathrm{lift}_H` keep the final mark and time coherent with the corrected law, but they do not prove that auxiliary fields improved; a joint record must pass forward validation of the complete output bundle. The no-residual bundle is exactly $`\mathcal O_t^0=\mathcal O_t(\mathbf 0_R)=(\mathsf Q_t^0(\cdot\mid C_t),\hat e_t^H(\mathbf 0_R))`$. It equals the original baseline bundle only when $`\mathcal K_t^{\mathrm{bel}}=\varnothing`$. Form the selected candidate $`\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(\mathbf r_t^{\mathrm{use}})`$, and accept it only from current information:
+The residual record pairs two independently typed semantics. The law component controls the proper forecast, while the point component controls auxiliary structured fields. The fixed `d_H` and `\mathrm{lift}_H` keep the final mark and time coherent with the corrected law, but they do not prove that auxiliary fields improved; a joint record must pass forward validation of the complete output bundle. The no-residual bundle is exactly $`\mathcal O_t^0=\mathcal O_t(\mathbf 0_R)=(\mathsf Q_t^0(\cdot\mid C_t),\hat e_t^H(\mathbf 0_R))`$. It equals the original baseline bundle only when `\mathcal K_t^{\mathrm{bel}}=\varnothing`. Form the selected candidate $`\mathcal O_t^{\mathrm{cand}}=\mathcal O_t(\mathbf r_t^{\mathrm{use}})`$, and accept it only from current information:
 
 ```math
 J_t^{\mathrm{pre}}=
@@ -1024,7 +1024,7 @@ z_a=(\mathrm{move},0.2),
 z_b=(\mathrm{stop},0.8).
 ```
 
-For one context `C_t`, suppose `\mathcal K_t^{\mathrm{bel}}=\varnothing`, so the posterior-predictive fallback is the row vector $`\mathsf Q_t^0=\mathbf q_B=(0.50,0.20,0.30)`$ and `b_t^0=B(C_t)`.
+For one context `C_t`, suppose `\mathcal K_t^{\mathrm{bel}}=\varnothing`, so the posterior-predictive fallback is the row vector `\mathsf Q_t^0=\mathbf q_B=(0.50,0.20,0.30)` and `b_t^0=B(C_t)`.
 
 Take `\mathscr H=\mathbb R^3`, represent both tagged residual components by diagonal self-adjoint matrices, and use the certified joint cache record
 
@@ -1066,14 +1066,14 @@ K(r^Q)=
 \end{pmatrix}.
 ```
 
-Set $`\mathfrak K_H^Q(r^Q)(z_i,\{z_j\})=K(r^Q)_{ij}`$. Every row sums to one, all entries are non-negative, and `K(0_Q)=I`. At `r_0^Q`, the corrected law is
+Set `\mathfrak K_H^Q(r^Q)(z_i,\{z_j\})=K(r^Q)_{ij}`. Every row sums to one, all entries are non-negative, and `K(0_Q)=I`. At `r_0^Q`, the corrected law is
 
 ```math
 \mathbf q_R=\mathbf q_BK(r_0^Q)
 =(0.60,0.15,0.25).
 ```
 
-The law correction therefore moves `0.05` probability from `z_b` and `0.05` from `\varnothing` to `z_a`; the no-event branch is operational rather than pinned. Let `d_H` select a mode under zero-one loss with the displayed order as tie-break. Let `b_t^0=e_a\in\mathcal E`, whose mark and anchor correspond to `z_a`, and set $`q_E(e_a)=\mathrm{diag}(1,0,0)`$. Let `\mathcal Q_{E,\mathrm{adm}}` be the diagonal probability simplex, let `\Pi_E` be Euclidean projection onto it, and let `d_E` decode its largest coordinate into the corresponding marked template with the same tie-break. Then `e_a\oplus_Er_0^E=e_a`. With `\mathrm{lift}_H` replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
+The law correction therefore moves `0.05` probability from `z_b` and `0.05` from `\varnothing` to `z_a`; the no-event branch is operational rather than pinned. Let `d_H` select a mode under zero-one loss with the displayed order as tie-break. Let `b_t^0=e_a\in\mathcal E`, whose mark and anchor correspond to `z_a`, and set `q_E(e_a)=\mathrm{diag}(1,0,0)`. Let `\mathcal Q_{E,\mathrm{adm}}` be the diagonal probability simplex, let `\Pi_E` be Euclidean projection onto it, and let `d_E` decode its largest coordinate into the corresponding marked template with the same tie-break. Then `e_a\oplus_Er_0^E=e_a`. With `\mathrm{lift}_H` replacing the template's mark and temporal anchor by the marked decision, the coherent summary is
 
 ```math
 d_H(\mathbf q_R)=z_a,
@@ -1081,11 +1081,11 @@ d_H(\mathbf q_R)=z_a,
 \hat e_t^H(\mathbf r_0)=\mathrm{lift}_H(e_a,z_a)=e_a.
 ```
 
-If `z_a` is observed, logarithmic loss changes from $`-\log(0.50)\approx0.693`$ to $`-\log(0.60)\approx0.511`$. If `\varnothing` is observed, it worsens from $`-\log(0.30)\approx1.204`$ to $`-\log(0.25)\approx1.386`$. This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
+If `z_a` is observed, logarithmic loss changes from `-\log(0.50)\approx0.693` to `-\log(0.60)\approx0.511`. If `\varnothing` is observed, it worsens from `-\log(0.30)\approx1.204` to `-\log(0.25)\approx1.386`. This paired calculation shows why a residual needs forward evidence and cannot be certified from one favorable case.
 
-Suppose the exact joint cache entry records `H_{k_t}=1`, $`\upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}}`$, $`\mu_{k_t}^{\mathrm{bel}}\ge0`$, $`\mu_{k_t}^{\mathrm{tmpl}}\ge0`$, all other metadata gates pass, and the requested horizon is `H=1`. Then `J_t^A=1` and $`\mathbf r_t^{\mathrm{use}}=\mathbf r_0`$. The same entry requested at `H=0.5` has `J_t^A=0` solely because `H_{k_t}\ne H`, so the expired-horizon correction is not reused.
+Suppose the exact joint cache entry records `H_{k_t}=1`, $`\upsilon_{k_t}^{\mathrm{bel}}=\upsilon_t^{\mathrm{bel}}`$, `\mu_{k_t}^{\mathrm{bel}}\ge0`, `\mu_{k_t}^{\mathrm{tmpl}}\ge0`, all other metadata gates pass, and the requested horizon is `H=1`. Then `J_t^A=1` and `\mathbf r_t^{\mathrm{use}}=\mathbf r_0`. The same entry requested at `H=0.5` has `J_t^A=0` solely because `H_{k_t}\ne H`, so the expired-horizon correction is not reused.
 
-Finally, let the finite design family built on `\mathcal S_{\mathrm{obj}}` be `\{\Theta_0,\Theta_1\}`, where `\Theta_0` is baseline-only and `\Theta_1` includes the certified residual. Take `\epsilon_{AP}=0.05`, $`D_K^{\mathrm{cert},\star}(\Theta_0)=0.03`$, $`D_K^{\mathrm{cert},\star}(\Theta_1)=0.04`$, $`\epsilon_{\mathrm{prop}}=0.02`$, and suppose the grouped design-sample calculations are
+Finally, let the finite design family built on `\mathcal S_{\mathrm{obj}}` be `\{\Theta_0,\Theta_1\}`, where `\Theta_0` is baseline-only and `\Theta_1` includes the certified residual. Take `\epsilon_{AP}=0.05`, `D_K^{\mathrm{cert},\star}(\Theta_0)=0.03`, `D_K^{\mathrm{cert},\star}(\Theta_1)=0.04`, `\epsilon_{\mathrm{prop}}=0.02`, and suppose the grouped design-sample calculations are
 
 ```math
 \begin{aligned}
@@ -1104,7 +1104,7 @@ Finally, let the finite design family built on `\mathcal S_{\mathrm{obj}}` be `\
 \end{aligned}
 ```
 
-with $`\mathrm{UCB}[0.72-0.80]=-0.02\le\epsilon_{\mathrm{prop}}`$ and $`\lambda_{\mathrm{rep}}=1`$. Both designs remain feasible, while their empirical composite values are `0.30` and `0.25`, so the deterministic operational rule selects $`\widehat\Theta_\Gamma=\Theta_1`$. An untouched `\mathcal S_{\mathrm{conf}}` may then confirm or reject the frozen claim, but it cannot alter the candidate family or the selected residual. These stipulated values demonstrate how to execute the contracts; they are not measurements of EventFrame performance.
+with $`\mathrm{UCB}[0.72-0.80]=-0.02\le\epsilon_{\mathrm{prop}}`$ and `\lambda_{\mathrm{rep}}=1`. Both designs remain feasible, while their empirical composite values are `0.30` and `0.25`, so the deterministic operational rule selects `\widehat\Theta_\Gamma=\Theta_1`. An untouched `\mathcal S_{\mathrm{conf}}` may then confirm or reject the frozen claim, but it cannot alter the candidate family or the selected residual. These stipulated values demonstrate how to execute the contracts; they are not measurements of EventFrame performance.
 
 A bounded hash table can provide expected `O(1)` lookup after the bounded key has been constructed. The epoch and margins are constant-size certificate checks; graph traversal, component-motion certification, and compatibility estimation remain off the hot path. Key construction, hashing, collision handling, synchronization, and eviction remain separate costs. The active epoch `v_t` or posterior-predictive version `\upsilon_t^{\mathrm{bel}}` must increase whenever its dependent graph contract or any certified law or template motion region changes. Local versions and a reverse dependency index permit affected entries to be invalidated without globally flushing unrelated abstractions. A predictive sheaf snap or out-of-tolerance posterior update is built against shadow state and published atomically with its affected keys and epoch map. A reader uses one immutable graph-posterior-key-epoch snapshot for the entire prediction. Entries invalidated by publication fall back to the current posterior-predictive no-residual law or another currently certified cache path until recertified; rollback republishes the previous complete structure with a new monotone publication version rather than reusing an old identifier.
 
@@ -1190,7 +1190,7 @@ I_t^Y=\mathbf 1\!\left[
 
 Require `\delta_{\mathrm{pkt}}>0`, so mere ties do not count as evidence that a packet residual improved utility.
 
-Confidence is updated from the corresponding success/failure counts, as above. If $`\mathcal P_t=\{(p_m,w_m)\}_{m=1}^{M}`$ is a non-empty candidate set with `w_m\ge0`, `\sum_mw_m>0`, and `\lambda_P\ge0`, let `\ell_t^{(m)}\in[0,1]` be the declared post-observation loss appropriate to candidate `p_m`, such as packet loss for packet candidates or event action for event candidates. An explicitly heuristic exponential-weights update is:
+Confidence is updated from the corresponding success/failure counts, as above. If `\mathcal P_t=\{(p_m,w_m)\}_{m=1}^{M}` is a non-empty candidate set with `w_m\ge0`, `\sum_mw_m>0`, and `\lambda_P\ge0`, let `\ell_t^{(m)}\in[0,1]` be the declared post-observation loss appropriate to candidate `p_m`, such as packet loss for packet candidates or event action for event candidates. An explicitly heuristic exponential-weights update is:
 
 ```math
 w_m^{\mathrm{new}}=
@@ -1270,7 +1270,7 @@ If an explicit SCM `\mathfrak M` exists, let `v_t^E` be the graph node associate
 \end{cases}
 ```
 
-Every set is constructed from the as-of snapshot and has a predeclared cardinality or degree cap. For an evidence-bearing event `e\in\mathcal N_t^B`, define four measurable scores in `[0,1]`: vector relevance `v_t^B(e)`, sheaf-inspired neighbor compatibility `n_t^B(e)`, novelty `u_t^B(e)`, and source independence `s_t^B(e)`. Freeze non-negative weights satisfying $`\alpha_B+\beta_B+\gamma_B+\delta_B=1`$, and set
+Every set is constructed from the as-of snapshot and has a predeclared cardinality or degree cap. For an evidence-bearing event `e\in\mathcal N_t^B`, define four measurable scores in `[0,1]`: vector relevance `v_t^B(e)`, sheaf-inspired neighbor compatibility `n_t^B(e)`, novelty `u_t^B(e)`, and source independence `s_t^B(e)`. Freeze non-negative weights satisfying `\alpha_B+\beta_B+\gamma_B+\delta_B=1`, and set
 
 ```math
 J_t^{\mathrm{nom}}(e)=\mathbf1\{e\in\mathcal N_t^B\},
@@ -1280,7 +1280,7 @@ J_t^{\mathrm{evid}}(e)=
 \qquad e\in\mathfrak E_t^B.
 ```
 
-An as-of graph child or declared hypothesis may be nominated while $`J_t^{\mathrm{evid}}(e)=0`$. Such a candidate can lower review latency or reserve state, but it cannot activate or update a posterior until evidence is available. Define the activation score on the evidence-ready nominated domain and extend it by zero elsewhere:
+An as-of graph child or declared hypothesis may be nominated while `J_t^{\mathrm{evid}}(e)=0`. Such a candidate can lower review latency or reserve state, but it cannot activate or update a posterior until evidence is available. Define the activation score on the evidence-ready nominated domain and extend it by zero elsewhere:
 
 ```math
 A_t^B(e)=
@@ -1292,7 +1292,7 @@ A_t^B(e)=
 \end{cases}
 ```
 
-Let `c_t^B(e)\in[0,1]` be structural criticality available before the downstream target whose performance will be evaluated. For fixed $`0\le\tau_{\min}\le\tau_{\max}\le1`$, define the lower threshold for critical neighbors by
+Let `c_t^B(e)\in[0,1]` be structural criticality available before the downstream target whose performance will be evaluated. For fixed `0\le\tau_{\min}\le\tau_{\max}\le1`, define the lower threshold for critical neighbors by
 
 ```math
 \tau_t^B(e)=
@@ -1305,7 +1305,7 @@ J_t^{\mathrm{nom}}(e)J_t^{\mathrm{evid}}(e)
 \mathbf1[A_t^B(e)\ge\tau_t^B(e)].
 ```
 
-Freeze an update policy $`q_B\in\{q_{\mathrm{FA}},q_{\mathrm{sel}}\}`$, where `q_{\mathrm{FA}}` is bounded-frontier-update-all and `q_{\mathrm{sel}}` is threshold-selective. Define the total update-admission indicator
+Freeze an update policy `q_B\in\{q_{\mathrm{FA}},q_{\mathrm{sel}}\}`, where `q_{\mathrm{FA}}` is bounded-frontier-update-all and `q_{\mathrm{sel}}` is threshold-selective. Define the total update-admission indicator
 
 ```math
 J_t^{\mathrm{upd},q_B}(e)=
@@ -1346,7 +1346,7 @@ b_0+\sum_{e\in K}v_e\right)}{\mathrm B(a_0,b_0)},\\
 \end{aligned}
 ```
 
-For a frozen split prior $`\pi_K^{\mathrm{split}}\in(0,1)`$, define
+For a frozen split prior `\pi_K^{\mathrm{split}}\in(0,1)`, define
 
 ```math
 p_K^{\mathrm{split}}
@@ -1356,7 +1356,7 @@ p_K^{\mathrm{split}}
 \right).
 ```
 
-Exact equality is unnecessarily strict for operational pooling. Freeze a region-of-practical-equivalence width $`\epsilon_{B,\mathrm{eq}}>0`$ and a declared posterior calculation, exact or approximation-controlled, for
+Exact equality is unnecessarily strict for operational pooling. Freeze a region-of-practical-equivalence width `\epsilon_{B,\mathrm{eq}}>0` and a declared posterior calculation, exact or approximation-controlled, for
 
 ```math
 p_K^{\mathrm{eq}}=
@@ -1367,7 +1367,7 @@ P\!\left(
 \right).
 ```
 
-With $`n_e^{\mathrm{eff}}=u_e+v_e`$, minimum member support `n_{B,\mathrm{cmp}}>0`, frozen $`\tau_{B,\mathrm{cmp}}\in(1/2,1)`$, and frozen equivalence threshold $`\tau_{B,\mathrm{eq}}\in(1/2,1)`$, the diagnostic gives split evidence precedence:
+With `n_e^{\mathrm{eff}}=u_e+v_e`, minimum member support `n_{B,\mathrm{cmp}}>0`, frozen `\tau_{B,\mathrm{cmp}}\in(1/2,1)`, and frozen equivalence threshold `\tau_{B,\mathrm{eq}}\in(1/2,1)`, the diagnostic gives split evidence precedence:
 
 ```math
 G_{K,t}^{B}=\begin{cases}
@@ -1395,7 +1395,7 @@ This is partial-pooling advice, not grouping authority. The comparison includes 
 
 #### Anti-Pigeon shock revocation
 
-Positive sharing and revocation are asymmetric. Only a valid external Anti-Pigeon certificate may create a shared key, but sufficiently strong later evidence may invalidate that certificate without certifying any replacement merge. To keep a shared posterior from becoming confident faster than its member-level divergence test, freeze a pooled-evidence factor $`\omega_{B,\mathrm{pool}}\in(0,1]`$. For an available Bernoulli outcome `Y_{e,t}`, inclusion weight `w_{e,t}`, and active shared bucket `K`, update the pooled posterior by
+Positive sharing and revocation are asymmetric. Only a valid external Anti-Pigeon certificate may create a shared key, but sufficiently strong later evidence may invalidate that certificate without certifying any replacement merge. To keep a shared posterior from becoming confident faster than its member-level divergence test, freeze a pooled-evidence factor `\omega_{B,\mathrm{pool}}\in(0,1]`. For an available Bernoulli outcome `Y_{e,t}`, inclusion weight `w_{e,t}`, and active shared bucket `K`, update the pooled posterior by
 
 ```math
 (\alpha_{K,t},\beta_{K,t})
@@ -1448,7 +1448,7 @@ J_t^{\mathrm{upd},q_B}(e)=1,
 \ \kappa_t^B(e)=K\right\}.
 ```
 
-Let `(\Theta_K,\mathscr A_{\Theta_K})` be a declared parameter space and let $`q_{K,t^-}\in\mathcal P(\Theta_K)`$ be the cached prior available before the update. Let `\xi_t(e)` be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family `\{\mathbb P_{K,\theta}\}` declared in Section 4: `L_K` is exactly its dominated evidence marginal and `\mathsf P_{H,K}` is exactly its outcome marginal under the displayed context-sufficiency identity. A modular update and forecast that do not share that family remain modular even after favorable forward validation and may not use ordinary posterior-predictive language.
+Let `(\Theta_K,\mathscr A_{\Theta_K})` be a declared parameter space and let `q_{K,t^-}\in\mathcal P(\Theta_K)` be the cached prior available before the update. Let `\xi_t(e)` be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family `\{\mathbb P_{K,\theta}\}` declared in Section 4: `L_K` is exactly its dominated evidence marginal and `\mathsf P_{H,K}` is exactly its outcome marginal under the displayed context-sufficiency identity. A modular update and forecast that do not share that family remain modular even after favorable forward validation and may not use ordinary posterior-predictive language.
 
 For a non-empty `\mathcal X_{K,t}^{\mathrm{upd},q_B}`, an ordinary Bayesian update is
 
@@ -1479,7 +1479,7 @@ p_K^{\mathrm{adm},q_B}(\theta,\mathfrak h)
 =P_\theta(J^{\mathrm{upd},q_B}=1\mid\mathfrak h),
 ```
 
-let `\underline p_{K,t}^{\mathrm{adm},q_B}(\mathfrak h)` be either an analytic lower bound or a simultaneously valid lower confidence bound for $`\inf_{\theta\in\Theta_K}p_K^{\mathrm{adm},q_B}(\theta,\mathfrak h)`$, and freeze $`p_{\min}^{\mathrm{adm}}>0`$. The certified admission-support region is
+let `\underline p_{K,t}^{\mathrm{adm},q_B}(\mathfrak h)` be either an analytic lower bound or a simultaneously valid lower confidence bound for $`\inf_{\theta\in\Theta_K}p_K^{\mathrm{adm},q_B}(\theta,\mathfrak h)`$, and freeze `p_{\min}^{\mathrm{adm}}>0`. The certified admission-support region is
 
 ```math
 \mathfrak H_{K,t}^{\mathrm{adm},q_B}
@@ -1510,7 +1510,7 @@ Buckets without either valid branch are excluded from `\mathcal K_t^{\mathrm{bel
 
 #### Bayesian elastic rank delta
 
-Probability prediction and retrieval ordering are related but different contracts. Let a bounded external retrieval contract return `N_t` candidates in initial order with finite scores $`s_{(1),t}^{\mathrm{ret}},\ldots,s_{(N_t),t}^{\mathrm{ret}}`$, and let `P_t\le N_t` be the packing-count boundary before token-budget truncation. Define rank-domain answer certainty by
+Probability prediction and retrieval ordering are related but different contracts. Let a bounded external retrieval contract return `N_t` candidates in initial order with finite scores `s_{(1),t}^{\mathrm{ret}},\ldots,s_{(N_t),t}^{\mathrm{ret}}`, and let `P_t\le N_t` be the packing-count boundary before token-budget truncation. Define rank-domain answer certainty by
 
 ```math
 c_t^{\mathrm{pack}}=1\quad\text{when }P_t=N_t;\qquad
@@ -1523,7 +1523,7 @@ c_t^{\mathrm{pack}}=\mathrm{clip}_{[0,1]}\!\left(
 
 for a fixed `\varepsilon_s>0`. A small boundary gap means the current top packet is unsettled; a large gap means the boundary is comparatively stable. This number is not the posterior probability that an answer is true or useful.
 
-For candidate `i`, let `d_{i,t}^{\mathrm{raw}}` be the bounded EventFrame correction relative to its frozen local scoring baseline, and let $`r_{i,t}^{\mathrm{corr}}\in[0,1]`$ be an independently declared correction-reliability value. A conforming implementation sets $`r_{i,t}^{\mathrm{corr}}=0`$ unless an accepted Bayesian posterior, certified residual, or versioned graph-compatibility path actually generated the correction. With frozen $`0\le\lambda_{\min}\le\lambda_{\max}`$, define
+For candidate `i`, let `d_{i,t}^{\mathrm{raw}}` be the bounded EventFrame correction relative to its frozen local scoring baseline, and let `r_{i,t}^{\mathrm{corr}}\in[0,1]` be an independently declared correction-reliability value. A conforming implementation sets `r_{i,t}^{\mathrm{corr}}=0` unless an accepted Bayesian posterior, certified residual, or versioned graph-compatibility path actually generated the correction. With frozen `0\le\lambda_{\min}\le\lambda_{\max}`, define
 
 ```math
 \lambda_{i,t}^{\mathrm{el}}
@@ -1604,7 +1604,7 @@ J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}}).
 
 If the accepted audit sample exceeds a fixed capacity `N_{\mathrm{audit}}^{\max}`, a frozen uniform reservoir subsamples it and records every final inclusion probability. Audit estimators use the corresponding design weights; an unweighted capped convenience sample cannot support the omission certificate.
 
-For one audited non-admitted evidence packet `e`, let `(q_{K,t}^{\mathrm{loc}})_K` be the effective posterior family produced by the ordinary frontier policy and let `(q_{K,t}^{\mathrm{exp}}(e))_K` be the shadow family after admitting that packet through the same admission-aware update. Section 4 maps these to posterior-predictive bases `(\mathsf Q_t^{0,\mathrm{loc}},b_t^{0,\mathrm{loc}})` and $`(\mathsf Q_t^{0,\mathrm{exp}}(e),b_t^{0,\mathrm{exp}}(e))`$. Replay the complete residual policy in each state:
+For one audited non-admitted evidence packet `e`, let `(q_{K,t}^{\mathrm{loc}})_K` be the effective posterior family produced by the ordinary frontier policy and let `(q_{K,t}^{\mathrm{exp}}(e))_K` be the shadow family after admitting that packet through the same admission-aware update. Section 4 maps these to posterior-predictive bases `(\mathsf Q_t^{0,\mathrm{loc}},b_t^{0,\mathrm{loc}})` and `(\mathsf Q_t^{0,\mathrm{exp}}(e),b_t^{0,\mathrm{exp}}(e))`. Replay the complete residual policy in each state:
 
 ```math
 \mathsf Q_t^{\mathrm{local}}=
@@ -1636,7 +1636,7 @@ D_{\mathrm{omit}}\!\left(
 \right].
 ```
 
-The predeclared procedure $`\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}(\alpha_{\mathrm{omit}})`$ is a design-weighted simultaneous upper confidence sequence covering every named bucket, inspected expansion, and repeated audit time. Let `\mathfrak K_t^{\mathrm{audit}}` be the buckets with positive effective audit support after reservoir sampling and valid design weights. Set
+The predeclared procedure `\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}(\alpha_{\mathrm{omit}})` is a design-weighted simultaneous upper confidence sequence covering every named bucket, inspected expansion, and repeated audit time. Let `\mathfrak K_t^{\mathrm{audit}}` be the buckets with positive effective audit support after reservoir sampling and valid design weights. Set
 
 ```math
 U_t^{\mathrm{omit}}=
@@ -1645,7 +1645,7 @@ U_t^{\mathrm{omit}}=
 \left[\Delta_{K,t}^{\mathrm{omit}}\right].
 ```
 
-If $`\mathfrak K_t^{\mathrm{audit}}=\varnothing`$, the system reports no omission certificate rather than substituting zero. Local updating is certified only in the declared audit-population sense while $`U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}`$. A universal omitted-event claim additionally requires exhaustive audit coverage or a verified continuity or envelope bound. A plug-in divergence, unweighted capped sample, or pointwise interval without simultaneous sequential coverage is not a certificate.
+If `\mathfrak K_t^{\mathrm{audit}}=\varnothing`, the system reports no omission certificate rather than substituting zero. Local updating is certified only in the declared audit-population sense while $`U_t^{\mathrm{omit}}\le\epsilon_{B,\mathrm{omit}}`$. A universal omitted-event claim additionally requires exhaustive audit coverage or a verified continuity or envelope bound. A plug-in divergence, unweighted capped sample, or pointwise interval without simultaneous sequential coverage is not a certificate.
 
 Every production or shadow decision records
 
@@ -1804,7 +1804,7 @@ It additionally requires proper-score non-inferiority:
 \qquad \epsilon_{\mathrm{prop}}^{\mathrm{rev}}\ge0.
 ```
 
-Here $`\delta_{\mathrm{harm}}\ge0`$ and $`\beta_{\mathrm{harm}}\in[0,1]`$ are fixed before evaluation.
+Here `\delta_{\mathrm{harm}}\ge0` and `\beta_{\mathrm{harm}}\in[0,1]` are fixed before evaluation.
 
 Thus average composite improvement cannot hide either an uncontrolled rate of material regressions or degraded probabilistic calibration. The confidence construction must account for every adaptively compared candidate state. If promotion is monitored repeatedly, use a confidence sequence, alpha spending, or preregistered review times. All learned preprocessing, perturbation selection, and priority rules are fitted before the validation cutoff. The evaluation contexts must not be the same or temporally overlapping examples used to propose the change. Before validation, the field remains provisional. Previous assignments and provenance are retained so the change can be audited or reversed.
 
@@ -1855,7 +1855,7 @@ Every non-empty bucket `K\subseteq\mathcal E` retains at least one concrete fram
 \mathfrak C_K=\{C\in\mathfrak C_{\mathrm{adm}}:\mathrm{anc}(C)\in K\}.
 ```
 
-When $`\mathfrak C_K\neq\varnothing`$, call `K` active and maintain a non-empty context audit set `\mathcal R_C(K)\subseteq\mathfrak C_K`. If no context has yet been assigned to the bucket, retain `\bar e_K` for traceability but mark the bucket inactive and unaudited; no future-diameter or admissibility claim is made for it. With a declared context metric `d_C`, a representational coverage rule for an auditable bucket may be:
+When `\mathfrak C_K\neq\varnothing`, call `K` active and maintain a non-empty context audit set `\mathcal R_C(K)\subseteq\mathfrak C_K`. If no context has yet been assigned to the bucket, retain `\bar e_K` for traceability but mark the bucket inactive and unaudited; no future-diameter or admissibility claim is made for it. With a declared context metric `d_C`, a representational coverage rule for an auditable bucket may be:
 
 ```math
 \sup_{C\in\mathfrak C_K}\min_{R\in\mathcal R_C(K)}d_C(C,R)\le\delta_K.
@@ -1910,7 +1910,7 @@ D_K^{\mathrm{audit},\star}=
 \max_{R,R'\in\mathcal R_C(K)}\widehat D_{R,R'}^{K,\star}
 ```
 
-where `\widehat D_{R,R'}^{K,\star}` estimates target-law disagreement from observed outcomes without using the candidate forecast as ground truth. The audit reports `\widehat D_K^\star`, coverage, and statistical uncertainty. The deterministic relation is $`D_K^{\mathrm{audit},\star}\le D_K^\star`$; no sample-wise ordering between `\widehat D_K^\star` and `D_K^\star` is asserted. A statistically significant large pairwise divergence is evidence to split or mark the bucket. Representational coverage alone does not make a small estimate a certificate of unseen future behavior.
+where `\widehat D_{R,R'}^{K,\star}` estimates target-law disagreement from observed outcomes without using the candidate forecast as ground truth. The audit reports `\widehat D_K^\star`, coverage, and statistical uncertainty. The deterministic relation is `D_K^{\mathrm{audit},\star}\le D_K^\star`; no sample-wise ordering between `\widehat D_K^\star` and `D_K^\star` is asserted. A statistically significant large pairwise divergence is evidence to split or mark the bucket. Representational coverage alone does not make a small estimate a certificate of unseen future behavior.
 
 To obtain a certified upper bound from a non-exhaustive audit, require that `D` obey the triangle inequality and verify a continuity bound for the forecast map on `\mathfrak C_K`. Let `\overline L_K^{\mathrm{cert}}` be either a deterministic uniform bound established analytically or a simultaneous upper confidence bound produced by a predeclared procedure. It must satisfy, at the certificate's stated confidence level:
 
@@ -1935,9 +1935,9 @@ D_K^{\mathrm{cert},\star}=
 +2\overline L_K^{\mathrm{cert}}\delta_K.
 ```
 
-The confidence procedure jointly covers every audit pair selected for the maximum, including adaptive selections, and every data-estimated continuity bound. A plug-in estimate of `\overline L_K` without uncertainty coverage is not a certificate. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify $`D_K^\star\le\epsilon_{AP}`$.
+The confidence procedure jointly covers every audit pair selected for the maximum, including adaptive selections, and every data-estimated continuity bound. A plug-in estimate of `\overline L_K` without uncertainty coverage is not a certificate. If the audit is exhaustive, the coverage term vanishes. If neither exhaustive coverage nor a verified continuity bound is available, the audit supports only an observed-sample claim and cannot certify `D_K^\star\le\epsilon_{AP}`.
 
-Observed operating regimes use a distinct symbol $`\zeta_t\in\mathcal Z_{\mathrm{reg}}`$. On the common-support domain $`\mathfrak C_{a,b}=\mathrm{supp}(C\mid\zeta_a)\cap\mathrm{supp}(C\mid\zeta_b)`$, regime-conditioned predictive divergence is:
+Observed operating regimes use a distinct symbol `\zeta_t\in\mathcal Z_{\mathrm{reg}}`. On the common-support domain $`\mathfrak C_{a,b}=\mathrm{supp}(C\mid\zeta_a)\cap\mathrm{supp}(C\mid\zeta_b)`$, regime-conditioned predictive divergence is:
 
 ```math
 D_{i,a,b}^{\mathrm{reg}}=
@@ -1949,9 +1949,9 @@ P_\star(Y\mid C_i,\zeta_b)
 
 This quantity is evaluated only for `C_i\in\mathfrak C_{a,b}`. Outside common support it requires a declared overlap and transport model; otherwise it is unidentified and no comparison is reported. The evaluation contract freezes a held-out review window `W_{\mathrm{reg}}`, the minimum number `m_{\mathrm{reg}}` of multiplicity-adjusted exceedances of `\epsilon_{AP}^{\mathrm{reg}}`, and the resulting action before candidate inspection. Meeting that rule is evidence that a shared predictive bucket is stale; the predeclared action may split by regime, condition the cache key on `\zeta`, decay the residual, or mark the abstraction as divergence-sensitive. Post hoc changes to the window, repetition count, threshold, or action invalidate the claim. This adaptation problem is related to concept-drift detection and response [12]. The conditional difference supports predictive adaptation; it is not evidence that `\zeta` is causal unless intervention or identification assumptions establish that fact.
 
-A split operator returns `\{K_1,\ldots,K_m\}` such that every non-empty active child has sufficient effective support and either exhaustive verification or $`D_{K_j}^{\mathrm{cert},\star}\le\epsilon_{AP}`$. Singleton buckets always satisfy an empirical pairwise bound, so representation cost, minimum support, untouched confirmation performance, and coverage of future contexts are required to prevent trivial memorization.
+A split operator returns `\{K_1,\ldots,K_m\}` such that every non-empty active child has sufficient effective support and either exhaustive verification or `D_{K_j}^{\mathrm{cert},\star}\le\epsilon_{AP}`. Singleton buckets always satisfy an empirical pairwise bound, so representation cost, minimum support, untouched confirmation performance, and coverage of future contexts are required to prevent trivial memorization.
 
-Merge and split thresholds should use hysteresis, for example $`\epsilon_{\mathrm{merge}}<\epsilon_{AP}`$, and changes should be accepted only after a minimum held-out improvement. Abstraction quality reports memory and latency gains alongside predictive degradation, subgroup errors, audit coverage, and split/merge churn.
+Merge and split thresholds should use hysteresis, for example `\epsilon_{\mathrm{merge}}<\epsilon_{AP}`, and changes should be accepted only after a minimum held-out improvement. Abstraction quality reports memory and latency gains alongside predictive degradation, subgroup errors, audit coverage, and split/merge churn.
 
 EventFrame can extend this bucket-local test to a network of heterogeneous abstractions. Let:
 
@@ -1965,7 +1965,7 @@ be an abstraction compatibility graph. A node may represent an event group, temp
 \mathsf Q_i(\cdot\mid C_t)\in\mathcal P(\mathcal Y_i).
 ```
 
-For an edge `e=\{i,j\}`, choose a common measurable comparison space `\mathcal Y_e` and measurable maps $`g_{ie}:\mathcal Y_i\to\mathcal Y_e`$ and $`g_{je}:\mathcal Y_j\to\mathcal Y_e`$. Their pushforward restrictions are:
+For an edge `e=\{i,j\}`, choose a common measurable comparison space `\mathcal Y_e` and measurable maps `g_{ie}:\mathcal Y_i\to\mathcal Y_e` and `g_{je}:\mathcal Y_j\to\mathcal Y_e`. Their pushforward restrictions are:
 
 ```math
 \mathsf r_{ie}\mathsf Q_i=(g_{ie})_*\mathsf Q_i,
@@ -2006,7 +2006,7 @@ EventFrame calls a validated local revision of this scaffold a **predictive shea
 
 For an affected neighborhood `\mathcal N`, let `D_t^{\mathrm{design}}` and `D_t^{\mathrm{conf}}` be disjoint chronological design and confirmation blocks satisfying the paper's embargo and as-of rules. Let `\mathfrak S_t(\Xi_A^{(v)};\mathcal N)` be a finite, predeclared family of candidate structures constructed only from information available by the slow-path review time, with the unchanged structure `\Xi_A^{(v)}` included as the no-snap candidate. An edit may split, merge, or duplicate predictive nodes; add or remove predictive-compatibility edges; or select a comparison map from a prevalidated candidate class. The family has bounded neighborhood radius, candidate count, and map complexity. It may not relabel a predictive edge as causal. The notation `\Theta_\Gamma[\Xi']` means the complete candidate design induced by `\Xi'`, including any required local revision `\pi'` of the operational abstraction map, refitted node laws, keys, and certificates. Those dependent components are fitted only on `D_t^{\mathrm{design}}`; a graph edit is never scored while retaining keys or forecasts that are inconsistent with it.
 
-Fix a task-defined comparison-obligation set `\mathfrak O_t` before candidate inspection. Each obligation names local predictions that must remain comparable. A candidate discharges an obligation through a valid direct edge or a composition-valid comparison path; otherwise it must retain the obligation explicitly as unresolved. Let $`U_{\mathrm{obl}}(\Xi';\mathfrak O_t)\ge0`$ be the predeclared weighted unresolved burden. This prevents a candidate from obtaining zero defect merely by deleting difficult edges; in particular, an empty graph is not automatically a successful snap when $`\mathfrak O_t\neq\varnothing`$.
+Fix a task-defined comparison-obligation set `\mathfrak O_t` before candidate inspection. Each obligation names local predictions that must remain comparable. A candidate discharges an obligation through a valid direct edge or a composition-valid comparison path; otherwise it must retain the obligation explicitly as unresolved. Let `U_{\mathrm{obl}}(\Xi';\mathfrak O_t)\ge0` be the predeclared weighted unresolved burden. This prevents a candidate from obtaining zero defect merely by deleting difficult edges; in particular, an empty graph is not automatically a successful snap when `\mathfrak O_t\neq\varnothing`.
 
 Let `\mathcal D_{\Delta,t}(\Xi')` be the reverse dependency closure of the proposed edit, including every bucket, node law, comparison map, key, certificate, cache entry, or edge whose value or validity can change, not only objects edited syntactically. Let `\mathfrak K_{\Delta,t}(\Xi')` and `E_{\Delta,t}^{\mathrm{keep}}(\Xi')` be its affected active-bucket and retained-or-new-edge projections.
 
@@ -2040,7 +2040,7 @@ Candidate generation and selection do not authorize publication. On `D_t^{\mathr
 -\widehat{\mathcal R}_{\mathrm{prop}}^{D_t^{\mathrm{conf}}}(\Theta_\Gamma[\Xi_A^{(v)}]).
 ```
 
-Let `G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}` be the paired priority-weighted gain defined as in Section 9, and let `C_{v\rightarrow\mathrm{cand},t}(h)` be its resource cost on the same declared utility scale. Declare $`\delta_{\mathrm{snap}}>0`$, $`\epsilon_{\mathrm{obl}}\ge0`$, and $`0\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\le\epsilon_{\mathrm{split}}^{\mathrm{comp}}`$ before candidate inspection. With `\max\varnothing=0`, the joint snap-acceptance indicator is:
+Let `G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}` be the paired priority-weighted gain defined as in Section 9, and let `C_{v\rightarrow\mathrm{cand},t}(h)` be its resource cost on the same declared utility scale. Declare `\delta_{\mathrm{snap}}>0`, `\epsilon_{\mathrm{obl}}\ge0`, and $`0\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\le\epsilon_{\mathrm{split}}^{\mathrm{comp}}`$ before candidate inspection. With `\max\varnothing=0`, the joint snap-acceptance indicator is:
 
 ```math
 \begin{aligned}
@@ -2111,7 +2111,7 @@ For a fixed graph with finite-dimensional embeddings `x_i=\phi_i(\mathsf Q_i)` a
 L_A=\partial_A^{*}\partial_A.
 ```
 
-Then $`\|\partial_Ax\|^2=\langle x,L_Ax\rangle`$ and `\ker L_A=\ker\partial_A`, the linearly compatible assignments. If `\lambda_{\max}(L_A)>0`, the fixed-step refinement
+Then `\|\partial_Ax\|^2=\langle x,L_Ax\rangle` and `\ker L_A=\ker\partial_A`, the linearly compatible assignments. If `\lambda_{\max}(L_A)>0`, the fixed-step refinement
 
 ```math
 x^{(n+1)}=x^{(n)}-\eta L_Ax^{(n)},
@@ -2141,7 +2141,7 @@ EventFrame separates prediction-time computation from post-observation refinemen
 The reference fast path is:
 
 1. Incrementally update `C_t=e_{t-k+1:t}`.
-2. Optionally form $`X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)`$.
+2. Optionally form `X_t=\chi(C_t,\mathcal M_t,G_t,\sigma_t)`.
 3. Construct the bounded vector, sheaf-inspired, and as-of graph candidate frontier `\mathcal N_t^B`.
 4. Apply the frontier-all cheap update to every evidence-ready frontier member. Use the frozen activation threshold to select bounded deep work, not to suppress the cheap update, unless a separately validated selective-update policy is explicitly in force. Check the certified positive support bound for the complete nomination probability and materialized Anti-Pigeon sharing certificates; retrieve the corresponding cached prior and apply only a bounded Bayesian update. Unsupported admission correction falls back to working-posterior or no-update semantics.
 5. Compute the posterior-predictive base law `\mathsf Q_t^0(\cdot\mid C_t)` and aligned template `b_t^0` from the valid effective posterior family, falling back to `\mathsf Q_B` and `B` only when that family is empty; independently compute packet baseline `B_Y(X_t)` when required.
@@ -2201,7 +2201,7 @@ J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
 
 For a frontier cap `N_t\le B_{\max}`, certainty and delta application are `O(N_t)`, and comparison sorting is `O(N_t\log N_t)` unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called `O(1)`. Rank-delta cache lookup remains expected `O(1)` only under the same bounded-key and bounded-table assumptions as the residual cache.
 
-where `B_{\max}` is the predeclared frontier cap. Let `M_{\mathrm{hyp}}` bound the updated sufficient-statistic or discrete-hypothesis dimension, and let `R_{\mathrm{cp}}` bound retained changepoint run-length states. Let `T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)` evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let $`T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)`$ evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+where `B_{\max}` is the predeclared frontier cap. Let `M_{\mathrm{hyp}}` bound the updated sufficient-statistic or discrete-hypothesis dimension, and let `R_{\mathrm{cp}}` bound retained changepoint run-length states. Let `T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)` evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let `T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)` evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
 
 ```math
 \begin{aligned}
@@ -2305,7 +2305,7 @@ The full upgrade is defined as a staged family rather than one indivisible algor
 \mathcal U_5=\text{regime-mixture and map refinement}.
 ```
 
-Starting from $`S_t^{(0)}=\mathcal U_0(S_{t^-})`$, let `r_n\in\{1,2,3,4,5\}` be the stage selected for slow-path invocation `n`, subject to its prerequisites. The step-integration recurrence is:
+Starting from `S_t^{(0)}=\mathcal U_0(S_{t^-})`, let `r_n\in\{1,2,3,4,5\}` be the stage selected for slow-path invocation `n`, subject to its prerequisites. The step-integration recurrence is:
 
 ```math
 S_t^{(n)}=\mathcal U_{r_n}(S_t^{(n-1)}),
@@ -2331,7 +2331,7 @@ and all prerequisite evidence and safety gates pass. The run stops at the first 
 d_t(h)=\max\left(\{0\}\cup\{r_1,\ldots,r_{N_t}\}\right).
 ```
 
-Here $`p_t^{\mathrm{pri}}\in[0,1]`$ is priority declared from prediction-time information, `\mathcal B` is a priority-dependent resource budget, and `c_r^U(h,S)` is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile `h`. The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 5 may revise mixtures or comparison maps, after which Stages 1--4 may be selected again; every rerun appears again in `C_t^U`. The architecture targets certified reuse plus all five refinement stages; `d_t(h)` records the deepest stage reached, while the complete invocation sequence `(r_1,\ldots,r_{N_t})`, actual cost, and stopping reason are also reported.
+Here `p_t^{\mathrm{pri}}\in[0,1]` is priority declared from prediction-time information, `\mathcal B` is a priority-dependent resource budget, and `c_r^U(h,S)` is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile `h`. The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 5 may revise mixtures or comparison maps, after which Stages 1--4 may be selected again; every rerun appears again in `C_t^U`. The architecture targets certified reuse plus all five refinement stages; `d_t(h)` records the deepest stage reached, while the complete invocation sequence `(r_1,\ldots,r_{N_t})`, actual cost, and stopping reason are also reported.
 
 This definition separates semantic interfaces from hardware policy. Faster processors, larger memory, improved accelerators, or cheaper distributional solvers reduce measured costs and their conservative bounds and can increase `d_t(h)` without changing event, residual, compatibility, or causality definitions. A conforming implementation must therefore record both the output stage and the hardware/cost profile used to select it.
 
@@ -2625,7 +2625,7 @@ Convergence requires stronger conditions than stationarity and finite move types
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(s),
 ```
 
-where the normalized priority weights `\widetilde w_t` are fixed with the evaluation set and infeasible Anti-Pigeon states are excluded. If the update rule is deterministic and accepts `s\to s'` only when $`\Phi(s')\le\Phi(s)-\delta`$ for a fixed `\delta>0`, then no state can be revisited and the process terminates after at most `|\mathfrak S|-1` accepted moves at a state with no improving candidate move. This is a finite-state descent result, not a guarantee for an online changing environment. With noisy estimates, adaptive candidate generation, changing caches, or distribution drift, the result does not apply unless confidence bounds and a fixed potential restore the strict-decrease invariant.
+where the normalized priority weights `\widetilde w_t` are fixed with the evaluation set and infeasible Anti-Pigeon states are excluded. If the update rule is deterministic and accepts `s\to s'` only when `\Phi(s')\le\Phi(s)-\delta` for a fixed `\delta>0`, then no state can be revisited and the process terminates after at most `|\mathfrak S|-1` accepted moves at a state with no improving candidate move. This is a finite-state descent result, not a guarantee for an online changing environment. With noisy estimates, adaptive candidate generation, changing caches, or distribution drift, the result does not apply unless confidence bounds and a fixed potential restore the strict-decrease invariant.
 
 The next section lists open problems that remain before this pattern can support stronger guarantees.
 
@@ -2755,7 +2755,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 `q_E`, `d_E`, `\Pi_E`, `\delta_E`, `\delta_Q`: event encoder, decoder, admissibility projection, and point/law clipping radii.
 
-`\oplus_E`: typed event residual composition $`\mathcal E\times\mathbb H_d^E\to\mathcal E`$.
+`\oplus_E`: typed event residual composition `\mathcal E\times\mathbb H_d^E\to\mathcal E`.
 
 `\mathcal C_{A,t^-}`, `\mathcal C_{R,t^-}`, `\mathcal C_E`: as-of exact-key residual, as-of general residual, and episodic caches.
 
@@ -2823,7 +2823,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 `\mathfrak M=(U,V,F,P_U)`: structural causal model required for `do`-intervention notation.
 
-$`\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}`$, `h_\pi`, `K`, `\mathfrak K_\pi`, `\mathfrak K_\pi^+`: abstraction map, operational abstraction key including costed side information, one event bucket, all induced buckets, and active buckets with admissible contexts.
+`\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}`, `h_\pi`, `K`, `\mathfrak K_\pi`, `\mathfrak K_\pi^+`: abstraction map, operational abstraction key including costed side information, one event bucket, all induced buckets, and active buckets with admissible contexts.
 
 `\bar e_K`, `\mathfrak C_K`, `\mathcal R_C(K)`: concrete traceability frame, contexts anchored in a bucket, and coverage-aware context audit set.
 
@@ -2833,7 +2833,7 @@ $`\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}`$, `h_\pi`, `K`, `\mathfrak K_\pi`,
 
 `D_Y^{\mathrm{law}}`: distance between probability laws. It is distinct from packet decoder `d_Y`.
 
-$`\mathcal G_t^A=(V_t^A,E_t^A)`$: abstraction compatibility graph.
+`\mathcal G_t^A=(V_t^A,E_t^A)`: abstraction compatibility graph.
 
 `\mathsf Q_i`, `\mathcal Y_i`: node-local predictive law and its outcome space.
 
@@ -2841,7 +2841,7 @@ $`\mathcal G_t^A=(V_t^A,E_t^A)`$: abstraction compatibility graph.
 
 `\delta_e`, `\Delta_{\mathrm{comp}}`: edge compatibility defect and maximum defect upper confidence bound.
 
-`\mathfrak Q_{\mathcal N}`, `D_i`, $`(\overline{\mathsf Q}_i)_{i\in\mathcal N}`$: reconciliation feasible tuple family, local fidelity divergences, and returned reconciled forecast tuple.
+`\mathfrak Q_{\mathcal N}`, `D_i`, `(\overline{\mathsf Q}_i)_{i\in\mathcal N}`: reconciliation feasible tuple family, local fidelity divergences, and returned reconciled forecast tuple.
 
 `\partial_A`, `L_A`: compatibility boundary and Laplacian, defined only for the stated finite-dimensional linear representation.
 
