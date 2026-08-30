@@ -20,10 +20,10 @@ The live GitHub page displayed four specific parse errors and then hundreds of g
 - Preserve every display equation and its exact mathematical source.
 - Protect display equations with GitHub's fenced `math` syntax so Markdown cannot consume TeX punctuation.
 - Protect retained inline expressions with GitHub's documented backtick-delimited inline-math syntax.
-- Keep the single-file GitHub edition below 540 math nodes, leaving margin below the observed failure boundary.
+- Keep the single-file GitHub edition below 360 math nodes, leaving margin below the stricter live-client failure boundary observed after fenced display math was introduced.
 - Render repeated symbol-only references as exact monospace notation rather than requesting another math render.
 - Preserve `build/paper.md` as the canonical fully typeset Markdown assembly and keep the PDF fully typeset.
 
 ## Verification
 
-The generated GitHub edition contains 204 display nodes and 330 inline nodes, for 534 total. GitHub's Markdown API recognizes all 534 as math renderers, preserves the protected brace and spacing commands, and reports no server-side malformed-math fallback. Live client verification is required after publication because the renderer ceiling occurs after GitHub's client-side math pass.
+The first generated edition contained 204 display nodes and 330 inline nodes. GitHub's Markdown API recognized all 534, but the live client exposed one fenced `cases` row-break defect and stopped after 384 requests. The corrected edition uses `\cr` for that row and contains 204 display nodes plus 150 selected inline nodes, for 354 total. Final acceptance requires zero live client error boxes after publication because the renderer ceiling occurs after GitHub's server-side Markdown pass.
