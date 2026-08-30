@@ -1,4 +1,4 @@
-# 6. Fuzzing and Invariants
+# 7. Sensitivity Testing and Invariants
 
 Property fuzzing tests model sensitivity: perturb a selected event field, rerun prediction, and measure the change in a declared output. It does not by itself establish how the real world would respond to an intervention.
 
@@ -144,3 +144,5 @@ Here \(\delta_{\mathrm{harm}}\ge0\) and \(\beta_{\mathrm{harm}}\in[0,1]\) are fi
 Thus average composite improvement cannot hide either an uncontrolled rate of material regressions or degraded probabilistic calibration. The confidence construction must account for every adaptively compared candidate state. If promotion is monitored repeatedly, use a confidence sequence, alpha spending, or preregistered review times. All learned preprocessing, perturbation selection, and priority rules are fitted before the validation cutoff. The evaluation contexts must not be the same or temporally overlapping examples used to propose the change. Before validation, the field remains provisional. Previous assignments and provenance are retained so the change can be audited or reversed.
 
 An EventFrame invariant is therefore conditional: stable under this valid perturbation family, for this predictor and target, in this data regime, within this threshold and confidence level. Failure modes include invalid perturbations, off-manifold inputs, hidden confounding, adaptive reuse of the validation set, and thresholds below measurement noise.
+
+The next section uses these conditional diagnostics to decide when event distinctions may be compressed, must remain separate, or require a bounded compatibility-graph revision.

@@ -1,5 +1,12 @@
 # Rank Adaptation Evidence
 
+> **Superseded organic evidence:** The organic replay outputs in this directory
+> used full transcript text in semantic retrieval. They are retained as
+> historical false-start provenance and are not current EventFrame-corpus
+> evidence. See `../eventframe-corpus-v1/` for the corrected contract-12
+> aggregates. Synthetic mechanism results remain applicable only where the
+> corrected contract-12 rerun explicitly reproduced them.
+
 This directory preserves the small aggregate reports used by the whitepaper's Bayesian elastic-ranking and Anti-Pigeon shock-revision discussion. Raw session exports, local databases, embedding caches, and generated replay datasets are intentionally excluded.
 
 The evidence has five parts:

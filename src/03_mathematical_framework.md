@@ -1,4 +1,4 @@
-# 3. Mathematical Framework
+# 4. Mathematical Foundations
 
 The mathematical framework turns compressed event frames into objects that can be predicted, evaluated, cached, and abstracted. Given a context \(C_t\), the predictor must produce a next-event distribution before the next observation exists. Only after the observation arrives may the runtime compute realized prediction loss and update memory or abstraction.
 
@@ -211,7 +211,7 @@ Here \(P_{\mathrm{obj}}\) and \(P_{\mathrm{conf}}\) are fixed design- and confir
 \Xi_R,\Xi_B,\Xi_A^{(v)})
 \]
 
-denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{eval}}\). For each prediction origin, Section 5 produces the effective posterior family; Section 4 maps it to \((\mathsf Q_t^0,b_t^0)\), applies only a posterior-compatible residual, and returns \(\mathcal O_t^R=(\mathsf Q_t^R,\hat e_t^H)\). Define the scored candidate output explicitly by
+denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{eval}}\). For each prediction origin, Section 6 produces the effective posterior family; Section 5 maps it to \((\mathsf Q_t^0,b_t^0)\), applies only a posterior-compatible residual, and returns \(\mathcal O_t^R=(\mathsf Q_t^R,\hat e_t^H)\). Define the scored candidate output explicitly by
 
 \[
 \mathcal O_{\Theta_\Gamma}(C_t;S_{\Theta_\Gamma,t^-})=\mathcal O_t^R,
@@ -219,7 +219,7 @@ denote the complete event-prediction design evaluated under \(\Lambda_{\mathrm{e
 \mathsf Q_{\Theta_\Gamma}(\cdot\mid C_t;S_{\Theta_\Gamma,t^-})=\mathsf Q_t^R(\cdot\mid C_t).
 \]
 
-Thus deleting or changing the Bayesian layer changes the scored law whenever it changes the posterior-predictive base; the residual kernel is calibrated against and applied after that base law. Let \(\mathfrak K_\pi\) be the buckets induced by \(\pi\), and let \(\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}\) be the active buckets with admissible contexts. For an active bucket \(K\), define its external future-diameter \(D_K^\star(\pi)\) as in Section 7 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to \(\Theta_\Gamma\) only in an implementation that jointly optimizes packet selection.
+Thus deleting or changing the Bayesian layer changes the scored law whenever it changes the posterior-predictive base; the residual kernel is calibrated against and applied after that base law. Let \(\mathfrak K_\pi\) be the buckets induced by \(\pi\), and let \(\mathfrak K_\pi^+=\{K\in\mathfrak K_\pi:\mathfrak C_K\neq\varnothing\}\) be the active buckets with admissible contexts. For an active bucket \(K\), define its external future-diameter \(D_K^\star(\pi)\) as in Section 8 under the fixed target law, divergence, and context domain. Runtime-packet contracts are evaluated by their separate packet loss and are added to \(\Theta_\Gamma\) only in an implementation that jointly optimizes packet selection.
 
 Compression must be operational, not merely decorative. Define retained information by
 
@@ -287,7 +287,7 @@ This value states the desired population property. When \(P_\star\) is unknown i
 +\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(\Theta_\Gamma)\right].
 \]
 
-Operational selection instead begins with a finite, predeclared candidate family \(\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})\), constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 7. Let \(\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}\) and \(\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}\) be the corresponding grouped, as-of empirical risks, and define:
+Operational selection instead begins with a finite, predeclared candidate family \(\mathfrak G_\Gamma(\mathcal S_{\mathrm{obj}})\), constructed using design data only. A candidate is certifiable only when every active bucket has either exhaustive audit coverage or the verified continuity certificate from Section 8. Let \(\widehat{\mathcal R}_{\mathrm{prop}}^{\mathcal S_{\mathrm{obj}}}\) and \(\widehat{\mathcal R}_{\mathrm{pri}}^{\mathcal S_{\mathrm{obj}}}\) be the corresponding grouped, as-of empirical risks, and define:
 
 \[
 \widehat{\mathfrak F}_{AP}^{\Gamma}=
@@ -374,6 +374,8 @@ Every non-empty event bucket \(K\) retains at least one concrete frame \(\bar e_
 \sup_{C\in\mathfrak C_K}\min_{R\in\mathcal R_C(K)}d_C(C,R)\le\delta_K.
 \]
 
-The audit set may combine contexts for a medoid, boundary examples, high-uncertainty examples, and a reservoir sample. Tests over \(\mathcal R_C(K)\) are statistical estimates, not proofs about unobserved contexts. A certified future-diameter bound additionally requires exhaustive coverage or the verified continuity condition in Section 7. Confidence, coverage, and false-negative risk must be reported.
+The audit set may combine contexts for a medoid, boundary examples, high-uncertainty examples, and a reservoir sample. Tests over \(\mathcal R_C(K)\) are statistical estimates, not proofs about unobserved contexts. A certified future-diameter bound additionally requires exhaustive coverage or the verified continuity condition in Section 8. Confidence, coverage, and false-negative risk must be reported.
 
 Confidence and provenance metadata \(c_t\) determine whether fields may be used for training, lookup, sensitivity testing, or causal analysis. Observed fields, inferred fields, and synthetic perturbations remain distinct throughout the lifecycle.
+
+The next section specializes these foundations into the forecast law, aligned point summary, and separately typed residual corrections.

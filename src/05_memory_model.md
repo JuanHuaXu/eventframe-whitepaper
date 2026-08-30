@@ -1,4 +1,4 @@
-# 5. Memory Model
+# 6. Memory, Bayesian Updating, and Drift
 
 EventFrame uses memory for two different purposes: recalling prior events and reusing prior corrections. These purposes should not be collapsed. Episodic memory stores cases. A residual cache stores adjustments to the posterior-predictive base law and template that were actually issued before correction. The fallback baseline is one possible base. Both memories may support prediction, but they answer different questions.
 
@@ -39,7 +39,7 @@ Consolidation is the process of updating memory after observation. A conservativ
 2. Compute proper predictive loss and the event-aware timing diagnostic.
 3. Estimate whether the error relative to the recorded \((\mathsf Q_t^0,b_t^0)\) is systematic enough to store as a residual.
 4. Update or decay cache entries based on age, confidence, and repeated utility.
-5. Preserve at least one traceability frame and the coverage-aware context audit set required by Section 7.
+5. Preserve at least one traceability frame and the coverage-aware context audit set required by Section 8.
 6. Mark low-confidence entries so they cannot dominate future predictions.
 
 Cache pollution is the main risk. If every error becomes a residual, the cache may memorize noise. If keys are too broad, residuals are applied in inappropriate contexts. If keys are too narrow, useful residuals are never reused. The cache should therefore track hit rate, post-correction loss, and whether retrieved residuals improve over the contemporaneous pre-residual base.
@@ -263,7 +263,7 @@ J_t^{\mathrm{upd},q_B}(e)=1,
 \ \kappa_t^B(e)=K\right\}.
 \]
 
-Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a declared parameter space and let \(q_{K,t^-}\in\mathcal P(\Theta_K)\) be the cached prior available before the update. Let \(\xi_t(e)\) be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family \(\{\mathbb P_{K,\theta}\}\) declared in Section 4: \(L_K\) is exactly its dominated evidence marginal and \(\mathsf P_{H,K}\) is exactly its outcome marginal under the displayed context-sufficiency identity. A modular update and forecast that do not share that family remain modular even after favorable forward validation and may not use ordinary posterior-predictive language.
+Let \((\Theta_K,\mathscr A_{\Theta_K})\) be a declared parameter space and let \(q_{K,t^-}\in\mathcal P(\Theta_K)\) be the cached prior available before the update. Let \(\xi_t(e)\) be the evidence packet extracted from an available event and its currently available labels. The ordinary Bayesian interpretation requires the single model family \(\{\mathbb P_{K,\theta}\}\) declared in Section 5: \(L_K\) is exactly its dominated evidence marginal and \(\mathsf P_{H,K}\) is exactly its outcome marginal under the displayed context-sufficiency identity. A modular update and forecast that do not share that family remain modular even after favorable forward validation and may not use ordinary posterior-predictive language.
 
 For a non-empty \(\mathcal X_{K,t}^{\mathrm{upd},q_B}\), an ordinary Bayesian update is
 
@@ -309,7 +309,7 @@ For a jointly admitted evidence set, the contract must model the joint admission
 
 Because \(J_t^{\mathrm{upd},q_B}\) contains nomination and evidence readiness under both policies, both the numerator and marginal denominator integrate the complete admission event. Conditioning only on the selective threshold while treating frontier membership as fixed is valid only under a separately stated conditional design.
 
-The effective posterior consumed by Section 4 is
+The effective posterior consumed by Section 5 is
 
 \[
 q_{K,t}^{\mathrm{eff}}=
@@ -321,7 +321,7 @@ q_{K,t^-},&\text{otherwise, provided the cached prior is valid}.
 \end{cases}
 \]
 
-Buckets without either valid branch are excluded from \(\mathcal K_t^{\mathrm{bel}}\). Section 4 maps the resulting finite posterior family into \(\mathsf Q_t^0\), applies only residuals certified against that base law, and scores the final \(\mathsf Q_t^R\).
+Buckets without either valid branch are excluded from \(\mathcal K_t^{\mathrm{bel}}\). Section 5 maps the resulting finite posterior family into \(\mathsf Q_t^0\), applies only residuals certified against that base law, and scores the final \(\mathsf Q_t^R\).
 
 ### Bayesian elastic rank delta
 
@@ -412,7 +412,7 @@ P(R_{K,t}=0\mid\mathfrak h_t)\ge\gamma_{\mathrm{cp}}
 \right].
 \]
 
-When this indicator fires, the runtime resets the affected posterior and monitor onto the triggering outcome, starts a fixed cooldown during which state may update but no new trigger may fire, and applies the dependency-closure bump \(\mathsf B_{\mathcal D}\) and stale-marking operator \(\mathsf I_{\mathcal D}\) from Section 7 to the affected posterior, residual, and graph-version region before expanding the review frontier and routing recalibration to the slow path. The warm-up, cap, thresholds, cooldown, and repeated-trigger scoring rule are frozen before confirmation. A monitor fed only admitted evidence detects changes in the admission-conditioned process. Under frontier-all this still excludes non-nominated and not-yet-ready evidence; under selective admission it also excludes threshold-rejected evidence. The monitor supports a full-stream regime claim only when its transition and observation model includes the complete admission mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error. The CUSUM state is constant-size; the capped run-length update remains linear in the retained run-length support.
+When this indicator fires, the runtime resets the affected posterior and monitor onto the triggering outcome, starts a fixed cooldown during which state may update but no new trigger may fire, and applies the dependency-closure bump \(\mathsf B_{\mathcal D}\) and stale-marking operator \(\mathsf I_{\mathcal D}\) from Section 8 to the affected posterior, residual, and graph-version region before expanding the review frontier and routing recalibration to the slow path. The warm-up, cap, thresholds, cooldown, and repeated-trigger scoring rule are frozen before confirmation. A monitor fed only admitted evidence detects changes in the admission-conditioned process. Under frontier-all this still excludes non-nominated and not-yet-ready evidence; under selective admission it also excludes threshold-rejected evidence. The monitor supports a full-stream regime claim only when its transition and observation model includes the complete admission mechanism or when the independent audit stream is incorporated with its sampling design. Exact classical run-length support can grow with the stream; a constant-memory or constant-time claim therefore requires a declared cap, pruning rule, or finite sufficient-statistic approximation and must report its approximation error. The CUSUM state is constant-size; the capped run-length update remains linear in the retained run-length support.
 
 Bounded retrieval and optional selective admission can become self-confirming by never revisiting what they have learned to ignore. EventFrame therefore reserves a predeclared audit probability \(\pi_{\mathrm{audit}}>0\). Conditional on the non-admitted candidate set and independently of activation-score magnitude, draw
 
@@ -422,7 +422,7 @@ J_t^{\mathrm{audit}}(e)\sim\mathrm{Bernoulli}(\pi_{\mathrm{audit}}).
 
 If the accepted audit sample exceeds a fixed capacity \(N_{\mathrm{audit}}^{\max}\), a frozen uniform reservoir subsamples it and records every final inclusion probability. Audit estimators use the corresponding design weights; an unweighted capped convenience sample cannot support the omission certificate.
 
-For one audited non-admitted evidence packet \(e\), let \((q_{K,t}^{\mathrm{loc}})_K\) be the effective posterior family produced by the ordinary frontier policy and let \((q_{K,t}^{\mathrm{exp}}(e))_K\) be the shadow family after admitting that packet through the same admission-aware update. Section 4 maps these to posterior-predictive bases \((\mathsf Q_t^{0,\mathrm{loc}},b_t^{0,\mathrm{loc}})\) and \((\mathsf Q_t^{0,\mathrm{exp}}(e),b_t^{0,\mathrm{exp}}(e))\). Replay the complete residual policy in each state:
+For one audited non-admitted evidence packet \(e\), let \((q_{K,t}^{\mathrm{loc}})_K\) be the effective posterior family produced by the ordinary frontier policy and let \((q_{K,t}^{\mathrm{exp}}(e))_K\) be the shadow family after admitting that packet through the same admission-aware update. Section 5 maps these to posterior-predictive bases \((\mathsf Q_t^{0,\mathrm{loc}},b_t^{0,\mathrm{loc}})\) and \((\mathsf Q_t^{0,\mathrm{exp}}(e),b_t^{0,\mathrm{exp}}(e))\). Replay the complete residual policy in each state:
 
 \[
 \mathsf Q_t^{\mathrm{local}}=
@@ -475,7 +475,7 @@ v_t,\upsilon_t^{\mathrm{bel}},H,s_t^{\mathrm{prov}}),
 
 together with audit inclusion probability, so calibration can be reconstructed under as-of replay.
 
-Before an ordinary posterior update publishes in place, its posterior-predictive law and template are compared with the fixed references for \(\upsilon_t^{\mathrm{bel}}\) using the analytic or simultaneous bounds declared in Section 4. Those bounds include propagated posterior-approximation error. The update retains that version only while every affected law-bearing residual has non-negative law margin and every point-bearing residual has non-negative template margin. Otherwise \(\mathsf B_{\mathcal D}\) bumps the dependency closure and \(\mathsf I_{\mathcal D}\) invalidates affected residuals. Posterior, posterior key, dependent residual certificate, graph version, and epoch then publish atomically. Prediction readers observe one complete old or new version, never a mixed state. Posterior storage has a declared capacity and deterministic eviction rule. Eviction removes fast-path reuse eligibility but preserves immutable provenance required by later audits.
+Before an ordinary posterior update publishes in place, its posterior-predictive law and template are compared with the fixed references for \(\upsilon_t^{\mathrm{bel}}\) using the analytic or simultaneous bounds declared in Section 5. Those bounds include propagated posterior-approximation error. The update retains that version only while every affected law-bearing residual has non-negative law margin and every point-bearing residual has non-negative template margin. Otherwise \(\mathsf B_{\mathcal D}\) bumps the dependency closure and \(\mathsf I_{\mathcal D}\) invalidates affected residuals. Posterior, posterior key, dependent residual certificate, graph version, and epoch then publish atomically. Prediction readers observe one complete old or new version, never a mixed state. Posterior storage has a declared capacity and deterministic eviction rule. Eviction removes fast-path reuse eligibility but preserves immutable provenance required by later audits.
 
 Streaming variational Bayes motivates incremental and asynchronous posterior approximation [14]. Streaming variational Monte Carlo and online variational sequential Monte Carlo provide richer state-space and particle-based alternatives [15,16], but their constant-per-sample or online properties do not make their particle count, parameter dimension, optimization, or hardware cost free. Pattern Markov Chains are relevant only for declared event-pattern completion forecasts, not as a universal next-event Bayesian model [19]. Work on out-of-distribution sequential event prediction motivates latent-context and shift-aware evaluation [20], but EventFrame does not inherit its causal interpretation without the corresponding identification assumptions.
 

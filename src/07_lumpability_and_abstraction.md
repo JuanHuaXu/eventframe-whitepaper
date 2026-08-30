@@ -1,4 +1,4 @@
-# 7. Lumpability and Abstraction
+# 8. Abstraction, Anti-Pigeon, and Sheaf Snapping
 
 Abstraction is useful only when it preserves the transition behavior required by the declared target. Let:
 
@@ -8,7 +8,7 @@ Abstraction is useful only when it preserves the transition behavior required by
 
 map detailed events to abstract states, and extend it componentwise to contexts as \(\pi^k(C_t)\).
 
-Let \(\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k\) be the declared admissible context domain from Section 3. The target \(Y\), target law \(P_\star\), divergence, and admissible context domain are fixed by the evaluation contract before \(\pi\) is selected. An aggregate conditional law is not by itself a lumpability test because it averages over hidden detailed states inside a bucket. Instead, define the external predictive lumpability defect:
+Let \(\mathfrak C_{\mathrm{adm}}\subseteq\mathcal E^k\) be the declared admissible context domain from Section 4. The target \(Y\), target law \(P_\star\), divergence, and admissible context domain are fixed by the evaluation contract before \(\pi\) is selected. An aggregate conditional law is not by itself a lumpability test because it averages over hidden detailed states inside a bucket. Instead, define the external predictive lumpability defect:
 
 \[
 \varepsilon_{\mathrm{lump}}^\star(\pi)=
@@ -228,7 +228,7 @@ Candidate generation and selection do not authorize publication. On \(D_t^{\math
 -\widehat{\mathcal R}_{\mathrm{prop}}^{D_t^{\mathrm{conf}}}(\Theta_\Gamma[\Xi_A^{(v)}]).
 \]
 
-Let \(G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}\) be the paired priority-weighted gain defined as in Section 9, and let \(C_{v\rightarrow\mathrm{cand},t}(h)\) be its resource cost on the same declared utility scale. Declare \(\delta_{\mathrm{snap}}>0\), \(\epsilon_{\mathrm{obl}}\ge0\), and \(0\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\le\epsilon_{\mathrm{split}}^{\mathrm{comp}}\) before candidate inspection. With \(\max\varnothing=0\), the joint snap-acceptance indicator is:
+Let \(G_{v\rightarrow\mathrm{cand},t}^{\mathrm{pri}}\) be the paired priority-weighted gain defined as in Section 11, and let \(C_{v\rightarrow\mathrm{cand},t}(h)\) be its resource cost on the same declared utility scale. Declare \(\delta_{\mathrm{snap}}>0\), \(\epsilon_{\mathrm{obl}}\ge0\), and \(0\le\epsilon_{\mathrm{acc}}^{\mathrm{comp}}\le\epsilon_{\mathrm{split}}^{\mathrm{comp}}\) before candidate inspection. With \(\max\varnothing=0\), the joint snap-acceptance indicator is:
 
 \[
 \begin{aligned}
@@ -321,3 +321,5 @@ Finally, a node may represent a predictive regime mixture:
 \]
 
 This mixture can preserve multiple currently plausible mechanisms instead of collapsing them into one habitual prediction. It remains a predictive mixture unless each component has an explicit SCM and the data and assumptions identify causal interpretation. Mixture learning is the final, most expensive refinement stage; it may revise node laws or comparison maps and then rerun compatibility and reconciliation.
+
+The next section places these operations into a bounded fast-path, slow-path, and background runtime architecture.

@@ -336,7 +336,7 @@ note = <<~MARKDOWN
   _GitHub rendering note: equations use native typesetting or semantic HTML with Unicode mathematical symbols and real sub/superscripts. This keeps the single-file edition within GitHub's per-page math-rendering budget. The PDF remains fully typeset._
 MARKDOWN
 
-scope = "_Public working paper. Initial implementation evidence is reported in Section 9; full real-world validation remains outstanding._\n"
+scope = "_Public working paper. Initial implementation evidence is reported in Section 11; full real-world validation remains outstanding._\n"
 abort "Paper scope marker not found" unless github.include?(scope)
 
 github = github.sub(scope, scope + note)

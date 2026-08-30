@@ -1,0 +1,47 @@
+{
+  "schema_version": "eventframe.corpus-evidence.v1",
+  "contract_version": 12,
+  "semantic_representation": "eventframe-5w1h-v1",
+  "codex_confirmation": {
+    "cases": 138,
+    "trajectories": 3,
+    "baseline": {
+      "brier": 0.26116571153772444,
+      "recall_at_10": 0.36192227636535507,
+      "recall_at_50": 0.8881074635730516,
+      "packed_recall": 0.2758504222920445,
+      "mrr": 0.7614657618280805,
+      "ece": 0.1407204208904157
+    },
+    "eventframe": {
+      "brier": 0.24120584245011417,
+      "recall_at_10": 0.4608690616212152,
+      "recall_at_50": 0.9636260084841372,
+      "packed_recall": 0.37200429308919597,
+      "mrr": 0.9141764435242696,
+      "ece": 0.1797643107795759
+    },
+    "shuffled_feedback": {
+      "brier": 0.25724123542009386,
+      "recall_at_10": 0.34193942152026646,
+      "packed_recall": 0.24266420097213193
+    },
+    "eventframe_gain_intervals_95": {
+      "brier": [0.009775599875956283, 0.04237795812460536],
+      "recall_at_10": [0.04616901405941489, 0.3263736263736264],
+      "packed_recall": [0.06700381053689211, 0.3263736263736264]
+    }
+  },
+  "evidence_shortages": {
+    "chatgpt_confirmation_cases": 1,
+    "chatgpt_confirmation_clusters": 1,
+    "openclaw_replay_confirmation_cases": 0
+  },
+  "runtime": {
+    "sequential_sq8_1000_p99_ms_range": [9.988, 11.014],
+    "sequential_memory_10000_p99_ms_range": [7.981, 8.513],
+    "embedded_mixed_recall_p99_ms": 218.752,
+    "remote_mixed_recall_p99_ms": 219.853
+  },
+  "privacy": "aggregate_only"
+}

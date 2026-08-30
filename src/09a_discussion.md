@@ -1,4 +1,4 @@
-# Discussion: Innovation and Scientific Refinement
+# 12. Discussion: Innovation and Scientific Refinement
 
 EventFrame treats refinement conservatively. A residual, anomaly, or fuzzing result first identifies a predictive distinction. It becomes a causal distinction only when randomized or otherwise identified intervention evidence supports that interpretation.
 

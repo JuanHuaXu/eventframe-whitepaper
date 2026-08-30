@@ -1,4 +1,4 @@
-# 8. Complexity and Runtime Model
+# 9. Runtime Architecture and Complexity
 
 EventFrame separates prediction-time computation from post-observation refinement. The fast path may use only \(\mathscr F_t^{\mathrm{pred}}\) and state \(S_{t^-}\); realized loss, residual estimation, and abstraction learning begin only after the next outcome's availability time.
 
@@ -134,7 +134,7 @@ T_{\mathrm{slow}}=T_{\mathrm{base}}+T_{\mathrm{upgrade}}
 
 where \(M_f,M_c\in\mathbb N_0\) are the numbers of fuzzing-prediction and causal-analysis invocations. Set \(M_c=0\) when no causal model is available. Slow work must be budgeted, deferred, or batched so it does not silently migrate into the latency-critical path.
 
-For the Beta-Bernoulli group comparison in Section 5, retrieving already materialized member sufficient statistics and evaluating both marginal evidences costs \(O(|K|)\) time and \(O(1)\) additional accumulator space, subject to a declared group-size cap \(|K|\le K_{\max}\). This cost is independent of accumulated history only because each member retains bounded sufficient statistics. It is not placed on ordinary recall, and it excludes the external audit and confirmation work required to issue an Anti-Pigeon certificate.
+For the Beta-Bernoulli group comparison in Section 6, retrieving already materialized member sufficient statistics and evaluating both marginal evidences costs \(O(|K|)\) time and \(O(1)\) additional accumulator space, subject to a declared group-size cap \(|K|\le K_{\max}\). This cost is independent of accumulated history only because each member retains bounded sufficient statistics. It is not placed on ordinary recall, and it excludes the external audit and confirmation work required to issue an Anti-Pigeon certificate.
 
 The Bayesian upgrade has an orthogonal cumulative ladder that does not renumber the abstraction-refinement stages:
 
@@ -241,3 +241,5 @@ The integration roadmap is cumulative:
 11. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
 
 The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+
+With the representation, mathematics, and runtime now defined, the next section states the paper's claims and their current evidence status in one place.

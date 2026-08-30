@@ -4,152 +4,122 @@
 
 ## Abstract
 
-Briefly introduce event-centric prediction, structured event frames, residual prediction, memory, fuzzing, invariants, lumpability, and evaluation plan.
+State the problem, proposed architecture, current evidence, falsified claims, and remaining validation limits.
 
 ## 1. Introduction
 
-- Motivation
-- Limits of purely unstructured sequence prediction
-- Why events are useful units
-- Contributions
-- Scope and non-goals
+- Motivation and scope
+- Why event-centric representation is useful
+- Contributions and relationship to prior work
+- Reading order
 
-## Claims Register
+## 2. EventFrame in Plain Language
 
-- Falsifiable statement of each major claim
-- Claim status and validation target
+- What an event frame represents
+- Invisible 5W1H conversion behind the agent contract
+- Bounded retrieval, graph expansion, ranking, packing, and hydration
+- Outcome-driven learning
+- Anti-Pigeon sharing and splitting
+- Fast path and slow path
+- One end-to-end retrieval example
 
-## 2. Event Ontology
+## 3. Event Representation and Ontology
 
 - Event frames as compressed, non-fundamental representations
-- Microscopic substrate and coarse-graining
-- Event definition
-- 5W1H fields
-- Typed event frames
-- Temporal resolution and frame granularity
-- Intervention-effective event distinctions
-- Event states and transitions
-- Event confluence and divergence
-- Event-frame groups and representatives
-- Causal, temporal, and spatial links
+- 5W1H fields and typed event space
+- Temporal resolution and interval anchoring
+- Confluence, divergence, grouping, and traceability
+- Predictive versus causal distinctions
 
-## 3. Mathematical Framework
+## 4. Mathematical Foundations
 
 - Substrate-to-event coarse-graining
-- Temporal quantization
-- Event space
-- Event trajectories
-- Event graphs, stream merge, and branching
-- Representative preservation invariant
-- Transition functions
-- Temporal prediction loss
-- Intervention-effective sparsity
-- Optional event-frame diagnostic distances
-- Confidence and uncertainty
+- Event trajectories and graphs
+- Marked event/no-event outcome space
+- Proper forecast score and timing diagnostics
+- Oracle and operational design objectives
+- Representative preservation and effective sparsity
 
-## 4. Residual Prediction
+## 5. Forecasting and Residual Prediction
 
-- Baseline transition model
-- Residual correction model
-- Composition operator
-- Residual reuse
-- Worked finite marked/no-event instantiation
-- Failure modes
+- Posterior-predictive base law
+- Point and law residual semantics
+- Full-outcome composition and no-event handling
+- Residual certification, motion, and pre-observation risk
+- Worked finite instantiation and governing formula
 
-## 5. Memory Model
+## 6. Memory, Bayesian Updating, and Drift
 
-- Episodic memory
-- KV episodic cache
-- Residual cache
-- Similarity lookup
-- Bounded Bayesian candidate frontier with frontier-all and optional selective admission
-- Activation and selection-conditioned updating
-- Anti-Pigeon posterior sharing
-- Proposal-only Bayesian practical-equivalence comparison and bounded borrowing
-- Discounted pooled confidence with full-strength member evidence
-- Anti-Pigeon shock revocation and atomic split/reset transitions
-- Independent omitted-influence audit
-- Bounded run-length and cumulative changepoint invalidation
-- Consolidation
-- Cache pollution
+- Episodic, residual, and belief memory
+- Bounded candidate frontier and frontier-all cheap updates
+- Selection-aware posterior updating
+- Anti-Pigeon posterior sharing and practical equivalence
+- Shock revocation, changepoints, omitted-influence audit, and durability
+- Reliability-gated elastic rank delta
 
-## 6. Fuzzing and Invariants
+## 7. Sensitivity Testing and Invariants
 
-- Property fuzzing
-- Counterfactual event frames
-- Invariance testing
-- Boundary discovery
-- Confluence and divergence detection
-- Experimental protocols
+- Validity-constrained perturbation
+- Conditional invariants and boundary discovery
+- Distinction between sensitivity and causality
 
-## 7. Lumpability and Abstraction
+## 8. Abstraction, Anti-Pigeon, and Sheaf Snapping
 
-- Projection from events to abstract states
-- Merge operators and branching safeguards
-- Representative frame retention
-- Predictive lumpability
-- Abstraction quality
-- Anti-Pigeon principle
-- Avoiding premature category collapse
-- Abstraction compatibility graph
-- Local reconciliation and spectral compatibility
-- Predictive regime mixtures
+- Approximate predictive lumpability
+- Coverage-aware Anti-Pigeon certificates
+- Compatibility maps and reconciliation
+- Predictive sheaf snapping and atomic publication
+- Spectral and regime-mixture refinement
 
-## 8. Complexity and Runtime Model
+## 9. Runtime Architecture and Complexity
 
-- Fast path
-- Reliability-gated elastic rank delta before packing
-- Packing-boundary certainty distinct from posterior probability
-- Slow path
-- Background refinement
-- Complexity sketch
-- O(1) cache lookup as an approximate fast path
-- When expensive computation is still required
-- Cumulative refinement stages and step-integration function
-- Hardware-indexed cost policy
+- Canonical EventFrame corpus contract
+- Fast path, slow path, and background refinement
+- Bounded complexity conditions
+- Stage integration and hardware-aware scheduling
 
-## 9. Experimental Evaluation
+## 10. Claims Register
 
-- Synthetic event worlds
-- Compression and intervention tests
-- Controlled perturbation tests
-- Cache hit-rate tests
-- Bounded Bayesian admission calibration and omission tests
-- Posterior-sharing proposal and changepoint detection tests
-- Long-horizon prediction
-- Invariant stability tests
-- Confluence and divergence tests
-- Compatibility and regime-mixture tests
-- Priority-weighted correction utility
-- Hardware-indexed stage benchmarks
-- Bayesian update-ladder benchmarks
-- Anti-Pigeon shock-transition controls
-- Fixed, probability-modulated, and boundary-modulated rank-delta ablations
-- Ablation studies
+- Falsifiable major claims
+- Current result label for each tested proposition
+- Evidence boundary and untested claims
 
-## Discussion: Innovation and Scientific Refinement
+## 11. Experimental Evaluation
 
-- Innovation as a causal distinction that survives intervention
-- Science as alternating lumpability and Anti-Pigeon
-- Residual action as trigger for compression or refinement
+- Predeclared protocols and confidence procedures
+- Initial evidence, failed designs, and replacements
+- Corrected EventFrame-corpus results
+- Synthetic mechanisms, chronological replay, durability, and runtime
+- Falsified, mixed, inconclusive, and untested outcomes
 
-## 10. Open Problems
+## 12. Discussion: Innovation and Scientific Refinement
 
-- Substrate-to-frame compression guarantees
-- Formal guarantees
-- Event distance metrics
-- Grounding symbolic fields
-- Drift and cache pollution
-- Robust invariant extraction
-- Confluence and divergence detection
-- Scaling to multimodal data
+- Innovation as a distinction that survives evidence
+- Alternating compression and Anti-Pigeon review
+- Residual behavior as a trigger for refinement
 
-## 11. Conclusion
+## 13. Limitations and Open Problems
 
-Summarize EventFrame as a framework, not a product or agent, and state next research steps.
+- Mathematical, statistical, causal, empirical, and operational gaps
+- Stability, convergence, calibration, and certificate power
+- Prospective validation and production-readiness requirements
+
+## 14. Conclusion
+
+- What the framework currently establishes
+- What remains only proposed
+- Next research steps
+
+## Acknowledgments and Attribution
+
+- Authorship, AI-assisted development disclosure, terminology attribution, license, and privacy boundary
+
+## References
+
+- Primary and supporting sources cited by the paper
 
 ## Appendix A. Symbol Index
 
-- Resolve every core symbol to one type and meaning
-- Distinguish event and packet composition domains
+- Resolve core symbols to one type and meaning
+- Distinguish event, forecast-law, residual, and packet domains
 - Distinguish pre-observation risk from post-observation loss

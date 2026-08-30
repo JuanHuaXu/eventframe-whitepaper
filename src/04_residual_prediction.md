@@ -1,4 +1,4 @@
-# 4. Residual Prediction
+# 5. Forecasting and Residual Prediction
 
 Residual prediction separates a first-pass event estimate from a correction. The fallback baseline captures ordinary transition structure; when valid Bayesian beliefs exist, their posterior predictive becomes the first-pass base. The residual records a recurring statistical error relative to that recorded base. A residual is not a causal hypothesis unless separate intervention evidence identifies it as causal.
 
@@ -11,7 +11,7 @@ B:\mathcal E^k\rightarrow\mathcal E,
 \qquad b_t=B(C_t).
 \]
 
-The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the selective update in Section 5, let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each \(K\in\mathcal K_t^{\mathrm{bel}}\), let \(q_{K,t}^{\mathrm{eff}}\) be its accepted updated posterior, or its current cached prior when no evidence was admitted. Let \((\mathcal X_K,\mathscr A_{\mathcal X_K})\) be the bucket evidence space and let \(\nu_K\) be a declared sigma-finite dominating measure on it. Ordinary posterior-predictive semantics require a single measurable joint kernel
+The baseline is a fallback, not the final scored input when valid Bayesian beliefs are available. After the bounded update in Section 6, let \(\mathcal K_t^{\mathrm{bel}}\) be the finite set of posterior buckets valid for the current context, horizon, provenance, and epoch. For each \(K\in\mathcal K_t^{\mathrm{bel}}\), let \(q_{K,t}^{\mathrm{eff}}\) be its accepted updated posterior, or its current cached prior when no evidence was admitted. Let \((\mathcal X_K,\mathscr A_{\mathcal X_K})\) be the bucket evidence space and let \(\nu_K\) be a declared sigma-finite dominating measure on it. Ordinary posterior-predictive semantics require a single measurable joint kernel
 
 \[
 \mathbb P_{K,\theta}:
@@ -58,7 +58,7 @@ Here \(\mathbb P_{K,\theta}^{\Xi}(\cdot\mid\mathfrak h)\ll\nu_K\) for every decl
 \mathsf P_{H,K}(dz\mid\theta,c_k(\mathfrak h)).
 \]
 
-This states that evidence and next outcome are conditionally independent given \((\theta,c_k(\mathfrak h))\) under the declared history restriction. If that factorization fails, the predictive kernel must retain \(\xi\) or the additional history and the posterior-predictive integral below must use that conditional kernel. Selection conditioning in Section 5 is derived from the evidence factor and the complete nomination-and-activation event. A likelihood and forecast kernel not induced by one such joint family may still define a modular belief-conditioned forecast, but no proper-score or calibration test turns it into an ordinary posterior predictive; it is excluded from that semantic claim and reported separately.
+This states that evidence and next outcome are conditionally independent given \((\theta,c_k(\mathfrak h))\) under the declared history restriction. If that factorization fails, the predictive kernel must retain \(\xi\) or the additional history and the posterior-predictive integral below must use that conditional kernel. Selection conditioning in Section 6 is derived from the evidence factor and the complete nomination-and-activation event. A likelihood and forecast kernel not induced by one such joint family may still define a modular belief-conditioned forecast, but no proper-score or calibration test turns it into an ordinary posterior predictive; it is excluded from that semantic claim and reported separately.
 
 Use frozen as-of fusion weights \(\lambda_{K,t}^{\mathrm{bel}}\ge0\) satisfying \(\sum_{K\in\mathcal K_t^{\mathrm{bel}}}\lambda_{K,t}^{\mathrm{bel}}=1\) when the set is non-empty. The posterior-predictive base law is
 
@@ -193,7 +193,7 @@ D_{\mathrm{res}}(\mathsf Q_t^0,\mathsf Q_i^{0,\mathrm{ref}}),
 D_{\mathrm{tmpl}}(b_t^0,b_i^{0,\mathrm{ref}}).
 \]
 
-Each bound includes the declared posterior-approximation error propagated through \(\mathsf P_{H,K}\), fusion, and, for the point path, \(B_H^{\mathrm{bel}}\), in addition to statistical uncertainty. A plug-in distance or approximation estimate without uncertainty coverage is not a residual-survival certificate. Ordinary posterior updates remain inside version \(\upsilon_t^{\mathrm{bel}}\) only while every applicable fixed-reference margin remains valid. Otherwise the dependency-closure transition in Section 7 bumps the local version and marks affected residual entries stale before the new posterior becomes readable.
+Each bound includes the declared posterior-approximation error propagated through \(\mathsf P_{H,K}\), fusion, and, for the point path, \(B_H^{\mathrm{bel}}\), in addition to statistical uncertainty. A plug-in distance or approximation estimate without uncertainty coverage is not a residual-survival certificate. Ordinary posterior updates remain inside version \(\upsilon_t^{\mathrm{bel}}\) only while every applicable fixed-reference margin remains valid. Otherwise the dependency-closure transition in Section 8 bumps the local version and marks affected residual entries stale before the new posterior becomes readable.
 
 \[
 j_t=\min\!\left(\arg\min_{1\le i\le N_t}
@@ -412,7 +412,7 @@ Define the deterministic scored residual-policy map \(\mathfrak F_R\) by
 \mathfrak F_R(\mathsf Q_t^0,b_t^0,C_t;S_{t^-})=\mathsf Q_t^R.
 \]
 
-It includes posterior-aware cache selection, the full-outcome residual kernel, and the pre-observation fallback. This map is reused by the omitted-influence audit in Section 5; therefore that audit compares complete scored laws rather than detached posterior states.
+It includes posterior-aware cache selection, the full-outcome residual kernel, and the pre-observation fallback. This map is reused by the omitted-influence audit in Section 6; therefore that audit compares complete scored laws rather than detached posterior states.
 
 An implementation may try the next lower-precedence residual after a rejected candidate only when that fallback order and every gate were preregistered. No post-observation quantity may enter this decision.
 
@@ -605,3 +605,5 @@ w_m^{\mathrm{new}}=
 This is not a Bayesian particle filter unless \(\ell_t^{(m)}\) is a negative log-likelihood with the required probabilistic model. Pruning or resampling must monitor effective sample size to avoid premature collapse.
 
 The main failure modes are cache pollution, overcorrection, stale residuals, false similarity, invalid decoding, and packet-component incompatibility. Every implementation must report cache support, age, pre-risk, realized improvement, fallback frequency, and decoder failures.
+
+The next section defines how episodic cases, residual records, Bayesian beliefs, and drift state are stored and updated around this forecast rule.
