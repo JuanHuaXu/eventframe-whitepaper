@@ -1,0 +1,12 @@
+{
+  "workers": 16,
+  "requested_duration_seconds": 30,
+  "elapsed_seconds": 30.402466959,
+  "operations": 6104,
+  "throughput_per_second": 200.77318094718103,
+  "counts": {"capture": 699, "recall": 5405},
+  "errors": {"capture": 0, "recall": 0},
+  "recall_latency_ms": {"p50": 42.314, "p95": 63.848, "p99": 378.831, "max": 1564.346},
+  "capture_latency_ms": {"p50": 265.733, "p95": 439.807, "p99": 525.709, "max": 543.979},
+  "health_after": true
+}
