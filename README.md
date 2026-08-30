@@ -14,7 +14,7 @@ The repository is intentionally independent of any specific agent, chatbot, prod
 - [EventFrame Whitepaper (PDF)](EventFrame_Whitepaper.pdf)
 - [EventFrame Whitepaper (GitHub-safe Markdown)](paper.md)
 
-The canonical fully typeset Markdown assembly is [`build/paper.md`](build/paper.md). Run `ruby scripts/build_github_paper.rb` after rebuilding it; the script preserves all display equations while limiting repeated inline math nodes so GitHub does not exhaust its per-page renderer.
+The canonical fully typeset Markdown assembly is [`build/paper.md`](build/paper.md). Run `ruby scripts/build_github_paper.rb` after rebuilding it; the script preserves all display equations, limits native inline math so GitHub does not exhaust its per-page renderer, and converts the remaining inline notation to semantic HTML with Unicode symbols and real sub/superscripts.
 
 Synthetic reports and privacy-reduced aggregate chronological results cited by the paper are preserved under [`evidence/`](evidence/). They are mechanism and implementation evidence, not independent or controlled real-world validation. The claim-completion round is under [`evidence/claims-completion/`](evidence/claims-completion/), the rescue/replacement confirmation is under [`evidence/claim-rescue-v1/`](evidence/claim-rescue-v1/), and the elastic-ranking, Anti-Pigeon revision, and calibration-rescue reports are under [`evidence/rank-adaptation-v1/`](evidence/rank-adaptation-v1/).
 

@@ -76,7 +76,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(u_e\), \(v_e\), \(n_e^{\mathrm{eff}}\), \(\ell_K^{\mathrm{share}}\), \(\ell_K^{\mathrm{split}}\), \(p_K^{\mathrm{split}}\), \(p_K^{\mathrm{eq}}\), \(G_{K,t}^{B}\), \(w_{K,t}^{B}\): member useful/not-useful statistics, effective support, shared/split log marginal evidence, posterior split and practical-equivalence probabilities, proposal-only group decision, and bounded borrowing weight.
 
-\(\pi_K^{\mathrm{split}}\), \(\tau_{B,\mathrm{cmp}}\), \(n_{B,\mathrm{cmp}}\), \(K_{\max}\): frozen split prior, comparison threshold, minimum member support, and group-size cap.
+\(\pi_K^{\mathrm{split}}\), \(\epsilon_{B,\mathrm{eq}}\), \(\tau_{B,\mathrm{cmp}}\), \(\tau_{B,\mathrm{eq}}\), \(n_{B,\mathrm{cmp}}\), \(w_{B,\max}\), \(K_{\max}\): frozen split prior, practical-equivalence width, split and equivalence decision thresholds, minimum member support, uncertain-branch borrowing cap, and group-size cap.
 
 \(\omega_{B,\mathrm{pool}}\), \(J_t^{\mathrm{val}}(e)\), \(J_{K,t}^{\mathrm{shock}}\), \(A_{K,t}^{\mathrm{rev}}\): shared-posterior evidence discount, structural-revision evidence eligibility, validated Anti-Pigeon split-shock indicator, and fail-closed retain/reset/split action.
 

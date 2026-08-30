@@ -192,6 +192,10 @@ The rule that events may share one cached posterior only while an external targe
 
 A bounded practical-equivalence diagnostic over member-level sufficient statistics. It may propose share, split, uncertain, and a bounded borrowing weight, but cannot publish an Anti-Pigeon certificate or mutate posterior keys. Positive sharing still requires independent external target-law evidence.
 
+## Practical Equivalence
+
+A declared tolerance-based relation used when exact equality is too strict for operational pooling. In the Bayesian group diagnostic, its probability is the posterior mass for which every member parameter lies within a frozen maximum pairwise width. This probability is not the complement of the shared-versus-split model probability, and crossing its threshold proposes sharing without authorizing it.
+
 ## Anti-Pigeon Shock Revocation
 
 A fail-closed transition that removes an already active sharing certificate when full-stream or independently audited member evidence crosses the frozen split threshold, optionally together with a changepoint. It materializes separate posteriors and invalidates shared residual state but cannot certify a replacement merge. Shared pooled evidence may be discounted while member-level divergence statistics retain full weight.

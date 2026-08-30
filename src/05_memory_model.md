@@ -163,6 +163,15 @@ P\!\left(
 \right).
 \]
 
+The two probabilities are deliberately not complements. The quantity
+\(p_K^{\mathrm{split}}\) is posterior model probability for the independent-member
+model against the shared-parameter model, whereas \(p_K^{\mathrm{eq}}\) is posterior
+mass inside a declared practical-equivalence region. The marginal-likelihood
+comparison therefore has no split margin that must equal
+\(\epsilon_{B,\mathrm{eq}}\), and in general
+\(p_K^{\mathrm{split}}+p_K^{\mathrm{eq}}\ne1\). The contract freezes the split prior,
+practical-equivalence width, and both decision thresholds independently.
+
 With \(n_e^{\mathrm{eff}}=u_e+v_e\), minimum member support \(n_{B,\mathrm{cmp}}>0\), frozen \(\tau_{B,\mathrm{cmp}}\in(1/2,1)\), and frozen equivalence threshold \(\tau_{B,\mathrm{eq}}\in(1/2,1)\), the diagnostic gives split evidence precedence:
 
 \[
@@ -177,15 +186,25 @@ G_{K,t}^{B}=\begin{cases}
 \end{cases}
 \]
 
+Both threshold conditions can hold because they summarize different posterior
+questions; the displayed order then gives split evidence precedence. The
+\(\mathrm{uncertain}\) result is an explicit abstention whenever neither ordered
+decision fires, not a geometric middle band between complementary probabilities.
+
 For frozen \(w_{B,\max}\in[0,1]\), an optional proposal-only borrowing weight may be
 
 \[
 w_{K,t}^{B}=\begin{cases}
 0,&G_{K,t}^{B}=\mathrm{split},\\
 p_K^{\mathrm{eq}},&G_{K,t}^{B}=\mathrm{share},\\
-\min(w_{B,\max},w_{B,\max}p_K^{\mathrm{eq}}),&G_{K,t}^{B}=\mathrm{uncertain}.
+w_{B,\max}p_K^{\mathrm{eq}},&G_{K,t}^{B}=\mathrm{uncertain}.
 \end{cases}
 \]
+
+The asymmetry is intentional. A share proposal that crossed the frozen
+equivalence threshold may borrow up to the full unit cap, weighted by
+\(p_K^{\mathrm{eq}}\); an uncertain proposal is additionally limited by
+\(w_{B,\max}\). Neither weight authorizes posterior sharing.
 
 This is partial-pooling advice, not grouping authority. The comparison includes the shared-versus-independent complexity tradeoff and practical-equivalence evidence, but its conclusion remains model-dependent. Formally, \(G_{K,t}^{B}\) and \(w_{K,t}^{B}\) cannot set \(J_{K,t}^{\mathrm{share}}\), publish \(s_K^B\), or mutate \(\kappa_t^B\). A \(\mathrm{share}\) proposal still requires the external target-law certificate above; a \(\mathrm{split}\) proposal forces zero borrowing and may suspend reuse or request review, but final bucket revision remains an independently validated slow-path transition.
 
@@ -207,9 +226,9 @@ while retaining full-strength member statistics
 +w_{e,t}(Y_{e,t},1-Y_{e,t}).
 \]
 
-The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule.
+The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Unless the fractional contribution follows from a declared coherent generative model, \(\omega_{B,\mathrm{pool}}<1\) defines a tempered working posterior rather than an ordinary posterior under the common-\(\theta\) model.
 
-Let \(J_t^{\mathrm{val}}(e)=1\) only for a full-stream outcome or an independently selected audit outcome whose inclusion semantics are valid for revision. Define the split-shock indicator
+Let \(J_t^{\mathrm{val}}(e)=1\) only for a full-stream outcome or an independently selected audit outcome whose inclusion semantics are valid for revision. At time \(t\), the revealing outcome is first incorporated into the pooled and full-strength member statistics displayed above; \(p_K^{\mathrm{split}}\), effective support, and \(J_{K,t}^{\mathrm{shock}}(e)\) are then evaluated from those post-outcome statistics. Define the split-shock indicator
 
 \[
 J_{K,t}^{\mathrm{shock}}(e)
@@ -233,7 +252,7 @@ A_{K,t}^{\mathrm{rev}}=
 \end{cases}
 \]
 
-A split transition atomically revokes the old sharing certificate, marks its shared posterior and dependent residuals inactive, advances the affected posterior, residual, abstraction, graph, and epoch versions through the dependency-closure mechanism, and materializes event-local posteriors from the retained member statistics. A split-reset additionally resets the triggering member onto the revealing outcome. Revocation is not positive regrouping: no branch above may publish a replacement Anti-Pigeon certificate. Selected-only evidence may update a working or shared posterior but cannot make this structural decision self-certifying.
+A \(\mathrm{split}\) transition atomically revokes the old sharing certificate, marks its shared posterior and dependent residuals inactive, advances the affected posterior, residual, abstraction, graph, and epoch versions through the dependency-closure mechanism, and materializes event-local posteriors from every member's retained sufficient statistics. A \(\mathrm{split\_reset}\) performs the same transition, but for the triggering member only it discards the pre-revealing sufficient statistics, calibration accumulators, and changepoint state, then initializes that event-local posterior and monitor from the declared prior plus the revealing outcome; all other members retain their sufficient statistics. A \(\mathrm{shared\_reset}\) keeps the certified shared key but resets its pooled posterior, calibration accumulators, member-comparison statistics, and changepoint state to the declared prior plus the revealing outcome. An \(\mathrm{individual\_reset}\) performs the corresponding reset on the triggering event-local posterior and monitor. Thus every reset explicitly sacrifices the named pre-change evidence to prevent it from dominating the new regime, whereas plain \(\mathrm{split}\) does not. Revocation is not positive regrouping: no branch above may publish a replacement Anti-Pigeon certificate. Selected-only evidence may update a working or shared posterior but cannot make this structural decision self-certifying.
 
 Let \(\kappa_t^B(e)\) be the frozen posterior-key assignment after the Anti-Pigeon decision: admitted events share a key only when the corresponding sharing certificate passes; otherwise each receives a separate key. For each key \(K\), define the admitted evidence-packet set
 

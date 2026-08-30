@@ -10,6 +10,12 @@
 
 ## Result register
 
+The v7 rescue protocol is distinct from the earlier claims-completion protocol.
+For group recognition it froze minimum expected-decision rates of 80%, 80%, and
+95% for compatible, moderate-divergent, and strong-divergent groups respectively,
+with a 6% per-scenario Wilson upper ceiling on wrong decisions. The earlier
+80%-for-both and 5% criteria remain unchanged in their historical artifact.
+
 | Target | Result | Evidence |
 | --- | --- | --- |
 | Bounded frontier-all plus selective deep work | **Validated in synthetic mechanism fixture** | Its Brier, priority-weighted Brier, and Recall@10 outputs exactly matched frontier-all. The old 5%-cheap-update policy remained materially worse. |

@@ -14,7 +14,7 @@ certainty multiplied by independent correction reliability.
 | Demote harmful item from ranks 1/3/5/7/10 | 200/200 (100%; lower 95% CI 98.12%) |
 | Joint promotion and demotion | 200/200 (100%; lower 95% CI 98.12%) |
 | Retain useful controls | 90/90 (100%; lower 95% CI 95.91%) |
-| Cross deliberately wide correction envelope | 0/50 (upper 95% CI 7.13%) |
+| Cross deliberately wide correction envelope | 0/50 (upper 95% CI 7.14%) |
 | Mean unnecessary packet churn | 0 |
 | In-process active recall p99 | 0.891 ms |
 
