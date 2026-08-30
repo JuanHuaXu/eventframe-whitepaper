@@ -1513,15 +1513,12 @@ Buckets without either valid branch are excluded from `\mathcal K_t^{\mathrm{bel
 Probability prediction and retrieval ordering are related but different contracts. Let a bounded external retrieval contract return `N_t` candidates in initial order with finite scores $`s_{(1),t}^{\mathrm{ret}},\ldots,s_{(N_t),t}^{\mathrm{ret}}`$, and let `P_t\le N_t` be the packing-count boundary before token-budget truncation. Define rank-domain answer certainty by
 
 ```math
-c_t^{\mathrm{pack}}=
-\begin{cases}
-1,&P_t=N_t,\cr
-\mathrm{clip}_{[0,1]}\!\left(
+c_t^{\mathrm{pack}}=1\quad\text{when }P_t=N_t;\qquad
+c_t^{\mathrm{pack}}=\mathrm{clip}_{[0,1]}\!\left(
 \dfrac{s_{(P_t),t}^{\mathrm{ret}}-s_{(P_t+1),t}^{\mathrm{ret}}}
 {\max\{|s_{(P_t),t}^{\mathrm{ret}}|,
 |s_{(P_t+1),t}^{\mathrm{ret}}|,\varepsilon_s\}}
-\right),&P_t<N_t,
-\end{cases}
+\right)\quad\text{when }P_t<N_t.
 ```
 
 for a fixed `\varepsilon_s>0`. A small boundary gap means the current top packet is unsettled; a large gap means the boundary is comparatively stable. This number is not the posterior probability that an answer is true or useful.

@@ -59,9 +59,30 @@ end.join
 
 abort "Unbalanced display-math delimiters" if inside_display
 
-# GitHub appends a slash to a row break in this fenced cases expression. The
-# TeX primitive row terminator avoids the resulting three-slash parse failure.
-github = github.sub("1,&P_t=N_t,\\\\\n\\mathrm{clip}", "1,&P_t=N_t,\\cr\n\\mathrm{clip}")
+# GitHub's client corrupts the row break in this particular fenced `cases`
+# expression. Use an equivalent one-line conditional definition in this
+# rendering target; the canonical assembly retains the piecewise form.
+packing_cases = <<~'MATH'.strip
+  c_t^{\mathrm{pack}}=
+  \begin{cases}
+  1,&P_t=N_t,\\
+  \mathrm{clip}_{[0,1]}\!\left(
+  \dfrac{s_{(P_t),t}^{\mathrm{ret}}-s_{(P_t+1),t}^{\mathrm{ret}}}
+  {\max\{|s_{(P_t),t}^{\mathrm{ret}}|,
+  |s_{(P_t+1),t}^{\mathrm{ret}}|,\varepsilon_s\}}
+  \right),&P_t<N_t,
+  \end{cases}
+MATH
+packing_conditions = <<~'MATH'.strip
+  c_t^{\mathrm{pack}}=1\quad\text{when }P_t=N_t;\qquad
+  c_t^{\mathrm{pack}}=\mathrm{clip}_{[0,1]}\!\left(
+  \dfrac{s_{(P_t),t}^{\mathrm{ret}}-s_{(P_t+1),t}^{\mathrm{ret}}}
+  {\max\{|s_{(P_t),t}^{\mathrm{ret}}|,
+  |s_{(P_t+1),t}^{\mathrm{ret}}|,\varepsilon_s\}}
+  \right)\quad\text{when }P_t<N_t.
+MATH
+abort "Packing-boundary cases expression not found" unless github.include?(packing_cases)
+github = github.sub(packing_cases, packing_conditions)
 
 note = <<~MARKDOWN
 
