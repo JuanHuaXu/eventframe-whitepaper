@@ -15,6 +15,7 @@ Process:
 5. Patch the section based on review files.
 6. Keep glossary, notation, claims, and reference placeholders synchronized.
 7. Assemble a final `build/paper.md`.
+8. Run `ruby scripts/build_github_paper.rb` to generate the GitHub-safe `paper.md`; do not copy `build/paper.md` over it directly.
 
 Do not generate PDF until the Markdown paper is internally consistent.
 
