@@ -10,7 +10,7 @@
 
 _Public working paper. Initial implementation evidence is reported in Section 9; full real-world validation remains outstanding._
 
-_GitHub rendering note: display equations are typeset. Inline references use semantic HTML, Unicode mathematical symbols, and real sub/superscripts to keep this single-file edition within GitHub's per-page math-rendering ceiling. The PDF remains fully typeset._
+_GitHub rendering note: equations use native typesetting or semantic HTML with Unicode mathematical symbols and real sub/superscripts. This keeps the single-file edition within GitHub's per-page math-rendering budget. The PDF remains fully typeset._
 
 ## Abstract
 
@@ -2346,9 +2346,7 @@ C_t^{U}(n;h)\le\mathcal B(p_t^{\mathrm{pri}}),
 
 and all prerequisite evidence and safety gates pass. The run stops at the first failed budget or prerequisite check, a declared convergence condition, or a finite iteration cap. Its reported refinement depth is:
 
-```math
-d_t(h)=\max\left(\{0\}\cup\{r_1,\ldots,r_{N_t}\}\right).
-```
+<div align="center"><i>d</i><sub>t</sub>(<i>h</i>) = max({0} ∪ {<i>r</i><sub>1</sub>, …, <i>r</i><sub><i>N</i><sub>t</sub></sub>}).</div>
 
 Here p<sub>t</sub><sup>pri</sup>∈[0,1] is priority declared from prediction-time information, ℬ is a priority-dependent resource budget, and c<sub>r</sub><sup>U</sup>(h,S) is a preregistered upper confidence bound or deterministic worst-case bound on hardware profile h. The runtime also accumulates actual cost and reports overruns. Predicted admission alone is not a hard budget guarantee; a strict deadline additionally requires interruptible stages and a reserved worst-case completion margin or a deterministic stop. Stage 5 may revise mixtures or comparison maps, after which Stages 1--4 may be selected again; every rerun appears again in C<sub>t</sub><sup>U</sup>. The architecture targets certified reuse plus all five refinement stages; d<sub>t</sub>(h) records the deepest stage reached, while the complete invocation sequence (r<sub>1</sub>,…,r<sub>N<sub>t</sub></sub>), actual cost, and stopping reason are also reported.
 
@@ -2356,28 +2354,13 @@ This definition separates semantic interfaces from hardware policy. Faster proce
 
 For a changed edge set E<sub>Δ</sub>, compatibility work is approximately:
 
-```math
-T_{\mathrm{comp}}=O\!\left(\sum_{e\in E_{\Delta}}C_{D_e}\right),
-```
+<div align="center"><i>T</i><sub>comp</sub> = O(∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub></sub> <i>C</i><sub><i>D</i><sub><i>e</i></sub></sub>),</div>
 
 where C<sub>D<sub>e</sub></sub> is the cost of mapping and comparing the two incident forecasts. With bounded local degree this is local in the changed neighborhood. Spectral work depends on component size, representation dimension, sparsity, solver, and requested tolerance. Mixture refinement additionally depends on component counts and optimization restarts and is expected to remain the most expensive stage. No fixed millisecond or slowdown claim is made without an implementation and hardware profile.
 
 For a finite predictive-snap family 𝔖<sub>t</sub>, the design-block computation is bounded by the work charged for every inspected candidate:
 
-```math
-T_{\mathrm{snap}}
-\le
-T_{\mathrm{generate}}
-+
-\sum_{\Xi'\in\mathfrak S_t}
-\left[
-T_{\mathrm{refit}}(\Xi')
-+\sum_{e\in E_\Delta(\Xi')}C_{D_e}
-+T_{\mathrm{obl}}(\Xi')
-+T_{\mathrm{score}}(\Xi')
-\right]
-+T_{\mathrm{confirm}}+T_{\mathrm{publish}}.
-```
+<div align="center"><i>T</i><sub>snap</sub> ≤ <i>T</i><sub>generate</sub> + ∑<sub>Ξ′∈𝔖<sub>t</sub></sub>[<i>T</i><sub>refit</sub>(Ξ′) + ∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub>(Ξ′)</sub><i>C</i><sub><i>D</i><sub><i>e</i></sub></sub> + <i>T</i><sub>obl</sub>(Ξ′) + <i>T</i><sub>score</sub>(Ξ′)] + <i>T</i><sub>confirm</sub> + <i>T</i><sub>publish</sub>.</div>
 
 Here T<sub>generate</sub> includes bounded neighborhood and candidate construction, T<sub>obl</sub> validates direct or composed comparison obligations, and T<sub>confirm</sub> is confirmation scoring cost rather than the wall-clock wait for future outcomes. T<sub>score</sub> includes candidate risk, affected-bucket Anti-Pigeon evaluation, and affected-edge compatibility evaluation not already charged in the explicit edge sum; an implementation must partition these measurements so no operation is omitted or counted twice. The ordinary T<sub>comp</sub> term audits the published graph, whereas the inner edge sum charges incremental candidate comparisons. The untouched confirmation block may delay publication but is not placed on the current prediction path. Candidate count, neighborhood radius, reverse dependency closure, refit budget, comparison-obligation set, and map class must be bounded before the review begins; unrestricted graph-structure search is not a conforming snapping implementation. The candidate graph, induced local abstraction mapping, and dependent keys are built in shadow state, and publication is an atomic graph-key-epoch swap. Consequently snapping requires only the existing version-consistent epoch check on the direct fast path. The indirect cost is a temporary rise in baseline or certified-fallback use while affected residual entries are recertified.
 
@@ -2500,9 +2483,7 @@ The remaining protocols below are required to move beyond this evidence.
 
 A minimal synthetic event world should generate trajectories with known transition rules. Each event should expose the fields:
 
-```math
-e_t = (w_t, a_t, \tau_t, \ell_t, m_t, h_t, x_t, c_t).
-```
+<div align="center"><i>e</i><sub>t</sub> = (<i>w</i><sub>t</sub>, <i>a</i><sub>t</sub>, τ<sub>t</sub>, ℓ<sub>t</sub>, <i>m</i><sub>t</sub>, <i>h</i><sub>t</sub>, <i>x</i><sub>t</sub>, <i>c</i><sub>t</sub>).</div>
 
 The generator should include many microscopic variables but control which variables actually influence event timing or downstream state. It should also allow multiple temporal resolutions, such as seconds, milliseconds, and microseconds. This makes it possible to test whether coarse-graining preserves intervention-effective distinctions, whether fuzzing recovers true dependencies, and whether abstraction removes irrelevant detail without damaging prediction.
 
@@ -2531,9 +2512,7 @@ Runtime reporting includes corpus size, frontier size, admitted count, posterior
 
 The fifth experiment evaluates property fuzzing. For each field φ<sub>i</sub>, perturb it across a declared range and compute:
 
-```math
-S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
-```
+<div align="center"><i>S</i><sub>g</sub> = min(1, Δ<sub>g</sub> / η<sub>g</sub>).</div>
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
 
@@ -2555,36 +2534,19 @@ The twelfth experiment evaluates complete staged-execution policies, not merely 
 
 Average correction alone is not the deployment criterion. On a non-empty evaluation set, let p<sub>t</sub><sup>pri</sup>∈[0,1] be assigned before the outcome by a rule frozen independently of the stages being compared, let w<sub>pri</sub>(p)&gt;0 be a declared finite importance function, and normalize over evaluation cases:
 
-```math
-\widetilde w_t=
-\frac{w_{\mathrm{pri}}(p_t^{\mathrm{pri}})}
-{\sum_{u=1}^{T}w_{\mathrm{pri}}(p_u^{\mathrm{pri}})}.
-```
+<div align="center"><i>w̃</i><sub>t</sub> = <i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>) / ∑<sub><i>u</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>u</sub><sup>pri</sup>).</div>
 
 For complete policies q<sub>a</sub> and q<sub>b</sub>, define the bounded per-case system losses by:
 
-```math
-L_t^{[q]}=
-\mathcal A_{\mathrm{post}}(\mathcal O_t^{[q]},Z_{t+1})
-\in[0,1].
-```
+<div align="center"><i>L</i><sub>t</sub><sup>[q]</sup> = 𝒜<sub>post</sub>(𝒪<sub>t</sub><sup>[q]</sup>, <i>Z</i><sub>t+1</sub>) ∈ [0,1].</div>
 
 The untransformed proper score is reported separately. Priority-weighted absolute gain is:
 
-```math
-G_{a\rightarrow b}^{\mathrm{pri}}=
-\sum_{t=1}^{T}\widetilde w_t
-\left(L_t^{[q_a]}-L_t^{[q_b]}\right),
-```
+<div align="center"><i>G</i><sub>a→b</sub><sup>pri</sup> = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>),</div>
 
 When the weighted baseline-loss denominator is strictly positive, priority-weighted relative risk reduction is:
 
-```math
-G_{a\rightarrow b,\mathrm{rel}}^{\mathrm{pri}}=
-\frac{\sum_{t=1}^{T}w_{\mathrm{pri}}(p_t^{\mathrm{pri}})
-\left(L_t^{[q_a]}-L_t^{[q_b]}\right)}
-{\sum_{t=1}^{T}w_{\mathrm{pri}}(p_t^{\mathrm{pri}})L_t^{[q_a]}}.
-```
+<div align="center"><i>G</i><sub>a→b,rel</sub><sup>pri</sup> = [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>)] / [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup>].</div>
 
 If ∑<sub>t</sub> w<sub>pri</sub>(p<sub>t</sub><sup>pri</sup>)L<sub>t</sub><sup>[q<sub>a</sub>]</sup>=0, the relative statistic is undefined and the experiment reports only absolute gain and the paired loss distribution.
 
@@ -2592,21 +2554,13 @@ Priority must not be assigned after seeing whether a stage helped, and a candida
 
 Latency percentage and loss percentage are not directly commensurate. For hardware profile h, choose T<sub>budget</sub>&gt;0 and non-negative conversion coefficients, then convert measured resource effects into the same declared utility scale:
 
-```math
-C_{a\rightarrow b}(h)=
-\lambda_T\frac{\Delta T_{a\rightarrow b}(h)}{T_{\mathrm{budget}}}
-+\lambda_C\Delta C_{a\rightarrow b}^{\mathrm{compute}}(h)
-+\lambda_M\Delta C_{a\rightarrow b}^{\mathrm{memory}}(h).
-```
+<div align="center"><i>C</i><sub>a→b</sub>(<i>h</i>) = λ<sub>T</sub>Δ<i>T</i><sub>a→b</sub>(<i>h</i>) / <i>T</i><sub>budget</sub> + λ<sub>C</sub>Δ<i>C</i><sub>a→b</sub><sup>compute</sup>(<i>h</i>) + λ<sub>M</sub>Δ<i>C</i><sub>a→b</sub><sup>memory</sup>(<i>h</i>).</div>
 
 The two Δ C terms are declared normalized changes, not raw processor operations or bytes. Their coefficients and λ<sub>T</sub> convert all three resource terms into the same utility units as the gain statistic.
 
 An evidence-controlled promotion rule may conservatively require a paired lower confidence bound on gain and an upper confidence bound on measured resource cost:
 
-```math
-\mathrm{LCB}_{\mathrm{paired}}[G_{a\rightarrow b}^{\mathrm{pri}}]
--\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}},
-```
+<div align="center">LCB<sub>paired</sub>[<i>G</i><sub>a→b</sub><sup>pri</sup>] − UCB[<i>C</i><sub>a→b</sub>(<i>h</i>)] &gt; δ<sub>safety</sub>,</div>
 
 Promotion also requires the paired upper confidence bound on proper-score degradation of q<sub>b</sub> relative to q<sub>a</sub> to be at most the preregistered ε<sub>prop</sub>.
 
@@ -2639,10 +2593,7 @@ This discussion also limits the claim. EventFrame does not provide a theory of s
 
 Convergence requires stronger conditions than stationarity and finite move types. Consider a finite set 𝔖 of complete candidate abstraction states evaluated on a fixed validation distribution. Let
 
-```math
-\Phi(s)=\sum_{t=1}^{T}\widetilde w_t\mathcal A_{\mathrm{post},t}^{s}
-+\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(s),
-```
+<div align="center">Φ(<i>s</i>) = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>𝒜<sub>post,t</sub><sup>s</sup> + λ<sub>rep</sub>𝒞<sub>rep</sub>(<i>s</i>),</div>
 
 where the normalized priority weights w̃<sub>t</sub> are fixed with the evaluation set and infeasible Anti-Pigeon states are excluded. If the update rule is deterministic and accepts s→ s&#39; only when Φ(s&#39;)≤Φ(s)−δ for a fixed δ&gt;0, then no state can be revisited and the process terminates after at most |𝔖|−1 accepted moves at a state with no improving candidate move. This is a finite-state descent result, not a guarantee for an online changing environment. With noisy estimates, adaptive candidate generation, changing caches, or distribution drift, the result does not apply unless confidence bounds and a fixed potential restore the strict-decrease invariant.
 
@@ -2714,9 +2665,7 @@ At fixed temporal resolution, a population objective defines an oracle benchmark
 
 For an in-horizon concrete event, the point component of a typed residual record gives the type-resolved template composition:
 
-```math
-e_{t+1}^{\mathrm{tmpl}}=b_t^0\oplus_E \bar r_t^E.
-```
+<div align="center"><i>e</i><sub>t+1</sub><sup>tmpl</sup> = <i>b</i><sub>t</sub><sup>0</sup> ⊕<sub>E</sub> <i>r̄</i><sub>t</sub><sup>E</sup>.</div>
 
 The point operator encodes events into a finite-dimensional tagged self-adjoint operator space, norm-clips the point residual, projects into a declared admissible set, and decodes with a named decoder. That component is undefined when the originating horizon expires without an event. A separately tagged law component drives a full-outcome Markov kernel, explicitly governs probability flow into and out of the no-event atom, and supplies the law evaluated by the proper score. A fixed decision rule aligns the final mark and time with that law; joint forward validation determines whether the auxiliary template fields also help. Runtime packets use an independent packet encoder, residual space, admissible set, and operator ⊕<sub>Y</sub>. The construction takes limited inspiration from CFS self-adjoint operator representations; its clipping and projection are EventFrame definitions, not a CFS action or physical theory.
 

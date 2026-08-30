@@ -9,9 +9,26 @@ require "cgi"
 
 SOURCE = File.expand_path("../build/paper.md", __dir__)
 TARGET = File.expand_path("../paper.md", __dir__)
-MAX_MATH_NODES = 204
+MAX_MATH_NODES = 191
 MAX_INLINE_MATH = 0
 FRONT_MATTER_INLINE_MATH = 0
+NATIVE_DISPLAY_MATH = 191
+
+SEMANTIC_DISPLAY_MATH = [
+  '<div align="center"><i>d</i><sub>t</sub>(<i>h</i>) = max({0} ∪ {<i>r</i><sub>1</sub>, …, <i>r</i><sub><i>N</i><sub>t</sub></sub>}).</div>',
+  '<div align="center"><i>T</i><sub>comp</sub> = O(∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub></sub> <i>C</i><sub><i>D</i><sub><i>e</i></sub></sub>),</div>',
+  '<div align="center"><i>T</i><sub>snap</sub> ≤ <i>T</i><sub>generate</sub> + ∑<sub>Ξ′∈𝔖<sub>t</sub></sub>[<i>T</i><sub>refit</sub>(Ξ′) + ∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub>(Ξ′)</sub><i>C</i><sub><i>D</i><sub><i>e</i></sub></sub> + <i>T</i><sub>obl</sub>(Ξ′) + <i>T</i><sub>score</sub>(Ξ′)] + <i>T</i><sub>confirm</sub> + <i>T</i><sub>publish</sub>.</div>',
+  '<div align="center"><i>e</i><sub>t</sub> = (<i>w</i><sub>t</sub>, <i>a</i><sub>t</sub>, τ<sub>t</sub>, ℓ<sub>t</sub>, <i>m</i><sub>t</sub>, <i>h</i><sub>t</sub>, <i>x</i><sub>t</sub>, <i>c</i><sub>t</sub>).</div>',
+  '<div align="center"><i>S</i><sub>g</sub> = min(1, Δ<sub>g</sub> / η<sub>g</sub>).</div>',
+  '<div align="center"><i>w̃</i><sub>t</sub> = <i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>) / ∑<sub><i>u</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>u</sub><sup>pri</sup>).</div>',
+  '<div align="center"><i>L</i><sub>t</sub><sup>[q]</sup> = 𝒜<sub>post</sub>(𝒪<sub>t</sub><sup>[q]</sup>, <i>Z</i><sub>t+1</sub>) ∈ [0,1].</div>',
+  '<div align="center"><i>G</i><sub>a→b</sub><sup>pri</sup> = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>),</div>',
+  '<div align="center"><i>G</i><sub>a→b,rel</sub><sup>pri</sup> = [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>)] / [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup>].</div>',
+  '<div align="center"><i>C</i><sub>a→b</sub>(<i>h</i>) = λ<sub>T</sub>Δ<i>T</i><sub>a→b</sub>(<i>h</i>) / <i>T</i><sub>budget</sub> + λ<sub>C</sub>Δ<i>C</i><sub>a→b</sub><sup>compute</sup>(<i>h</i>) + λ<sub>M</sub>Δ<i>C</i><sub>a→b</sub><sup>memory</sup>(<i>h</i>).</div>',
+  '<div align="center">LCB<sub>paired</sub>[<i>G</i><sub>a→b</sub><sup>pri</sup>] − UCB[<i>C</i><sub>a→b</sub>(<i>h</i>)] &gt; δ<sub>safety</sub>,</div>',
+  '<div align="center">Φ(<i>s</i>) = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>𝒜<sub>post,t</sub><sup>s</sup> + λ<sub>rep</sub>𝒞<sub>rep</sub>(<i>s</i>),</div>',
+  '<div align="center"><i>e</i><sub>t+1</sub><sup>tmpl</sup> = <i>b</i><sub>t</sub><sup>0</sup> ⊕<sub>E</sub> <i>r̄</i><sub>t</sub><sup>E</sup>.</div>'
+].freeze
 
 class InlineMathHTML
   SYMBOLS = {
@@ -274,6 +291,21 @@ end.join
 
 abort "Unbalanced display-math delimiters" if inside_display
 
+display_index = 0
+semantic_display_count = 0
+github = github.gsub(/^```math\n(.*?)^```$/m) do |block|
+  if display_index < NATIVE_DISPLAY_MATH
+    replacement = block
+  else
+    replacement = SEMANTIC_DISPLAY_MATH.fetch(display_index - NATIVE_DISPLAY_MATH)
+    semantic_display_count += 1
+  end
+  display_index += 1
+  replacement
+end
+abort "Semantic display fallback count changed: #{display_index}" unless
+  display_index == NATIVE_DISPLAY_MATH + SEMANTIC_DISPLAY_MATH.length
+
 # GitHub's client corrupts the row break in this particular fenced `cases`
 # expression. Use an equivalent one-line conditional definition in this
 # rendering target; the canonical assembly retains the piecewise form.
@@ -301,7 +333,7 @@ github = github.sub(packing_cases, packing_conditions)
 
 note = <<~MARKDOWN
 
-  _GitHub rendering note: display equations are typeset. Inline references use semantic HTML, Unicode mathematical symbols, and real sub/superscripts to keep this single-file edition within GitHub's per-page math-rendering ceiling. The PDF remains fully typeset._
+  _GitHub rendering note: equations use native typesetting or semantic HTML with Unicode mathematical symbols and real sub/superscripts. This keeps the single-file edition within GitHub's per-page math-rendering budget. The PDF remains fully typeset._
 MARKDOWN
 
 scope = "_Public working paper. Initial implementation evidence is reported in Section 9; full real-world validation remains outstanding._\n"
@@ -318,4 +350,4 @@ inline_count = github.scan(inline_pattern).length
 total = display_count + inline_count
 abort "GitHub math budget exceeded: #{total}" if total > MAX_MATH_NODES
 
-warn "GitHub paper: #{display_count} display + #{inline_count} inline = #{total} math nodes; #{semantic_inline_count} semantic inline expressions"
+warn "GitHub paper: #{display_count} display + #{inline_count} inline = #{total} math nodes; #{semantic_display_count} semantic displays; #{semantic_inline_count} semantic inline expressions"
