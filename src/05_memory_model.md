@@ -226,7 +226,7 @@ while retaining full-strength member statistics
 +w_{e,t}(Y_{e,t},1-Y_{e,t}).
 \]
 
-The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Unless the fractional contribution follows from a declared coherent generative model, \(\omega_{B,\mathrm{pool}}<1\) defines a tempered working posterior rather than an ordinary posterior under the common-\(\theta\) model.
+The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Relative to undiscounted pooling of the same observations and prior, the resulting shared predictive law is deliberately less concentrated, while full-strength member statistics let divergence evidence overturn sharing sooner. Unless the fractional contribution follows from a declared coherent generative model, \(\omega_{B,\mathrm{pool}}<1\) defines a tempered working posterior rather than an ordinary posterior under the common-\(\theta\) model.
 
 Let \(J_t^{\mathrm{val}}(e)=1\) only for a full-stream outcome or an independently selected audit outcome whose inclusion semantics are valid for revision. At time \(t\), the revealing outcome is first incorporated into the pooled and full-strength member statistics displayed above; \(p_K^{\mathrm{split}}\), effective support, and \(J_{K,t}^{\mathrm{shock}}(e)\) are then evaluated from those post-outcome statistics. Define the split-shock indicator
 
@@ -246,8 +246,8 @@ A_{K,t}^{\mathrm{rev}}=
 \begin{cases}
 \mathrm{split\_reset},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
 \mathrm{split},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=0,\\
-\mathrm{shared\_reset},&J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
-\mathrm{individual\_reset},&J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{shared\_reset},&J_{K,t}^{\mathrm{shock}}=0, J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{individual\_reset},&J_{K,t}^{\mathrm{shock}}=0, J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
 \mathrm{retain},&\text{otherwise.}
 \end{cases}
 \]

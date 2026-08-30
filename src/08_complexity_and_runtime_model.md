@@ -60,12 +60,14 @@ where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let
 N_t^{\mathrm{upd},q_B}
 =\left|\left\{e\in\mathfrak E_t^B:
 J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
-\le |\mathcal N_t^B|\le B_{\max},
+\le |\mathcal N_t^B|\le B_{\max}.
 \]
+
+Here \(B_{\max}\) is the predeclared frontier cap.
 
 For a frontier cap \(N_t\le B_{\max}\), certainty and delta application are \(O(N_t)\), and comparison sorting is \(O(N_t\log N_t)\) unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called \(O(1)\). Rank-delta cache lookup remains expected \(O(1)\) only under the same bounded-key and bounded-table assumptions as the residual cache.
 
-where \(B_{\max}\) is the predeclared frontier cap. Let \(M_{\mathrm{hyp}}\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_{\mathrm{cp}}\) bound retained changepoint run-length states. Let \(T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)\) evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let \(T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)\) evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+Let \(M_{\mathrm{hyp}}\) bound the updated sufficient-statistic or discrete-hypothesis dimension, and let \(R_{\mathrm{cp}}\) bound retained changepoint run-length states. Let \(T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)\) evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let \(T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)\) evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
 
 \[
 \begin{aligned}

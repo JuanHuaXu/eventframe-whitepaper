@@ -169,7 +169,7 @@ The ontology also supports typed links. Temporal links order events, spatial lin
 
 Event histories are therefore not limited to linear chains. Multiple event streams can become representable as a single aggregate event over time. This is event confluence: separate streams merge into a larger stream or macro-event when their separate identities no longer affect the target beyond a declared threshold. The reverse can also occur. A small distinction can branch into multiple downstream event streams when a perturbation is amplified by the dynamics. This is event divergence, or butterfly-effect-style sensitivity. EventFrame must model both patterns because compression that is safe in a confluence region may be unsafe near a divergence point.
 
-For traceability, EventFrame keeps at least one concrete frame for every event-frame group. One frame cannot characterize a heterogeneous group, so abstraction audits use a coverage-aware set containing boundary, uncertain, and sampled examples. Section 8 formalizes that audit set and the limits of conclusions drawn from it.
+For traceability, EventFrame keeps at least one concrete frame for every event-frame group. One frame cannot characterize a heterogeneous group, so abstraction audits use a coverage-aware set containing boundary, uncertain, and sampled examples. Section 4 formalizes that audit set; Section 8 states the conditions under which conclusions drawn from it are valid.
 
 The event sparsity hypothesis follows from this compression view. Relative to a finite declared candidate set, EventFrame hypothesizes that only a small fraction of distinctions materially worsen held-out proper risk when ablated. This predictive ratio is observationally testable under the fixed ablation protocol. A separate causal ratio requires randomized or otherwise identified interventions. Both must be measured in each domain rather than inferred from Planck constants or entropy bounds.
 
@@ -1395,7 +1395,7 @@ $$
 +w_{e,t}(Y_{e,t},1-Y_{e,t}).
 $$
 
-The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Unless the fractional contribution follows from a declared coherent generative model, $\omega_{B,\mathrm{pool}}<1$ defines a tempered working posterior rather than an ordinary posterior under the common-$\theta$ model.
+The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Relative to undiscounted pooling of the same observations and prior, the resulting shared predictive law is deliberately less concentrated, while full-strength member statistics let divergence evidence overturn sharing sooner. Unless the fractional contribution follows from a declared coherent generative model, $\omega_{B,\mathrm{pool}}<1$ defines a tempered working posterior rather than an ordinary posterior under the common-$\theta$ model.
 
 Let $J_t^{\mathrm{val}}(e)=1$ only for a full-stream outcome or an independently selected audit outcome whose inclusion semantics are valid for revision. At time $t$, the revealing outcome is first incorporated into the pooled and full-strength member statistics displayed above; $p_K^{\mathrm{split}}$, effective support, and $J_{K,t}^{\mathrm{shock}}(e)$ are then evaluated from those post-outcome statistics. Define the split-shock indicator
 
@@ -1415,8 +1415,8 @@ A_{K,t}^{\mathrm{rev}}=
 \begin{cases}
 \mathrm{split\_reset},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
 \mathrm{split},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=0,\\
-\mathrm{shared\_reset},&J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
-\mathrm{individual\_reset},&J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{shared\_reset},&J_{K,t}^{\mathrm{shock}}=0, J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{individual\_reset},&J_{K,t}^{\mathrm{shock}}=0, J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
 \mathrm{retain},&\text{otherwise.}
 \end{cases}
 $$
@@ -2187,12 +2187,14 @@ $$
 N_t^{\mathrm{upd},q_B}
 =\left|\left\{e\in\mathfrak E_t^B:
 J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
-\le |\mathcal N_t^B|\le B_{\max},
+\le |\mathcal N_t^B|\le B_{\max}.
 $$
+
+Here $B_{\max}$ is the predeclared frontier cap.
 
 For a frontier cap $N_t\le B_{\max}$, certainty and delta application are $O(N_t)$, and comparison sorting is $O(N_t\log N_t)$ unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called $O(1)$. Rank-delta cache lookup remains expected $O(1)$ only under the same bounded-key and bounded-table assumptions as the residual cache.
 
-where $B_{\max}$ is the predeclared frontier cap. Let $M_{\mathrm{hyp}}$ bound the updated sufficient-statistic or discrete-hypothesis dimension, and let $R_{\mathrm{cp}}$ bound retained changepoint run-length states. Let $T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)$ evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let $T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)$ evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+Let $M_{\mathrm{hyp}}$ bound the updated sufficient-statistic or discrete-hypothesis dimension, and let $R_{\mathrm{cp}}$ bound retained changepoint run-length states. Let $T_{\mathrm{adm}}(|\mathcal N_t^B|;q_B)$ evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let $T_{\mathrm{sel}}(N_t^{\mathrm{upd},q_B},M_{\mathrm{hyp}};q_B)$ evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
 
 $$
 \begin{aligned}
@@ -2649,7 +2651,7 @@ The untransformed proper score is reported separately. Priority-weighted absolut
 $$
 G_{a\rightarrow b}^{\mathrm{pri}}=
 \sum_{t=1}^{T}\widetilde w_t
-\left(L_t^{[q_a]}-L_t^{[q_b]}\right),
+\left(L_t^{[q_a]}-L_t^{[q_b]}\right).
 $$
 
 When the weighted baseline-loss denominator is strictly positive, priority-weighted relative risk reduction is:
@@ -2680,7 +2682,7 @@ An evidence-controlled promotion rule may conservatively require a paired lower 
 
 $$
 \mathrm{LCB}_{\mathrm{paired}}[G_{a\rightarrow b}^{\mathrm{pri}}]
--\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}},
+-\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}}.
 $$
 
 Promotion also requires the paired upper confidence bound on proper-score degradation of $q_b$ relative to $q_a$ to be at most the preregistered $\epsilon_{\mathrm{prop}}$.
@@ -2922,11 +2924,11 @@ $\pi_K^{\mathrm{split}}$, $\epsilon_{B,\mathrm{eq}}$, $\tau_{B,\mathrm{cmp}}$, $
 
 $\omega_{B,\mathrm{pool}}$, $J_t^{\mathrm{val}}(e)$, $J_{K,t}^{\mathrm{shock}}$, $A_{K,t}^{\mathrm{rev}}$: shared-posterior evidence discount, structural-revision evidence eligibility, validated Anti-Pigeon split-shock indicator, and fail-closed retain/reset/split action.
 
-$Y_{K,t}$, $m_{K,t}^{s}$, $C_{K,t}^{+}$, $C_{K,t}^{-}$, $\delta_{\mathrm C}$, $h_{\mathrm C}$, $d_{K,t}^{\mathrm{cool}}$, $n_{\mathrm{warm}}$: observed usefulness, slow reference mean, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
+$Y_{K,t}$, $m_{K,t}^{s}$, $\eta_s$, $C_{K,t}^{+}$, $C_{K,t}^{-}$, $\delta_{\mathrm C}$, $h_{\mathrm C}$, $d_{K,t}^{\mathrm{cool}}$, $n_{\mathrm{warm}}$: observed usefulness, slow reference mean and its update rate, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
 
-$J_{K,t}^{\mathrm{cp}}$, $J_t^{\mathrm{audit}}$, $N_{\mathrm{audit}}^{\max}$: combined changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
+$\gamma_{\mathrm{cp}}$, $J_{K,t}^{\mathrm{cp}}$, $\pi_{\mathrm{audit}}$, $J_t^{\mathrm{audit}}$, $N_{\mathrm{audit}}^{\max}$: changepoint run-length threshold, combined changepoint trigger, frozen inactive-event audit probability, independent audit indicator, and fixed audit-reservoir capacity.
 
-$\mathsf Q_t^{\mathrm{local}}$, $\mathsf Q_t^{\mathrm{expanded}}(e)$, $D_{\mathrm{omit}}$, $\Delta_{K,t}^{\mathrm{omit}}$, $\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}$, $U_t^{\mathrm{omit}}$: complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, and maximum certified omission bound.
+$\mathsf Q_t^{\mathrm{local}}$, $\mathsf Q_t^{\mathrm{expanded}}(e)$, $D_{\mathrm{omit}}$, $\Delta_{K,t}^{\mathrm{omit}}$, $\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}$, $U_t^{\mathrm{omit}}$, $\epsilon_{B,\mathrm{omit}}$: complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, maximum certified omission bound, and its predeclared acceptance threshold.
 
 $k_v$, $d_{\mathrm{sh}}$, $d_G$, $B_{\max}$, $N_t^{\mathrm{upd},q_B}$, $M_{\mathrm{hyp}}$, $R_{\mathrm{cp}}$: vector width, sheaf-inspired and graph degree caps, frontier cap, admitted update count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
 
@@ -2994,7 +2996,11 @@ $\mathcal U_0,\ldots,\mathcal U_5$, $r_n$, $d_t(h)$: baseline/refinement operato
 
 $\mathcal B_0,\ldots,\mathcal B_3$: bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle, variational, or unrestricted-comparison stages.
 
-$p_t^{\mathrm{pri}}$, $w_{\mathrm{pri}}$, $\mathcal R_{\mathrm{pri}}^D$, $\mathcal R_{\mathrm{prop}}^D$, $G_{a\rightarrow b}^{\mathrm{pri}}$: pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
+$p_t^{\mathrm{pri}}$, $w_{\mathrm{pri}}$, $\widetilde w_t$, $L_t^{[q]}$: pre-outcome priority, its declared importance function, normalized evaluation weight, and bounded per-case system loss under complete policy $q$.
+
+$\mathcal R_{\mathrm{pri}}^D$, $\mathcal R_{\mathrm{prop}}^D$, $G_{a\rightarrow b}^{\mathrm{pri}}$, $G_{a\rightarrow b,\mathrm{rel}}^{\mathrm{pri}}$: normalized weighted risk, unweighted proper risk, and absolute and relative priority-weighted gains from complete policy $q_a$ to $q_b$.
+
+$C_{a\rightarrow b}(h)$, $T_{\mathrm{budget}}$, $\delta_{\mathrm{safety}}$: normalized resource cost of changing policies on hardware profile $h$, declared latency budget used in that cost, and promotion safety margin.
 
 $\Delta_{\mathrm{pred}}(d)$, $\widehat\Delta_{\mathrm{pred}}(d)$, $s_{\mathrm{eff}}^{\mathrm{pred}}$, $s_{\mathrm{eff}}^{\mathrm{causal}}$: paired proper-risk effect of ablating distinction $d$, its confirmation estimate, the simultaneous-confidence-classified predictive sparsity ratio, and the separately identified causal sparsity ratio.
 

@@ -118,9 +118,7 @@ An event is therefore a structured representation of a change, occurrence, actio
 
 An event frame at index t is written:
 
-```math
-e_t = (w_t, a_t, \tau_t, \ell_t, m_t, h_t, x_t, c_t)
-```
+<div align="center"><i>e</i><sub>t</sub> = (<i>w</i><sub>t</sub>, <i>a</i><sub>t</sub>, τ<sub>t</sub>, ℓ<sub>t</sub>, <i>m</i><sub>t</sub>, <i>h</i><sub>t</sub>, <i>x</i><sub>t</sub>, <i>c</i><sub>t</sub>).</div>
 
 where w<sub>t</sub> denotes participating agents or entities, a<sub>t</sub> denotes the action or occurrence type, τ<sub>t</sub> denotes the time index or interval, ℓ<sub>t</sub> denotes location or spatial context, m<sub>t</sub> denotes motive, objective, causal explanation, or inferred driver, h<sub>t</sub> denotes mechanism or process, x<sub>t</sub> denotes auxiliary state, and c<sub>t</sub> denotes confidence, provenance, or uncertainty metadata. When τ<sub>t</sub> is an interval, the complete interval remains part of the frame; scalar timing formulas use a separately declared temporal anchor, defaulting to interval onset.
 
@@ -134,9 +132,7 @@ Let Ω denote a fine-grained substrate state space and let ω<sub>A<sub>t</sub><
 
 produces an event frame:
 
-```math
-e_t = \Gamma_{\Delta_\tau}(\omega_{A_t}).
-```
+<div align="center"><i>e</i><sub>t</sub> = Γ<sub>Δ<sub>τ</sub></sub>(ω<sub><i>A</i><sub>t</sub></sub>).</div>
 
 This equation states the ontology clearly: the event frame is a lossy, task-oriented compression. The compression is useful only if it preserves distinctions that matter for prediction, intervention, memory, or review.
 
@@ -155,15 +151,11 @@ This equation is operational, not decorative. It says that before a field can be
 
 An event state is the system state before, during, or after an event. In some domains, x<sub>t</sub> may include an explicit pre-state and post-state. In others, x<sub>t</sub> may be a latent state vector inferred from observations. A transition occurs when one event context gives rise to a later event frame. The basic trajectory is:
 
-```math
-E_{1:T} = (e_1, e_2, \ldots, e_T).
-```
+<div align="center"><i>E</i><sub>1:<i>T</i></sub> = (<i>e</i><sub>1</sub>, <i>e</i><sub>2</sub>, …, <i>e</i><sub><i>T</i></sub>).</div>
 
 Operationally, a prediction step extracts a context from this trajectory:
 
-```math
-C_t = e_{t-k+1:t}.
-```
+<div align="center"><i>C</i><sub>t</sub> = <i>e</i><sub><i>t</i>−<i>k</i>+1:<i>t</i></sub>.</div>
 
 The context C<sub>t</sub> is the recent event history available to the predictor. It gives the predictor local structure for forecasting the next event and its time. If the context is too short, important predictive or temporal dependencies may be missing. Causal dependence is a stronger claim and requires an explicit causal model or identified intervention evidence. The context length k is a modeling choice that should be evaluated experimentally.
 
@@ -171,7 +163,7 @@ The ontology also supports typed links. Temporal links order events, spatial lin
 
 Event histories are therefore not limited to linear chains. Multiple event streams can become representable as a single aggregate event over time. This is event confluence: separate streams merge into a larger stream or macro-event when their separate identities no longer affect the target beyond a declared threshold. The reverse can also occur. A small distinction can branch into multiple downstream event streams when a perturbation is amplified by the dynamics. This is event divergence, or butterfly-effect-style sensitivity. EventFrame must model both patterns because compression that is safe in a confluence region may be unsafe near a divergence point.
 
-For traceability, EventFrame keeps at least one concrete frame for every event-frame group. One frame cannot characterize a heterogeneous group, so abstraction audits use a coverage-aware set containing boundary, uncertain, and sampled examples. Section 8 formalizes that audit set and the limits of conclusions drawn from it.
+For traceability, EventFrame keeps at least one concrete frame for every event-frame group. One frame cannot characterize a heterogeneous group, so abstraction audits use a coverage-aware set containing boundary, uncertain, and sampled examples. Section 4 formalizes that audit set; Section 8 states the conditions under which conclusions drawn from it are valid.
 
 The event sparsity hypothesis follows from this compression view. Relative to a finite declared candidate set, EventFrame hypothesizes that only a small fraction of distinctions materially worsen held-out proper risk when ablated. This predictive ratio is observationally testable under the fixed ablation protocol. A separate causal ratio requires randomized or otherwise identified interventions. Both must be measured in each domain rather than inferred from Planck constants or entropy bounds.
 
@@ -198,17 +190,13 @@ E_{1:T}=(e_1,\ldots,e_T), \qquad e_t\in\mathcal E_{\Delta_\tau},
 
 and a time quantizer is:
 
-```math
-Q_{\Delta_\tau}:\mathbb R\rightarrow\mathcal T_{\Delta_\tau}.
-```
+<div align="center"><i>Q</i><sub>Δ<sub>τ</sub></sub>: ℝ → 𝒯<sub>Δ<sub>τ</sub></sub>.</div>
 
 Second-level or microsecond-level precision is permitted only when the measurement process supports it. Finer resolution creates more candidate frames and can expose boundaries, but also increases noise and cache pressure.
 
 For a context length k, define:
 
-```math
-C_t=e_{t-k+1:t}\in\mathcal E^k.
-```
+<div align="center"><i>C</i><sub>t</sub> = <i>e</i><sub><i>t</i>−<i>k</i>+1:<i>t</i></sub> ∈ ℰ<sup><i>k</i></sup>.</div>
 
 Let ∅≠ℭ<sub>adm</sub>⊆ℰ<sup>k</sup> be the declared admissible context domain on which the chosen version of each conditional forecast law is defined. Population suprema below range over this domain or over the support of a named evaluation law, not over arbitrary zero-probability contexts.
 
@@ -237,15 +225,11 @@ Let (𝒩,𝒜<sub>𝒩</sub>) be the measurable mark space and let ((0,H],ℬ<s
 
 A probabilistic predictor returns a distribution rather than only a point:
 
-```math
-\mathsf Q_\theta(\cdot\mid C_t)\in\mathcal P(\mathcal Z_H),
-```
+<div align="center">𝖰<sub>θ</sub>(· | <i>C</i><sub>t</sub>) ∈ 𝒫(𝒵<sub><i>H</i></sub>).</div>
 
 where 𝒫(𝒵<sub>H</sub>) denotes probability measures on (𝒵<sub>H</sub>,𝒜<sub>H</sub>), equipped with the evaluation sigma-algebra generated by Q↦ Q(A) for A∈𝒜<sub>H</sub>. This is a finite-horizon marked-event representation with a right-censoring atom; standard marked point-process constructions provide a broader continuous-time setting [11]. Let ℰ<sub>∅</sub>=ℰ⊔{∅} be the tagged extension of the structured event space. A fixed measurable decision rule
 
-```math
-d_H:\mathcal P(\mathcal Z_H)\rightarrow\mathcal Z_H
-```
+<div align="center"><i>d</i><sub><i>H</i></sub>: 𝒫(𝒵<sub><i>H</i></sub>) → 𝒵<sub><i>H</i></sub>.</div>
 
 returns the no-event decision or a marked time, with a declared loss and deterministic tie-break. Let ê<sub>θ</sub><sup>H</sup>(C<sub>t</sub>)∈ℰ<sub>∅</sub> be a structured summary coherent with that decision: it equals ∅ exactly when d<sub>H</sub>(𝖰<sub>θ</sub>(·| C<sub>t</sub>))=∅, and otherwise its mark and time agree with the marked decision. The typed predictor output is the bundle:
 
@@ -1397,7 +1381,7 @@ while retaining full-strength member statistics
 +w_{e,t}(Y_{e,t},1-Y_{e,t}).
 ```
 
-The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Unless the fractional contribution follows from a declared coherent generative model, ω<sub>B,pool</sub>&lt;1 defines a tempered working posterior rather than an ordinary posterior under the common-θ model.
+The discount controls pooled confidence; it does not weaken the evidence used to discover that the grouping itself is wrong. Event-local posteriors are not discounted by this rule. Relative to undiscounted pooling of the same observations and prior, the resulting shared predictive law is deliberately less concentrated, while full-strength member statistics let divergence evidence overturn sharing sooner. Unless the fractional contribution follows from a declared coherent generative model, ω<sub>B,pool</sub>&lt;1 defines a tempered working posterior rather than an ordinary posterior under the common-θ model.
 
 Let J<sub>t</sub><sup>val</sup>(e)=1 only for a full-stream outcome or an independently selected audit outcome whose inclusion semantics are valid for revision. At time t, the revealing outcome is first incorporated into the pooled and full-strength member statistics displayed above; p<sub>K</sub><sup>split</sup>, effective support, and J<sub>K,t</sub><sup>shock</sup>(e) are then evaluated from those post-outcome statistics. Define the split-shock indicator
 
@@ -1417,8 +1401,8 @@ A_{K,t}^{\mathrm{rev}}=
 \begin{cases}
 \mathrm{split\_reset},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
 \mathrm{split},&J_{K,t}^{\mathrm{shock}}=1, J_{K,t}^{\mathrm{cp}}=0,\\
-\mathrm{shared\_reset},&J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
-\mathrm{individual\_reset},&J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{shared\_reset},&J_{K,t}^{\mathrm{shock}}=0, J_{K,t}^{\mathrm{share}}=1, J_{K,t}^{\mathrm{cp}}=1,\\
+\mathrm{individual\_reset},&J_{K,t}^{\mathrm{shock}}=0, J_{K,t}^{\mathrm{share}}=0, J_{K,t}^{\mathrm{cp}}=1,\\
 \mathrm{retain},&\text{otherwise.}
 \end{cases}
 ```
@@ -2186,12 +2170,14 @@ where I<sub>R</sub>,I<sub>E</sub>∈{0,1} indicate fallbacks. Let
 N_t^{\mathrm{upd},q_B}
 =\left|\left\{e\in\mathfrak E_t^B:
 J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
-\le |\mathcal N_t^B|\le B_{\max},
+\le |\mathcal N_t^B|\le B_{\max}.
 ```
+
+Here B<sub>max</sub> is the predeclared frontier cap.
 
 For a frontier cap N<sub>t</sub>≤ B<sub>max</sub>, certainty and delta application are O(N<sub>t</sub>), and comparison sorting is O(N<sub>t</sub>log N<sub>t</sub>) unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called O(1). Rank-delta cache lookup remains expected O(1) only under the same bounded-key and bounded-table assumptions as the residual cache.
 
-where B<sub>max</sub> is the predeclared frontier cap. Let M<sub>hyp</sub> bound the updated sufficient-statistic or discrete-hypothesis dimension, and let R<sub>cp</sub> bound retained changepoint run-length states. Let T<sub>adm</sub>(|𝒩<sub>t</sub><sup>B</sup>|;q<sub>B</sub>) evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let T<sub>sel</sub>(N<sub>t</sub><sup>upd,q<sub>B</sub></sup>,M<sub>hyp</sub>;q<sub>B</sub>) evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
+Let M<sub>hyp</sub> bound the updated sufficient-statistic or discrete-hypothesis dimension, and let R<sub>cp</sub> bound retained changepoint run-length states. Let T<sub>adm</sub>(|𝒩<sub>t</sub><sup>B</sup>|;q<sub>B</sub>) evaluate readiness and any policy-specific threshold over the materialized frontier; nomination cost is already charged to vector retrieval and bounded expansion. Let T<sub>sel</sub>(N<sub>t</sub><sup>upd,q<sub>B</sub></sup>,M<sub>hyp</sub>;q<sub>B</sub>) evaluate or approximate the complete admission probability, including nomination, required by the admission-conditioned likelihood without a separate corpus scan. For a conjugate, finite-hypothesis, or otherwise bounded primitive,
 
 ```math
 \begin{aligned}
@@ -2608,19 +2594,36 @@ The twelfth experiment evaluates complete staged-execution policies, not merely 
 
 Average correction alone is not the deployment criterion. On a non-empty evaluation set, let p<sub>t</sub><sup>pri</sup>∈[0,1] be assigned before the outcome by a rule frozen independently of the stages being compared, let w<sub>pri</sub>(p)&gt;0 be a declared finite importance function, and normalize over evaluation cases:
 
-<div align="center"><i>w̃</i><sub>t</sub> = <i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>) / ∑<sub><i>u</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>u</sub><sup>pri</sup>).</div>
+```math
+\widetilde w_t=
+\frac{w_{\mathrm{pri}}(p_t^{\mathrm{pri}})}
+{\sum_{u=1}^{T}w_{\mathrm{pri}}(p_u^{\mathrm{pri}})}.
+```
 
 For complete policies q<sub>a</sub> and q<sub>b</sub>, define the bounded per-case system losses by:
 
-<div align="center"><i>L</i><sub>t</sub><sup>[q]</sup> = 𝒜<sub>post</sub>(𝒪<sub>t</sub><sup>[q]</sup>, <i>Z</i><sub>t+1</sub>) ∈ [0,1].</div>
+```math
+L_t^{[q]}=
+\mathcal A_{\mathrm{post}}(\mathcal O_t^{[q]},Z_{t+1})
+\in[0,1].
+```
 
 The untransformed proper score is reported separately. Priority-weighted absolute gain is:
 
-<div align="center"><i>G</i><sub>a→b</sub><sup>pri</sup> = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>),</div>
+```math
+G_{a\rightarrow b}^{\mathrm{pri}}=
+\sum_{t=1}^{T}\widetilde w_t
+\left(L_t^{[q_a]}-L_t^{[q_b]}\right).
+```
 
 When the weighted baseline-loss denominator is strictly positive, priority-weighted relative risk reduction is:
 
-<div align="center"><i>G</i><sub>a→b,rel</sub><sup>pri</sup> = [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>)] / [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup>].</div>
+```math
+G_{a\rightarrow b,\mathrm{rel}}^{\mathrm{pri}}=
+\frac{\sum_{t=1}^{T}w_{\mathrm{pri}}(p_t^{\mathrm{pri}})
+\left(L_t^{[q_a]}-L_t^{[q_b]}\right)}
+{\sum_{t=1}^{T}w_{\mathrm{pri}}(p_t^{\mathrm{pri}})L_t^{[q_a]}}.
+```
 
 If ∑<sub>t</sub> w<sub>pri</sub>(p<sub>t</sub><sup>pri</sup>)L<sub>t</sub><sup>[q<sub>a</sub>]</sup>=0, the relative statistic is undefined and the experiment reports only absolute gain and the paired loss distribution.
 
@@ -2628,13 +2631,21 @@ Priority must not be assigned after seeing whether a stage helped, and a candida
 
 Latency percentage and loss percentage are not directly commensurate. For hardware profile h, choose T<sub>budget</sub>&gt;0 and non-negative conversion coefficients, then convert measured resource effects into the same declared utility scale:
 
-<div align="center"><i>C</i><sub>a→b</sub>(<i>h</i>) = λ<sub>T</sub>Δ<i>T</i><sub>a→b</sub>(<i>h</i>) / <i>T</i><sub>budget</sub> + λ<sub>C</sub>Δ<i>C</i><sub>a→b</sub><sup>compute</sup>(<i>h</i>) + λ<sub>M</sub>Δ<i>C</i><sub>a→b</sub><sup>memory</sup>(<i>h</i>).</div>
+```math
+C_{a\rightarrow b}(h)=
+\lambda_T\frac{\Delta T_{a\rightarrow b}(h)}{T_{\mathrm{budget}}}
++\lambda_C\Delta C_{a\rightarrow b}^{\mathrm{compute}}(h)
++\lambda_M\Delta C_{a\rightarrow b}^{\mathrm{memory}}(h).
+```
 
 The two Δ C terms are declared normalized changes, not raw processor operations or bytes. Their coefficients and λ<sub>T</sub> convert all three resource terms into the same utility units as the gain statistic.
 
 An evidence-controlled promotion rule may conservatively require a paired lower confidence bound on gain and an upper confidence bound on measured resource cost:
 
-<div align="center">LCB<sub>paired</sub>[<i>G</i><sub>a→b</sub><sup>pri</sup>] − UCB[<i>C</i><sub>a→b</sub>(<i>h</i>)] &gt; δ<sub>safety</sub>,</div>
+```math
+\mathrm{LCB}_{\mathrm{paired}}[G_{a\rightarrow b}^{\mathrm{pri}}]
+-\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}}.
+```
 
 Promotion also requires the paired upper confidence bound on proper-score degradation of q<sub>b</sub> relative to q<sub>a</sub> to be at most the preregistered ε<sub>prop</sub>.
 
@@ -2667,7 +2678,10 @@ This discussion also limits the claim. EventFrame does not provide a theory of s
 
 Convergence requires stronger conditions than stationarity and finite move types. Consider a finite set 𝔖 of complete candidate abstraction states evaluated on a fixed validation distribution. Let
 
-<div align="center">Φ(<i>s</i>) = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>𝒜<sub>post,t</sub><sup>s</sup> + λ<sub>rep</sub>𝒞<sub>rep</sub>(<i>s</i>),</div>
+```math
+\Phi(s)=\sum_{t=1}^{T}\widetilde w_t\mathcal A_{\mathrm{post},t}^{s}
++\lambda_{\mathrm{rep}}\mathcal C_{\mathrm{rep}}(s),
+```
 
 where the normalized priority weights w̃<sub>t</sub> are fixed with the evaluation set and infeasible Anti-Pigeon states are excluded. If the update rule is deterministic and accepts s→ s&#39; only when Φ(s&#39;)≤Φ(s)−δ for a fixed δ&gt;0, then no state can be revisited and the process terminates after at most |𝔖|−1 accepted moves at a state with no improving candidate move. This is a finite-state descent result, not a guarantee for an online changing environment. With noisy estimates, adaptive candidate generation, changing caches, or distribution drift, the result does not apply unless confidence bounds and a fixed potential restore the strict-decrease invariant.
 
@@ -2739,7 +2753,9 @@ At fixed temporal resolution, a population objective defines an oracle benchmark
 
 For an in-horizon concrete event, the point component of a typed residual record gives the type-resolved template composition:
 
-<div align="center"><i>e</i><sub>t+1</sub><sup>tmpl</sup> = <i>b</i><sub>t</sub><sup>0</sup> ⊕<sub>E</sub> <i>r̄</i><sub>t</sub><sup>E</sup>.</div>
+```math
+e_{t+1}^{\mathrm{tmpl}}=b_t^0\oplus_E \bar r_t^E.
+```
 
 The point operator encodes events into a finite-dimensional tagged self-adjoint operator space, norm-clips the point residual, projects into a declared admissible set, and decodes with a named decoder. That component is undefined when the originating horizon expires without an event. A separately tagged law component drives a full-outcome Markov kernel, explicitly governs probability flow into and out of the no-event atom, and supplies the law evaluated by the proper score. A fixed decision rule aligns the final mark and time with that law; joint forward validation determines whether the auxiliary template fields also help. Runtime packets use an independent packet encoder, residual space, admissible set, and operator ⊕<sub>Y</sub>. The construction takes limited inspiration from CFS self-adjoint operator representations; its clipping and projection are EventFrame definitions, not a CFS action or physical theory.
 
@@ -2870,11 +2886,11 @@ u<sub>e</sub>, v<sub>e</sub>, n<sub>e</sub><sup>eff</sup>, ℓ<sub>K</sub><sup>s
 
 ω<sub>B,pool</sub>, J<sub>t</sub><sup>val</sup>(e), J<sub>K,t</sub><sup>shock</sup>, A<sub>K,t</sub><sup>rev</sup>: shared-posterior evidence discount, structural-revision evidence eligibility, validated Anti-Pigeon split-shock indicator, and fail-closed retain/reset/split action.
 
-Y<sub>K,t</sub>, m<sub>K,t</sub><sup>s</sup>, C<sub>K,t</sub><sup>+</sup>, C<sub>K,t</sub><sup>−</sup>, δ<sub>C</sub>, h<sub>C</sub>, d<sub>K,t</sub><sup>cool</sup>, n<sub>warm</sub>: observed usefulness, slow reference mean, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
+Y<sub>K,t</sub>, m<sub>K,t</sub><sup>s</sup>, η<sub>s</sub>, C<sub>K,t</sub><sup>+</sup>, C<sub>K,t</sub><sup>−</sup>, δ<sub>C</sub>, h<sub>C</sub>, d<sub>K,t</sub><sup>cool</sup>, n<sub>warm</sub>: observed usefulness, slow reference mean and its update rate, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
 
-J<sub>K,t</sub><sup>cp</sup>, J<sub>t</sub><sup>audit</sup>, N<sub>audit</sub><sup>max</sup>: combined changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
+γ<sub>cp</sub>, J<sub>K,t</sub><sup>cp</sup>, π<sub>audit</sub>, J<sub>t</sub><sup>audit</sup>, N<sub>audit</sub><sup>max</sup>: changepoint run-length threshold, combined changepoint trigger, frozen inactive-event audit probability, independent audit indicator, and fixed audit-reservoir capacity.
 
-𝖰<sub>t</sub><sup>local</sup>, 𝖰<sub>t</sub><sup>expanded</sup>(e), D<sub>omit</sub>, Δ<sub>K,t</sub><sup>omit</sup>, 𝔘<sub>omit</sub><sup>seq</sup>, U<sub>t</sub><sup>omit</sup>: complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, and maximum certified omission bound.
+𝖰<sub>t</sub><sup>local</sup>, 𝖰<sub>t</sub><sup>expanded</sup>(e), D<sub>omit</sub>, Δ<sub>K,t</sub><sup>omit</sup>, 𝔘<sub>omit</sub><sup>seq</sup>, U<sub>t</sub><sup>omit</sup>, ε<sub>B,omit</sub>: complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, maximum certified omission bound, and its predeclared acceptance threshold.
 
 k<sub>v</sub>, d<sub>sh</sub>, d<sub>G</sub>, B<sub>max</sub>, N<sub>t</sub><sup>upd,q<sub>B</sub></sup>, M<sub>hyp</sub>, R<sub>cp</sub>: vector width, sheaf-inspired and graph degree caps, frontier cap, admitted update count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
 
@@ -2942,7 +2958,11 @@ T<sub>generate</sub>, T<sub>obl</sub>, T<sub>confirm</sub>, T<sub>publish</sub>:
 
 ℬ<sub>0</sub>,…,ℬ<sub>3</sub>: bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle, variational, or unrestricted-comparison stages.
 
-p<sub>t</sub><sup>pri</sup>, w<sub>pri</sub>, ℛ<sub>pri</sub><sup>D</sup>, ℛ<sub>prop</sub><sup>D</sup>, G<sub>a→ b</sub><sup>pri</sup>: pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
+p<sub>t</sub><sup>pri</sup>, w<sub>pri</sub>, w̃<sub>t</sub>, L<sub>t</sub><sup>[q]</sup>: pre-outcome priority, its declared importance function, normalized evaluation weight, and bounded per-case system loss under complete policy q.
+
+ℛ<sub>pri</sub><sup>D</sup>, ℛ<sub>prop</sub><sup>D</sup>, G<sub>a→ b</sub><sup>pri</sup>, G<sub>a→ b,rel</sub><sup>pri</sup>: normalized weighted risk, unweighted proper risk, and absolute and relative priority-weighted gains from complete policy q<sub>a</sub> to q<sub>b</sub>.
+
+C<sub>a→ b</sub>(h), T<sub>budget</sub>, δ<sub>safety</sub>: normalized resource cost of changing policies on hardware profile h, declared latency budget used in that cost, and promotion safety margin.
 
 Δ<sub>pred</sub>(d), Δ̂<sub>pred</sub>(d), s<sub>eff</sub><sup>pred</sup>, s<sub>eff</sub><sup>causal</sup>: paired proper-risk effect of ablating distinction d, its confirmation estimate, the simultaneous-confidence-classified predictive sparsity ratio, and the separately identified causal sparsity ratio.
 

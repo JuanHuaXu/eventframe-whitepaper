@@ -14,21 +14,29 @@ MAX_INLINE_MATH = 0
 FRONT_MATTER_INLINE_MATH = 0
 NATIVE_DISPLAY_MATH = 191
 
+# Keep the governing promotion, descent, and point-composition equations native.
+# The indexed semantic fallbacks are simple definitions or already summarized
+# in nearby prose; their count preserves GitHub's page-scale math-node budget.
+SEMANTIC_DISPLAY_INDICES = [0, 2, 4, 5, 8, 9, 12, 13, 191, 192, 193, 194, 195].freeze
 SEMANTIC_DISPLAY_MATH = [
+  '<div align="center"><i>e</i><sub>t</sub> = (<i>w</i><sub>t</sub>, <i>a</i><sub>t</sub>, τ<sub>t</sub>, ℓ<sub>t</sub>, <i>m</i><sub>t</sub>, <i>h</i><sub>t</sub>, <i>x</i><sub>t</sub>, <i>c</i><sub>t</sub>).</div>',
+  '<div align="center"><i>e</i><sub>t</sub> = Γ<sub>Δ<sub>τ</sub></sub>(ω<sub><i>A</i><sub>t</sub></sub>).</div>',
+  '<div align="center"><i>E</i><sub>1:<i>T</i></sub> = (<i>e</i><sub>1</sub>, <i>e</i><sub>2</sub>, …, <i>e</i><sub><i>T</i></sub>).</div>',
+  '<div align="center"><i>C</i><sub>t</sub> = <i>e</i><sub><i>t</i>−<i>k</i>+1:<i>t</i></sub>.</div>',
+  '<div align="center"><i>Q</i><sub>Δ<sub>τ</sub></sub>: ℝ → 𝒯<sub>Δ<sub>τ</sub></sub>.</div>',
+  '<div align="center"><i>C</i><sub>t</sub> = <i>e</i><sub><i>t</i>−<i>k</i>+1:<i>t</i></sub> ∈ ℰ<sup><i>k</i></sup>.</div>',
+  '<div align="center">𝖰<sub>θ</sub>(· | <i>C</i><sub>t</sub>) ∈ 𝒫(𝒵<sub><i>H</i></sub>).</div>',
+  '<div align="center"><i>d</i><sub><i>H</i></sub>: 𝒫(𝒵<sub><i>H</i></sub>) → 𝒵<sub><i>H</i></sub>.</div>',
   '<div align="center"><i>d</i><sub>t</sub>(<i>h</i>) = max({0} ∪ {<i>r</i><sub>1</sub>, …, <i>r</i><sub><i>N</i><sub>t</sub></sub>}).</div>',
   '<div align="center"><i>T</i><sub>comp</sub> = O(∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub></sub> <i>C</i><sub><i>D</i><sub><i>e</i></sub></sub>),</div>',
   '<div align="center"><i>T</i><sub>snap</sub> ≤ <i>T</i><sub>generate</sub> + ∑<sub>Ξ′∈𝔖<sub>t</sub></sub>[<i>T</i><sub>refit</sub>(Ξ′) + ∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub>(Ξ′)</sub><i>C</i><sub><i>D</i><sub><i>e</i></sub></sub> + <i>T</i><sub>obl</sub>(Ξ′) + <i>T</i><sub>score</sub>(Ξ′)] + <i>T</i><sub>confirm</sub> + <i>T</i><sub>publish</sub>.</div>',
   '<div align="center"><i>e</i><sub>t</sub> = (<i>w</i><sub>t</sub>, <i>a</i><sub>t</sub>, τ<sub>t</sub>, ℓ<sub>t</sub>, <i>m</i><sub>t</sub>, <i>h</i><sub>t</sub>, <i>x</i><sub>t</sub>, <i>c</i><sub>t</sub>).</div>',
-  '<div align="center"><i>S</i><sub>g</sub> = min(1, Δ<sub>g</sub> / η<sub>g</sub>).</div>',
-  '<div align="center"><i>w̃</i><sub>t</sub> = <i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>) / ∑<sub><i>u</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>u</sub><sup>pri</sup>).</div>',
-  '<div align="center"><i>L</i><sub>t</sub><sup>[q]</sup> = 𝒜<sub>post</sub>(𝒪<sub>t</sub><sup>[q]</sup>, <i>Z</i><sub>t+1</sub>) ∈ [0,1].</div>',
-  '<div align="center"><i>G</i><sub>a→b</sub><sup>pri</sup> = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>),</div>',
-  '<div align="center"><i>G</i><sub>a→b,rel</sub><sup>pri</sup> = [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)(<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup> − <i>L</i><sub>t</sub><sup>[q<sub>b</sub>]</sup>)] / [∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w</i><sub>pri</sub>(<i>p</i><sub>t</sub><sup>pri</sup>)<i>L</i><sub>t</sub><sup>[q<sub>a</sub>]</sup>].</div>',
-  '<div align="center"><i>C</i><sub>a→b</sub>(<i>h</i>) = λ<sub>T</sub>Δ<i>T</i><sub>a→b</sub>(<i>h</i>) / <i>T</i><sub>budget</sub> + λ<sub>C</sub>Δ<i>C</i><sub>a→b</sub><sup>compute</sup>(<i>h</i>) + λ<sub>M</sub>Δ<i>C</i><sub>a→b</sub><sup>memory</sup>(<i>h</i>).</div>',
-  '<div align="center">LCB<sub>paired</sub>[<i>G</i><sub>a→b</sub><sup>pri</sup>] − UCB[<i>C</i><sub>a→b</sub>(<i>h</i>)] &gt; δ<sub>safety</sub>,</div>',
-  '<div align="center">Φ(<i>s</i>) = ∑<sub><i>t</i>=1</sub><sup><i>T</i></sup><i>w̃</i><sub>t</sub>𝒜<sub>post,t</sub><sup>s</sup> + λ<sub>rep</sub>𝒞<sub>rep</sub>(<i>s</i>),</div>',
-  '<div align="center"><i>e</i><sub>t+1</sub><sup>tmpl</sup> = <i>b</i><sub>t</sub><sup>0</sup> ⊕<sub>E</sub> <i>r̄</i><sub>t</sub><sup>E</sup>.</div>'
+  '<div align="center"><i>S</i><sub>g</sub> = min(1, Δ<sub>g</sub> / η<sub>g</sub>).</div>'
 ].freeze
+
+SEMANTIC_DISPLAY_BY_INDEX = SEMANTIC_DISPLAY_INDICES.zip(SEMANTIC_DISPLAY_MATH).to_h.freeze
+abort "Semantic display index/value mismatch" unless
+  SEMANTIC_DISPLAY_BY_INDEX.length == SEMANTIC_DISPLAY_INDICES.length
 
 class InlineMathHTML
   SYMBOLS = {
@@ -294,11 +302,11 @@ abort "Unbalanced display-math delimiters" if inside_display
 display_index = 0
 semantic_display_count = 0
 github = github.gsub(/^```math\n(.*?)^```$/m) do |block|
-  if display_index < NATIVE_DISPLAY_MATH
-    replacement = block
-  else
-    replacement = SEMANTIC_DISPLAY_MATH.fetch(display_index - NATIVE_DISPLAY_MATH)
+  replacement = SEMANTIC_DISPLAY_BY_INDEX[display_index]
+  if replacement
     semantic_display_count += 1
+  else
+    replacement = block
   end
   display_index += 1
   replacement

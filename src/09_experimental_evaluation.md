@@ -190,7 +190,7 @@ The untransformed proper score is reported separately. Priority-weighted absolut
 \[
 G_{a\rightarrow b}^{\mathrm{pri}}=
 \sum_{t=1}^{T}\widetilde w_t
-\left(L_t^{[q_a]}-L_t^{[q_b]}\right),
+\left(L_t^{[q_a]}-L_t^{[q_b]}\right).
 \]
 
 When the weighted baseline-loss denominator is strictly positive, priority-weighted relative risk reduction is:
@@ -221,7 +221,7 @@ An evidence-controlled promotion rule may conservatively require a paired lower 
 
 \[
 \mathrm{LCB}_{\mathrm{paired}}[G_{a\rightarrow b}^{\mathrm{pri}}]
--\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}},
+-\mathrm{UCB}[C_{a\rightarrow b}(h)]>\delta_{\mathrm{safety}}.
 \]
 
 Promotion also requires the paired upper confidence bound on proper-score degradation of \(q_b\) relative to \(q_a\) to be at most the preregistered \(\epsilon_{\mathrm{prop}}\).

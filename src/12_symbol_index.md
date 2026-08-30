@@ -80,11 +80,11 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\omega_{B,\mathrm{pool}}\), \(J_t^{\mathrm{val}}(e)\), \(J_{K,t}^{\mathrm{shock}}\), \(A_{K,t}^{\mathrm{rev}}\): shared-posterior evidence discount, structural-revision evidence eligibility, validated Anti-Pigeon split-shock indicator, and fail-closed retain/reset/split action.
 
-\(Y_{K,t}\), \(m_{K,t}^{s}\), \(C_{K,t}^{+}\), \(C_{K,t}^{-}\), \(\delta_{\mathrm C}\), \(h_{\mathrm C}\), \(d_{K,t}^{\mathrm{cool}}\), \(n_{\mathrm{warm}}\): observed usefulness, slow reference mean, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
+\(Y_{K,t}\), \(m_{K,t}^{s}\), \(\eta_s\), \(C_{K,t}^{+}\), \(C_{K,t}^{-}\), \(\delta_{\mathrm C}\), \(h_{\mathrm C}\), \(d_{K,t}^{\mathrm{cool}}\), \(n_{\mathrm{warm}}\): observed usefulness, slow reference mean and its update rate, two-sided cumulative statistics, cumulative slack and boundary, cooldown counter, and warm-up length.
 
-\(J_{K,t}^{\mathrm{cp}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): combined changepoint trigger, independent inactive-event audit indicator, and fixed audit-reservoir capacity.
+\(\gamma_{\mathrm{cp}}\), \(J_{K,t}^{\mathrm{cp}}\), \(\pi_{\mathrm{audit}}\), \(J_t^{\mathrm{audit}}\), \(N_{\mathrm{audit}}^{\max}\): changepoint run-length threshold, combined changepoint trigger, frozen inactive-event audit probability, independent audit indicator, and fixed audit-reservoir capacity.
 
-\(\mathsf Q_t^{\mathrm{local}}\), \(\mathsf Q_t^{\mathrm{expanded}}(e)\), \(D_{\mathrm{omit}}\), \(\Delta_{K,t}^{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), \(U_t^{\mathrm{omit}}\): complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, and maximum certified omission bound.
+\(\mathsf Q_t^{\mathrm{local}}\), \(\mathsf Q_t^{\mathrm{expanded}}(e)\), \(D_{\mathrm{omit}}\), \(\Delta_{K,t}^{\mathrm{omit}}\), \(\mathfrak U_{\mathrm{omit}}^{\mathrm{seq}}\), \(U_t^{\mathrm{omit}}\), \(\epsilon_{B,\mathrm{omit}}\): complete scored local and shadow-expanded laws, normalized Jensen--Shannon divergence, audit-population omission risk, frozen simultaneous confidence sequence, maximum certified omission bound, and its predeclared acceptance threshold.
 
 \(k_v\), \(d_{\mathrm{sh}}\), \(d_G\), \(B_{\max}\), \(N_t^{\mathrm{upd},q_B}\), \(M_{\mathrm{hyp}}\), \(R_{\mathrm{cp}}\): vector width, sheaf-inspired and graph degree caps, frontier cap, admitted update count, bounded hypothesis or statistic dimension, and retained changepoint-state cap.
 
@@ -152,7 +152,11 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathcal B_0,\ldots,\mathcal B_3\): bounded cached Bayesian update, bounded changepoint monitor, event-pattern refinement, and deep particle, variational, or unrestricted-comparison stages.
 
-\(p_t^{\mathrm{pri}}\), \(w_{\mathrm{pri}}\), \(\mathcal R_{\mathrm{pri}}^D\), \(\mathcal R_{\mathrm{prop}}^D\), \(G_{a\rightarrow b}^{\mathrm{pri}}\): pre-outcome priority, its declared importance function, normalized weighted risk, unweighted proper risk, and gain between complete policies.
+\(p_t^{\mathrm{pri}}\), \(w_{\mathrm{pri}}\), \(\widetilde w_t\), \(L_t^{[q]}\): pre-outcome priority, its declared importance function, normalized evaluation weight, and bounded per-case system loss under complete policy \(q\).
+
+\(\mathcal R_{\mathrm{pri}}^D\), \(\mathcal R_{\mathrm{prop}}^D\), \(G_{a\rightarrow b}^{\mathrm{pri}}\), \(G_{a\rightarrow b,\mathrm{rel}}^{\mathrm{pri}}\): normalized weighted risk, unweighted proper risk, and absolute and relative priority-weighted gains from complete policy \(q_a\) to \(q_b\).
+
+\(C_{a\rightarrow b}(h)\), \(T_{\mathrm{budget}}\), \(\delta_{\mathrm{safety}}\): normalized resource cost of changing policies on hardware profile \(h\), declared latency budget used in that cost, and promotion safety margin.
 
 \(\Delta_{\mathrm{pred}}(d)\), \(\widehat\Delta_{\mathrm{pred}}(d)\), \(s_{\mathrm{eff}}^{\mathrm{pred}}\), \(s_{\mathrm{eff}}^{\mathrm{causal}}\): paired proper-risk effect of ablating distinction \(d\), its confirmation estimate, the simultaneous-confidence-classified predictive sparsity ratio, and the separately identified causal sparsity ratio.
 
