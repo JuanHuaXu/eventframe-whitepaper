@@ -9,8 +9,9 @@ require "cgi"
 
 SOURCE = File.expand_path("../build/paper.md", __dir__)
 TARGET = File.expand_path("../paper.md", __dir__)
-MAX_INLINE_MATH = 10
-FRONT_MATTER_INLINE_MATH = 10
+MAX_MATH_NODES = 208
+MAX_INLINE_MATH = 4
+FRONT_MATTER_INLINE_MATH = 4
 
 class InlineMathHTML
   SYMBOLS = {
@@ -315,6 +316,6 @@ abort "Raw inline TeX code fallback survived: #{raw_tex_code.first}" unless raw_
 display_count = github.scan(/^```math$/).length
 inline_count = github.scan(inline_pattern).length
 total = display_count + inline_count
-abort "GitHub math budget exceeded: #{total}" if total > 220
+abort "GitHub math budget exceeded: #{total}" if total > MAX_MATH_NODES
 
 warn "GitHub paper: #{display_count} display + #{inline_count} inline = #{total} math nodes; #{semantic_inline_count} semantic inline expressions"
