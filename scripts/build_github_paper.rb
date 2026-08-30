@@ -7,8 +7,8 @@
 
 SOURCE = File.expand_path("../build/paper.md", __dir__)
 TARGET = File.expand_path("../paper.md", __dir__)
-MAX_INLINE_MATH = 60
-FRONT_MATTER_INLINE_MATH = 20
+MAX_INLINE_MATH = 10
+FRONT_MATTER_INLINE_MATH = 10
 
 source = File.read(SOURCE, encoding: "UTF-8")
 inline_pattern = /(?<!\$)\$([^\n$]+)\$(?!\$)/
@@ -98,6 +98,6 @@ File.write(TARGET, github, encoding: "UTF-8")
 display_count = github.scan(/^```math$/).length
 inline_count = github.scan(inline_pattern).length
 total = display_count + inline_count
-abort "GitHub math budget exceeded: #{total}" if total > 270
+abort "GitHub math budget exceeded: #{total}" if total > 220
 
 warn "GitHub paper: #{display_count} display + #{inline_count} inline = #{total} math nodes"
