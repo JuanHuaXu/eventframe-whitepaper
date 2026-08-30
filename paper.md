@@ -10,13 +10,13 @@
 
 _Public working paper. Initial implementation evidence is reported in Section 9; full real-world validation remains outstanding._
 
-_GitHub rendering note: display equations and selected inline expressions are typeset. Other inline references use semantic HTML, Unicode mathematical symbols, and real sub/superscripts to keep this single-file edition below GitHub's per-page math-rendering ceiling. The PDF remains fully typeset._
+_GitHub rendering note: display equations are typeset. Inline references use semantic HTML, Unicode mathematical symbols, and real sub/superscripts to keep this single-file edition within GitHub's per-page math-rendering ceiling. The PDF remains fully typeset._
 
 ## Abstract
 
 EventFrame is a framework for event-centric prediction. It represents experience as typed event frames rather than as unstructured sequences alone, but does not treat those frames as fundamental ontology. Event frames are task-relative compressed records. For physical substrates, physical information bounds motivate a limiting thought experiment about microscopic description; they do not prove a discrete substrate or the framework's sparsity hypothesis, and they do not support claims about simulated or software substrates.
 
-The central object is $`e_t\in\mathcal E_{\Delta_\tau}`$, obtained as $`e_t=\Gamma_{\Delta_\tau}(\omega_{A_t})`$. Temporal resolution may range from seconds to microseconds when measurement supports it. Given $`C_t=e_{t-k+1:t}`$, the predictor returns a distribution over marked event times and a no-event outcome. A strictly proper score is the primary probabilistic-fidelity metric; the governing system-design objective is composite, and bounded event-aware timing error is diagnostic.
+The central object is e<sub>t</sub>∈ℰ<sub>Δ<sub>τ</sub></sub>, obtained as e<sub>t</sub>=Γ<sub>Δ<sub>τ</sub></sub>(ω<sub>A<sub>t</sub></sub>). Temporal resolution may range from seconds to microseconds when measurement supports it. Given C<sub>t</sub>=e<sub>t−k+1:t</sub>, the predictor returns a distribution over marked event times and a no-event outcome. A strictly proper score is the primary probabilistic-fidelity metric; the governing system-design objective is composite, and bounded event-aware timing error is diagnostic.
 
 At a fixed temporal resolution, a target-law constrained population objective supplies an oracle benchmark. The operational rule instead minimizes empirical priority-weighted post-observation action plus non-negative representation cost over a finite family satisfying certified abstraction and proper-score constraints. Oracle feasibility and empirical certifiability are distinct. Candidate design and untouched chronological confirmation are separated. Prediction-time admission uses a distinct risk and state containing only quantities available before the prediction occurs.
 
@@ -36,7 +36,7 @@ The framework represents experience as event frames selected for predictive and 
 
 The core contribution is adaptive event abstraction. At fixed resolution, an external-law population objective defines the constrained oracle benchmark; the operational rule selects from a finite family using certified empirical constraints, post-observation action, and representation cost. It distinguishes model-sensitivity evidence from causal intervention evidence.
 
-Given $`C_t=e_{t-k+1:t}`$, the system predicts a distribution over event identity, event time, and no event within horizon H. A proper forecast score is the primary probabilistic-fidelity metric because timing-only loss can reward the wrong event at the right time. The complete system design minimizes a separate composite objective under a proper-score guard. Event-aware timing remains an interpretable diagnostic.
+Given C<sub>t</sub>=e<sub>t−k+1:t</sub>, the system predicts a distribution over event identity, event time, and no event within horizon H. A proper forecast score is the primary probabilistic-fidelity metric because timing-only loss can reward the wrong event at the right time. The complete system design minimizes a separate composite objective under a proper-score guard. Event-aware timing remains an interpretable diagnostic.
 
 The reference prediction procedure has seven steps:
 

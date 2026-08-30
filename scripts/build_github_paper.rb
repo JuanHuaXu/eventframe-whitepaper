@@ -9,9 +9,9 @@ require "cgi"
 
 SOURCE = File.expand_path("../build/paper.md", __dir__)
 TARGET = File.expand_path("../paper.md", __dir__)
-MAX_MATH_NODES = 208
-MAX_INLINE_MATH = 4
-FRONT_MATTER_INLINE_MATH = 4
+MAX_MATH_NODES = 204
+MAX_INLINE_MATH = 0
+FRONT_MATTER_INLINE_MATH = 0
 
 class InlineMathHTML
   SYMBOLS = {
@@ -301,7 +301,7 @@ github = github.sub(packing_cases, packing_conditions)
 
 note = <<~MARKDOWN
 
-  _GitHub rendering note: display equations and selected inline expressions are typeset. Other inline references use semantic HTML, Unicode mathematical symbols, and real sub/superscripts to keep this single-file edition below GitHub's per-page math-rendering ceiling. The PDF remains fully typeset._
+  _GitHub rendering note: display equations are typeset. Inline references use semantic HTML, Unicode mathematical symbols, and real sub/superscripts to keep this single-file edition within GitHub's per-page math-rendering ceiling. The PDF remains fully typeset._
 MARKDOWN
 
 scope = "_Public working paper. Initial implementation evidence is reported in Section 9; full real-world validation remains outstanding._\n"
