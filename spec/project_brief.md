@@ -20,7 +20,7 @@ EventFrame contributes:
 2. A mathematical event-space formulation that distinguishes microscopic substrate from coarse event frames.
 3. A residual prediction model for approximating event transitions.
 4. A distinction between episodic key-value memory and residual cache memory.
-5. A property fuzzing method for invariant discovery.
+5. A property fuzzing method for invariant discovery and declared-map predictive chain translation.
 6. A lumpability framework for abstraction and state compression.
 7. An Anti-Pigeon principle for resisting premature collapse into overly broad categories.
 8. A reference runtime model separating fast-path prediction from slow-path refinement.

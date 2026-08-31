@@ -20,6 +20,8 @@ The eighth open problem is residual confidence under drift. Residuals are statis
 
 The ninth open problem is robust invariant extraction. Fuzzing can identify candidate invariants, but perturbation validity is hard. A counterfactual event may be syntactically valid but semantically impossible. Thresholds may be too permissive or too strict. Invariants may be local, conditional, or unstable under distribution shift.
 
+The ninth-a open problem is autonomous chain translation. The current runtime evaluates supplied stage correspondences over supplied observed trajectories. It does not discover maps, identify latent stage alignment, prove transition-kernel commutation, or separate a genuine transported mechanism from two chains that share convenient labels. Future work needs map proposal on design data, untouched path-level confirmation, uncertainty over alignment and correspondence, adversarial endpoint-only controls, Anti-Pigeon revocation, and, for causal claims, identified interventions plus explicit transport assumptions.
+
 The tenth open problem is abstraction quality. Approximate predictive lumpability is attractive, but exact lumpability is usually too strong. The framework needs practical criteria for deciding when an abstraction is good enough for one target but unsafe for another. An abstraction that preserves timing may destroy causal explanation.
 
 The eleventh open problem is confluence and divergence detection. A system needs criteria for deciding when event streams have truly become prediction-equivalent and when small distinctions are about to amplify. Bad confluence loses necessary distinctions; bad divergence preserves noise as if it were signal.

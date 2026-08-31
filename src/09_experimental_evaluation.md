@@ -25,6 +25,25 @@ This result supports one limited design decision: when the nominated frontier is
 
 A separate sequential Apple M4 benchmark used a 1,000-event local vector-database fixture, 384-dimensional SQ8 retrieval, \(\mathrm{recall\_k}=50\), and \(\mathrm{pack\_k}=10\). The corrected contract-12 rerun, in which canonical 5W1H text rather than raw transcript text supplied the semantic corpus, measured p99 ranges of 9.988--11.014 ms across five runs. A 10,000-event in-memory fixture measured 7.981--8.513 ms p99. The runs included service logic, database access, bounded Bayesian evaluation, journaling, reranking, and packing, but excluded external embedding calls, remote transport, concurrency, and cold start. They support only a narrow sequential local claim; the concurrent results below do not retain the sub-100 ms tail.
 
+### Public-grounded chain-translation controls
+
+The preceding contract-15 property-fuzzing audit used the checked-in 32-session public-fact corpus and a normalized 256-dimensional local embedding-nomination law. In design, context relocation was stable in 96/96 trials with mean total variation 0.00163 and Bonferroni-simultaneous one-sided LCB 0.95495; same-answer paraphrase was stable in 72/72 with mean 0.00823 and LCB 0.94083. Unrelated cross-domain semantic-bundle substitution was stable in only 90/96 with mean 0.02367 and LCB 0.86277, below the frozen 0.90 requirement. On the smaller confirmation split, point rates were 32/32, 24/24, and 29/32, while simultaneous LCBs were 0.87603, 0.84126, and 0.74156. Thus the negative control remained non-invariant, but context and paraphrase confirmation were provisional for insufficient simultaneous support rather than validated. These are model-sensitivity fingerprints; the paraphrase family used constructed oracle links and no result establishes causality or autonomous abstraction.
+
+Contract 16 adds a read-only chain audit after retrieval and outside the recall hot path. Its deterministic controls use NIST's published relation \(T/K=t/{}^\circ C+273.15\) (<https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-4-two-classes-si-units-and-si-prefixes>). Each split contains eight query variants for three families: a Celsius/kelvin chain in which the temperature distinction propagates through all three aligned stages, an observer-label change erased before the terminal water-phase result, and a negative control with an undeclared intermediate location change. The frozen local-hash thresholds were \(\eta_{\mathrm{inv}}=0.02\) and \(\eta_{\mathrm{tr}}=0.01\).
+
+| Split and family | Correct / total | Runtime label |
+| --- | ---: | --- |
+| Design: propagated translation | 8 / 8 | Predictive translation candidate |
+| Design: terminal erasure | 8 / 8 | Higher-order invariant candidate |
+| Design: locality violation | 8 / 8 | Divergence |
+| Confirmation: propagated translation | 8 / 8 | Predictive translation candidate |
+| Confirmation: terminal erasure | 8 / 8 | Higher-order invariant candidate |
+| Confirmation: locality violation | 8 / 8 | Divergence |
+
+Across confirmation translation controls, predictor-effect defect ranged from 0.00208 to 0.00426, below the frozen 0.01 threshold. The one nonzero confirmation invariant movement was at most 0.01059, below the frozen 0.02 threshold. The divergence controls failed because locality was false; the optimized evaluator therefore stopped before prediction and marked those numeric prediction fields as non-measurements. A 32-stage, 256-dimensional local benchmark on Apple M4 measured 48.3--48.5 microseconds per warm exact audit across five runs, with about 22.1 KB and 399 allocations per operation. The corresponding cold path measured 245.7--247.7 microseconds with about 294.5 KB and 2,983 allocations, while structural divergence measured 34.1--34.2 microseconds with about 10.7 KB and seven allocations. The warm path reused version-matched stored EventFrame vectors, snapshot-bound raw nomination scores, and the canonical query vector; it did not quantize vectors or alter thresholds. Store access and remote embedding time are excluded.
+
+These are mechanism controls over a supplied public correspondence, not a learned-domain-translation result. They do not test autonomous map discovery, equality of unknown transition kernels, task-level transfer, sheaf-snap benefit, or causal transport. The confirmation query list was separate, but the fixture family and public mapping were deliberately the same, so the result is not independent real-world replication. Aggregate outputs are preserved under `evidence/property-fuzz-v1/` and `evidence/chain-translation-v1/`; complete generated inputs remain in the public `eventframed` repository.
+
 ## Additional Bayesian and Anti-Pigeon Mechanism Evidence
 
 Further experiments used the same Go reference service or its production Bayesian primitives with fixed synthetic generators. These experiments specialize the target to Bernoulli retrieval usefulness; they do not evaluate the paper's complete marked-time/no-event law.
@@ -151,13 +170,15 @@ The same experiment includes an adversarial stability stress test with alternati
 
 Runtime reporting includes corpus size, frontier size, admitted count, posterior-hypothesis count, run-length support after pruning, cache hit rate, memory, and 50th, 95th, and 99th percentile latency for \(\mathcal B_0\) through \(\mathcal B_3\). Evaluate exact or near-exact streaming updates against capped approximations on short sequences where an oracle is computable. A fixed-resource claim passes only if vector retrieval, graph degrees, frontier and admitted counts, hypotheses, update rank, audit reservoir, and changepoint state are all bounded and approximation error remains within its preregistered tolerance.
 
-The fifth experiment evaluates property fuzzing. For each field \(\phi_i\), perturb it across a declared range and compute:
+The fifth experiment evaluates property fuzzing and chain translation. For each field \(\phi_i\), perturb it across a declared range and compute:
 
 \[
 S_g = \min\left(1, \frac{\Delta_g}{\eta_g}\right).
 \]
 
 The experiment should compare discovered stable fields to the known generating rules. If the generator makes location irrelevant to timing, temporal fuzzing should identify location as stable for that target. If the generator makes actor identity relevant, actor perturbation should change temporal predictions beyond threshold.
+
+For chain translation, generate two aligned domains with known stage maps, baseline/revealed trajectories, terminal-erasure cases, full-propagation cases, and endpoint-matching chains whose intermediate square is deliberately broken. Report invariant, translation, and divergence confusion matrices; stage-locality failures; \(M_A\), \(M_B\), and \(D_{\mathrm{tr}}\); map-discovery error separately from classification error; and performance against endpoint-only and unconstrained-fuzzing baselines. In an SCM generator, separately test whether identified transition operators satisfy the stronger commuting condition. Ordinary observed-path results remain predictive.
 
 The sixth experiment tests ontology review. Deliberately misassign generated fields and use \(I_{i\rightarrow g}^{\mathrm{model}}\) to nominate retain, migrate, split, or uncertain states. Report recovery of predictive roles. Evaluate causal-role recovery only in generators whose structural equations and randomized interventions are known.
 

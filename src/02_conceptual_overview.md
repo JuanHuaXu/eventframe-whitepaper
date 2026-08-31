@@ -37,6 +37,12 @@ This supports both directions of revision. Events that repeatedly behave alike m
 
 Every group retains at least one concrete traceability frame and a broader audit set. The concrete frame makes the abstraction inspectable; the audit set tests whether the group is hiding divergent boundary cases. One representative alone is never treated as proof that the whole group is stable.
 
+## Invariance and domain translation
+
+Fuzzing one variable can reveal two different structures. If the variable changes upstream but the final result and prediction remain effectively unchanged, EventFrame treats that distinction as a candidate for a higher-order abstraction. If the corresponding variable changes at every aligned stage of another domain, while all unrelated variables remain fixed, EventFrame treats the pair as a predictive translation candidate. A temperature chain written in Celsius and the same chain written in kelvins is a simple declared-map example: the raw values differ, but the frozen conversion explains how they correspond.
+
+Translation must hold through the chain, not only at its endpoint. If an intermediate stage changes an unrelated variable, endpoint agreement does not rescue the mapping. Anti-Pigeon keeps the chains separate until external evidence supports the proposed correspondence. The ordinary runtime calls this predictive chain translation. It uses the stronger causal label only when intervention evidence and a structural causal model justify it.
+
 ## Fast path and slow path
 
 The fast path is designed for bounded local work: retrieve a capped frontier, update cached sufficient statistics, reuse valid corrections, rerank a bounded packet, and respond. The slow path performs particle methods, broad model comparison, abstraction audits, changepoint review, compatibility analysis, and recalibration asynchronously or under explicit resource budgets.

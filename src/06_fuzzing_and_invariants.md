@@ -61,6 +61,90 @@ An operational protocol is:
 
 Synthetic frames are never inserted into episodic memory as observations. They may be stored in a separate audit log with their generating operator and validity assumptions.
 
+## Predictive chain translation
+
+A single-field sensitivity test does not establish domain translation. Translation requires the perturbation to remain aligned along a complete time-ordered chain. Let domains \(A\) and \(B\) each supply a baseline trajectory and a revealed trajectory of equal finite length \(m_{\mathrm{ch}}\):
+
+\[
+E_A^{(b)}=(e_{A,0}^{(b)},\ldots,e_{A,m_{\mathrm{ch}}-1}^{(b)}),
+\qquad
+E_B^{(b)}=(e_{B,0}^{(b)},\ldots,e_{B,m_{\mathrm{ch}}-1}^{(b)}),
+\qquad b\in\{0,1\}.
+\]
+
+The superscript \(b=0\) denotes the baseline chain and \(b=1\) the chain after the revealing upstream distinction. At every stage \(j\), let \(\phi_{A,j}\) and \(\phi_{B,j}\) be the declared 5W1H coordinate projections and freeze a partial correspondence \(T_j\) satisfying, on the supplied pair,
+
+\[
+T_j\!\left(\phi_{A,j}(e_{A,j}^{(b)})\right)
+=\phi_{B,j}(e_{B,j}^{(b)}),
+\qquad b\in\{0,1\}.
+\]
+
+Raw equality is not required: \(T_j\) may encode a unit conversion, vocabulary map, or other externally justified correspondence. Its generating procedure and validity evidence are part of the audit contract.
+
+Let \(J_j^{\mathrm{loc}}=1\) only when the observed before and after values match the frozen correspondence and every non-target 5W1H coordinate remains unchanged in both domains. Let \(J_j^{\mathrm{map}}=1\) only when the mapped coordinate changes in both domains. The strict propagation and terminal-erasure indicators are
+
+\[
+\begin{aligned}
+J_{\mathrm{prop}}&=\prod_{j=0}^{m_{\mathrm{ch}}-1}J_j^{\mathrm{map}},
+&J_{\mathrm{erase}}&=\mathbf 1\{J_{m_{\mathrm{ch}}-1}^{\mathrm{map}}=0\},\\
+J_{\mathrm{pred}}&=\mathbf 1\!\left\{
+\prod_jJ_j^{\mathrm{loc}}=1
+\ \land\ (J_{\mathrm{prop}}=1\ \lor\ J_{\mathrm{erase}}=1)
+\right\}.
+\end{aligned}
+\]
+
+Stage zero must have \(J_0^{\mathrm{map}}=1\). Later stages may change in both domains or remain unchanged in both. A change in an undeclared coordinate sets \(J_j^{\mathrm{loc}}=0\), even if the terminal values happen to agree. Thus endpoint agreement cannot hide a broken intermediate square.
+
+For the current executable diagnostic, evaluate the predictive law only when \(J_{\mathrm{pred}}=1\). Then let \(p_A^{(b)},p_B^{(b)}\in\Delta^{m_{\mathrm{ch}}-1}\) be normalized nomination laws over the aligned stages under the declared query and define signed predictor effects and domain-wise movement by
+
+\[
+\delta_{A,j}=p_{A,j}^{(1)}-p_{A,j}^{(0)},
+\qquad
+\delta_{B,j}=p_{B,j}^{(1)}-p_{B,j}^{(0)},
+\]
+
+\[
+M_A=\frac12\sum_{j=0}^{m_{\mathrm{ch}}-1}|\delta_{A,j}|,
+\qquad
+M_B=\frac12\sum_{j=0}^{m_{\mathrm{ch}}-1}|\delta_{B,j}|,
+\qquad
+D_{\mathrm{tr}}=\frac12\sum_{j=0}^{m_{\mathrm{ch}}-1}|\delta_{A,j}-\delta_{B,j}|.
+\]
+
+With frozen tolerances \(\eta_{\mathrm{inv}},\eta_{\mathrm{tr}}>0\), the runtime classification is
+
+\[
+\mathcal C_{\mathrm{chain}}=
+\begin{cases}
+\mathrm{invariant},&
+\prod_jJ_j^{\mathrm{loc}}=1, J_{\mathrm{erase}}=1,
+\ \max(M_A,M_B)\le\eta_{\mathrm{inv}},\\
+\mathrm{translation},&
+\prod_jJ_j^{\mathrm{loc}}=1, J_{\mathrm{prop}}=1,
+\ D_{\mathrm{tr}}\le\eta_{\mathrm{tr}},
+\ |\delta_{A,m_{\mathrm{ch}}-1}-\delta_{B,m_{\mathrm{ch}}-1}|\le\eta_{\mathrm{tr}},\\
+\mathrm{divergence},&\text{otherwise.}
+\end{cases}
+\]
+
+When \(J_{\mathrm{pred}}=0\), structural checks already force the third branch, so \(M_A\), \(M_B\), \(D_{\mathrm{tr}}\), and terminal effect agreement are not evaluated. A wire-format zero in those fields is a placeholder accompanied by a false `prediction-evaluated` flag, not a measured zero.
+
+Exact score reuse does not change this classifier. Let \(\kappa\) be the ordered cache identity with components \(q\), \(\upsilon_{\mathrm{emb}}\), \(\upsilon_{\mathrm{5W1H}}\), \(S_{t^-}\), \(u\), and \(e\): respectively the canonical query, embedding-model version, semantic-representation version, complete captured snapshot, tenant, and event identity, which is immutable within that snapshot. A hit is admissible only under exact equality of \(\kappa\), in which case the cached raw nomination score satisfies \(s_{\mathrm{cache}}(\kappa)=s_{\mathrm{fresh}}(\kappa)\). Any model, representation, snapshot, tenant, identity, or generated-frame digest mismatch recomputes the score. Thus eviction or a cache miss changes cost but not the normalized law.
+
+For bounded chain length, the local execution cost is \(T_{\mathrm{chain}}=T_{\mathrm{struct}}+J_{\mathrm{pred}}T_{\mathrm{law}}\). Structural validation and a warm exact-score hit are each \(O(m_{\mathrm{ch}})\); a cold dense-vector audit is \(O(m_{\mathrm{ch}}d)\) for embedding dimension \(d\). Store access, remote embedding, cache maintenance, and concurrency are measured separately.
+
+The first branch means that the declared upstream distinction is erased at the terminal stage and is a candidate for higher-order abstraction. The second means that the mapped distinction propagates with bounded predictive-effect defect while other coordinates stay fixed. The third preserves the chains separately for Anti-Pigeon review. These labels are proposal-only. A declared map cannot certify itself, authorize a posterior merge, or publish a sheaf snap.
+
+This finite observed-path test checks commuting squares only on the supplied trajectories. It does not prove equality of unknown transition kernels. If explicit transition maps \(K_{A,j}\) and \(K_{B,j}\) are available, the stronger requirement is
+
+\[
+T_{j+1}\circ K_{A,j}\approx K_{B,j}\circ T_j
+\]
+
+under a declared edge-space metric and simultaneous uncertainty procedure. Without an identified SCM and intervention evidence, the result is called predictive chain translation. Only identified intervention operators, stated transport assumptions, and valid causal evidence permit the stronger phrase causal chain translation.
+
 Graph perturbation follows the same rule. Let \(G_t=(V_t,R_t)\) be a time-unrolled predictive graph and let:
 
 \[

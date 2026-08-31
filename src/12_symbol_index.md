@@ -110,6 +110,22 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\mathfrak M=(U,V,F,P_U)\): structural causal model required for \(do\)-intervention notation.
 
+\(E_A^{(b)},E_B^{(b)},m_{\mathrm{ch}}\): equal-length baseline/revealed trajectories in two aligned domains and their stage count; \(b=0\) is baseline and \(b=1\) is revealed.
+
+\(\phi_{A,j},\phi_{B,j},T_j,J_j^{\mathrm{loc}},J_j^{\mathrm{map}}\): declared stage-coordinate projections, frozen cross-domain correspondence, unchanged-coordinate locality-and-map indicator, and mapped-change propagation indicator.
+
+\(J_{\mathrm{prop}},J_{\mathrm{erase}},J_{\mathrm{pred}}\): complete-chain propagation, terminal-erasure, and predictive-law eligibility indicators.
+
+\(p_A^{(b)},p_B^{(b)},\delta_{A,j},\delta_{B,j}\): normalized stage-nomination laws and their signed baseline-to-revealed effects.
+
+\(M_A,M_B,D_{\mathrm{tr}},\eta_{\mathrm{inv}},\eta_{\mathrm{tr}},\mathcal C_{\mathrm{chain}}\): domain-wise predictor movement, cross-domain signed-effect defect, frozen invariant and translation thresholds, and invariant/translation/divergence classifier.
+
+\(\kappa,s_{\mathrm{cache}},s_{\mathrm{fresh}}\): exact snapshot-bound nomination-score cache identity, cached raw score, and freshly computed raw score.
+
+\(T_{\mathrm{chain}},T_{\mathrm{struct}},T_{\mathrm{law}},d\): complete chain-audit cost, structural-validation cost, predictive-law cost, and embedding dimension.
+
+\(K_{A,j},K_{B,j}\): optional explicit stage-transition maps used only by the stronger kernel-level commuting condition.
+
 \(\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}\), \(h_\pi\), \(K\), \(\mathfrak K_\pi\), \(\mathfrak K_\pi^+\): abstraction map, operational abstraction key including costed side information, one event bucket, all induced buckets, and active buckets with admissible contexts.
 
 \(\bar e_K\), \(\mathfrak C_K\), \(\mathcal R_C(K)\): concrete traceability frame, contexts anchored in a bucket, and coverage-aware context audit set.

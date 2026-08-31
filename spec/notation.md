@@ -749,6 +749,55 @@ D_Y^{\mathrm{law}}(P_{\mathfrak M}(Y\mid do(V_j=v')),P_{\mathrm{ref}}(Y)).
 
 The reference law is declared. This is an effect magnitude, not a signed effect. The symbol \(do\) is never applied directly to a graph perturbation.
 
+For predictive chain translation, let \(E_A^{(b)}\) and \(E_B^{(b)}\), \(b\in\{0,1\}\), be equal-length, time-ordered baseline and revealed trajectories in two domains with \(m_{\mathrm{ch}}\) stages. Declared coordinate projections \(\phi_{A,j}\) and \(\phi_{B,j}\) and a frozen partial map \(T_j\) satisfy \(T_j(\phi_{A,j}(e_{A,j}^{(b)}))=\phi_{B,j}(e_{B,j}^{(b)})\) on both supplied paths. The locality indicator \(J_j^{\mathrm{loc}}\) is one only when the mapped before/after values agree with \(T_j\) and every non-target 5W1H coordinate is unchanged. The mapped-change indicator \(J_j^{\mathrm{map}}\) is one only when the mapped coordinate changes in both domains. Define
+
+\[
+\begin{aligned}
+J_{\mathrm{prop}}&=\prod_jJ_j^{\mathrm{map}},
+&J_{\mathrm{erase}}&=\mathbf1\{J_{m_{\mathrm{ch}}-1}^{\mathrm{map}}=0\},\\
+J_{\mathrm{pred}}&=\mathbf1\!\left\{
+\prod_jJ_j^{\mathrm{loc}}=1
+\ \land\ (J_{\mathrm{prop}}=1\ \lor\ J_{\mathrm{erase}}=1)
+\right\}.
+\end{aligned}
+\]
+
+Only for \(J_{\mathrm{pred}}=1\), let normalized stage-nomination laws \(p_A^{(b)},p_B^{(b)}\in\Delta^{m_{\mathrm{ch}}-1}\) define
+
+\[
+\delta_{A,j}=p_{A,j}^{(1)}-p_{A,j}^{(0)},
+\qquad
+\delta_{B,j}=p_{B,j}^{(1)}-p_{B,j}^{(0)},
+\]
+
+\[
+M_A=\frac12\sum_j|\delta_{A,j}|,
+\qquad
+M_B=\frac12\sum_j|\delta_{B,j}|,
+\qquad
+D_{\mathrm{tr}}=\frac12\sum_j|\delta_{A,j}-\delta_{B,j}|.
+\]
+
+The executable classifier uses the ordered cases
+
+\[
+\mathcal C_{\mathrm{chain}}=
+\begin{cases}
+\mathrm{invariant},&\prod_jJ_j^{\mathrm{loc}}=1, J_{\mathrm{erase}}=1,
+\ \max(M_A,M_B)\le\eta_{\mathrm{inv}},\\
+\mathrm{translation},&\prod_jJ_j^{\mathrm{loc}}=1, J_{\mathrm{prop}}=1,
+\ D_{\mathrm{tr}}\le\eta_{\mathrm{tr}},
+\ |\delta_{A,m_{\mathrm{ch}}-1}-\delta_{B,m_{\mathrm{ch}}-1}|\le\eta_{\mathrm{tr}},\\
+\mathrm{divergence},&\text{otherwise.}
+\end{cases}
+\]
+
+For \(J_{\mathrm{pred}}=0\), structural failure already determines divergence; \(M_A\), \(M_B\), \(D_{\mathrm{tr}}\), and terminal effect agreement are undefined diagnostics rather than observed zeros. The implementation may serialize zero placeholders only together with a false `prediction-evaluated` flag.
+
+Let \(\kappa\) be the exact ordered nomination-score cache identity with components \(q\), \(\upsilon_{\mathrm{emb}}\), \(\upsilon_{\mathrm{5W1H}}\), \(S_{t^-}\), \(u\), and \(e\): canonical query, embedding-model version, semantic-representation version, complete captured snapshot, tenant, and event identity, immutable within the snapshot. Cache reuse requires equality of every component and obeys \(s_{\mathrm{cache}}(\kappa)=s_{\mathrm{fresh}}(\kappa)\). Generated or changed frames use their canonical semantic digest instead of a durable event identity. A mismatch or eviction recomputes the score and cannot change the normalized law. With embedding dimension \(d\), \(T_{\mathrm{chain}}=T_{\mathrm{struct}}+J_{\mathrm{pred}}T_{\mathrm{law}}\): structural validation and a warm exact-score hit are \(O(m_{\mathrm{ch}})\), while a cold dense-vector audit is \(O(m_{\mathrm{ch}}d)\). Store and remote-embedding costs remain separate.
+
+This is a declared-map observed-path diagnostic. The stronger kernel-level condition \(T_{j+1}\circ K_{A,j}\approx K_{B,j}\circ T_j\) requires explicit transition maps and a declared edge metric. Neither form is causal without an identified SCM, intervention evidence, and transport assumptions.
+
 For a finite non-empty distinction set \(\mathcal D_t\), let \(\Theta_\Gamma^{-d}\) be the predeclared ablation of distinction \(d\), fitted on design data under the same protocol. Define the paired proper-risk effect under the confirmation-generating law and, after freezing every design, its estimate:
 
 \[

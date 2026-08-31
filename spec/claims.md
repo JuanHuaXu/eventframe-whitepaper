@@ -101,7 +101,13 @@ Status: definitional and architectural claim.
 
 Validity-constrained perturbation can identify conditional model invariants. It measures predictor sensitivity, not real-world causal effect unless an explicit causal model and identification strategy are supplied.
 
-Status: methodological claim; requires controlled experiments and explicit temporal-error thresholds.
+Status: executable mechanism with public-fact design evidence and smaller provisional confirmation. Context and paraphrase families passed the design simultaneous bound; unrelated semantic substitution did not. Confirmation support was insufficient for the positive families to reach the frozen simultaneous threshold.
+
+## Claim 4a: Domain translation is chain-wide predictive commutation
+
+A declared cross-domain correspondence is a predictive chain-translation candidate only when its mapped distinction propagates through every aligned stage, non-target coordinates remain fixed, terminal signed effects agree, and the complete signed-effect defect is bounded. Terminal erasure with small movement is a higher-order invariant candidate; a failed intermediate square is divergence even when endpoints agree. This observed-path rule neither discovers the correspondence nor proves equality of unknown transition kernels. Causal chain translation additionally requires an identified SCM, intervention evidence, and transport assumptions.
+
+Status: executable mechanism with public-grounded declared-map controls; autonomous map discovery, kernel-level translation, and causal transport remain untested.
 
 ## Claim 5: Lumpability provides a formal route to abstraction
 

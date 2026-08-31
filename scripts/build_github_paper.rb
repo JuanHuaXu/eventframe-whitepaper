@@ -17,7 +17,7 @@ NATIVE_DISPLAY_MATH = 191
 # Keep the governing promotion, descent, and point-composition equations native.
 # The indexed semantic fallbacks are simple definitions or already summarized
 # in nearby prose; their count preserves GitHub's page-scale math-node budget.
-SEMANTIC_DISPLAY_INDICES = [0, 2, 4, 5, 8, 9, 12, 13, 191, 192, 193, 194, 195].freeze
+SEMANTIC_DISPLAY_INDICES = [0, 2, 4, 5, 8, 9, 12, 13, 139, 140, 141, 142, 143, 144, 145, 198, 199, 200, 201, 202].freeze
 SEMANTIC_DISPLAY_MATH = [
   '<div align="center"><i>e</i><sub>t</sub> = (<i>w</i><sub>t</sub>, <i>a</i><sub>t</sub>, τ<sub>t</sub>, ℓ<sub>t</sub>, <i>m</i><sub>t</sub>, <i>h</i><sub>t</sub>, <i>x</i><sub>t</sub>, <i>c</i><sub>t</sub>).</div>',
   '<div align="center"><i>e</i><sub>t</sub> = Γ<sub>Δ<sub>τ</sub></sub>(ω<sub><i>A</i><sub>t</sub></sub>).</div>',
@@ -27,6 +27,13 @@ SEMANTIC_DISPLAY_MATH = [
   '<div align="center"><i>C</i><sub>t</sub> = <i>e</i><sub><i>t</i>−<i>k</i>+1:<i>t</i></sub> ∈ ℰ<sup><i>k</i></sup>.</div>',
   '<div align="center">𝖰<sub>θ</sub>(· | <i>C</i><sub>t</sub>) ∈ 𝒫(𝒵<sub><i>H</i></sub>).</div>',
   '<div align="center"><i>d</i><sub><i>H</i></sub>: 𝒫(𝒵<sub><i>H</i></sub>) → 𝒵<sub><i>H</i></sub>.</div>',
+  '<div align="center"><i>E</i><sub><i>A</i></sub><sup>(<i>b</i>)</sup> = (<i>e</i><sub><i>A</i>,0</sub><sup>(<i>b</i>)</sup>, …, <i>e</i><sub><i>A</i>,<i>m</i><sub>ch</sub>−1</sub><sup>(<i>b</i>)</sup>), &nbsp; <i>E</i><sub><i>B</i></sub><sup>(<i>b</i>)</sup> defined likewise, &nbsp; <i>b</i> ∈ {0,1}.</div>',
+  '<div align="center"><i>T</i><sub><i>j</i></sub>(φ<sub><i>A</i>,<i>j</i></sub>(<i>e</i><sub><i>A</i>,<i>j</i></sub><sup>(<i>b</i>)</sup>)) = φ<sub><i>B</i>,<i>j</i></sub>(<i>e</i><sub><i>B</i>,<i>j</i></sub><sup>(<i>b</i>)</sup>), &nbsp; <i>b</i> ∈ {0,1}.</div>',
+  '<div align="center"><i>J</i><sub>prop</sub> = ∏<sub><i>j</i>=0</sub><sup><i>m</i><sub>ch</sub>−1</sup><i>J</i><sub><i>j</i></sub><sup>map</sup>, &nbsp; <i>J</i><sub>erase</sub> = 1{<i>J</i><sub><i>m</i><sub>ch</sub>−1</sub><sup>map</sup> = 0},<br><i>J</i><sub>pred</sub> = 1{∏<sub><i>j</i></sub><i>J</i><sub><i>j</i></sub><sup>loc</sup> = 1 ∧ (<i>J</i><sub>prop</sub> = 1 ∨ <i>J</i><sub>erase</sub> = 1)}.</div>',
+  '<div align="center">δ<sub><i>A</i>,<i>j</i></sub> = <i>p</i><sub><i>A</i>,<i>j</i></sub><sup>(1)</sup> − <i>p</i><sub><i>A</i>,<i>j</i></sub><sup>(0)</sup>, &nbsp; δ<sub><i>B</i>,<i>j</i></sub> defined likewise.</div>',
+  '<div align="center"><i>M</i><sub><i>A</i></sub> = ½∑<sub><i>j</i></sub>|δ<sub><i>A</i>,<i>j</i></sub>|, &nbsp; <i>M</i><sub><i>B</i></sub> = ½∑<sub><i>j</i></sub>|δ<sub><i>B</i>,<i>j</i></sub>|, &nbsp; <i>D</i><sub>tr</sub> = ½∑<sub><i>j</i></sub>|δ<sub><i>A</i>,<i>j</i></sub> − δ<sub><i>B</i>,<i>j</i></sub>|.</div>',
+  '<div align="center"><i>C</i><sub>chain</sub> = invariant under locality, terminal erasure, and bounded movement; translation under locality, full propagation, and bounded effect defect; divergence otherwise.</div>',
+  '<div align="center"><i>T</i><sub><i>j</i>+1</sub> ∘ <i>K</i><sub><i>A</i>,<i>j</i></sub> ≈ <i>K</i><sub><i>B</i>,<i>j</i></sub> ∘ <i>T</i><sub><i>j</i></sub>.</div>',
   '<div align="center"><i>d</i><sub>t</sub>(<i>h</i>) = max({0} ∪ {<i>r</i><sub>1</sub>, …, <i>r</i><sub><i>N</i><sub>t</sub></sub>}).</div>',
   '<div align="center"><i>T</i><sub>comp</sub> = O(∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub></sub> <i>C</i><sub><i>D</i><sub><i>e</i></sub></sub>),</div>',
   '<div align="center"><i>T</i><sub>snap</sub> ≤ <i>T</i><sub>generate</sub> + ∑<sub>Ξ′∈𝔖<sub>t</sub></sub>[<i>T</i><sub>refit</sub>(Ξ′) + ∑<sub><i>e</i>∈<i>E</i><sub>Δ</sub>(Ξ′)</sub><i>C</i><sub><i>D</i><sub><i>e</i></sub></sub> + <i>T</i><sub>obl</sub>(Ξ′) + <i>T</i><sub>score</sub>(Ξ′)] + <i>T</i><sub>confirm</sub> + <i>T</i><sub>publish</sub>.</div>',

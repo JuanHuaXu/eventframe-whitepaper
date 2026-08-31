@@ -21,7 +21,7 @@ The contributions of this paper are therefore:
 3. A residual prediction model with constrained composition and action-residual fast-path caching.
 4. A bounded Bayesian update frontier with a frontier-all cheap-update reference policy, selective deep review, Anti-Pigeon posterior-sharing control, fail-closed shock revocation, a practical-equivalence split/share diagnostic with bounded borrowing, selection-aware semantics, bounded cumulative changepoint invalidation, and independent audit sampling.
 5. A combined episodic, residual, and bounded belief-memory architecture.
-6. A validity-constrained sensitivity method for conditional invariants and ontology review.
+6. A validity-constrained sensitivity method for conditional invariants, chain-wide predictive translation, and ontology review.
 7. A lumpability-based approach to abstraction.
 8. A bounded predictive sheaf-snapping rule for validated local compatibility-graph revision.
 9. A fast-path and slow-path reference runtime model with reliability-gated elastic rank correction at the packing boundary.

@@ -236,6 +236,14 @@ A validity-constrained method for testing predictor sensitivity to selected even
 
 A property or relation that remains stable under a defined class of event perturbations.
 
+## Predictive Chain Translation
+
+A proposal-only relation between two declared, aligned baseline/revealed trajectories. The mapped distinction must propagate through every stage, all non-target 5W1H coordinates must remain unchanged, and the signed predictor-effect defect must stay below a frozen threshold. Terminal erasure with small movement is classified as a higher-order invariant instead. A failed intermediate square is divergence even when endpoints agree. The observed-path relation does not discover its own maps or establish causality.
+
+## Causal Chain Translation
+
+The stronger claim that identified intervention transition operators commute under declared cross-domain maps and transport assumptions. Ordinary explanatory or predictive graphs do not satisfy this definition merely because their observed paths align.
+
 ## Lumpability
 
 A condition under which many detailed states can be aggregated into a coarser state without losing relevant predictive behavior.

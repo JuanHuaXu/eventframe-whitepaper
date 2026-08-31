@@ -61,6 +61,8 @@ State the problem, proposed architecture, current evidence, falsified claims, an
 
 - Validity-constrained perturbation
 - Conditional invariants and boundary discovery
+- Chain-wide invariant, predictive-translation, and divergence classification
+- Observed-path versus SCM-backed causal translation
 - Distinction between sensitivity and causality
 
 ## 8. Abstraction, Anti-Pigeon, and Sheaf Snapping
