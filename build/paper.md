@@ -80,6 +80,8 @@ The fast path follows one bounded sequence:
 
 This ordering matters. The answer must survive retrieval into the candidate frontier before EventFrame can rerank it. A packer that truncates to ten items before a fifty-candidate reranker runs has already discarded forty candidates and cannot recover them.
 
+After a successful low-certainty recall, an implementation may also place a bounded fuzz nomination on an incubation queue. Nomination reuses the already retrieved frontier and does not run perturbation analysis before the response. A background worker may later test the proposal while the serving path is idle; any resulting invariant or translation remains a review proposal rather than an automatic memory or ontology edit.
+
 ### Learning after the outcome
 
 Learning happens after the relevant outcome becomes available. EventFrame records whether the forecast or retrieved memory was useful, updates the corresponding belief and residual confidence, and checks whether the current abstraction remains valid. It does not use future outcomes while making the earlier prediction.
@@ -102,7 +104,7 @@ Translation must hold through the chain, not only at its endpoint. If an interme
 
 ### Fast path and slow path
 
-The fast path is designed for bounded local work: retrieve a capped frontier, update cached sufficient statistics, reuse valid corrections, rerank a bounded packet, and respond. The slow path performs particle methods, broad model comparison, abstraction audits, changepoint review, compatibility analysis, and recalibration asynchronously or under explicit resource budgets.
+The fast path is designed for bounded local work: retrieve a capped frontier, update cached sufficient statistics, reuse valid corrections, rerank a bounded packet, optionally enqueue a bounded audit nomination, and respond. The slow path performs particle methods, broad model comparison, fuzz and abstraction audits, changepoint review, compatibility analysis, and recalibration asynchronously or under explicit resource budgets.
 
 Future hardware may permit more slow-path stages to run more often, but it does not change their meaning or remove their evidence requirements. A faster machine cannot turn model sensitivity into causality, make a stale residual valid, or allow a proposed group to certify itself.
 
@@ -1719,6 +1721,14 @@ An operational protocol is:
 
 Synthetic frames are never inserted into episodic memory as observations. They may be stored in a separate audit log with their generating operator and validity assumptions.
 
+### Background fuzz incubation
+
+Fuzzing is not part of the immediate prediction computation. A conforming implementation may nominate work after a successful response when the packing-boundary certainty $c_t^{\mathrm{pack}}$ is no greater than a frozen trigger $\tau_{\mathrm{fuzz}}$, the already retrieved audit frontier contains at least two and at most $B_{\mathrm{fuzz}}$ evidence-bearing events, and the declared perturbation family is non-empty. Write the resulting indicator as $J_t^{\mathrm{fuzz}}$. This is a scheduling rule, not evidence that the nominated case contains an invariant.
+
+Nomination must be bounded and nonblocking. It reuses the as-of query vector, snapshot, and capped candidate set already produced by recall, stores no synthetic frame as an observation, and may be discarded when a bounded queue is full. Equivalent candidate sets are deduplicated under a frozen cooldown. A worker executes the job later under a timeout and only when serving work is idle; a changed snapshot makes the job stale and causes rejection rather than silent reinterpretation. The worker emits an audit proposal only. Publication still requires the held-out validity, Anti-Pigeon, version, and evidence procedures defined elsewhere in this paper.
+
+Because $J_t^{\mathrm{fuzz}}$ selects low-certainty successful recalls, conclusions from this queue describe the trigger-selected stream. They do not estimate corpus-wide invariant prevalence unless an independent randomized or exhaustive audit supplies known inclusion support and an appropriate simultaneous uncertainty procedure. Queue depth, delay, drops, deduplication, stale rejection, failures, and externally reviewed proposal yield must be reported beside any benefit claim.
+
 ### Predictive chain translation
 
 A single-field sensitivity test does not establish domain translation. Translation requires the perturbation to remain aligned along a complete time-ordered chain. Let domains $A$ and $B$ each supply a baseline trajectory and a revealed trajectory of equal finite length $m_{\mathrm{ch}}$:
@@ -2233,7 +2243,7 @@ The reference fast path is:
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate $\mathcal R_{\mathrm{pre}}$, confidence, effective support, age, epoch, margin, provenance, and decoder validity from $S_{t^-}$.
 10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute $c_t^{\mathrm{pack}}$, apply only reliability-gated elastic deltas, sort by $s_{i,t}^{\mathrm{final}}$, and then enforce packing-count and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act.
-11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle $\mathcal O_t^0$. Do not evaluate realized prediction loss yet.
+11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle $\mathcal O_t^0$. After a successful retrieval response, a low-certainty case may perform one bounded nonblocking fuzz nomination using the already materialized frontier. It does not execute fuzz prediction or evaluate realized prediction loss on the serving path.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
@@ -2264,13 +2274,16 @@ flowchart LR
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let $T_K$ be key-construction cost, $T_A$ exact-key lookup, $T_R(N)$ general residual retrieval, $T_E(M)$ episodic retrieval, $T_{\oplus}$ typed composition, $T_{\mathrm{Bayes}}^{\mathrm{fast}}$ the bounded-frontier Bayesian work, and $T_{\mathrm{rank}}(N_t)$ the boundary-certainty, delta-application, and bounded sorting cost. Then:
+Expected constant-time lookup is a conditional implementation property. Let $T_K$ be key-construction cost, $T_A$ exact-key lookup, $T_R(N)$ general residual retrieval, $T_E(M)$ episodic retrieval, $T_{\oplus}$ typed composition, $T_{\mathrm{Bayes}}^{\mathrm{fast}}$ the bounded-frontier Bayesian work, $T_{\mathrm{rank}}(N_t)$ the boundary-certainty, delta-application, and bounded sorting cost, and $T_{\mathrm{nom}}+T_{\mathrm{enq}}$ the optional bounded fuzz nomination and nonblocking enqueue cost. Then:
 
 $$
+\begin{aligned}
 T_{\mathrm{fast}}
-=T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
+={}&T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
 +I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}}
-+T_{\mathrm{rank}}(N_t),
++T_{\mathrm{rank}}(N_t)\\
+&+J_t^{\mathrm{fuzz}}(T_{\mathrm{nom}}+T_{\mathrm{enq}}),
+\end{aligned}
 $$
 
 where $I_R,I_E\in\{0,1\}$ indicate fallbacks. Let
@@ -2302,6 +2315,8 @@ $$
 This is history-independent only when $k_v$, sheaf-inspired degree $d_{\mathrm{sh}}$, as-of graph degree $d_G$, $B_{\max}$, $M_{\mathrm{hyp}}$, and $R_{\mathrm{cp}}$ are bounded, when the vector-index query itself has a declared bound, and when $T_{\mathrm{sel}}$ uses a bounded exact computation or a predeclared bounded approximation. Under $q_{\mathrm{FA}}$, $N_t^{\mathrm{upd},q_B}$ is the evidence-ready frontier size; under $q_{\mathrm{sel}}$, it is no larger. Thus frontier-all changes the bounded multiplicative constant, not the dependence on corpus size. Corpus size may still affect $T_{\mathrm{vec}}$, index construction, cache maintenance, and storage I/O. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on frontier width, particle count, parameter dimension, optimization iterations, graph degree, selection-probability evaluation, or hardware. Sliding-window maintenance gives $T_C=O(1)$. A bounded, already-constructed key and bounded hash table give expected $T_A=O(1)$. The claim fails if key construction scans unbounded context, frontier or graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, every term in $T_{\mathrm{sel}}$, and eviction costs must be measured rather than hidden inside the constant.
 
 The current Go reference runtime implements a narrower persistence discipline rather than treating these costs as free constants. Read-only graph and snapshot access uses shared locks. Immutable recall journals use striped record-identity locks and the vector store's bounded independent write lanes, so distinct journals may commit concurrently while duplicate identities remain serialized. Residual-record reads use bounded fan-out over the already capped frontier. The rank-delta sidecar uses concurrent WAL readers with one ordered writer, applies connection-local timeout and durability settings to every pooled SQLite connection, and omits records whose accepted-path reliability is zero. If a decision-relevant ingest commits between retrieval and journal publication, the complete recall is retried against the newer snapshot; the runtime does not merely relabel the stale result. These choices preserve snapshot and idempotency contracts, but they do not make persistence wait-free.
+
+The same runtime now implements fuzz incubation with a bounded in-process queue, set-based cooldown deduplication, one timeout-bounded worker, and an idle gate that prevents a job from starting while recall is active. Queue admission never waits: a full queue drops the nomination, and a snapshot mismatch drops the stale job without retry. Jobs retain a query vector and bounded semantic event bundles rather than raw query text, while the public status endpoint exposes only aggregate counters and the last aggregate outcome. The queue is deliberately non-durable in this version, so restart loses pending work. These properties establish bounded control flow, not zero latency cost, useful proposal yield, or population coverage.
 
 A rejected alternative batched multiple journals into one overlapping vector-store transaction. Under mixed recall and capture it produced 64 recall timeouts, an 8.001 s recall p99, and failed post-run health, so that design was removed. This negative control matters: group commit is beneficial only when its transaction scope and storage engine do not monopolize concurrent traversal. A separate append log or outbox may still be useful, but is not implied safe by batching alone.
 
@@ -2464,8 +2479,9 @@ The integration roadmap is cumulative:
 9. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
 10. Add predictive regime mixtures and deep Bayesian state-space refinement; promote causal interpretations only with explicit SCMs and identification assumptions.
 11. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
+12. Add background fuzz incubation only as a bounded proposal queue after response construction; validate trigger yield and mixed-load tail latency before promoting it beyond audit use.
 
-The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, fuzz nominations, queue delay, drops, deduplication, stale rejection, externally reviewed proposal yield, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
 
 With the representation, mathematics, and runtime now defined, the next section states the paper's claims and their current evidence status in one place.
 
@@ -2510,6 +2526,7 @@ The current experiment ledger labels a proposition Validated in fixture when its
 | 7, 7a | Corrected EventFrame-corpus recall remains below 100 ms local sequential p99 in the declared fixtures. | Validated, narrow benchmark | Contract-12 p99 ranged from 9.988 to 11.014 ms at 1,000 local SQ8 events and from 7.981 to 8.513 ms at 10,000 in-memory events. External embeddings, remote transport, concurrency, and cold start were excluded. |
 | 7, 7a | Corrected EventFrame-corpus recall remains below 100 ms p99 under the tested 16-worker mixed workload. | Falsified in runtime fixture | Earlier embedded and remote runs measured 218.75 and 219.85 ms p99. The final rescued embedded runtime measured 378.831 ms p99 with zero errors. The strict tail proposition remains false on the tested hosts; this does not imply inadequate ordinary latency or capacity. |
 | 7, 7a | The rescued embedded runtime provides practical single-host mixed-load capacity with sub-100 ms recall p50 and p95 on the named fixture. | Supported descriptively; not preregistered | On a 10-core, 16 GB Apple M4 Mac mini, 16 workers completed 6,104 operations in 30.402 s: 200.77 operations/s, zero request errors, 42.314 ms recall p50, and 63.848 ms recall p95. Recall p99 was 378.831 ms, so this row is not a strict-tail validation. |
+| 4, 7 | Low-certainty recalls can nominate bounded fuzz work without executing perturbation analysis inline. | Validated, mechanism only | Focused service tests exercised trigger, suppression, deduplication, queue-full drop, stale-snapshot rejection, aggregate-only status, and worker completion; the full race and build gates passed. Mixed-load latency neutrality and useful proposal yield are not tested. |
 | 2b, 7 | Explicit useful outcomes update the exact cached posterior and survive restart. | Validated, mechanism only | Ten exact-journal outcomes moved Beta(1,1) to Beta(11,1); probability 0.916667 and rank delta +0.067814 were reproduced after restart to floating-point tolerance. This does not establish organic feedback prevalence. |
 | 2c, 7 | Learned rank correction improves answer output through an isolated OpenClaw boundary. | Inconclusive | Fresh-session boundary tests validated storage, retrieval, packing, model delivery, isolation, and latency, but produced no nonzero rank deltas. The five-case organic smoke test had identical candidate order in both arms, so its 0/5 versus 1/5 answer difference is not attributable to reranking. |
 | 0, 1b, 2a, 3, 5--5b, 6a, 8, 8a | All remaining empirical propositions. | Not tested | The paper specifies protocols, but reports no claim-validating experiment for these propositions yet. Claim 1a is a scope statement rather than an empirical performance claim. |
@@ -2546,7 +2563,7 @@ Claim 6. Conditional on valid target-law estimation, audit coverage, simultaneou
 
 Claim 6a. Predictively effective distinctions are sparse only when their held-out ablation ratio is small within a finite declared candidate set. A causal sparsity ratio is a separate quantity available only under identified interventions.
 
-Claim 7. Fast-path and slow-path separation is computationally useful if low-latency prediction can reuse cached residuals while slower background work improves future predictions without blocking the current one.
+Claim 7. Fast-path and slow-path separation is computationally useful if low-latency prediction can reuse cached residuals and perform only bounded nonblocking audit nomination, while slower background work improves future predictions without blocking the current one. A background fuzz queue supports only a trigger-selected proposal stream until mixed-load latency, queue stability, independent coverage, and externally reviewed proposal yield are measured.
 
 Claim 7a. Expected exact-key lookup is history-independent only when context update, key construction, graph degree, key size, and cache size are bounded; fallback and maintenance costs remain explicit.
 
@@ -2698,6 +2715,12 @@ The result supports practical single-host capacity and sub-100 ms median and p95
 Ten exact-journal useful outcomes moved one posterior from Beta(1,1) to Beta(11,1), probability 0.916667, and applied rank delta +0.067814. Restart reproduced the posterior exactly; rank-delta and final-score drift were below $10^{-8}$. This validates explicit-feedback durability, not the frequency or utility of naturally occurring feedback.
 
 Taken together, the corrected evidence supports the EventFrame-corpus contract, bounded synthetic correction, deterministic retrospective retrieval improvement, storage/recovery mechanics, and practical local mixed-load capacity. It does not establish stationary calibration, prospective organic utility, strict sub-100 ms concurrent p99, online OpenClaw learning, or naturally triggered Anti-Pigeon revocation. Aggregate artifacts are preserved under `evidence/eventframe-corpus-v1/` and `evidence/runtime-rescue-v1/`; private transcripts, source identifiers, local databases, and derived datasets are excluded.
+
+### Background Fuzz Queue Mechanism Check
+
+The Go runtime now nominates fuzz work only after a successful low-certainty recall and executes it through a bounded in-process queue. Focused tests confirmed that a low-certainty case enqueues and completes, a high-certainty case does not enqueue, equivalent candidate sets are suppressed during cooldown, queue saturation drops work without blocking recall, stale snapshots are rejected without retry, and the public status response contains no query text or event identifiers. The complete repository race suite, static analysis, repeated focused tests, and Go plus plugin builds passed on 2026-08-31.
+
+This is mechanism evidence only. The focused service-test process completed in 0.368 seconds, but that elapsed time is not a per-recall benchmark and is not used as a latency claim. A promotion experiment must compare disabled, nomination-only, and active-worker arms under the same mixed workload and report recall p50, p95, and p99, enqueue cost, queue delay, drop, deduplication, stale-job and failure rates, trigger prevalence, and blinded proposal usefulness. Because the trigger preferentially selects low-certainty recalls, a separate randomized or exhaustive audit is required for claims about the unselected population.
 
 The remaining protocols below are required to move beyond this evidence.
 
@@ -2911,6 +2934,8 @@ The twenty-fifth open problem is omitted influence. A bounded local frontier can
 
 The twenty-sixth open problem is rank-plasticity calibration. Corrected synthetic controls respected the hard correction envelope, but the earlier organic rank-modulation result is superseded because full transcript text entered its semantic corpus. The corrected 138-case replay supports the complete EventFrame-corpus pipeline, not the isolated contribution of boundary modulation; its Brier loss improved while expected calibration error worsened. The evidence therefore does not identify optimal $(\lambda_{\min},\lambda_{\max},\Delta_{\max})$, continuous correction reliability, behavior under adversarial score compression, long-run churn, or natural-language ranking benefit. Prospective evaluation must freeze the retrieval and gating fingerprint, use direct relevance or task-success labels, compare fixed, probability-modulated, and boundary-modulated controls, and report promotion, demotion, calibration, high-priority harm, token use, and tail latency separately.
 
+The twenty-seventh open problem is background fuzz scheduling. The reference runtime now has a bounded, nonblocking, idle-gated proposal queue, but its low-certainty trigger creates a selected audit stream and its in-process jobs do not survive restart. Mixed-load tail latency, queue stability under bursts, durable recovery semantics, perturbation validity, independent coverage of high-certainty cases, and the rate at which proposals survive external review remain unmeasured. A useful scheduler must improve future decisions often enough to justify background compute without turning uncertainty into an automatic ontology rewrite.
+
 These open problems define the boundary of the current paper. The framework is useful if it makes prediction, memory, and abstraction more explicit and testable. It should not be presented as a final cognitive architecture, universal predictor, or complete mathematical theory. The conclusion summarizes the role EventFrame can play as a conservative event-centric substrate.
 
 ## 14. Conclusion
@@ -2929,7 +2954,7 @@ The point operator encodes events into a finite-dimensional tagged self-adjoint 
 
 Episodic memory stores prior cases; residual memory stores prior statistical corrections. Residuals are not causal hypotheses without separate intervention evidence. A bounded Bayesian frontier adds vector retrieval, sheaf-inspired neighbors, and as-of graph adjacency. The reference policy cheaply updates every evidence-ready member; an activation threshold selects bounded deep work without suppressing that update. Neither performs corpus-wide posterior updates. Anti-Pigeon decides which admitted events may share a posterior. Shared pooled evidence may be discounted while member evidence remains full strength; validated split evidence or a changepoint shock can revoke stale sharing, materialize separate posteriors, and invalidate shared residuals, but cannot certify a replacement merge. For an ordinary posterior-predictive claim, one declared joint evidence-and-outcome kernel has displayed marginals equal to the update likelihood and outcome kernel; separately modeled components remain modular forecasts even after favorable validation. The resulting valid effective posterior family maps to the base law $\mathsf Q_t^0$, after which a compatible residual produces the scored law $\mathsf Q_t^R$. Informative nomination requires a likelihood conditioned on the complete nomination process and a certified positive support bound; otherwise the result is explicitly only an admission-conditioned working posterior. Independent design-weighted audits place a simultaneous bound on omitted influence only for the exact query journal and declared finite population. A capped run-length monitor plus a two-sided cumulative detector, frozen warm-up, and cooldown can nominate drift. Changepoints or out-of-tolerance component motion invalidate dependent posterior, residual, graph, and rank-delta versions: law-bearing records require certified law stability, point-bearing records require certified template stability, and both bounds include propagated posterior-approximation error.
 
-The fast path performs bounded lookup, a capped cached posterior update, typed composition, pre-risk checks, and, for retrieval packets, reliability-gated elastic ranking before packing. Boundary certainty controls plasticity but is not a Bayesian truth probability; calibration remains attached to the scored law and its complete retrieval-regime fingerprint. The slow path evaluates realized scores, updates confidence, audits inactive evidence, runs bounded group-comparison and changepoint procedures, and tests abstractions. Particle filters, variational sequential Monte Carlo, unrestricted model comparison, and unrestricted recalibration remain deep slow-path operations unless a concrete implementation supplies hard resource bounds. Causal-edge updates require an explicit structural causal model and identification strategy; an as-of outgoing edge can nominate a candidate but cannot provide future evidence.
+The fast path performs bounded lookup, a capped cached posterior update, typed composition, pre-risk checks, and, for retrieval packets, reliability-gated elastic ranking before packing. It may also make one bounded nonblocking fuzz nomination after a successful low-certainty response, but perturbation analysis runs later in an idle-gated worker and remains proposal-only. Boundary certainty controls plasticity but is not a Bayesian truth probability; calibration remains attached to the scored law and its complete retrieval-regime fingerprint. The slow path evaluates realized scores, updates confidence, audits inactive evidence, runs bounded group-comparison and changepoint procedures, and tests abstractions. Particle filters, variational sequential Monte Carlo, unrestricted model comparison, and unrestricted recalibration remain deep slow-path operations unless a concrete implementation supplies hard resource bounds. Causal-edge updates require an explicit structural causal model and identification strategy; an as-of outgoing edge can nominate a candidate but cannot provide future evidence.
 
 Approximate predictive lumpability compares detailed contexts that map to the same operational abstraction key. Anti-Pigeon rejects buckets whose empirically certified target-law future-diameter exceeds threshold only conditional on valid estimation, audit coverage, simultaneous uncertainty coverage, and any declared continuity bound; the framework does not establish those premises by itself. A candidate model's own forecast agreement is diagnostic and cannot certify itself. Every bucket retains a concrete traceability frame, but divergence testing uses a coverage-aware context audit set because one representative cannot characterize a heterogeneous group. Observed regime divergence is evaluated on common support and supports predictive adaptation, not causal attribution by itself.
 
@@ -3099,6 +3124,10 @@ $\kappa,s_{\mathrm{cache}},s_{\mathrm{fresh}}$: exact snapshot-bound nomination-
 $T_{\mathrm{chain}},T_{\mathrm{struct}},T_{\mathrm{law}},d$: complete chain-audit cost, structural-validation cost, predictive-law cost, and embedding dimension.
 
 $K_{A,j},K_{B,j}$: optional explicit stage-transition maps used only by the stronger kernel-level commuting condition.
+
+$J_t^{\mathrm{fuzz}}$, $\tau_{\mathrm{fuzz}}$, $B_{\mathrm{fuzz}}$: background-fuzz nomination indicator, frozen maximum packing-boundary certainty for nomination, and maximum evidence-bearing audit-frontier size admitted to one job.
+
+$T_{\mathrm{nom}}$, $T_{\mathrm{enq}}$: bounded nomination construction and nonblocking queue-admission costs. Perturbation execution is slow-path work and is not included in either term.
 
 $\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}$, $h_\pi$, $K$, $\mathfrak K_\pi$, $\mathfrak K_\pi^+$: abstraction map, operational abstraction key including costed side information, one event bucket, all induced buckets, and active buckets with admissible contexts.
 

@@ -232,6 +232,10 @@ Four resource-aware stages: bounded cached updating, bounded changepoint monitor
 
 A validity-constrained method for testing predictor sensitivity to selected event properties. It is not causal evidence by itself.
 
+## Background Fuzz Incubation
+
+A bounded proposal queue nominated after a successful low-certainty recall. Nomination reuses the already retrieved semantic frontier and does not execute perturbation analysis inline. An idle-gated worker later rejects stale snapshots, runs bounded validity-constrained fuzzing, and emits review proposals only. Queue-selected results do not represent the unselected population without an independent coverage design.
+
 ## Invariant
 
 A property or relation that remains stable under a defined class of event perturbations.
@@ -258,7 +262,7 @@ An observed operating condition under which a prediction pattern is evaluated. I
 
 ## Fast Path
 
-A low-latency prediction route using only state available immediately before prediction, including certified cached residuals, bounded cached posterior updates, episodic retrieval, or learned approximations.
+A low-latency prediction route using only state available immediately before prediction, including certified cached residuals, bounded cached posterior updates, episodic retrieval, or learned approximations. It may perform bounded nonblocking audit nomination after constructing a response, but it does not execute fuzz analysis inline.
 
 ## Slow Path
 

@@ -23,6 +23,8 @@ The fast path follows one bounded sequence:
 
 This ordering matters. The answer must survive retrieval into the candidate frontier before EventFrame can rerank it. A packer that truncates to ten items before a fifty-candidate reranker runs has already discarded forty candidates and cannot recover them.
 
+After a successful low-certainty recall, an implementation may also place a bounded fuzz nomination on an incubation queue. Nomination reuses the already retrieved frontier and does not run perturbation analysis before the response. A background worker may later test the proposal while the serving path is idle; any resulting invariant or translation remains a review proposal rather than an automatic memory or ontology edit.
+
 ## Learning after the outcome
 
 Learning happens after the relevant outcome becomes available. EventFrame records whether the forecast or retrieved memory was useful, updates the corresponding belief and residual confidence, and checks whether the current abstraction remains valid. It does not use future outcomes while making the earlier prediction.
@@ -45,7 +47,7 @@ Translation must hold through the chain, not only at its endpoint. If an interme
 
 ## Fast path and slow path
 
-The fast path is designed for bounded local work: retrieve a capped frontier, update cached sufficient statistics, reuse valid corrections, rerank a bounded packet, and respond. The slow path performs particle methods, broad model comparison, abstraction audits, changepoint review, compatibility analysis, and recalibration asynchronously or under explicit resource budgets.
+The fast path is designed for bounded local work: retrieve a capped frontier, update cached sufficient statistics, reuse valid corrections, rerank a bounded packet, optionally enqueue a bounded audit nomination, and respond. The slow path performs particle methods, broad model comparison, fuzz and abstraction audits, changepoint review, compatibility analysis, and recalibration asynchronously or under explicit resource budgets.
 
 Future hardware may permit more slow-path stages to run more often, but it does not change their meaning or remove their evidence requirements. A faster machine cannot turn model sensitivity into causality, make a stale residual valid, or allow a proposed group to certify itself.
 

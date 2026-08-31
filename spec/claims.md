@@ -103,6 +103,8 @@ Validity-constrained perturbation can identify conditional model invariants. It 
 
 Status: executable mechanism with public-fact design evidence and smaller provisional confirmation. Context and paraphrase families passed the design simultaneous bound; unrelated semantic substitution did not. Confirmation support was insufficient for the positive families to reach the frozen simultaneous threshold.
 
+A low-certainty successful recall may nominate one bounded audit job after response construction. Nomination must be nonblocking, deduplicated, snapshot-bound, and proposal-only; fuzz prediction executes later under a bounded worker. Current focused tests validate trigger and queue control flow, not mixed-load latency neutrality, useful proposal yield, or population coverage outside the selected stream.
+
 ## Claim 4a: Domain translation is chain-wide predictive commutation
 
 A declared cross-domain correspondence is a predictive chain-translation candidate only when its mapped distinction propagates through every aligned stage, non-target coordinates remain fixed, terminal signed effects agree, and the complete signed-effect defect is bounded. Terminal erasure with small movement is a higher-order invariant candidate; a failed intermediate square is divergence even when endpoints agree. This observed-path rule neither discovers the correspondence nor proves equality of unknown transition kernels. Causal chain translation additionally requires an identified SCM, intervention evidence, and transport assumptions.

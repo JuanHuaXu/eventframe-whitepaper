@@ -61,6 +61,14 @@ An operational protocol is:
 
 Synthetic frames are never inserted into episodic memory as observations. They may be stored in a separate audit log with their generating operator and validity assumptions.
 
+## Background fuzz incubation
+
+Fuzzing is not part of the immediate prediction computation. A conforming implementation may nominate work after a successful response when the packing-boundary certainty \(c_t^{\mathrm{pack}}\) is no greater than a frozen trigger \(\tau_{\mathrm{fuzz}}\), the already retrieved audit frontier contains at least two and at most \(B_{\mathrm{fuzz}}\) evidence-bearing events, and the declared perturbation family is non-empty. Write the resulting indicator as \(J_t^{\mathrm{fuzz}}\). This is a scheduling rule, not evidence that the nominated case contains an invariant.
+
+Nomination must be bounded and nonblocking. It reuses the as-of query vector, snapshot, and capped candidate set already produced by recall, stores no synthetic frame as an observation, and may be discarded when a bounded queue is full. Equivalent candidate sets are deduplicated under a frozen cooldown. A worker executes the job later under a timeout and only when serving work is idle; a changed snapshot makes the job stale and causes rejection rather than silent reinterpretation. The worker emits an audit proposal only. Publication still requires the held-out validity, Anti-Pigeon, version, and evidence procedures defined elsewhere in this paper.
+
+Because \(J_t^{\mathrm{fuzz}}\) selects low-certainty successful recalls, conclusions from this queue describe the trigger-selected stream. They do not estimate corpus-wide invariant prevalence unless an independent randomized or exhaustive audit supplies known inclusion support and an appropriate simultaneous uncertainty procedure. Queue depth, delay, drops, deduplication, stale rejection, failures, and externally reviewed proposal yield must be reported beside any benefit claim.
+
 ## Predictive chain translation
 
 A single-field sensitivity test does not establish domain translation. Translation requires the perturbation to remain aligned along a complete time-ordered chain. Let domains \(A\) and \(B\) each supply a baseline trajectory and a revealed trajectory of equal finite length \(m_{\mathrm{ch}}\):

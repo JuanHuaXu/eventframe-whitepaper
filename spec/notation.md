@@ -740,6 +740,8 @@ d_g(g(\mathcal O_\theta(C_t)),g(\mathcal O_\theta(\mathcal F_{i,\epsilon}^{(r)}(
 
 The validation law is supported only where the partial perturbation is defined.
 
+Fuzz execution is slow-path work. After a successful retrieval response, a runtime may define a bounded scheduling indicator \(J_t^{\mathrm{fuzz}}\) that is one only when \(c_t^{\mathrm{pack}}\le\tau_{\mathrm{fuzz}}\), the already materialized evidence-bearing audit frontier has size in \([2,B_{\mathrm{fuzz}}]\), and a valid perturbation family exists. Nomination reuses the as-of vector, snapshot, and bounded candidate set and has cost \(T_{\mathrm{nom}}+T_{\mathrm{enq}}\); queue admission is nonblocking and may drop work. A later timeout-bounded idle worker rejects stale snapshots and emits proposals only. Because this mechanism selects low-certainty cases, its conclusions are conditional on \(J_t^{\mathrm{fuzz}}=1\) unless an independent audit supplies exhaustive coverage or known positive inclusion probabilities with simultaneous uncertainty control.
+
 This is model sensitivity. Causal effects use a separate SCM \(\mathfrak M=(U,V,F,P_U)\):
 
 \[

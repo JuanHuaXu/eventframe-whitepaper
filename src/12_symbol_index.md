@@ -126,6 +126,10 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(K_{A,j},K_{B,j}\): optional explicit stage-transition maps used only by the stronger kernel-level commuting condition.
 
+\(J_t^{\mathrm{fuzz}}\), \(\tau_{\mathrm{fuzz}}\), \(B_{\mathrm{fuzz}}\): background-fuzz nomination indicator, frozen maximum packing-boundary certainty for nomination, and maximum evidence-bearing audit-frontier size admitted to one job.
+
+\(T_{\mathrm{nom}}\), \(T_{\mathrm{enq}}\): bounded nomination construction and nonblocking queue-admission costs. Perturbation execution is slow-path work and is not included in either term.
+
 \(\pi:\mathcal E\to\mathcal S_{\mathrm{abs}}\), \(h_\pi\), \(K\), \(\mathfrak K_\pi\), \(\mathfrak K_\pi^+\): abstraction map, operational abstraction key including costed side information, one event bucket, all induced buckets, and active buckets with admissible contexts.
 
 \(\bar e_K\), \(\mathfrak C_K\), \(\mathcal R_C(K)\): concrete traceability frame, contexts anchored in a bucket, and coverage-aware context audit set.

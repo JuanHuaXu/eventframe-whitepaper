@@ -137,6 +137,12 @@ Ten exact-journal useful outcomes moved one posterior from Beta(1,1) to Beta(11,
 
 Taken together, the corrected evidence supports the EventFrame-corpus contract, bounded synthetic correction, deterministic retrospective retrieval improvement, storage/recovery mechanics, and practical local mixed-load capacity. It does not establish stationary calibration, prospective organic utility, strict sub-100 ms concurrent p99, online OpenClaw learning, or naturally triggered Anti-Pigeon revocation. Aggregate artifacts are preserved under `evidence/eventframe-corpus-v1/` and `evidence/runtime-rescue-v1/`; private transcripts, source identifiers, local databases, and derived datasets are excluded.
 
+## Background Fuzz Queue Mechanism Check
+
+The Go runtime now nominates fuzz work only after a successful low-certainty recall and executes it through a bounded in-process queue. Focused tests confirmed that a low-certainty case enqueues and completes, a high-certainty case does not enqueue, equivalent candidate sets are suppressed during cooldown, queue saturation drops work without blocking recall, stale snapshots are rejected without retry, and the public status response contains no query text or event identifiers. The complete repository race suite, static analysis, repeated focused tests, and Go plus plugin builds passed on 2026-08-31.
+
+This is mechanism evidence only. The focused service-test process completed in 0.368 seconds, but that elapsed time is not a per-recall benchmark and is not used as a latency claim. A promotion experiment must compare disabled, nomination-only, and active-worker arms under the same mixed workload and report recall p50, p95, and p99, enqueue cost, queue delay, drop, deduplication, stale-job and failure rates, trigger prevalence, and blinded proposal usefulness. Because the trigger preferentially selects low-certainty recalls, a separate randomized or exhaustive audit is required for claims about the unselected population.
+
 The remaining protocols below are required to move beyond this evidence.
 
 A minimal synthetic event world should generate trajectories with known transition rules. Each event should expose the fields:

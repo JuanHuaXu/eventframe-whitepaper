@@ -14,7 +14,7 @@ The reference fast path is:
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
 10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute \(c_t^{\mathrm{pack}}\), apply only reliability-gated elastic deltas, sort by \(s_{i,t}^{\mathrm{final}}\), and then enforce packing-count and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act.
-11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). Do not evaluate realized prediction loss yet.
+11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). After a successful retrieval response, a low-certainty case may perform one bounded nonblocking fuzz nomination using the already materialized frontier. It does not execute fuzz prediction or evaluate realized prediction loss on the serving path.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
 
@@ -45,13 +45,16 @@ flowchart LR
     G --> R
 ```
 
-Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the bounded-frontier Bayesian work, and \(T_{\mathrm{rank}}(N_t)\) the boundary-certainty, delta-application, and bounded sorting cost. Then:
+Expected constant-time lookup is a conditional implementation property. Let \(T_K\) be key-construction cost, \(T_A\) exact-key lookup, \(T_R(N)\) general residual retrieval, \(T_E(M)\) episodic retrieval, \(T_{\oplus}\) typed composition, \(T_{\mathrm{Bayes}}^{\mathrm{fast}}\) the bounded-frontier Bayesian work, \(T_{\mathrm{rank}}(N_t)\) the boundary-certainty, delta-application, and bounded sorting cost, and \(T_{\mathrm{nom}}+T_{\mathrm{enq}}\) the optional bounded fuzz nomination and nonblocking enqueue cost. Then:
 
 \[
+\begin{aligned}
 T_{\mathrm{fast}}
-=T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
+={}&T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
 +I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}}
-+T_{\mathrm{rank}}(N_t),
++T_{\mathrm{rank}}(N_t)\\
+&+J_t^{\mathrm{fuzz}}(T_{\mathrm{nom}}+T_{\mathrm{enq}}),
+\end{aligned}
 \]
 
 where \(I_R,I_E\in\{0,1\}\) indicate fallbacks. Let
@@ -83,6 +86,8 @@ T_{\mathrm{Bayes}}^{\mathrm{fast}}
 This is history-independent only when \(k_v\), sheaf-inspired degree \(d_{\mathrm{sh}}\), as-of graph degree \(d_G\), \(B_{\max}\), \(M_{\mathrm{hyp}}\), and \(R_{\mathrm{cp}}\) are bounded, when the vector-index query itself has a declared bound, and when \(T_{\mathrm{sel}}\) uses a bounded exact computation or a predeclared bounded approximation. Under \(q_{\mathrm{FA}}\), \(N_t^{\mathrm{upd},q_B}\) is the evidence-ready frontier size; under \(q_{\mathrm{sel}}\), it is no larger. Thus frontier-all changes the bounded multiplicative constant, not the dependence on corpus size. Corpus size may still affect \(T_{\mathrm{vec}}\), index construction, cache maintenance, and storage I/O. Constant time per sample in a cited streaming algorithm means constant with respect to accumulated stream length under that algorithm's fixed resources; it does not mean zero dependence on frontier width, particle count, parameter dimension, optimization iterations, graph degree, selection-probability evaluation, or hardware. Sliding-window maintenance gives \(T_C=O(1)\). A bounded, already-constructed key and bounded hash table give expected \(T_A=O(1)\). The claim fails if key construction scans unbounded context, frontier or graph degree grows, the posterior or run-length support expands without cap, the table is unbounded, or lookup falls back to unrestricted nearest-neighbor search. Concurrency, hashing, collision handling, every term in \(T_{\mathrm{sel}}\), and eviction costs must be measured rather than hidden inside the constant.
 
 The current Go reference runtime implements a narrower persistence discipline rather than treating these costs as free constants. Read-only graph and snapshot access uses shared locks. Immutable recall journals use striped record-identity locks and the vector store's bounded independent write lanes, so distinct journals may commit concurrently while duplicate identities remain serialized. Residual-record reads use bounded fan-out over the already capped frontier. The rank-delta sidecar uses concurrent WAL readers with one ordered writer, applies connection-local timeout and durability settings to every pooled SQLite connection, and omits records whose accepted-path reliability is zero. If a decision-relevant ingest commits between retrieval and journal publication, the complete recall is retried against the newer snapshot; the runtime does not merely relabel the stale result. These choices preserve snapshot and idempotency contracts, but they do not make persistence wait-free.
+
+The same runtime now implements fuzz incubation with a bounded in-process queue, set-based cooldown deduplication, one timeout-bounded worker, and an idle gate that prevents a job from starting while recall is active. Queue admission never waits: a full queue drops the nomination, and a snapshot mismatch drops the stale job without retry. Jobs retain a query vector and bounded semantic event bundles rather than raw query text, while the public status endpoint exposes only aggregate counters and the last aggregate outcome. The queue is deliberately non-durable in this version, so restart loses pending work. These properties establish bounded control flow, not zero latency cost, useful proposal yield, or population coverage.
 
 A rejected alternative batched multiple journals into one overlapping vector-store transaction. Under mixed recall and capture it produced 64 recall timeouts, an 8.001 s recall p99, and failed post-run health, so that design was removed. This negative control matters: group commit is beneficial only when its transaction scope and storage engine do not monopolize concurrent traversal. A separate append log or outbox may still be useful, but is not implied safe by batching alone.
 
@@ -245,7 +250,8 @@ The integration roadmap is cumulative:
 9. Add component-level spectral diagnostics and refinement where linearization assumptions are validated.
 10. Add predictive regime mixtures and deep Bayesian state-space refinement; promote causal interpretations only with explicit SCMs and identification assumptions.
 11. Rebenchmark every stage on each hardware generation and widen activation budgets without weakening validation, selection, or Anti-Pigeon gates.
+12. Add background fuzz incubation only as a bounded proposal queue after response construction; validate trigger yield and mixed-load tail latency before promoting it beyond audit use.
 
-The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
+The runtime reports prediction score, event-aware timing error, pre-risk calibration, cache hit and fallback rates, residual improvement, activation and audit rates, selected and unselected posterior calibration, omitted influence, effective support, changepoint delay and false alarms, Bayesian frontier size, posterior-update cost, decoder failures, slow-path delay, fuzz nominations, queue delay, drops, deduplication, stale rejection, externally reviewed proposal yield, selected Bayesian and abstraction refinement depths, hardware profile, edge defects, bucket audit coverage, snap attempts and acceptances, rollback, cache recertification delay, and split/merge churn. Without these measurements, the claimed fast/slow tradeoff remains an architectural proposal rather than an established result.
 
 With the representation, mathematics, and runtime now defined, the next section states the paper's claims and their current evidence status in one place.
