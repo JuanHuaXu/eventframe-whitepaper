@@ -121,6 +121,8 @@ M_B=\frac12\sum_{j=0}^{m_{\mathrm{ch}}-1}|\delta_{B,j}|,
 D_{\mathrm{tr}}=\frac12\sum_{j=0}^{m_{\mathrm{ch}}-1}|\delta_{A,j}-\delta_{B,j}|.
 \]
 
+Define the terminal effect defect as \(D_{\mathrm{term}}=|\delta_{A,m_{\mathrm{ch}}-1}-\delta_{B,m_{\mathrm{ch}}-1}|\). It isolates agreement at the final aligned stage; the complete-chain defect \(D_{\mathrm{tr}}\) does not replace this stricter terminal check.
+
 With frozen tolerances \(\eta_{\mathrm{inv}},\eta_{\mathrm{tr}}>0\), the runtime classification is
 
 \[
@@ -132,18 +134,18 @@ With frozen tolerances \(\eta_{\mathrm{inv}},\eta_{\mathrm{tr}}>0\), the runtime
 \mathrm{translation},&
 \prod_jJ_j^{\mathrm{loc}}=1, J_{\mathrm{prop}}=1,
 \ D_{\mathrm{tr}}\le\eta_{\mathrm{tr}},
-\ |\delta_{A,m_{\mathrm{ch}}-1}-\delta_{B,m_{\mathrm{ch}}-1}|\le\eta_{\mathrm{tr}},\\
+\ D_{\mathrm{term}}\le\eta_{\mathrm{tr}},\\
 \mathrm{divergence},&\text{otherwise.}
 \end{cases}
 \]
 
-When \(J_{\mathrm{pred}}=0\), structural checks already force the third branch, so \(M_A\), \(M_B\), \(D_{\mathrm{tr}}\), and terminal effect agreement are not evaluated. A wire-format zero in those fields is a placeholder accompanied by a false `prediction-evaluated` flag, not a measured zero.
+When \(J_{\mathrm{pred}}=0\), structural checks already force the third branch, so \(M_A\), \(M_B\), \(D_{\mathrm{tr}}\), and \(D_{\mathrm{term}}\) are not evaluated. A wire-format zero in those fields is a placeholder accompanied by a false `prediction-evaluated` flag, not a measured zero.
 
 Exact score reuse does not change this classifier. Let \(\kappa\) be the ordered cache identity with components \(q\), \(\upsilon_{\mathrm{emb}}\), \(\upsilon_{\mathrm{5W1H}}\), \(S_{t^-}\), \(u\), and \(e\): respectively the canonical query, embedding-model version, semantic-representation version, complete captured snapshot, tenant, and event identity, which is immutable within that snapshot. A hit is admissible only under exact equality of \(\kappa\), in which case the cached raw nomination score satisfies \(s_{\mathrm{cache}}(\kappa)=s_{\mathrm{fresh}}(\kappa)\). Any model, representation, snapshot, tenant, identity, or generated-frame digest mismatch recomputes the score. Thus eviction or a cache miss changes cost but not the normalized law.
 
-For bounded chain length, the local execution cost is \(T_{\mathrm{chain}}=T_{\mathrm{struct}}+J_{\mathrm{pred}}T_{\mathrm{law}}\). Structural validation and a warm exact-score hit are each \(O(m_{\mathrm{ch}})\); a cold dense-vector audit is \(O(m_{\mathrm{ch}}d)\) for embedding dimension \(d\). Store access, remote embedding, cache maintenance, and concurrency are measured separately.
+For bounded chain length, the local execution cost is \(T_{\mathrm{chain}}=T_{\mathrm{struct}}+J_{\mathrm{pred}}T_{\mathrm{law}}\). The current Go reference runtime accepts 2 through 32 aligned stages. Structural validation and a warm exact-score hit are each \(O(m_{\mathrm{ch}})\); a cold dense-vector audit is \(O(m_{\mathrm{ch}}d)\) for embedding dimension \(d\). Store access, remote embedding, cache maintenance, and concurrency are measured separately.
 
-The first branch means that the declared upstream distinction is erased at the terminal stage and is a candidate for higher-order abstraction. The second means that the mapped distinction propagates with bounded predictive-effect defect while other coordinates stay fixed. The third preserves the chains separately for Anti-Pigeon review. These labels are proposal-only. A declared map cannot certify itself, authorize a posterior merge, or publish a sheaf snap.
+The first branch means that the declared upstream distinction is erased at the terminal stage and is a candidate for higher-order abstraction. Here bounded movement means \(M_A,M_B\le\eta_{\mathrm{inv}}\). Zero movement is permitted and yields a vacuous proposal-only invariant label; an application that requires a nontrivial invariant must preregister a positive movement floor. The second branch means that the mapped distinction propagates while other coordinates stay fixed: bounded effect defect means \(D_{\mathrm{tr}}\le\eta_{\mathrm{tr}}\), and terminal effect agreement separately means \(D_{\mathrm{term}}\le\eta_{\mathrm{tr}}\). The third preserves the chains separately for Anti-Pigeon review. These labels are proposal-only. A declared map cannot certify itself, authorize a posterior merge, or publish a sheaf snap.
 
 This finite observed-path test checks commuting squares only on the supplied trajectories. It does not prove equality of unknown transition kernels. If explicit transition maps \(K_{A,j}\) and \(K_{B,j}\) are available, the stronger requirement is
 

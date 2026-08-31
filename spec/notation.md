@@ -780,6 +780,8 @@ M_B=\frac12\sum_j|\delta_{B,j}|,
 D_{\mathrm{tr}}=\frac12\sum_j|\delta_{A,j}-\delta_{B,j}|.
 \]
 
+The terminal effect defect is \(D_{\mathrm{term}}=|\delta_{A,m_{\mathrm{ch}}-1}-\delta_{B,m_{\mathrm{ch}}-1}|\).
+
 The executable classifier uses the ordered cases
 
 \[
@@ -789,12 +791,12 @@ The executable classifier uses the ordered cases
 \ \max(M_A,M_B)\le\eta_{\mathrm{inv}},\\
 \mathrm{translation},&\prod_jJ_j^{\mathrm{loc}}=1, J_{\mathrm{prop}}=1,
 \ D_{\mathrm{tr}}\le\eta_{\mathrm{tr}},
-\ |\delta_{A,m_{\mathrm{ch}}-1}-\delta_{B,m_{\mathrm{ch}}-1}|\le\eta_{\mathrm{tr}},\\
+\ D_{\mathrm{term}}\le\eta_{\mathrm{tr}},\\
 \mathrm{divergence},&\text{otherwise.}
 \end{cases}
 \]
 
-For \(J_{\mathrm{pred}}=0\), structural failure already determines divergence; \(M_A\), \(M_B\), \(D_{\mathrm{tr}}\), and terminal effect agreement are undefined diagnostics rather than observed zeros. The implementation may serialize zero placeholders only together with a false `prediction-evaluated` flag.
+For \(J_{\mathrm{pred}}=0\), structural failure already determines divergence; \(M_A\), \(M_B\), \(D_{\mathrm{tr}}\), and \(D_{\mathrm{term}}\) are undefined diagnostics rather than observed zeros. The implementation may serialize zero placeholders only together with a false `prediction-evaluated` flag. Bounded invariant movement means \(M_A,M_B\le\eta_{\mathrm{inv}}\); bounded translation defect means \(D_{\mathrm{tr}}\le\eta_{\mathrm{tr}}\); terminal agreement means \(D_{\mathrm{term}}\le\eta_{\mathrm{tr}}\). Zero movement is permitted as a vacuous proposal-only invariant unless an application preregisters a positive movement floor. The formal chain length is bounded; the current Go runtime accepts 2 through 32 aligned stages.
 
 Let \(\kappa\) be the exact ordered nomination-score cache identity with components \(q\), \(\upsilon_{\mathrm{emb}}\), \(\upsilon_{\mathrm{5W1H}}\), \(S_{t^-}\), \(u\), and \(e\): canonical query, embedding-model version, semantic-representation version, complete captured snapshot, tenant, and event identity, immutable within the snapshot. Cache reuse requires equality of every component and obeys \(s_{\mathrm{cache}}(\kappa)=s_{\mathrm{fresh}}(\kappa)\). Generated or changed frames use their canonical semantic digest instead of a durable event identity. A mismatch or eviction recomputes the score and cannot change the normalized law. With embedding dimension \(d\), \(T_{\mathrm{chain}}=T_{\mathrm{struct}}+J_{\mathrm{pred}}T_{\mathrm{law}}\): structural validation and a warm exact-score hit are \(O(m_{\mathrm{ch}})\), while a cold dense-vector audit is \(O(m_{\mathrm{ch}}d)\). Store and remote-embedding costs remain separate.
 

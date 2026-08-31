@@ -118,7 +118,7 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(p_A^{(b)},p_B^{(b)},\delta_{A,j},\delta_{B,j}\): normalized stage-nomination laws and their signed baseline-to-revealed effects.
 
-\(M_A,M_B,D_{\mathrm{tr}},\eta_{\mathrm{inv}},\eta_{\mathrm{tr}},\mathcal C_{\mathrm{chain}}\): domain-wise predictor movement, cross-domain signed-effect defect, frozen invariant and translation thresholds, and invariant/translation/divergence classifier.
+\(M_A,M_B,D_{\mathrm{tr}},D_{\mathrm{term}},\eta_{\mathrm{inv}},\eta_{\mathrm{tr}},\mathcal C_{\mathrm{chain}}\): domain-wise predictor movement, complete-chain signed-effect defect, terminal-stage signed-effect defect, frozen invariant and translation thresholds, and invariant/translation/divergence classifier.
 
 \(\kappa,s_{\mathrm{cache}},s_{\mathrm{fresh}}\): exact snapshot-bound nomination-score cache identity, cached raw score, and freshly computed raw score.
 
