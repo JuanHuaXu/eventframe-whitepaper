@@ -254,11 +254,21 @@ A condition under which many detailed states can be aggregated into a coarser st
 
 ## Anti-Pigeon Principle
 
+The repetition gate is a separate source-dependence heuristic and does not redefine the principle below.
+
 A split-side criterion against invalid pigeonholing. A bucket is unsafe when its external target-law future-diameter exceeds threshold. Agreement among a candidate model's own forecasts is diagnostic and cannot certify the bucket. Regime-conditioned divergence requires common support or transport assumptions; causal attribution requires separate evidence.
 
 ## Causal Regime
 
 An observed operating condition under which a prediction pattern is evaluated. It is called causal only when intervention or identification assumptions support that interpretation.
+
+## Repetition and Poisoning Gate
+
+A bounded packing-occupancy rule plus an exact-group selected-feedback veto. The reference implementation detects normalized same-lineage repetition, preserves different certified-key namespaces as separate packet candidates, and rejects flagged selected-only outcomes. It preserves stored records and ordinary frontier updates. It is not a truth classifier, authenticated provenance system, global evidence budget, or complete prompt-injection defense.
+
+## Recorded Evidence Lineage
+
+An operational producer/source descriptor, not proof of independent origin. Conversation lineage ignores fresh session, run, citation, and tool-call identifiers. Source authentication and transitive derivation tracking are separate unresolved requirements.
 
 ## Fast Path
 

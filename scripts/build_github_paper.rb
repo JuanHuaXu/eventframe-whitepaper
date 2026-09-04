@@ -60,7 +60,7 @@ class InlineMathHTML
     "ne" => "≠", "neq" => "≠", "in" => "∈", "mid" => "|",
     "ll" => "≪", "sim" => "∼", "subset" => "⊂", "subseteq" => "⊆",
     "to" => "→", "rightarrow" => "→", "mapsto" => "↦",
-    "cap" => "∩", "cdot" => "·", "circ" => "∘", "oplus" => "⊕",
+    "cap" => "∩", "cup" => "∪", "cdot" => "·", "circ" => "∘", "oplus" => "⊕",
     "partial" => "∂", "prod" => "∏", "sqcup" => "⊔", "sum" => "∑",
     "times" => "×", "star" => "⋆", "varnothing" => "∅",
     "infty" => "∞", "langle" => "⟨", "rangle" => "⟩",

@@ -478,6 +478,21 @@ Let \(\mathrm{lift}_H:\mathcal E\times\mathcal Z_H^+\to\mathcal E\) align a corr
 
 ## Bounded Bayesian Updating
 
+The repetition contract in Section 6 is part of \(\Xi_B\) and the frozen \(\Lambda_{\mathrm{eval}}\). It declares normalization and conversation classification, recorded-lineage construction, explicit occurrence flags, SHA-256 descriptor identities, Jaccard threshold, greedy order, occupancy limit, current Anti-Pigeon-key exemption, selected-feedback veto, and implementation version. Packing changes the packet only; accepted or rejected feedback can change future posteriors and the scored law. The veto is an additional informative admission event, not silently part of the earlier frontier indicator. Ordinary posterior claims require its complete joint selection model; otherwise working-posterior semantics apply. No independence, truth, global repetition budget, or privacy guarantee follows from a hash or a different posterior key.
+
+| Symbol | Type | Meaning |
+| --- | --- | --- |
+| \(N_{\mathrm{rep}},c_{\mathrm{rep}},\ell_{\mathrm{rep}}\) | text maps | normalization, ordered claim tuple excluding when, and recorded-lineage descriptor |
+| \(o_{\mathrm{rep}},g_{\mathrm{rep}}\) | indicator, digest map | declared non-conversation observed-occurrence flag and hashed claim/lineage/optional-time identity |
+| \(V_{\mathrm{rep}},s_{\mathrm{rep}},\tau_{\mathrm{rep}}\) | token-set map, similarity, threshold | retained claim tokens, Jaccard similarity with empty-set value zero, frozen threshold (default 0.85) |
+| \(R_{\mathrm{rep}},E_t^{\mathrm{pack}},\widetilde R_t^{\mathrm{rep}}\) | pair indicators | exact-or-near repetition, distinct certified-key-namespace exemption, and non-exempt repetition |
+| \(m_{\mathrm{rep}},I_i,n_i^{\mathrm{rep}}\) | integer, index set, integer | positive occupancy limit (default one), accepted prefix, correlated accepted predecessors |
+| \(j_i,b_i^{\mathrm{rep}}\) | index or absent, indicator | first earlier exact-key report representative and selected-feedback suppression flag |
+| \(J_i^{\mathrm{old}},J_i^{\mathrm{fb}}\) | indicators | pre-existing complete outcome acceptance and acceptance after selected-only repetition veto |
+| \(T_{\mathrm{rep}},B_{\mathrm{rep}},p_{\mathrm{rep}},L_{\mathrm{rep}},d_{\mathrm{rep}}\) | cost and resource caps | descriptor/report/packing cost, nominated count, pack count, per-frame semantic/provenance work, and source-identifier count |
+
+The local packing algorithm uses \(n\) ordered candidates, capacity \(p\), token budget \(b\), and token estimates \(z_i\); \(I_0=\varnothing\). It accepts a budget-fitting candidate exactly when \(n_i^{\mathrm{rep}}=\sum_{j\in I_{i-1}}\widetilde R_t^{\mathrm{rep}}(e_i,e_j)<m_{\mathrm{rep}}\). The relation is symmetric but not transitive. Default-one packing prohibits non-exempt correlated pairs; larger limits constrain arrival predecessors only. The feedback veto uses exact groups and the first report representative, not this near-duplicate relation or the accepted packed prefix. It changes neither \(J_t^{\mathrm{upd},q_B}\) nor ordinary frontier work.
+
 Let \(\mathfrak E_t^B\) be the bounded as-of candidate universe and let the nominated frontier be
 
 \[

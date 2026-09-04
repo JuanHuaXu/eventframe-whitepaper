@@ -6,6 +6,9 @@ The result labels are local to the declared fixture. **Validated in fixture** me
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2d | Default-one repetition occupancy and flagged selected-feedback veto work. | Validated, mechanism only | Focused descriptor, packing, and service tests pass; distinct bucket keys are exempt and ordinary frontier updates remain active. |
+| 2d | Repetition protection preserves benign replay output. | Mixed descriptive regression | Aggregate Brier, ECE, priority-weighted Brier, and Recall@10 match the parent. Codex design packed recall decreases by 0.0004353; reused 138-case confirmation-named packed recall is unchanged. |
+| 2d | Poisoned answers and cumulative cross-journal poisoning are prevented. | Not tested; not guaranteed | No complete attack benchmark, authenticated lineage, or global repetition budget. |
 | 2b | Frontier-all improves candidate-level probability quality over no Bayesian update. | Validated in fixture | Priority-weighted Brier improved by 9.29% in the frozen bounded-frontier experiment. |
 | 2b | The tested 5%-activation selective policy retains the frontier-all quality gain. | Falsified in fixture | It improved priority-weighted Brier by 0.16%, versus 9.29% for frontier-all; paired stress Brier was 0.02891 worse than update-all. |
 | 2b | Frontier-all cheap updates plus selective deep work retain frontier-all forecast output. | Validated in synthetic mechanism fixture | Brier, priority-weighted Brier, and recall at 10 exactly matched frontier-all. |
@@ -90,6 +93,12 @@ Status: architectural and mathematical proposal with synthetic mechanism and loc
 After the external retrieval contract returns a bounded frontier, EventFrame may add a hard-capped rank delta produced by an accepted Bayesian, residual, or versioned graph path. Packing-boundary certainty modulates plasticity, while a separate correction-reliability gate authorizes application. Rank certainty is a score-margin diagnostic, not a posterior probability or proper-scored law. Anti-Pigeon shock revocation invalidates unsafe shared state and dependent residuals but neither creates a correction nor certifies replacement sharing.
 
 Status: mathematical and systems mechanism with synthetic confirmation and retrospective real-session regression evidence. It requires prospective untouched evaluation, direct task-success labels, stability across retrieval regimes, and separate probability-calibration validation.
+
+## Claim 2d: Bounded repetition protection
+
+Default-one greedy occupancy prohibits non-exempt correlated accepted pairs under the frozen exact-or-Jaccard rule. A separate first-representative exact-group flag vetoes selected-only feedback, not ordinary frontier, full-stream, or valid audit updates. Neither rule proves truth, independence, or bounded cross-journal influence. Distinct Anti-Pigeon posterior keys are an exemption, not an independence certificate. Future posterior effects and additional selection conditioning remain explicit.
+
+Status: focused mechanism tests and mixed descriptive benign regression only. Poisoned-answer success, semantic false-suppression rates, authenticated provenance, and total service latency overhead remain untested.
 
 ## Claim 3: Episodic memory and residual cache serve different roles
 

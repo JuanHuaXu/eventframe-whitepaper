@@ -74,10 +74,10 @@ The fast path follows one bounded sequence:
 1. Convert the current situation into one or more internal event frames.
 2. Ask the vector store for a bounded candidate frontier, ordinarily tens or hundreds of frames rather than the whole corpus.
 3. Expand that frontier with bounded graph neighbors, including prior and next explanatory or causal candidates that are available as of the query time.
-4. Update the cheap cached belief for every evidence-ready member of that frontier. Expensive analysis remains selective.
-5. Use Anti-Pigeon to decide which candidates are allowed to share one abstraction or posterior. Similar-looking events with different downstream behavior remain separate.
+4. Use current Anti-Pigeon certificates to assign shared or separate posterior keys before updating beliefs. Similar-looking events without a valid sharing certificate remain separate.
+5. Apply the cheap update to every evidence-ready member of that frontier under its assigned key. Expensive analysis remains selective; mark exact repeated claim/lineage decisions for the separate selected-feedback veto.
 6. Build a baseline forecast from the accepted beliefs, then apply only residual corrections whose provenance, age, horizon, confidence, and version checks still hold.
-7. For memory retrieval, apply a bounded rank correction after external retrieval and before packing. Hydrate the selected records' full text only after this semantic work is finished.
+7. For memory retrieval, apply a bounded rank correction after external retrieval, then pack under repetition-occupancy and token budgets. Hydrate the selected records' full text only after this semantic work is finished.
 8. Return the forecast or packed memory context immediately.
 
 This ordering matters. The answer must survive retrieval into the candidate frontier before EventFrame can rerank it. A packer that truncates to ten items before a fifty-candidate reranker runs has already discarded forty candidates and cannot recover them.
@@ -97,6 +97,10 @@ Anti-Pigeon is short for resisting pigeonholing: the framework should not keep u
 This supports both directions of revision. Events that repeatedly behave alike may share evidence and eventually join into one predictive group. Events that once looked alike may split after a changepoint or a revealing outcome. Event streams can therefore merge like tributaries or diverge when a small distinction becomes consequential.
 
 Every group retains at least one concrete traceability frame and a broader audit set. The concrete frame makes the abstraction inspectable; the audit set tests whether the group is hiding divergent boundary cases. One representative alone is never treated as proof that the whole group is stable.
+
+### Repetition is not corroboration
+
+Repetition protection is separate from Anti-Pigeon. Ten recaptures of one assertion should not automatically fill ten memory slots or count as ten independent confirmations. The implemented gate limits similar same-lineage records inside the packet and rejects exact-group duplicates on the selected-feedback route, subject to the separate-bucket exemption defined in Section 6. It preserves stored records and ordinary frontier updates. It does not decide which assertion is true, authenticate a source, or prevent repetition across every future feedback request.
 
 ### Invariance and domain translation
 
@@ -346,6 +350,8 @@ The governing principle can now be stated without overloading Ω. It is evaluate
 ```
 
 and the candidate abstraction structure as Ξ<sub>A</sub><sup>(v)</sup>, containing a versioned compatibility graph, its assigned comparison spaces and maps, and the declared edge divergences and weights. The version v changes only when a validated slow-path revision is published.
+
+When repetition protection is enabled, the Section 6 descriptor, packing-occupancy, exemption, and selected-feedback rules are also frozen under Ξ<sub>B</sub> and Λ<sub>eval</sub>. The packet rule changes retrieval output only; the feedback rule can change subsequent learned state and therefore future scored laws. Its full admission semantics cannot be replaced by a claim of source independence from lexical similarity or a hash.
 
 The bounded Bayesian contract Ξ<sub>B</sub> contains the vector, sheaf-inspired, and as-of graph frontier rules; the frontier cap; the frozen frontier-all or selective policy; nomination, evidence-readiness, activation, and criticality maps; one coherent joint evidence-and-outcome kernel, its dominating evidence measure, and the exact marginal identities inducing the ordinary likelihood and posterior-predictive kernel; the complete admission model, positive support floor, and simultaneous lower-bound procedure; mixture weights and template map; Anti-Pigeon sharing certificate; source-dependence treatment; member-level sufficient statistics, split prior, practical-equivalence width, minimum support, split and equivalence thresholds, borrowing cap, and group-size cap for the proposal-only group comparator; pooled-evidence discount, revision-valid evidence classes, shock/changepoint action table, and reset targets; run-length approximation, warm-up, cumulative-detector slack and boundary, and cooldown for changepoint monitoring; independent audit schedule; normalized Jensen--Shannon omitted-influence procedure; component-sensitive law and template motion certificates including propagated approximation error; resource caps; coupled-state publication and invalidation budgets; and atomic publication rule. Separately modeled likelihood and forecast components remain modular forecasts and are not made posterior predictive by validation alone. Its as-of posterior cache is 𝒞<sub>B,t<sup>−</sup></sub>. Outgoing graph relationships may nominate candidates but cannot supply evidence about outcomes that have not yet become available. Separately freeze an evaluation contract:
 
@@ -1210,6 +1216,42 @@ Cache pollution is the main risk. If every error becomes a residual, the cache m
 Fast-path memory use should be cheap. A practical implementation may use approximate nearest-neighbor lookup, hashed keys, or bounded-size caches. The paper treats constant-time lookup as an approximation, not as a guarantee. Slow-path memory refinement may be more expensive because it runs after the initial prediction, when latency pressure is lower.
 
 Representative preservation is a memory responsibility. A single traceability frame prevents a group from becoming an empty label, but boundary detection requires the context audit set, its associated anchor frames, coverage metadata, and sampling history. If these are discarded, the runtime must mark the group unaudited rather than infer stability from one example.
+
+### Repetition and Poisoning Gate
+
+Repeated text can crowd a retrieval packet without supplying new evidence. The reference runtime therefore applies two distinct repetition controls: a greedy packing-occupancy gate and an exact-group veto on selected-only Bayesian feedback. The term poisoning gate names these limited controls, not a detector of false statements, malicious intent, or prompt instructions. The threat model permits repeated or slightly edited stored assertions and changing conversation identifiers; it does not assume authenticated provenance, an uncompromised feedback issuer, or guaranteed retrieval of a clean source.
+
+#### Claim and recorded-lineage descriptors
+
+For a stored frame e, let N<sub>rep</sub> lowercase text and replace runs of non-letter/non-digit characters by word boundaries. Let c<sub>rep</sub>(e) be the ordered, separator-delimited tuple of normalized who, what, where, why, and how fields. A normalized where value beginning with `session ` is replaced by the empty string. The when field, raw transcript, event identifier, run identifier, and conversation identifier do not enter this claim descriptor. This deliberately prevents recapturing an assertion in a new conversation from creating corroboration, but can also conflate genuinely time-dependent claims.
+
+Let ℓ<sub>rep</sub>(e) be the recorded lineage descriptor. A conversation frame uses only its normalized producer; fresh source citations or tool-call identifiers do not create a new conversation lineage. A non-conversation frame uses the producer plus its sorted source-event identifiers when present, otherwise its tool-call identifier when present, otherwise the producer alone. Conversation recognition uses the declared conversation kinds or tags. These are recorded provenance fields, not authenticated origin or a transitive derivation graph.
+
+Let o<sub>rep</sub>(e)∈{0,1} be one only for a non-conversation frame explicitly declaring a distinct occurrence with both what and when marked observed. Define g<sub>rep</sub>(e) as a domain-separated SHA-256 digest of the claim and lineage digests, additionally including normalized when only if o<sub>rep</sub>(e)=1. Two declared occurrences with identical normalized when still share a key. Hash equality is an operational identity assumption, not a proof of semantic equivalence or independence. Hashes of low-entropy assertions are not anonymization and should not be published as privacy protection.
+
+Let V<sub>rep</sub>(e) be the token set of the normalized claim tuple, retaining tokens with at least two UTF-8 bytes and all numeric tokens. Let s<sub>rep</sub>(e,f) be the cardinality of its intersection divided by the cardinality of its union, defined as zero when either token set is empty. With frozen τ<sub>rep</sub>=0.85, define the symmetric indicator R<sub>rep</sub>(e,f) to be one if the group keys agree, or if the lineages agree, both occurrence flags are zero, and s<sub>rep</sub>(e,f)≥τ<sub>rep</sub>; otherwise it is zero. This Jaccard heuristic is not transitive and does not understand negation, role reversal, or the importance of one changed number.
+
+#### Greedy packet occupancy
+
+Let E<sub>t</sub><sup>pack</sup>(e,f) indicate that both frames have different current Anti-Pigeon posterior keys in the reserved certified-key namespace. The runtime checks this namespace and inequality after posterior-key assignment. This is an exemption from repetition suppression, not a certificate of cross-bucket divergence or source independence. Set R̃<sub>t</sub><sup>rep</sup>(e,f)=R<sub>rep</sub>(e,f)(1−E<sub>t</sub><sup>pack</sup>(e,f)).
+
+Given the final candidate order e<sub>1</sub>,…,e<sub>n</sub>, packing capacity p, token budget b, and non-negative token estimates z<sub>i</sub>, start with accepted-index set I<sub>0</sub>=∅. Freeze positive integer occupancy limit m<sub>rep</sub>, default one. For each candidate in order:
+
+1. Stop when |I<sub>i−1</sub>|=p. Skip the candidate if its token estimate plus the already accepted token sum exceeds b.
+2. Compute n<sub>i</sub><sup>rep</sup>=∑<sub>j∈ I<sub>i−1</sub></sub>R̃<sub>t</sub><sup>rep</sup>(e<sub>i</sub>,e<sub>j</sub>).
+3. Accept the candidate exactly when n<sub>i</sub><sup>rep</sup>&lt;m<sub>rep</sub>, setting I<sub>i</sub>=I<sub>i−1</sub>∪{i}; otherwise retain I<sub>i</sub>=I<sub>i−1</sub>. A token-rejected candidate also leaves the set unchanged.
+
+The packet is the accepted ordered subsequence. With the default limit, no accepted pair has R̃<sub>t</sub><sup>rep</sup>=1: the later member would have failed step 3. For larger limits the rule bounds each arrival's correlated predecessors, not every final node degree or a transitive component's size. Exempt bucket pairs remain outside this bound. Suppression frees space for later candidates, so both removals and additions can occur relative to an unguarded packet. No stored frame, abstraction, or provenance is deleted or merged. The gate cannot recover a clean answer excluded from the nominated frontier, and the first accepted repetition need not be true.
+
+#### Selected-feedback veto and scored-law boundary
+
+The feedback control uses exact g<sub>rep</sub> equality, not the packing Jaccard rule. In the Bayesian report's decision order, let j<sub>i</sub> be the first earlier decision with the same non-empty group key. Let b<sub>i</sub><sup>rep</sup>=0 if no such decision exists; otherwise set b<sub>i</sub><sup>rep</sup>=1−E<sub>t</sub><sup>pack</sup>(e<sub>i</sub>,e<sub>j<sub>i</sub></sub>). The first representative remains fixed even when a later bucket is exempt. Consequently, this mechanism is not a per-bucket deduplicator: several later records in one bucket may all be exempt relative to that first representative.
+
+For an outcome request let J<sub>i</sub><sup>old</sup> denote the complete pre-existing journal, availability, inclusion, and source-specific acceptance decision. Its new decision is J<sub>i</sub><sup>fb</sup>=J<sub>i</sub><sup>old</sup>(1−b<sub>i</sub><sup>rep</sup>) for the selected-only source class, and J<sub>i</sub><sup>fb</sup>=J<sub>i</sub><sup>old</sup> for the full-stream or independent-audit source classes. A zero rejects the request rather than applying its outcome weight. Independent-audit requests still require the journal's audit draw and recorded inclusion probability. A full-stream label is not made trustworthy merely by naming that source class.
+
+This veto does not change J<sub>t</sub><sup>upd,q<sub>B</sub></sup>, activation, or ordinary cheap frontier updates. Packing alone changes the retrieval packet, not the already computed 𝖰<sub>t</sub><sup>R</sup>. Rejecting feedback can change future sufficient statistics, q<sub>K,t</sub><sup>eff</sup>, the Section 5 posterior-predictive base, and subsequently the scored law. Thus the combined gate is not globally law-invariant. It neither bounds cumulative influence across journals nor blocks repeated full-stream or valid audit updates. Usefulness probabilities remain probabilities of usefulness, not probabilities that an assertion is true.
+
+Freeze descriptor rules, ordering, exemptions, occupancy limits, source classes, and policy version under Ξ<sub>B</sub> and Λ<sub>eval</sub>. The durable suppression decision is distinct from the internal descriptor key; current keys are not serialized in the outcome journal. Reconstructing them requires retained as-of frames and the matching implementation. For any ordinary Bayesian claim about feedback surviving the veto, the admission model must include this additional selection stage and its dependence on other candidates; the earlier single-packet admission formula alone does not establish that correction. The current heuristic supplies no such certificate and supports only working-posterior semantics where it is needed. Authenticated provenance, cross-journal evidence accounting, semantic contradiction protection, and poisoned-answer evaluation remain open requirements.
 
 ### Bounded Bayesian Update Frontier
 
@@ -2185,7 +2227,7 @@ The reference fast path is:
 7. Try 𝒞<sub>A,t<sup>−</sup></sub>(k<sub>t</sub>), then 𝒞<sub>R,t<sup>−</sup></sub>, then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match (𝖰<sub>t</sub><sup>0</sup>,b<sub>t</sub><sup>0</sup>).
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate ℛ<sub>pre</sub>, confidence, effective support, age, epoch, margin, provenance, and decoder validity from S<sub>t<sup>−</sup></sub>.
-10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute c<sub>t</sub><sup>pack</sup>, apply only reliability-gated elastic deltas, sort by s<sub>i,t</sub><sup>final</sup>, and then enforce packing-count and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act.
+10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute c<sub>t</sub><sup>pack</sup>, apply only reliability-gated elastic deltas, sort by s<sub>i,t</sub><sup>final</sup>, and then enforce Section 6 repetition occupancy, packing-count, and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act. Exact-group feedback suppression is marked separately after posterior-key assignment and enforced when a selected outcome is submitted; it does not disable ordinary frontier updates.
 11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle 𝒪<sub>t</sub><sup>0</sup>. After a successful retrieval response, a low-certainty case may perform one bounded nonblocking fuzz nomination using the already materialized frontier. It does not execute fuzz prediction or evaluate realized prediction loss on the serving path.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
@@ -2224,7 +2266,7 @@ Expected constant-time lookup is a conditional implementation property. Let T<su
 T_{\mathrm{fast}}
 ={}&T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
 +I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}}
-+T_{\mathrm{rank}}(N_t)\\
++T_{\mathrm{rank}}(N_t)+T_{\mathrm{rep}}\\
 &+J_t^{\mathrm{fuzz}}(T_{\mathrm{nom}}+T_{\mathrm{enq}}),
 \end{aligned}
 ```
@@ -2239,6 +2281,8 @@ J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
 ```
 
 Here B<sub>max</sub> is the predeclared frontier cap.
+
+The additional repetition cost T<sub>rep</sub> includes descriptor construction for all nominated service candidates, exact-group report marking, and greedy packing comparisons. Let B<sub>rep</sub> bound that candidate count, p<sub>rep</sub> bound packed count, L<sub>rep</sub> bound semantic/provenance bytes and token-comparison work per candidate, and d<sub>rep</sub> bound source identifiers per candidate. With bounded key sizes and expected hash-table operations, descriptor hashing and source sorting plus packing cost O(B<sub>rep</sub>L<sub>rep</sub>(1+d<sub>rep</sub>log(1+d<sub>rep</sub>)+p<sub>rep</sub>)), with O(B<sub>rep</sub>L<sub>rep</sub>) descriptor storage. This excludes the existing diversity ordering, retrieval, hydration, and persistence costs. Pairwise comparisons are bounded by frontier and pack capacity, not called free or constant independently of those caps. A packing-only microbenchmark omits service-wide descriptor construction and cannot establish total recall overhead or concurrent tail latency.
 
 For a frontier cap N<sub>t</sub>≤ B<sub>max</sub>, certainty and delta application are O(N<sub>t</sub>), and comparison sorting is O(N<sub>t</sub>log N<sub>t</sub>) unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called O(1). Rank-delta cache lookup remains expected O(1) only under the same bounded-key and bounded-table assumptions as the residual cache.
 
@@ -2419,6 +2463,9 @@ The current experiment ledger labels a proposition Validated in fixture when its
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2d | The repetition gate enforces default-one non-exempt packet occupancy and rejects flagged selected-only feedback. | Validated, mechanism only | Focused descriptor, packing, and service tests pass. Different Anti-Pigeon keys are exempt; ordinary frontier, full-stream, and valid audit updates remain separate. |
+| 2d | The gate preserves benign replay outputs relative to its parent. | Mixed descriptive regression | All populated aggregate Brier, ECE, priority-weighted Brier, and Recall@10 values matched. Codex design packed recall fell by 0.0004353; the reused 138-case confirmation-named block was unchanged. No prospective non-inferiority claim. |
+| 2d | The gate prevents poisoned answers, source spoofing, or cumulative repetition across journals. | Not tested; not guaranteed by the mechanism | No downstream poisoned-answer experiment or durable global evidence budget; hash/lineage identity and bucket exemption are not independence proofs. |
 | 2b | Frontier-all improves candidate-level probability quality over no Bayesian update. | Validated in fixture | Priority-weighted Brier loss improved by 9.29% in the frozen 20-candidate synthetic frontier. |
 | 2b | The tested 5%-activation selective policy retains the quality gain of frontier-all. | Falsified in fixture | Selective admission improved priority-weighted Brier by only 0.16%, versus 9.29% for frontier-all; a paired stress report placed ordinary Brier loss 0.02891 above update-all. |
 | 2b | Frontier-all cheap updates plus selective deep work retain frontier-all forecast output. | Validated in synthetic mechanism fixture | Brier loss, priority-weighted Brier loss, and recall at 10 exactly matched frontier-all; this does not establish the value of a deep specialist. |
@@ -2472,6 +2519,8 @@ Claim 2a. Runtime prediction packets are useful when a separately typed packet c
 Claim 2b. A bounded Bayesian frontier can preserve local update cost when vector width, graph degree, candidate universe, evidence-ready frontier size, hypothesis dimension, retained changepoint state, and complete admission-probability evaluation are explicitly capped. The reference frontier-all policy updates every evidence-ready nominated member; activation selects bounded deep work without suppressing the cheap update. Neither policy performs corpus-wide posterior updates. Anti-Pigeon certificates determine which admitted evidence may share a posterior. A bounded practical-equivalence comparison may nominate share, split, or uncertain and a bounded borrowing weight, but it cannot authorize sharing or mutate posterior keys. Ordinary posterior-predictive semantics require one declared joint model whose displayed evidence and outcome marginals induce the likelihood and next-outcome kernel; separately modeled components remain modular forecasts. The effective posterior family maps to the base forecast law, which is then corrected only by residual components whose law or template motion certificates remain valid, including propagated approximation error, and evaluated by the proper score. Informative nomination must enter the likelihood and satisfy the certified positive admission-support condition, or the result is reported only as an admission-conditioned working posterior. Independent design-weighted audits and simultaneous omitted-influence bounds certify only the exact query-journal and finite omitted population for which inclusion probabilities and population bounds are valid. Initial synthetic evidence supports frontier-all cheap updates, selective deep-work separation, practical-equivalence recommendations, and finite-population audit coverage; it does not establish full-stream calibration, useful audit tightness, real-world coverage, or deep-specialist benefit.
 
 Claim 2c. A bounded retrieval packet may apply a Bayesian elastic rank delta after the external retrieval contract and before packing. The raw delta must originate from an accepted Bayesian, residual, or versioned graph path; an independent reliability gate can reduce or null it. Plasticity is high only when the score gap at the packing boundary is small and low when that boundary is already clear. The rank certainty is not a posterior probability, does not alter the proper-scored forecast law, and cannot bypass the hard delta cap. Anti-Pigeon shock revocation may invalidate shared evidence and residuals that generated a delta, but it cannot manufacture a rank correction or certify a replacement group.
+
+Claim 2d. A bounded repetition gate can prevent non-exempt exact or near same-lineage pairs from co-occupying a default-one retrieval packet and veto flagged exact-group selected-only feedback. These are local mechanism properties, not guarantees of factual truth, independent origins, complete duplicate removal, or bounded cumulative influence. Anti-Pigeon preserves predictive grouping authority; different bucket keys do not establish independent evidence. The selected-feedback route may affect future scored laws, and its additional selection requires its own admission model for ordinary Bayesian claims.
 
 Claim 3. Episodic memory and residual cache memory serve different roles because prior-case recall and prior-error correction can be independently useful or harmful under the same prediction context.
 
@@ -2641,6 +2690,27 @@ The result supports practical single-host capacity and sub-100 ms median and p95
 Ten exact-journal useful outcomes moved one posterior from Beta(1,1) to Beta(11,1), probability 0.916667, and applied rank delta +0.067814. Restart reproduced the posterior exactly; rank-delta and final-score drift were below 10<sup>−8</sup>. This validates explicit-feedback durability, not the frequency or utility of naturally occurring feedback.
 
 Taken together, the corrected evidence supports the EventFrame-corpus contract, bounded synthetic correction, deterministic retrospective retrieval improvement, storage/recovery mechanics, and practical local mixed-load capacity. It does not establish stationary calibration, prospective organic utility, strict sub-100 ms concurrent p99, online OpenClaw learning, or naturally triggered Anti-Pigeon revocation. Aggregate artifacts are preserved under `evidence/eventframe-corpus-v1/` and `evidence/runtime-rescue-v1/`; private transcripts, source identifiers, local databases, and derived datasets are excluded.
+
+### Repetition Gate: Mechanisms and Retrospective Regression
+
+The repeated-memory implementation at revision `74ccb92` was compared with its parent `aca468a` using the September 2 replay artifacts. The aggregate-only comparison is preserved under `evidence/repetition-gate-v1/`, with a whitelist-based summarizer and checksums of the input aggregate reports. No private text, source identities, event keys, or embeddings are included. This is local in-memory, hash-embedding replay of previously used historical blocks, not a live vector-database or downstream language-model experiment. It does not replace earlier external-store or isolated-agent measurements. The session extractors used the historical August 28 cutoff, not all sessions available on the replay date.
+
+The EventFrame arm's paired packing results were:
+
+| Source and historical block | Cases | Packed recall before | Packed recall after | Mean packed count before / after |
+| --- | --- | --- | --- | --- |
+| OpenClaw design | 5 | 0.900000 | 0.900000 | 10.000000 / 10.000000 |
+| OpenClaw confirmation-named | 0 | Not evaluated | Not evaluated | Not evaluated |
+| Codex design | 1,286 | 0.446875 | 0.446439 | 7.157854 / 7.156299 |
+| Codex confirmation-named | 138 | 0.372004 | 0.372004 | 7.811594 / 7.789855 |
+| ChatGPT design | 29 | 0.517241 | 0.517241 | 4.448276 / 4.448276 |
+| ChatGPT confirmation-named | 1 | 0.000000 | 0.000000 | 1.000000 / 1.000000 |
+
+Across the 1,459 evaluated cases, Brier, priority-weighted Brier, expected calibration error, and Recall@10 matched the parent exactly in every populated source/block/variant aggregate. This verifies only the measured replay equality, not universal law invariance after future feedback. Codex design packed recall decreased by 0.0004353, or 0.04353 percentage points. Its 138-case confirmation-named block retained packed recall with a net three fewer packed records in aggregate. Net occupancy is not a suppression count: rejecting one candidate can admit a later candidate under the token budget. The labels are record-reuse proxies, so these changes neither establish semantic information loss nor prove semantic preservation.
+
+The blocks were already used during development; no new untouched confirmation or preregistered non-inferiority claim is made. No attack-success confidence interval can be inferred from these benign reports. Focused descriptor, packing, and feedback-gate tests were rerun during the paper synchronization and passed, including conversation recapture, near repetition, observed-occurrence handling, distinct bucket-key exemptions, ordinary-update preservation, and selected-feedback rejection. These establish mechanism behavior only. The tests do not cover a complete malicious conversation campaign against a downstream model, and no new paired service-wide latency measurement accompanies this comparison.
+
+A prospective poisoning experiment must freeze the gate before creating or revealing confirmation attacks. Compare gate-off, packing-only, feedback-only, and combined arms with the same extractor, retrieval contract, seeds, frontier, token budget, and fresh agent sessions. Vary exact and paraphrased repetitions, producer/source spoofing, repeated journals, false feedback labels, negation and one-number contradictions, genuine repeated observations, different Anti-Pigeon keys, and corpus flooding that removes the clean answer before nomination. Report poisoned answers per attacked query, clean-answer retention per clean query, false suppression per independently labeled relevant record, accepted duplicate feedback per attempted duplicate request, and cumulative posterior movement across journals. Cluster intervals by independent attack campaign and use sequential coverage for repeated monitoring. Separately report full recall p50/p95/p99, descriptor and packing time, allocations, throughput, and errors under mixed writes. No broad poisoning-resistance claim is currently validated.
 
 ### Background Fuzz Queue Mechanism Check
 
@@ -2858,6 +2928,8 @@ The twenty-sixth open problem is rank-plasticity calibration. Corrected syntheti
 
 The twenty-seventh open problem is background fuzz scheduling. The reference runtime now has a bounded, nonblocking, idle-gated proposal queue, but its low-certainty trigger creates a selected audit stream and its in-process jobs do not survive restart. Mixed-load tail latency, queue stability under bursts, durable recovery semantics, perturbation validity, independent coverage of high-certainty cases, and the rate at which proposals survive external review remain unmeasured. A useful scheduler must improve future decisions often enough to justify background compute without turning uncertainty into an automatic ontology rewrite.
 
+The twenty-eighth open problem is adversarial evidence dependence. The repetition gate constrains a returned packet and some selected-only feedback, but it neither authenticates sources nor maintains a persistent evidence budget across journals. Producer and source identifiers can create apparent independence without independent observations; distinct Anti-Pigeon bucket keys do not repair that problem. Lexical normalization can erase polarity, temporal, or role distinctions, and a poisoned frontier can exclude clean evidence before packing begins. Needed work includes trusted feedback issuance, explicit derivation lineage, dependence-aware sufficient statistics across time, semantic false-suppression controls, and nomination-stage diversity or independent search. These must preserve real repeated observations without treating recaptured assertions as new trials. Benign replay and focused mechanism tests do not measure poisoned-answer success, instruction following from retrieved text, or autonomous-action safety.
+
 These open problems define the boundary of the current paper. The framework is useful if it makes prediction, memory, and abstraction more explicit and testable. It should not be presented as a final cognitive architecture, universal predictor, or complete mathematical theory. The conclusion summarizes the role EventFrame can play as a conservative event-centric substrate.
 
 ## 14. Conclusion
@@ -2922,6 +2994,20 @@ References 7--9 support only a limiting thought experiment for physical substrat
 ## Appendix A. Symbol Index
 
 This index resolves the core symbols used by the formulas. Component spaces for event fields use calligraphic letters without descriptive subscripts; packet component spaces always carry descriptive subscripts.
+
+N<sub>rep</sub>,c<sub>rep</sub>,ℓ<sub>rep</sub>: repetition text normalization, ordered claim tuple excluding when, and recorded-lineage descriptor (Section 6).
+
+o<sub>rep</sub>,g<sub>rep</sub>: declared observed-occurrence flag and hashed claim/lineage/optional-time key; neither authenticates evidence.
+
+V<sub>rep</sub>,s<sub>rep</sub>,τ<sub>rep</sub>: claim token set, Jaccard similarity (zero for an empty input), and frozen similarity threshold, default 0.85.
+
+R<sub>rep</sub>,E<sub>t</sub><sup>pack</sup>,R̃<sub>t</sub><sup>rep</sup>: repetition relation, distinct Anti-Pigeon-key exemption, and non-exempt repetition relation.
+
+m<sub>rep</sub>,I<sub>i</sub>,n<sub>i</sub><sup>rep</sup>: positive occupancy limit, accepted candidate-index prefix, and correlated predecessor count. The local algorithm's n,p,b,z<sub>i</sub> are candidate count, packing capacity, token budget, and candidate token estimate.
+
+j<sub>i</sub>,b<sub>i</sub><sup>rep</sup>,J<sub>i</sub><sup>old</sup>,J<sub>i</sub><sup>fb</sup>: first exact-group report representative (possibly absent), suppression flag, previous outcome acceptance, and acceptance after the selected-only veto.
+
+T<sub>rep</sub>,B<sub>rep</sub>,p<sub>rep</sub>,L<sub>rep</sub>,d<sub>rep</sub>: repetition cost and caps on nominated count, packed count, per-frame semantic/provenance work, and source-identifier count (Section 9).
 
 Ω: substrate state space. It is never used as a cost function.
 

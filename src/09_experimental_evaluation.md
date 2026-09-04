@@ -137,6 +137,27 @@ Ten exact-journal useful outcomes moved one posterior from Beta(1,1) to Beta(11,
 
 Taken together, the corrected evidence supports the EventFrame-corpus contract, bounded synthetic correction, deterministic retrospective retrieval improvement, storage/recovery mechanics, and practical local mixed-load capacity. It does not establish stationary calibration, prospective organic utility, strict sub-100 ms concurrent p99, online OpenClaw learning, or naturally triggered Anti-Pigeon revocation. Aggregate artifacts are preserved under `evidence/eventframe-corpus-v1/` and `evidence/runtime-rescue-v1/`; private transcripts, source identifiers, local databases, and derived datasets are excluded.
 
+## Repetition Gate: Mechanisms and Retrospective Regression
+
+The repeated-memory implementation at revision `74ccb92` was compared with its parent `aca468a` using the September 2 replay artifacts. The aggregate-only comparison is preserved under `evidence/repetition-gate-v1/`, with a whitelist-based summarizer and checksums of the input aggregate reports. No private text, source identities, event keys, or embeddings are included. This is local in-memory, hash-embedding replay of previously used historical blocks, not a live vector-database or downstream language-model experiment. It does not replace earlier external-store or isolated-agent measurements. The session extractors used the historical August 28 cutoff, not all sessions available on the replay date.
+
+The EventFrame arm's paired packing results were:
+
+| Source and historical block | Cases | Packed recall before | Packed recall after | Mean packed count before / after |
+| --- | --- | --- | --- | --- |
+| OpenClaw design | 5 | 0.900000 | 0.900000 | 10.000000 / 10.000000 |
+| OpenClaw confirmation-named | 0 | Not evaluated | Not evaluated | Not evaluated |
+| Codex design | 1,286 | 0.446875 | 0.446439 | 7.157854 / 7.156299 |
+| Codex confirmation-named | 138 | 0.372004 | 0.372004 | 7.811594 / 7.789855 |
+| ChatGPT design | 29 | 0.517241 | 0.517241 | 4.448276 / 4.448276 |
+| ChatGPT confirmation-named | 1 | 0.000000 | 0.000000 | 1.000000 / 1.000000 |
+
+Across the 1,459 evaluated cases, Brier, priority-weighted Brier, expected calibration error, and Recall@10 matched the parent exactly in every populated source/block/variant aggregate. This verifies only the measured replay equality, not universal law invariance after future feedback. Codex design packed recall decreased by 0.0004353, or 0.04353 percentage points. Its 138-case confirmation-named block retained packed recall with a net three fewer packed records in aggregate. Net occupancy is not a suppression count: rejecting one candidate can admit a later candidate under the token budget. The labels are record-reuse proxies, so these changes neither establish semantic information loss nor prove semantic preservation.
+
+The blocks were already used during development; no new untouched confirmation or preregistered non-inferiority claim is made. No attack-success confidence interval can be inferred from these benign reports. Focused descriptor, packing, and feedback-gate tests were rerun during the paper synchronization and passed, including conversation recapture, near repetition, observed-occurrence handling, distinct bucket-key exemptions, ordinary-update preservation, and selected-feedback rejection. These establish mechanism behavior only. The tests do not cover a complete malicious conversation campaign against a downstream model, and no new paired service-wide latency measurement accompanies this comparison.
+
+A prospective poisoning experiment must freeze the gate before creating or revealing confirmation attacks. Compare gate-off, packing-only, feedback-only, and combined arms with the same extractor, retrieval contract, seeds, frontier, token budget, and fresh agent sessions. Vary exact and paraphrased repetitions, producer/source spoofing, repeated journals, false feedback labels, negation and one-number contradictions, genuine repeated observations, different Anti-Pigeon keys, and corpus flooding that removes the clean answer before nomination. Report poisoned answers per attacked query, clean-answer retention per clean query, false suppression per independently labeled relevant record, accepted duplicate feedback per attempted duplicate request, and cumulative posterior movement across journals. Cluster intervals by independent attack campaign and use sequential coverage for repeated monitoring. Separately report full recall p50/p95/p99, descriptor and packing time, allocations, throughput, and errors under mixed writes. No broad poisoning-resistance claim is currently validated.
+
 ## Background Fuzz Queue Mechanism Check
 
 The Go runtime now nominates fuzz work only after a successful low-certainty recall and executes it through a bounded in-process queue. Focused tests confirmed that a low-certainty case enqueues and completes, a high-certainty case does not enqueue, equivalent candidate sets are suppressed during cooldown, queue saturation drops work without blocking recall, stale snapshots are rejected without retry, and the public status response contains no query text or event identifiers. The complete repository race suite, static analysis, repeated focused tests, and Go plus plugin builds passed on 2026-08-31.

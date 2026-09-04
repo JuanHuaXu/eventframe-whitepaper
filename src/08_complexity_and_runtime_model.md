@@ -13,7 +13,7 @@ The reference fast path is:
 7. Try \(\mathcal C_{A,t^-}(k_t)\), then \(\mathcal C_{R,t^-}\), then episodic support if confidence is insufficient; require the residual's posterior-predictive version, the law-motion margin for every law-bearing record, and the template-motion margin for every point-bearing record to match \((\mathsf Q_t^0,b_t^0)\).
 8. Compose a candidate event output bundle or packet using the separately typed clipped point and law residual components.
 9. Evaluate \(\mathcal R_{\mathrm{pre}}\), confidence, effective support, age, epoch, margin, provenance, and decoder validity from \(S_{t^-}\).
-10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute \(c_t^{\mathrm{pack}}\), apply only reliability-gated elastic deltas, sort by \(s_{i,t}^{\mathrm{final}}\), and then enforce packing-count and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act.
+10. When the output is a bounded retrieval packet, receive the external retrieval scores, compute \(c_t^{\mathrm{pack}}\), apply only reliability-gated elastic deltas, sort by \(s_{i,t}^{\mathrm{final}}\), and then enforce Section 6 repetition occupancy, packing-count, and token budgets. Anti-Pigeon or epoch invalidation is checked before a cached delta can act. Exact-group feedback suppression is marked separately after posterior-key assignment and enforced when a selected outcome is submitted; it does not disable ordinary frontier updates.
 11. Return the admissible prediction or fall back to the posterior-predictive no-residual bundle \(\mathcal O_t^0\). After a successful retrieval response, a low-certainty case may perform one bounded nonblocking fuzz nomination using the already materialized frontier. It does not execute fuzz prediction or evaluate realized prediction loss on the serving path.
 
 The packet names memory nodes, graph edges, retrieval lane, compaction risk, response mode, and an optional control branch. It predicts what the runtime should read or do; the event prediction describes what is expected to happen.
@@ -52,7 +52,7 @@ Expected constant-time lookup is a conditional implementation property. Let \(T_
 T_{\mathrm{fast}}
 ={}&T_C+T_{\mathrm{Bayes}}^{\mathrm{fast}}+T_B(k)+T_K+T_A
 +I_R T_R(N)+I_E T_E(M)+T_{\oplus}+T_{\mathrm{pre}}
-+T_{\mathrm{rank}}(N_t)\\
++T_{\mathrm{rank}}(N_t)+T_{\mathrm{rep}}\\
 &+J_t^{\mathrm{fuzz}}(T_{\mathrm{nom}}+T_{\mathrm{enq}}),
 \end{aligned}
 \]
@@ -67,6 +67,8 @@ J_t^{\mathrm{upd},q_B}(e)=1\right\}\right|
 \]
 
 Here \(B_{\max}\) is the predeclared frontier cap.
+
+The additional repetition cost \(T_{\mathrm{rep}}\) includes descriptor construction for all nominated service candidates, exact-group report marking, and greedy packing comparisons. Let \(B_{\mathrm{rep}}\) bound that candidate count, \(p_{\mathrm{rep}}\) bound packed count, \(L_{\mathrm{rep}}\) bound semantic/provenance bytes and token-comparison work per candidate, and \(d_{\mathrm{rep}}\) bound source identifiers per candidate. With bounded key sizes and expected hash-table operations, descriptor hashing and source sorting plus packing cost \(O(B_{\mathrm{rep}}L_{\mathrm{rep}}(1+d_{\mathrm{rep}}\log(1+d_{\mathrm{rep}})+p_{\mathrm{rep}}))\), with \(O(B_{\mathrm{rep}}L_{\mathrm{rep}})\) descriptor storage. This excludes the existing diversity ordering, retrieval, hydration, and persistence costs. Pairwise comparisons are bounded by frontier and pack capacity, not called free or constant independently of those caps. A packing-only microbenchmark omits service-wide descriptor construction and cannot establish total recall overhead or concurrent tail latency.
 
 For a frontier cap \(N_t\le B_{\max}\), certainty and delta application are \(O(N_t)\), and comparison sorting is \(O(N_t\log N_t)\) unless the retrieval contract already supplies a compatible bounded order and a selection algorithm is used. Thus the elastic arithmetic is constant per candidate and independent of corpus size, but the complete ranking stage is not called \(O(1)\). Rank-delta cache lookup remains expected \(O(1)\) only under the same bounded-key and bounded-table assumptions as the residual cache.
 

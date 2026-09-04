@@ -15,10 +15,10 @@ The fast path follows one bounded sequence:
 1. Convert the current situation into one or more internal event frames.
 2. Ask the vector store for a bounded candidate frontier, ordinarily tens or hundreds of frames rather than the whole corpus.
 3. Expand that frontier with bounded graph neighbors, including prior and next explanatory or causal candidates that are available as of the query time.
-4. Update the cheap cached belief for every evidence-ready member of that frontier. Expensive analysis remains selective.
-5. Use Anti-Pigeon to decide which candidates are allowed to share one abstraction or posterior. Similar-looking events with different downstream behavior remain separate.
+4. Use current Anti-Pigeon certificates to assign shared or separate posterior keys before updating beliefs. Similar-looking events without a valid sharing certificate remain separate.
+5. Apply the cheap update to every evidence-ready member of that frontier under its assigned key. Expensive analysis remains selective; mark exact repeated claim/lineage decisions for the separate selected-feedback veto.
 6. Build a baseline forecast from the accepted beliefs, then apply only residual corrections whose provenance, age, horizon, confidence, and version checks still hold.
-7. For memory retrieval, apply a bounded rank correction after external retrieval and before packing. Hydrate the selected records' full text only after this semantic work is finished.
+7. For memory retrieval, apply a bounded rank correction after external retrieval, then pack under repetition-occupancy and token budgets. Hydrate the selected records' full text only after this semantic work is finished.
 8. Return the forecast or packed memory context immediately.
 
 This ordering matters. The answer must survive retrieval into the candidate frontier before EventFrame can rerank it. A packer that truncates to ten items before a fifty-candidate reranker runs has already discarded forty candidates and cannot recover them.
@@ -38,6 +38,10 @@ Anti-Pigeon is short for resisting pigeonholing: the framework should not keep u
 This supports both directions of revision. Events that repeatedly behave alike may share evidence and eventually join into one predictive group. Events that once looked alike may split after a changepoint or a revealing outcome. Event streams can therefore merge like tributaries or diverge when a small distinction becomes consequential.
 
 Every group retains at least one concrete traceability frame and a broader audit set. The concrete frame makes the abstraction inspectable; the audit set tests whether the group is hiding divergent boundary cases. One representative alone is never treated as proof that the whole group is stable.
+
+## Repetition is not corroboration
+
+Repetition protection is separate from Anti-Pigeon. Ten recaptures of one assertion should not automatically fill ten memory slots or count as ten independent confirmations. The implemented gate limits similar same-lineage records inside the packet and rejects exact-group duplicates on the selected-feedback route, subject to the separate-bucket exemption defined in Section 6. It preserves stored records and ordinary frontier updates. It does not decide which assertion is true, authenticate a source, or prevent repetition across every future feedback request.
 
 ## Invariance and domain translation
 

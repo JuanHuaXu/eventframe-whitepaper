@@ -1,0 +1,787 @@
+{
+  "schema": "eventframe.repetition-regression.v1",
+  "replay_date": "2026-09-02",
+  "control_revision": "aca468a",
+  "guard_revision": "74ccb92",
+  "scope": "Retrospective reused historical splits; local in-memory/hash-embedding replay, not live vector-store or LLM end-to-end evaluation. Zero-case rows are unevaluated, not perfect scores.",
+  "inference": "Descriptive paired aggregates; no preregistered poisoning-success test or new confirmation claim.",
+  "privacy": "Whitelist of aggregate metrics and report checksums only; no text, event IDs, session IDs, embeddings, or claim hashes.",
+  "total_cases": 1459,
+  "rows": [
+    {
+      "source": "openclaw",
+      "block": "design",
+      "cases": 5,
+      "trajectories": 2,
+      "aggregate_report_sha256": [
+        "dc5318c1ba5306c88a85285f9c337a5b208ddd49f658167ed1c7f6c7ccfb0f7d",
+        "c20d97e588ca6cccf72aed2588dea9a0210a0c40d43d7a7d3a41cf06ef4e5264"
+      ],
+      "variants": {
+        "baseline": {
+          "brier": {
+            "before": 0.46805227587902803,
+            "after": 0.46805227587902803,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.662180507446188,
+            "after": 0.662180507446188,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.46799129339713014,
+            "after": 0.46799129339713014,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.9,
+            "after": 0.9,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.9,
+            "after": 0.9,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 10,
+            "after": 10,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 488.8,
+            "after": 438.2,
+            "delta": -50.60000000000002
+          }
+        },
+        "eventframe": {
+          "brier": {
+            "before": 0.44326227404380436,
+            "after": 0.44326227404380436,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6396927630086832,
+            "after": 0.6396927630086832,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.44172052313736676,
+            "after": 0.44172052313736676,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.9,
+            "after": 0.9,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.9,
+            "after": 0.9,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 10,
+            "after": 10,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 403,
+            "after": 395.8,
+            "delta": -7.199999999999989
+          }
+        },
+        "update_all": {
+          "brier": {
+            "before": 0.44326227404380436,
+            "after": 0.44326227404380436,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6396927630086832,
+            "after": 0.6396927630086832,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.44172052313736676,
+            "after": 0.44172052313736676,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.9,
+            "after": 0.9,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.9,
+            "after": 0.9,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 10,
+            "after": 10,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 403,
+            "after": 395.8,
+            "delta": -7.199999999999989
+          }
+        }
+      }
+    },
+    {
+      "source": "openclaw",
+      "block": "confirmation",
+      "cases": 0,
+      "trajectories": 0,
+      "aggregate_report_sha256": [
+        "fcade8ddab149e1ba211d3cf0da3ceeca0be1d750075d2dd890eed4cde13bb26",
+        "fcade8ddab149e1ba211d3cf0da3ceeca0be1d750075d2dd890eed4cde13bb26"
+      ],
+      "variants": {
+      }
+    },
+    {
+      "source": "codex",
+      "block": "design",
+      "cases": 1286,
+      "trajectories": 9,
+      "aggregate_report_sha256": [
+        "2a043dd1ad72ba89faf68bb7b6d81122f01d8610f6db149310081117f0823b88",
+        "3cc535f9a9a4e6fde5b3b414abd38f8020d77b8c5f2146218581b1d021dc7540"
+      ],
+      "variants": {
+        "baseline": {
+          "brier": {
+            "before": 0.3653334693437561,
+            "after": 0.3653334693437561,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.4144987273050328,
+            "after": 0.4144987273050328,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.3637596427269808,
+            "after": 0.3637596427269808,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.32258764805202633,
+            "after": 0.32258764805202633,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.2370877043231996,
+            "after": 0.2370975682691468,
+            "delta": 9.863945947208297e-06
+          },
+          "mean_packed_count": {
+            "before": 7.506220839813375,
+            "after": 7.5077760497667185,
+            "delta": 0.0015552099533433505
+          },
+          "mean_used_tokens": {
+            "before": 1950.9385692068429,
+            "after": 1950.6034214618974,
+            "delta": -0.335147744945516
+          }
+        },
+        "eventframe": {
+          "brier": {
+            "before": 0.32689858576326075,
+            "after": 0.32689858576326075,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.3797042201772782,
+            "after": 0.3797042201772782,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.325607424106016,
+            "after": 0.325607424106016,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.5940471643252673,
+            "after": 0.5940471643252673,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.4468747060149736,
+            "after": 0.4464394006738172,
+            "delta": -0.00043530534115637787
+          },
+          "mean_packed_count": {
+            "before": 7.157853810264386,
+            "after": 7.156298600311042,
+            "delta": -0.0015552099533433505
+          },
+          "mean_used_tokens": {
+            "before": 1960.3452566096423,
+            "after": 1960.213063763608,
+            "delta": -0.13219284603428605
+          }
+        },
+        "shuffled_feedback": {
+          "brier": {
+            "before": 0.33905008018962113,
+            "after": 0.33905008018962113,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.3794746466300929,
+            "after": 0.3794746466300929,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.3378253975176701,
+            "after": 0.3378253975176701,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.34875178388833616,
+            "after": 0.34875178388833616,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.259194162206599,
+            "after": 0.2587554534053145,
+            "delta": -0.0004387088012845486
+          },
+          "mean_packed_count": {
+            "before": 7.469673405909798,
+            "after": 7.464230171073095,
+            "delta": -0.005443234836702615
+          },
+          "mean_used_tokens": {
+            "before": 1948.5730948678072,
+            "after": 1948.2332814930016,
+            "delta": -0.3398133748055443
+          }
+        },
+        "update_all": {
+          "brier": {
+            "before": 0.32986024377104095,
+            "after": 0.32986024377104095,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.38217359588593314,
+            "after": 0.38217359588593314,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.3285665182650076,
+            "after": 0.3285665182650076,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.5939858353613333,
+            "after": 0.5939858353613333,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.44586639952079987,
+            "after": 0.44533432556032426,
+            "delta": -0.0005320739604756097
+          },
+          "mean_packed_count": {
+            "before": 7.17651632970451,
+            "after": 7.170295489891135,
+            "delta": -0.0062208398133751786
+          },
+          "mean_used_tokens": {
+            "before": 1960.0062208398133,
+            "after": 1959.825038880249,
+            "delta": -0.18118195956435557
+          }
+        }
+      }
+    },
+    {
+      "source": "codex",
+      "block": "confirmation",
+      "cases": 138,
+      "trajectories": 3,
+      "aggregate_report_sha256": [
+        "ea207cf12be94dcc91c3982c8baabfda49ae843f531bd05ac2f437171e58c9b1",
+        "cb79c32bd0d5f922e8684072019f9f9dc8ba1d068b88455db79e0040353e74ec"
+      ],
+      "variants": {
+        "baseline": {
+          "brier": {
+            "before": 0.26116571153772444,
+            "after": 0.26116571153772444,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.1407204208904157,
+            "after": 0.1407204208904157,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.2587236154723086,
+            "after": 0.2587236154723086,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.36192227636535507,
+            "after": 0.36192227636535507,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.2758504222920445,
+            "after": 0.2758504222920445,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 7.557971014492754,
+            "after": 7.536231884057971,
+            "delta": -0.02173913043478315
+          },
+          "mean_used_tokens": {
+            "before": 1883.8623188405797,
+            "after": 1878.0652173913043,
+            "delta": -5.7971014492754875
+          }
+        },
+        "eventframe": {
+          "brier": {
+            "before": 0.24120584245011417,
+            "after": 0.24120584245011417,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.1797643107795759,
+            "after": 0.1797643107795759,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.2389630436878232,
+            "after": 0.2389630436878232,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.4608690616212152,
+            "after": 0.4608690616212152,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.37200429308919597,
+            "after": 0.37200429308919597,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 7.811594202898551,
+            "after": 7.7898550724637685,
+            "delta": -0.02173913043478226
+          },
+          "mean_used_tokens": {
+            "before": 1910.5869565217392,
+            "after": 1904.7898550724638,
+            "delta": -5.7971014492754875
+          }
+        },
+        "shuffled_feedback": {
+          "brier": {
+            "before": 0.25724123542009386,
+            "after": 0.25724123542009386,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.12878711357277128,
+            "after": 0.12878711357277128,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.25505708972266156,
+            "after": 0.25505708972266156,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.34193942152026646,
+            "after": 0.34193942152026646,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.24266420097213193,
+            "after": 0.24266420097213193,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 7.202898550724638,
+            "after": 7.181159420289855,
+            "delta": -0.02173913043478226
+          },
+          "mean_used_tokens": {
+            "before": 1900.7753623188405,
+            "after": 1894.9782608695652,
+            "delta": -5.79710144927526
+          }
+        },
+        "update_all": {
+          "brier": {
+            "before": 0.24128644859446036,
+            "after": 0.24128644859446036,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.18039995086043584,
+            "after": 0.18039995086043584,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.23904680609685766,
+            "after": 0.23904680609685766,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.4608690616212152,
+            "after": 0.4608690616212152,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.3724448622782856,
+            "after": 0.3724448622782856,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 7.833333333333333,
+            "after": 7.811594202898551,
+            "delta": -0.02173913043478226
+          },
+          "mean_used_tokens": {
+            "before": 1910.804347826087,
+            "after": 1905.0072463768115,
+            "delta": -5.7971014492754875
+          }
+        }
+      }
+    },
+    {
+      "source": "chatgpt",
+      "block": "design",
+      "cases": 29,
+      "trajectories": 8,
+      "aggregate_report_sha256": [
+        "85a452aa80dee0abf2ff2dcbd7fe8ccb0258eb2b0d93cca0ddfe692944246255",
+        "85a452aa80dee0abf2ff2dcbd7fe8ccb0258eb2b0d93cca0ddfe692944246255"
+      ],
+      "variants": {
+        "baseline": {
+          "brier": {
+            "before": 0.4698287907709899,
+            "after": 0.4698287907709899,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6649643844426327,
+            "after": 0.6649643844426327,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.47017878316680567,
+            "after": 0.47017878316680567,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.5517241379310345,
+            "after": 0.5517241379310345,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.3103448275862069,
+            "after": 0.3103448275862069,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 4.517241379310345,
+            "after": 4.517241379310345,
+            "delta": 0.0
+          },
+          "mean_used_tokens": {
+            "before": 1948.5172413793102,
+            "after": 1948.5172413793102,
+            "delta": 0.0
+          }
+        },
+        "eventframe": {
+          "brier": {
+            "before": 0.4351476036711842,
+            "after": 0.4351476036711842,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6306372154077962,
+            "after": 0.6306372154077962,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.43651969182426326,
+            "after": 0.43651969182426326,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.8620689655172413,
+            "after": 0.8620689655172413,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.5172413793103449,
+            "after": 0.5172413793103449,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 4.448275862068965,
+            "after": 4.448275862068965,
+            "delta": 0.0
+          },
+          "mean_used_tokens": {
+            "before": 1958.4827586206898,
+            "after": 1958.4827586206898,
+            "delta": 0.0
+          }
+        },
+        "shuffled_feedback": {
+          "brier": {
+            "before": 0.4348379279310796,
+            "after": 0.4348379279310796,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6303467770465333,
+            "after": 0.6303467770465333,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.43622730069847526,
+            "after": 0.43622730069847526,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.8620689655172413,
+            "after": 0.8620689655172413,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.5517241379310345,
+            "after": 0.5517241379310345,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 4.448275862068965,
+            "after": 4.448275862068965,
+            "delta": 0.0
+          },
+          "mean_used_tokens": {
+            "before": 1958.448275862069,
+            "after": 1958.448275862069,
+            "delta": 0.0
+          }
+        },
+        "update_all": {
+          "brier": {
+            "before": 0.4351476036711842,
+            "after": 0.4351476036711842,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6306372154077962,
+            "after": 0.6306372154077962,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.43651969182426326,
+            "after": 0.43651969182426326,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 0.8620689655172413,
+            "after": 0.8620689655172413,
+            "delta": 0.0
+          },
+          "packed_recall": {
+            "before": 0.5172413793103449,
+            "after": 0.5172413793103449,
+            "delta": 0.0
+          },
+          "mean_packed_count": {
+            "before": 4.448275862068965,
+            "after": 4.448275862068965,
+            "delta": 0.0
+          },
+          "mean_used_tokens": {
+            "before": 1958.4827586206898,
+            "after": 1958.4827586206898,
+            "delta": 0.0
+          }
+        }
+      }
+    },
+    {
+      "source": "chatgpt",
+      "block": "confirmation",
+      "cases": 1,
+      "trajectories": 1,
+      "aggregate_report_sha256": [
+        "98365121ff74591fcd4b9629d5ee5d4e1dc391374aa987fd971dc05ee0d55023",
+        "98365121ff74591fcd4b9629d5ee5d4e1dc391374aa987fd971dc05ee0d55023"
+      ],
+      "variants": {
+        "baseline": {
+          "brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6199702369444967,
+            "after": 0.6199702369444967,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "packed_recall": {
+            "before": 0,
+            "after": 0,
+            "delta": 0
+          },
+          "mean_packed_count": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 1826,
+            "after": 1826,
+            "delta": 0
+          }
+        },
+        "eventframe": {
+          "brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6199702369444967,
+            "after": 0.6199702369444967,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "packed_recall": {
+            "before": 0,
+            "after": 0,
+            "delta": 0
+          },
+          "mean_packed_count": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 1826,
+            "after": 1826,
+            "delta": 0
+          }
+        },
+        "shuffled_feedback": {
+          "brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6199702369444967,
+            "after": 0.6199702369444967,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "packed_recall": {
+            "before": 0,
+            "after": 0,
+            "delta": 0
+          },
+          "mean_packed_count": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 1826,
+            "after": 1826,
+            "delta": 0
+          }
+        },
+        "update_all": {
+          "brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "expected_calibration_error": {
+            "before": 0.6199702369444967,
+            "after": 0.6199702369444967,
+            "delta": 0.0
+          },
+          "priority_weighted_brier": {
+            "before": 0.4739527449354827,
+            "after": 0.4739527449354827,
+            "delta": 0.0
+          },
+          "recall_at_10": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "packed_recall": {
+            "before": 0,
+            "after": 0,
+            "delta": 0
+          },
+          "mean_packed_count": {
+            "before": 1,
+            "after": 1,
+            "delta": 0
+          },
+          "mean_used_tokens": {
+            "before": 1826,
+            "after": 1826,
+            "delta": 0
+          }
+        }
+      }
+    }
+  ]
+}

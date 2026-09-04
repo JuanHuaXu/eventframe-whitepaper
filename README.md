@@ -20,6 +20,10 @@ Synthetic reports and privacy-reduced aggregate chronological results cited by t
 
 ## Intended Output
 
+Build the canonical assembly and TeX with `python3 scripts/build_paper.py`, check source-derived tables with `python3 scripts/test_paper_tables.py`, and generate GitHub Markdown with `ruby scripts/build_github_paper.rb`. Compile `tmp/pdfs/eventframe_whitepaper.tex` with XeLaTeX twice before replacing the distributed PDF. Do not use the historical ignored PDF builder, whose hard-coded tables could lag the Markdown source.
+
+The repeated-memory gate and its limits are described in Section 6. Aggregate-only retrospective regression evidence and test boundaries are recorded in [`evidence/repetition-gate-v1/`](evidence/repetition-gate-v1/); these are not a downstream poisoning-resistance benchmark.
+
 A publishable concept-and-math white paper covering:
 
 1. Motivation and scope

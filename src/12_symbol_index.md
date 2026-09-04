@@ -2,6 +2,20 @@
 
 This index resolves the core symbols used by the formulas. Component spaces for event fields use calligraphic letters without descriptive subscripts; packet component spaces always carry descriptive subscripts.
 
+\(N_{\mathrm{rep}},c_{\mathrm{rep}},\ell_{\mathrm{rep}}\): repetition text normalization, ordered claim tuple excluding when, and recorded-lineage descriptor (Section 6).
+
+\(o_{\mathrm{rep}},g_{\mathrm{rep}}\): declared observed-occurrence flag and hashed claim/lineage/optional-time key; neither authenticates evidence.
+
+\(V_{\mathrm{rep}},s_{\mathrm{rep}},\tau_{\mathrm{rep}}\): claim token set, Jaccard similarity (zero for an empty input), and frozen similarity threshold, default 0.85.
+
+\(R_{\mathrm{rep}},E_t^{\mathrm{pack}},\widetilde R_t^{\mathrm{rep}}\): repetition relation, distinct Anti-Pigeon-key exemption, and non-exempt repetition relation.
+
+\(m_{\mathrm{rep}},I_i,n_i^{\mathrm{rep}}\): positive occupancy limit, accepted candidate-index prefix, and correlated predecessor count. The local algorithm's \(n,p,b,z_i\) are candidate count, packing capacity, token budget, and candidate token estimate.
+
+\(j_i,b_i^{\mathrm{rep}},J_i^{\mathrm{old}},J_i^{\mathrm{fb}}\): first exact-group report representative (possibly absent), suppression flag, previous outcome acceptance, and acceptance after the selected-only veto.
+
+\(T_{\mathrm{rep}},B_{\mathrm{rep}},p_{\mathrm{rep}},L_{\mathrm{rep}},d_{\mathrm{rep}}\): repetition cost and caps on nominated count, packed count, per-frame semantic/provenance work, and source-identifier count (Section 9).
+
 \(\Omega\): substrate state space. It is never used as a cost function.
 
 \(A_t\), \(\omega_{A_t}\): finite substrate/computational region and its history.
