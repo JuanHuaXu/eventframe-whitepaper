@@ -1,5 +1,17 @@
 # Glossary
 
+## Authenticated Outcome
+
+An outcome envelope whose signature verifies under an operator-enrolled key scoped to its tenant and feedback class, subject to validity, revocation, and the remaining admission gates. This authenticates attribution and contents, not truth, independence, or exhaustive sampling.
+
+## Observation Ledger
+
+A durable identity-to-payload map consumed atomically with learning updates. Tenant, issuer, and observation identifier define its replay domain; key rotation or a new journal does not create a new observation. Fabricated fresh identities and ledger rollback remain outside its guarantee.
+
+## Reversible Working Belief
+
+A clipped, discounted two-hypothesis usefulness filter with an explicit outcome predictive. Contrary newly admitted evidence can reverse saturated confidence. Its generalized, selection-unadjusted semantics do not inherit ordinary Bayesian calibration or prove factual truth.
+
 ## Event
 
 A structured representation of a change, occurrence, action, observation, or state transition.

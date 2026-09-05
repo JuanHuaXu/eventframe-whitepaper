@@ -57,6 +57,7 @@ State the problem, proposed architecture, current evidence, falsified claims, an
 - Shock revocation, changepoints, omitted-influence audit, and durability
 - Reliability-gated elastic rank delta
 - Recorded-lineage repetition, greedy packet occupancy, selected-feedback veto, and poisoning limits
+- Optional authenticated outcomes, durable observation accounting, reversible working likelihood and predictive, and trust invalidation
 
 ## 7. Sensitivity Testing and Invariants
 

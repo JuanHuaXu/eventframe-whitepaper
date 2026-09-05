@@ -52,7 +52,7 @@ class InlineMathHTML
     "Theta" => "Θ", "Xi" => "Ξ",
     "alpha" => "α", "beta" => "β", "gamma" => "γ", "delta" => "δ",
     "epsilon" => "ε", "varepsilon" => "ϵ", "zeta" => "ζ", "eta" => "η",
-    "theta" => "θ", "kappa" => "κ", "lambda" => "λ", "mu" => "μ",
+    "theta" => "θ", "iota" => "ι", "kappa" => "κ", "lambda" => "λ", "mu" => "μ",
     "nu" => "ν", "xi" => "ξ", "pi" => "π", "rho" => "ρ",
     "sigma" => "σ", "tau" => "τ", "upsilon" => "υ", "phi" => "φ",
     "chi" => "χ", "psi" => "ψ", "omega" => "ω", "ell" => "ℓ",
@@ -66,7 +66,7 @@ class InlineMathHTML
     "infty" => "∞", "langle" => "⟨", "rangle" => "⟩",
     "ldots" => "…", "arg" => "arg", "inf" => "inf", "ker" => "ker",
     "log" => "log", "max" => "max", "min" => "min", "quad" => " ",
-    "qquad" => " "
+    "qquad" => " ", "exp" => "exp", "bigl" => "", "bigr" => ""
   }.freeze
 
   SCRIPT_CAPITALS = {
@@ -249,7 +249,10 @@ end
   'S_{\Theta,t^-}' => 'S<sub>Θ,t<sup>−</sup></sub>',
   '\mathbf r_t^{\mathrm{use}}' => '<b>r</b><sub>t</sub><sup>use</sup>',
   '\Delta_\tau' => 'Δ<sub>τ</sub>',
-  '\mathrm{share}' => 'share'
+  '\mathrm{share}' => 'share',
+  '\iota^{\mathrm{obs}}' => 'ι<sup>obs</sup>',
+  '\exp(-x)' => 'exp(−x)',
+  '\bigl(x\bigr)' => '(x)'
 }.each do |source, expected|
   actual = InlineMathHTML.render(source)
   abort "Semantic inline math regression: #{source.inspect}: #{actual.inspect}" unless actual == expected

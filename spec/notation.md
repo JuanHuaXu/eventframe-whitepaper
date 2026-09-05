@@ -6,6 +6,13 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 
 | Symbol | Type | Meaning |
 |---|---|---|
+| \(\mathsf E,\zeta^{\mathrm{auth}},J^{\mathrm{auth}}\) | envelope, digest, indicator | signed outcome, enrolled-key registry identity, and authentication/admission eligibility; not truth certification |
+| \(\iota^{\mathrm{obs}},\mathcal D^{\mathrm{obs}},\nu^{\mathrm{obs}}\) | key map, durable partial map, indicator | issuer-scoped identity, identity-to-payload ledger, and atomic first consumption |
+| \(x_n^{\mathrm{wrk}},\theta_{\mathrm{lo}},\theta_{\mathrm{hi}},p_{\mathrm{lo}},p_{\mathrm{hi}},L_{\mathrm{wrk}}\) | Boolean, hypotheses, probabilities, likelihood | working Bernoulli-usefulness model; \(n\) indexes newly committed observations |
+| \(\lambda_{\mathrm{wrk}},L_{\mathrm{wrk}}^{\max},c_{\mathrm{wrk}},\mathrm{clip}_a\) | constants, scalar function | per-observation retention, odds/factor bounds, symmetric clipping |
+| \(w_n^{\mathrm{wrk}},\bar w_n^{\mathrm{wrk}},f_n^{\mathrm{wrk}},\ell_{K,n}^{\mathrm{wrk}}\) | reals | effective and capped weights, bounded log factor, working log odds |
+| \(\sigma_{\mathrm{wrk}},p_{K,n}^{\mathrm{wrk}},s_i^{\mathrm{base}},\omega_{\mathrm{score}},F_{\mathrm{cal}}\) | maps and reals | logistic map, useful probability, baseline score, belief weight, calibration map |
+| \(T_{\mathrm{auth}},T_{\mathrm{ledger}},T_{\mathrm{commit}},T_{\mathrm{wait}},T_{\mathrm{outcome}}\) | non-negative durations | verification, ledger, transaction, internal wait, and complete outcome latency |
 | \(\Omega\) | set | substrate state space |
 | \(A_t\) | finite index region | substrate/computational region available at event index \(t\) |
 | \(\omega_{A_t}\) | \(\Omega^{A_t}\) | substrate history over \(A_t\) |

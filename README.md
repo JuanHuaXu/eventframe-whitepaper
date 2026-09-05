@@ -20,6 +20,12 @@ Synthetic reports and privacy-reduced aggregate chronological results cited by t
 
 ## Intended Output
 
+The opt-in authenticated-outcome extension, reversible working filter, and scoped
+Claim 2e are documented in Section 6. Public synthetic checks and raw repeated
+internal timings are preserved in [authenticated-outcome evidence](evidence/authenticated-outcomes-v1/).
+These do not establish truthful independent observations or replace earlier
+failed high-concurrency latency results.
+
 Build the canonical assembly and TeX with `python3 scripts/build_paper.py`, check source-derived tables with `python3 scripts/test_paper_tables.py`, and generate GitHub Markdown with `ruby scripts/build_github_paper.rb`. Compile `tmp/pdfs/eventframe_whitepaper.tex` with XeLaTeX twice before replacing the distributed PDF. Do not use the historical ignored PDF builder, whose hard-coded tables could lag the Markdown source.
 
 The repeated-memory gate and its limits are described in Section 6. Aggregate-only retrospective regression evidence and test boundaries are recorded in [`evidence/repetition-gate-v1/`](evidence/repetition-gate-v1/); these are not a downstream poisoning-resistance benchmark.

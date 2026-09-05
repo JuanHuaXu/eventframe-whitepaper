@@ -1,0 +1,633 @@
+{
+  "schema": "eventframe-authenticated-outcome-timing-v1",
+  "runtime_commit": "d5cda75",
+  "date": "2026-09-05",
+  "machine": "Apple M4 darwin/arm64",
+  "go_version": "go1.27.0",
+  "corpus_events": 50,
+  "embedding": "32-dimensional local hash",
+  "recall_k": 50,
+  "pack_k": 10,
+  "mixed_recall_fraction": 0.75,
+  "boundary": "Internal service calls; includes lock/storage waits, excludes observer signing and fixture setup. Not a production SLA or accuracy trial.",
+  "input_sha256": "2e593cfc704e937f53d5ca2eab1b0f953ab6316937eedff6174380c1db41ec1d",
+  "runs": [
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 54377.0,
+        "B/op": 2466.0,
+        "allocs/op": 55.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 38118.0,
+        "B/op": 2466.0,
+        "allocs/op": 55.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 32240.0,
+        "B/op": 2466.0,
+        "allocs/op": 55.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2303.0,
+        "B/op": 2382.0,
+        "allocs/op": 53.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2132.0,
+        "B/op": 2382.0,
+        "allocs/op": 53.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2121.0,
+        "B/op": 2382.0,
+        "allocs/op": 53.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkWorkingBelief-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 1091.0,
+        "B/op": 371.0,
+        "allocs/op": 6.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkWorkingBelief-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 962.9,
+        "B/op": 371.0,
+        "allocs/op": 6.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkWorkingBelief-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 932.6,
+        "B/op": 371.0,
+        "allocs/op": 6.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7152668.0,
+        "max-ns": 18411875.0,
+        "p50-ns": 7030542.0,
+        "p99-ns": 9725958.0,
+        "B/op": 1360236.0,
+        "allocs/op": 10107.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 6463818.0,
+        "max-ns": 11794375.0,
+        "p50-ns": 6058000.0,
+        "p99-ns": 9003667.0,
+        "B/op": 1357180.0,
+        "allocs/op": 10103.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7567744.0,
+        "max-ns": 13527041.0,
+        "p50-ns": 7920084.0,
+        "p99-ns": 9054792.0,
+        "B/op": 1357870.0,
+        "allocs/op": 10101.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 6899507.0,
+        "max-ns": 15739375.0,
+        "p50-ns": 6976000.0,
+        "p99-ns": 8997250.0,
+        "B/op": 1140253.0,
+        "allocs/op": 8313.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7263729.0,
+        "max-ns": 14892875.0,
+        "p50-ns": 7745333.0,
+        "p99-ns": 9990500.0,
+        "B/op": 1138565.0,
+        "allocs/op": 8312.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7153758.0,
+        "max-ns": 9786625.0,
+        "p50-ns": 7039250.0,
+        "p99-ns": 9001041.0,
+        "B/op": 1139382.0,
+        "allocs/op": 8323.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2481441.0,
+        "max-ns": 16056542.0,
+        "p50-ns": 9957958.0,
+        "p99-ns": 14973542.0,
+        "B/op": 1357249.0,
+        "allocs/op": 10097.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2467691.0,
+        "max-ns": 20728291.0,
+        "p50-ns": 9948250.0,
+        "p99-ns": 15191625.0,
+        "B/op": 1359941.0,
+        "allocs/op": 10100.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2505469.0,
+        "max-ns": 21182083.0,
+        "p50-ns": 9970584.0,
+        "p99-ns": 18041750.0,
+        "B/op": 1359653.0,
+        "allocs/op": 10099.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3603481.0,
+        "max-ns": 54807416.0,
+        "p50-ns": 11354709.0,
+        "p99-ns": 34033541.0,
+        "B/op": 1502819.0,
+        "allocs/op": 11174.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3621616.0,
+        "max-ns": 71848833.0,
+        "p50-ns": 11068583.0,
+        "p99-ns": 52036959.0,
+        "B/op": 1486040.0,
+        "allocs/op": 11077.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3501684.0,
+        "max-ns": 49950959.0,
+        "p50-ns": 11043875.0,
+        "p99-ns": 29988083.0,
+        "B/op": 1499275.0,
+        "allocs/op": 11171.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7472792.0,
+        "max-ns": 14711083.0,
+        "p50-ns": 7102416.0,
+        "p99-ns": 9054291.0,
+        "B/op": 1359595.0,
+        "allocs/op": 10107.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7561021.0,
+        "max-ns": 14533000.0,
+        "p50-ns": 7879542.0,
+        "p99-ns": 9278208.0,
+        "B/op": 1361880.0,
+        "allocs/op": 10109.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7020387.0,
+        "max-ns": 15135458.0,
+        "p50-ns": 7002584.0,
+        "p99-ns": 9022875.0,
+        "B/op": 1358784.0,
+        "allocs/op": 10109.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 6977920.0,
+        "max-ns": 14595000.0,
+        "p50-ns": 6987709.0,
+        "p99-ns": 9036334.0,
+        "B/op": 1139374.0,
+        "allocs/op": 8341.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 6711373.0,
+        "max-ns": 16480625.0,
+        "p50-ns": 6954667.0,
+        "p99-ns": 10082166.0,
+        "B/op": 1141758.0,
+        "allocs/op": 8341.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 7038618.0,
+        "max-ns": 14356000.0,
+        "p50-ns": 6999416.0,
+        "p99-ns": 8981958.0,
+        "B/op": 1140989.0,
+        "allocs/op": 8339.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2515773.0,
+        "max-ns": 20970958.0,
+        "p50-ns": 10013375.0,
+        "p99-ns": 16807792.0,
+        "B/op": 1362787.0,
+        "allocs/op": 10109.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2502996.0,
+        "max-ns": 35378625.0,
+        "p50-ns": 9965208.0,
+        "p99-ns": 19168542.0,
+        "B/op": 1360165.0,
+        "allocs/op": 10103.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2504286.0,
+        "max-ns": 19855250.0,
+        "p50-ns": 9986750.0,
+        "p99-ns": 15341000.0,
+        "B/op": 1357787.0,
+        "allocs/op": 10106.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3492158.0,
+        "max-ns": 54050416.0,
+        "p50-ns": 11009959.0,
+        "p99-ns": 29049166.0,
+        "B/op": 1507739.0,
+        "allocs/op": 11217.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3647622.0,
+        "max-ns": 60013833.0,
+        "p50-ns": 11257000.0,
+        "p99-ns": 32900084.0,
+        "B/op": 1488395.0,
+        "allocs/op": 11099.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3628526.0,
+        "max-ns": 74962834.0,
+        "p50-ns": 11498083.0,
+        "p99-ns": 31097833.0,
+        "B/op": 1480850.0,
+        "allocs/op": 11018.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3418.0,
+        "p99-ns": 21709.0,
+        "B/op": 3893.0,
+        "allocs/op": 15.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 3176.0,
+        "p99-ns": 12333.0,
+        "B/op": 3845.0,
+        "allocs/op": 14.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 2925.0,
+        "p99-ns": 13208.0,
+        "B/op": 3895.0,
+        "allocs/op": 15.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 33811.0,
+        "p99-ns": 50041.0,
+        "B/op": 7206.0,
+        "allocs/op": 77.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 32666.0,
+        "p99-ns": 79958.0,
+        "B/op": 7180.0,
+        "allocs/op": 77.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 32752.0,
+        "p99-ns": 58333.0,
+        "B/op": 7179.0,
+        "allocs/op": 77.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 5525143.0,
+        "p99-ns": 8004791.0,
+        "B/op": 437860.0,
+        "allocs/op": 2861.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 5665946.0,
+        "p99-ns": 7039625.0,
+        "B/op": 437865.0,
+        "allocs/op": 2862.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=false-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 5602732.0,
+        "p99-ns": 7020583.0,
+        "B/op": 437769.0,
+        "allocs/op": 2863.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 5567187.0,
+        "p99-ns": 6978542.0,
+        "B/op": 441829.0,
+        "allocs/op": 2932.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 5649150.0,
+        "p99-ns": 7073583.0,
+        "B/op": 441964.0,
+        "allocs/op": 2927.0
+      }
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=true-10",
+      "iterations": 500,
+      "metrics": {
+        "ns/op": 5700458.0,
+        "p99-ns": 7033125.0,
+        "B/op": 441939.0,
+        "allocs/op": 2926.0
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=false-10",
+      "median_run_mean_ns_per_op": 38118.0,
+      "p99_range_ns": null,
+      "max_reported_request_ns": null
+    },
+    {
+      "benchmark": "BenchmarkEvidenceVerify/cached=true-10",
+      "median_run_mean_ns_per_op": 2132.0,
+      "p99_range_ns": null,
+      "max_reported_request_ns": null
+    },
+    {
+      "benchmark": "BenchmarkWorkingBelief-10",
+      "median_run_mean_ns_per_op": 962.9,
+      "p99_range_ns": null,
+      "max_reported_request_ns": null
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=false-10",
+      "median_run_mean_ns_per_op": 7152668.0,
+      "p99_range_ns": [
+        9003667.0,
+        9725958.0
+      ],
+      "max_reported_request_ns": 18411875.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=1/mixed=true-10",
+      "median_run_mean_ns_per_op": 7153758.0,
+      "p99_range_ns": [
+        8997250.0,
+        9990500.0
+      ],
+      "max_reported_request_ns": 15739375.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=false-10",
+      "median_run_mean_ns_per_op": 2481441.0,
+      "p99_range_ns": [
+        14973542.0,
+        18041750.0
+      ],
+      "max_reported_request_ns": 21182083.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=false/workers=4/mixed=true-10",
+      "median_run_mean_ns_per_op": 3603481.0,
+      "p99_range_ns": [
+        29988083.0,
+        52036959.0
+      ],
+      "max_reported_request_ns": 71848833.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=false-10",
+      "median_run_mean_ns_per_op": 7472792.0,
+      "p99_range_ns": [
+        9022875.0,
+        9278208.0
+      ],
+      "max_reported_request_ns": 15135458.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=1/mixed=true-10",
+      "median_run_mean_ns_per_op": 6977920.0,
+      "p99_range_ns": [
+        8981958.0,
+        10082166.0
+      ],
+      "max_reported_request_ns": 16480625.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=false-10",
+      "median_run_mean_ns_per_op": 2504286.0,
+      "p99_range_ns": [
+        15341000.0,
+        19168542.0
+      ],
+      "max_reported_request_ns": 35378625.0
+    },
+    {
+      "benchmark": "BenchmarkEvidenceInternalRequests/upgrade=true/workers=4/mixed=true-10",
+      "median_run_mean_ns_per_op": 3628526.0,
+      "p99_range_ns": [
+        29049166.0,
+        32900084.0
+      ],
+      "max_reported_request_ns": 74962834.0
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=false-10",
+      "median_run_mean_ns_per_op": 3176.0,
+      "p99_range_ns": [
+        12333.0,
+        21709.0
+      ],
+      "max_reported_request_ns": null
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=false/upgrade=true-10",
+      "median_run_mean_ns_per_op": 32752.0,
+      "p99_range_ns": [
+        50041.0,
+        79958.0
+      ],
+      "max_reported_request_ns": null
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=false-10",
+      "median_run_mean_ns_per_op": 5602732.0,
+      "p99_range_ns": [
+        7020583.0,
+        8004791.0
+      ],
+      "max_reported_request_ns": null
+    },
+    {
+      "benchmark": "BenchmarkAuthenticatedOutcome/disk=true/upgrade=true-10",
+      "median_run_mean_ns_per_op": 5649150.0,
+      "p99_range_ns": [
+        6978542.0,
+        7073583.0
+      ],
+      "max_reported_request_ns": null
+    }
+  ]
+}

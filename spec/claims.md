@@ -9,6 +9,10 @@ The result labels are local to the declared fixture. **Validated in fixture** me
 | 2d | Default-one repetition occupancy and flagged selected-feedback veto work. | Validated, mechanism only | Focused descriptor, packing, and service tests pass; distinct bucket keys are exempt and ordinary frontier updates remain active. |
 | 2d | Repetition protection preserves benign replay output. | Mixed descriptive regression | Aggregate Brier, ECE, priority-weighted Brier, and Recall@10 match the parent. Codex design packed recall decreases by 0.0004353; reused 138-case confirmation-named packed recall is unchanged. |
 | 2d | Poisoned answers and cumulative cross-journal poisoning are prevented. | Not tested; not guaranteed | No complete attack benchmark, authenticated lineage, or global repetition budget. |
+| 2e | Authenticated observation replay is blocked across concurrency, journals, and restart. | Validated, mechanism only | One of eight concurrent deliveries updates; cross-journal replay conflicts; on-disk restart preserves accounting. Does not stop invented identities. |
+| 2e | Bounded beliefs reverse saturated odds and affect scored forecasts. | Validated, mechanism only | Five unit-weight negative outcomes reverse 10,000 positives; trust invalidation, predictive-map, and split-reset tests pass. No accuracy or calibration validation. |
+| 2e, 7 | Authenticated four-worker internal serving meets the tested budget. | Supported descriptively; not preregistered | Three saved 500-operation mixed runs: p99 29.05-32.90 ms, maximum 74.96 ms. Does not supersede the failed 16-worker p99 fixture. |
+| 2e | Authentication proves truth or improves real-world answers. | Not tested; not guaranteed | No signed-data prospective trial, source-independence proof, or downstream poisoned-answer benchmark. |
 | 2b | Frontier-all improves candidate-level probability quality over no Bayesian update. | Validated in fixture | Priority-weighted Brier improved by 9.29% in the frozen bounded-frontier experiment. |
 | 2b | The tested 5%-activation selective policy retains the frontier-all quality gain. | Falsified in fixture | It improved priority-weighted Brier by 0.16%, versus 9.29% for frontier-all; paired stress Brier was 0.02891 worse than update-all. |
 | 2b | Frontier-all cheap updates plus selective deep work retain frontier-all forecast output. | Validated in synthetic mechanism fixture | Brier, priority-weighted Brier, and recall at 10 exactly matched frontier-all. |
@@ -97,6 +101,10 @@ Status: mathematical and systems mechanism with synthetic confirmation and retro
 ## Claim 2d: Bounded repetition protection
 
 Default-one greedy occupancy prohibits non-exempt correlated accepted pairs under the frozen exact-or-Jaccard rule. A separate first-representative exact-group flag vetoes selected-only feedback, not ordinary frontier, full-stream, or valid audit updates. Neither rule proves truth, independence, or bounded cross-journal influence. Distinct Anti-Pigeon posterior keys are an exemption, not an independence certificate. Future posterior effects and additional selection conditioning remain explicit.
+
+## Claim 2e: Authenticated admission and reversible working beliefs
+
+Under operator enrollment, signature unforgeability, digest collision resistance, stable issuer/observation identities, and an intact transactional ledger, a signed observation identity can commit only once across requests and journals. A separate clipped, discounted two-hypothesis usefulness filter is revisable and feeds the existing scored-law composition before residual correction. Its selection-unadjusted, generalized semantics do not establish truth, independence, calibration, or accuracy gain. Mechanism tests and conditional internal timing are reported separately from untested prospective utility.
 
 Status: focused mechanism tests and mixed descriptive benign regression only. Poisoned-answer success, semantic false-suppression rates, authenticated provenance, and total service latency overhead remain untested.
 

@@ -18,6 +18,20 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 
 \(\Omega\): substrate state space. It is never used as a cost function.
 
+\(\mathsf E,\zeta^{\mathrm{auth}},J^{\mathrm{auth}}\): signed outcome envelope, enrolled-key registry fingerprint, and authentication/admission indicator (Section 6); attribution is not truth.
+
+\(\iota^{\mathrm{obs}},\mathcal D^{\mathrm{obs}},\nu^{\mathrm{obs}}\): issuer-scoped observation identity, durable identity-to-payload ledger, and atomic first-consumption indicator.
+
+\(x_n^{\mathrm{wrk}},\theta_{\mathrm{lo}},\theta_{\mathrm{hi}},p_{\mathrm{lo}},p_{\mathrm{hi}},L_{\mathrm{wrk}}\): newly admitted usefulness outcome, two Bernoulli hypotheses, their useful probabilities, and evidence likelihood.
+
+\(\lambda_{\mathrm{wrk}},L_{\mathrm{wrk}}^{\max},c_{\mathrm{wrk}},\mathrm{clip}_a\): per-observation retention, log-odds and log-factor bounds, and symmetric scalar clipping.
+
+\(w_n^{\mathrm{wrk}},\bar w_n^{\mathrm{wrk}},f_n^{\mathrm{wrk}},\ell_{K,n}^{\mathrm{wrk}}\): effective weight, weight capped at one, bounded log factor, and working log odds; \(n\) counts newly committed observations.
+
+\(\sigma_{\mathrm{wrk}},p_{K,n}^{\mathrm{wrk}},s_i^{\mathrm{base}},\omega_{\mathrm{score}},F_{\mathrm{cal}}\): logistic map, working useful probability, baseline candidate score, belief-score weight, and declared calibration map.
+
+\(T_{\mathrm{auth}},T_{\mathrm{ledger}},T_{\mathrm{commit}},T_{\mathrm{wait}},T_{\mathrm{outcome}}\): verification, ledger lookup, learning transaction, internal waiting, and complete outcome latency (Section 9).
+
 \(A_t\), \(\omega_{A_t}\): finite substrate/computational region and its history.
 
 \(\Delta_\tau\), \(\Gamma_{\Delta_\tau}\): temporal resolution and task-relative coarse-graining map.
