@@ -126,6 +126,26 @@ Defaults are \(p_{\mathrm{lo}}=0.2\), \(p_{\mathrm{hi}}=0.8\), \(\lambda_{\mathr
 
 Raw Beta/member evidence remains separate for Anti-Pigeon and monitoring. An authorized reset starts at equal odds and includes the revealing outcome once. Plain splits retain member statistics but start child working filters at prior instead of inheriting pooled certainty; split-reset initializes the triggering child from its revealing outcome. Missing or policy-mismatched working state starts at prior. Authentication cannot bypass Anti-Pigeon, certify replacement sharing, or exempt moved laws and templates from residual checks.
 
+### Fixed-share grid alternative
+
+The two-hypothesis predictive range is limited to approximately 0.201484-0.798516 at its defaults. This is a raw belief limitation, not a bound on every calibrated or residual-corrected output. Authentication and repeated evidence cannot remove model misspecification. A separately versioned, opt-in alternative uses fixed-share prediction [21,22], not a new inference algorithm or the complete run-length detector in [17].
+
+Let \(m_{\mathrm{grid}}=21\), \(j\in\{0,\ldots,20\}\), \(\vartheta_j=\max(0.01,\min(0.99,j/20))\), \(\pi_j^{\mathrm{grid}}=1/21\), and \(h_{\mathrm{grid}}=0.02\). The finite latent state has transition \(T_{ij}^{\mathrm{grid}}=(1-h_{\mathrm{grid}})\mathbf 1[i=j]+h_{\mathrm{grid}}\pi_j^{\mathrm{grid}}\). Given latent state \(j\), the observed usefulness and predictive outcome use the same Bernoulli family with parameter \(\vartheta_j\). The transition represents a reset opportunity per admitted observation, not an assertion that a real-world regime changed.
+
+Let \(q_{K,n,j}^{\mathrm{grid}}\) be the stored latent-state posterior after \(n\) committed observations, initially \(\pi_j^{\mathrm{grid}}\). Before observing outcome \(x_{n+1}^{\mathrm{wrk}}\), form
+
+\(a_{K,n+1,j}^{\mathrm{grid}}=(1-h_{\mathrm{grid}})q_{K,n,j}^{\mathrm{grid}}+h_{\mathrm{grid}}\pi_j^{\mathrm{grid}}\).
+
+The next-admitted-outcome useful probability is \(p_{K,n}^{\mathrm{grid}}=\sum_{j=0}^{20}a_{K,n+1,j}^{\mathrm{grid}}\vartheta_j\). This replaces \(p_{K,n}^{\mathrm{wrk}}\) in the same pre-residual scoring map above; it is not an additional score multiplier. After admission and one-time ledger consumption, with effective weight \(\bar w_{n+1}^{\mathrm{wrk}}\in[0,1]\), define the powered likelihood \(\ell_{n+1,j}^{\mathrm{grid}}=[\vartheta_j^{x_{n+1}^{\mathrm{wrk}}}(1-\vartheta_j)^{1-x_{n+1}^{\mathrm{wrk}}}]^{\bar w_{n+1}^{\mathrm{wrk}}}\) and update
+
+\(q_{K,n+1,j}^{\mathrm{grid}}=a_{K,n+1,j}^{\mathrm{grid}}\ell_{n+1,j}^{\mathrm{grid}}/(\sum_{k=0}^{20}a_{K,n+1,k}^{\mathrm{grid}}\ell_{n+1,k}^{\mathrm{grid}})\).
+
+The denominator is positive. The predictive lies within \([(1-h_{\mathrm{grid}})0.01+h_{\mathrm{grid}}/2,(1-h_{\mathrm{grid}})0.99+h_{\mathrm{grid}}/2]=[0.0198,0.9802]\); thus finite model bias remains. At unit weight this is Bayesian filtering for the declared finite reset model. Fractional weights define generalized Bayes. Neither interpretation establishes selection ignorability, source independence, calibration under the external law, or factual truth.
+
+Serving derives the next-step prior without mutating stored weights. Repeated reads and duplicate or rejected outcomes do not compound the transition. A reset or incompatible working-state policy starts from the uniform prior; split-reset includes the revealing outcome once, and siblings retain their separate member evidence. The existing authentication, Anti-Pigeon, audit, and residual-motion gates still apply. Computation and working-state memory are \(O(m_{\mathrm{grid}})\), with no historical scan; ledger storage and complete request costs are separate.
+
+The frozen synthetic comparison in Section 11 supports removing the narrow two-hypothesis bias in some regimes, not replacing every filter with the grid. Stable rates matching the old hypotheses favored the old model. A better raw belief also worsened the composed proper score in one drift scenario. Promotion must therefore evaluate the actual composed forecast, not the detached belief alone. A future prequential mixture of stationary and adaptive experts evaluated on that composed score is a proposed rescue, not a validated feature.
+
 ## Bounded Bayesian Update Frontier
 
 EventFrame may attach a bounded Bayesian belief state to an event bucket, residual family, latent regime, or declared hypothesis family. It does not update every stored belief after every frame. Let \(\mathfrak E_t^B\) be the finite declared universe of event and hypothesis identities eligible for nomination at \(t\). Vector retrieval and graph locality propose a finite update frontier. Let \(\mathcal R_t^{\mathrm{vec}}\) be at most \(k_v\) candidates returned by the frozen vector-retrieval rule. Let \(\mathcal N_t^{\mathrm{sh}}\) be the bounded neighborhood returned by the abstraction compatibility graph. This is a sheaf-inspired neighborhood, not a sheaf-theoretic neighborhood unless the required restriction identity and composition laws have actually been instantiated. Updating all members below always means all evidence-ready members of this bounded frontier, not all records in the corpus.

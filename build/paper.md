@@ -1313,6 +1313,26 @@ Defaults are $p_{\mathrm{lo}}=0.2$, $p_{\mathrm{hi}}=0.8$, $\lambda_{\mathrm{wrk
 
 Raw Beta/member evidence remains separate for Anti-Pigeon and monitoring. An authorized reset starts at equal odds and includes the revealing outcome once. Plain splits retain member statistics but start child working filters at prior instead of inheriting pooled certainty; split-reset initializes the triggering child from its revealing outcome. Missing or policy-mismatched working state starts at prior. Authentication cannot bypass Anti-Pigeon, certify replacement sharing, or exempt moved laws and templates from residual checks.
 
+#### Fixed-share grid alternative
+
+The two-hypothesis predictive range is limited to approximately 0.201484-0.798516 at its defaults. This is a raw belief limitation, not a bound on every calibrated or residual-corrected output. Authentication and repeated evidence cannot remove model misspecification. A separately versioned, opt-in alternative uses fixed-share prediction [21,22], not a new inference algorithm or the complete run-length detector in [17].
+
+Let $m_{\mathrm{grid}}=21$, $j\in\{0,\ldots,20\}$, $\vartheta_j=\max(0.01,\min(0.99,j/20))$, $\pi_j^{\mathrm{grid}}=1/21$, and $h_{\mathrm{grid}}=0.02$. The finite latent state has transition $T_{ij}^{\mathrm{grid}}=(1-h_{\mathrm{grid}})\mathbf 1[i=j]+h_{\mathrm{grid}}\pi_j^{\mathrm{grid}}$. Given latent state $j$, the observed usefulness and predictive outcome use the same Bernoulli family with parameter $\vartheta_j$. The transition represents a reset opportunity per admitted observation, not an assertion that a real-world regime changed.
+
+Let $q_{K,n,j}^{\mathrm{grid}}$ be the stored latent-state posterior after $n$ committed observations, initially $\pi_j^{\mathrm{grid}}$. Before observing outcome $x_{n+1}^{\mathrm{wrk}}$, form
+
+$a_{K,n+1,j}^{\mathrm{grid}}=(1-h_{\mathrm{grid}})q_{K,n,j}^{\mathrm{grid}}+h_{\mathrm{grid}}\pi_j^{\mathrm{grid}}$.
+
+The next-admitted-outcome useful probability is $p_{K,n}^{\mathrm{grid}}=\sum_{j=0}^{20}a_{K,n+1,j}^{\mathrm{grid}}\vartheta_j$. This replaces $p_{K,n}^{\mathrm{wrk}}$ in the same pre-residual scoring map above; it is not an additional score multiplier. After admission and one-time ledger consumption, with effective weight $\bar w_{n+1}^{\mathrm{wrk}}\in[0,1]$, define the powered likelihood $\ell_{n+1,j}^{\mathrm{grid}}=[\vartheta_j^{x_{n+1}^{\mathrm{wrk}}}(1-\vartheta_j)^{1-x_{n+1}^{\mathrm{wrk}}}]^{\bar w_{n+1}^{\mathrm{wrk}}}$ and update
+
+$q_{K,n+1,j}^{\mathrm{grid}}=a_{K,n+1,j}^{\mathrm{grid}}\ell_{n+1,j}^{\mathrm{grid}}/(\sum_{k=0}^{20}a_{K,n+1,k}^{\mathrm{grid}}\ell_{n+1,k}^{\mathrm{grid}})$.
+
+The denominator is positive. The predictive lies within $[(1-h_{\mathrm{grid}})0.01+h_{\mathrm{grid}}/2,(1-h_{\mathrm{grid}})0.99+h_{\mathrm{grid}}/2]=[0.0198,0.9802]$; thus finite model bias remains. At unit weight this is Bayesian filtering for the declared finite reset model. Fractional weights define generalized Bayes. Neither interpretation establishes selection ignorability, source independence, calibration under the external law, or factual truth.
+
+Serving derives the next-step prior without mutating stored weights. Repeated reads and duplicate or rejected outcomes do not compound the transition. A reset or incompatible working-state policy starts from the uniform prior; split-reset includes the revealing outcome once, and siblings retain their separate member evidence. The existing authentication, Anti-Pigeon, audit, and residual-motion gates still apply. Computation and working-state memory are $O(m_{\mathrm{grid}})$, with no historical scan; ledger storage and complete request costs are separate.
+
+The frozen synthetic comparison in Section 11 supports removing the narrow two-hypothesis bias in some regimes, not replacing every filter with the grid. Stable rates matching the old hypotheses favored the old model. A better raw belief also worsened the composed proper score in one drift scenario. Promotion must therefore evaluate the actual composed forecast, not the detached belief alone. A future prequential mixture of stationary and adaptive experts evaluated on that composed score is a proposed rescue, not a validated feature.
+
 ### Bounded Bayesian Update Frontier
 
 EventFrame may attach a bounded Bayesian belief state to an event bucket, residual family, latent regime, or declared hypothesis family. It does not update every stored belief after every frame. Let $\mathfrak E_t^B$ be the finite declared universe of event and hypothesis identities eligible for nomination at $t$. Vector retrieval and graph locality propose a finite update frontier. Let $\mathcal R_t^{\mathrm{vec}}$ be at most $k_v$ candidates returned by the frozen vector-retrieval rule. Let $\mathcal N_t^{\mathrm{sh}}$ be the bounded neighborhood returned by the abstraction compatibility graph. This is a sheaf-inspired neighborhood, not a sheaf-theoretic neighborhood unless the required restriction identity and composition laws have actually been instantiated. Updating all members below always means all evidence-ready members of this bounded frontier, not all records in the corpus.
@@ -2585,12 +2605,17 @@ With the representation, mathematics, and runtime now defined, the next section 
 
 ## 10. Claims Register
 
+Claim 2f. A fixed finite reset mixture broadens the two-hypothesis raw predictive range at bounded working-state cost. Synthetic confirmation supports extreme-rate range-bias correction but falsifies universal superiority, including a raw-belief gain that becomes a composed-score loss. The grid is opt-in; real signed-data benefit and adaptive model selection remain untested.
+
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
 The current experiment ledger labels a proposition Validated in fixture when its frozen test met the declared target, Falsified in fixture when it failed, Inconclusive when the declared evidence requirement was not met, and Not tested when no reported experiment addresses it. These labels are local to the stated generator, hardware, metric, and evaluation window. A fixture-level validation is not universal proof, and a fixture-level falsification rejects the tested proposition or configuration rather than every possible implementation of the broader claim.
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2f | A fixed-share grid reduces the old working filter's range bias at stationary extremes. | Validated in synthetic confirmation | Both .01 and .99 scenarios had positive simultaneous approximate Brier-gain intervals; no signed real-data accuracy claim. |
+| 2f | Grid beliefs universally improve raw and composed forecasts. | Falsified in fixture | Stable .20/.80 favored the old filter; gradual drift improved raw Brier but worsened the composed score. Grid remains opt-in. |
+| 2f, 7 | The grid preserves bounded state and tested four-worker feasibility. | Validated mechanism; descriptive timing | 21 weights; read/replay/reset/restart and score-wiring checks pass. Mixed p99 33.01-39.00 ms, not a production deadline. |
 | 2d | The repetition gate enforces default-one non-exempt packet occupancy and rejects flagged selected-only feedback. | Validated, mechanism only | Focused descriptor, packing, and service tests pass. Different Anti-Pigeon keys are exempt; ordinary frontier, full-stream, and valid audit updates remain separate. |
 | 2d | The gate preserves benign replay outputs relative to its parent. | Mixed descriptive regression | All populated aggregate Brier, ECE, priority-weighted Brier, and Recall@10 values matched. Codex design packed recall fell by 0.0004353; the reused 138-case confirmation-named block was unchanged. No prospective non-inferiority claim. |
 | 2d | The gate prevents poisoned answers, source spoofing, or cumulative repetition across journals. | Not tested; not guaranteed by the mechanism | No downstream poisoned-answer experiment or durable global evidence budget; hash/lineage identity and bucket exemption are not independence proofs. |
@@ -2864,6 +2889,31 @@ The saved timing campaign used an Apple M4, Go 1.27.0, 50 synthetic events, a 32
 Concurrent ms/op is inverse throughput, not individual latency. Upgraded mixed p50 ranged 11.01-11.50 ms and its largest reported request was 74.96 ms. An earlier exploratory campaign had upgraded mixed p99 as high as 52.54 ms. Saved-run median primitive costs were 38.12 microseconds for uncached verification, 2.13 microseconds for a cached check plus admission, and 0.96 microseconds for a working update. Memory-only outcome calls increased from 3.18 to 32.75 microseconds, exposing the cost hidden by millisecond-scale storage.
 
 Saved median run means increased about 4.48% for serial recall, 0.92% for concurrent recall, 0.83% for durable outcomes, and 0.70% for concurrent mixed traffic. Short sequential runs and scheduling/storage variance prevent interpreting these as causal overhead estimates or confidence intervals. The smaller four-worker fixture supports conditional feasibility below 100 ms; it does not rescue the failed 16-worker strict-p99 proposition, establish a hard deadline, or demonstrate large-corpus or production latency. Accuracy, calibration, independence coverage, fabricated-ID attacks, and prospective signed-evidence utility remain untested.
+
+### Fixed-Share Grid: Conditional Improvement
+
+The September 6 comparison at runtime revision 76576dc tested the finite reset grid in Section 6 against the preceding two-hypothesis filter and ordinary Beta(1,1) updating. The protocol was written before either run, with no parameter search; it was not externally preregistered. Design seed base 2026090601 and confirmation base 2026090602 each generated 64 independent trajectories of 1,000 outcomes in each of eight scenarios. Forecasts preceded outcome generation and updating. The generator, all trajectory metrics, interval summaries, and raw timings are pinned under evidence/grid-belief-v1/. These are synthetic Bernoulli-usefulness experiments, not new private-session, retrieval, or downstream-answer tests.
+
+The frozen primary proposition required positive simultaneous raw Brier gain on both stationary extremes. The table reports confirmation means and old-minus-grid gain; negative gain is a regression. Approximate trajectory-normal intervals use 64 trajectory means, not 64,000 independent time points. A multiplier of 3.08 implements approximate Bonferroni 95% coverage across eight scenarios and three metrics; pointwise 1.96 intervals and log loss are retained in JSON. These are fixed-sample approximate intervals, not exact bounds or confidence sequences.
+
+| Scenario | Old Brier | Grid Brier | Beta Brier | Grid gain interval | Composed gain |
+| --- | --- | --- | --- | --- | --- |
+| Stationary .01 | 0.046271 | 0.011679 | 0.009568 | [0.033975, 0.035209] | 0.014558 |
+| Stationary .20 | 0.161864 | 0.167624 | 0.161841 | [-0.006055, -0.005465] | -0.001750 |
+| Stationary .50 | 0.309321 | 0.256933 | 0.251307 | [0.050415, 0.054361] | 0.000495 |
+| Stationary .80 | 0.162235 | 0.168010 | 0.162279 | [-0.006063, -0.005486] | -0.001767 |
+| Stationary .99 | 0.046712 | 0.012493 | 0.010297 | [0.033627, 0.034812] | 0.014429 |
+| Abrupt .99 to .01 | 0.048854 | 0.013522 | 0.250541 | [0.034678, 0.035986] | 0.014439 |
+| Recurring .9/.1 | 0.121374 | 0.111253 | 0.251069 | [0.009366, 0.010877] | 0.004347 |
+| Gradual .1 to .9 | 0.218149 | 0.204567 | 0.250784 | [0.011863, 0.015300] | -0.001497 |
+
+The range-bias proposition passed in this fixture. Universal superiority did not: the exactly matching old hypotheses won at stationary .20 and .80, and ordinary Beta won on all five stationary cases. Log-loss gain had the same direction as raw Brier in all eight scenarios. Composed gain uses the frozen contract simulation $0.9(0.5)+0.1p$, identity calibration, and no residual, not a measured retrieval baseline. During gradual drift the raw belief improved but the composed Brier worsened by 0.001497, with simultaneous gain interval [-0.001732, -0.001262]. This counterexample prevents promotion on detached belief accuracy alone.
+
+Two audit rounds checked normalization, invalid states, prediction-before-update timing, copy semantics, and authority boundaries. Unit and service tests covered grid reversal after saturation, both-store duplicate/restart handling, actual belief-law and score wiring, and both-store Anti-Pigeon split-reset with one revealing outcome. Full tests, focused race checks, build, and vet passed. Certificates in these integration fixtures were supplied by synthetic fixture authority, not estimated from external data.
+
+The paired timing fixture retained authentication in both old and grid modes, with 50 events, 32-dimensional hash embeddings, recall/pack 50/10, and three runs of 500 operations on an Apple M4 using Go 1.27.0. Mixed traffic was 75% recall and 25% durable outcomes. Median four-worker mixed cost was 3.640 versus 3.718 ms/op, a descriptive 2.14% increase; p99 ranges were 32.98-35.02 versus 33.01-39.00 ms. Grid maximum mixed request was 75.00 ms. Serial recall medians were 7.483 versus 7.401 ms; serial mixed 6.581 versus 7.038 ms; four-worker recall 2.489 versus 2.654 ms/op. Concurrent ms/op is inverse throughput. Primitive median update cost was 0.4405 versus 1.318 microseconds, with 576 versus 1,312 allocated bytes per update. Run order was not randomized, so small timing differences are not causal estimates. The earlier failed 16-worker strict-p99 claim remains unresolved.
+
+The grid remains opt-in. A future rescue could combine stationary and adaptive experts using prequential loss on the complete composed law, then confirm against new streams with varied baseline and calibration regimes. That proposal is neither implemented nor validated by this comparison; using these confirmation outcomes for tuning would reclassify them as design evidence.
 
 ### Background Fuzz Queue Mechanism Check
 
@@ -3145,10 +3195,18 @@ The assembled paper uses the following numbered bibliography.
 18. Matias Altamirano, Francois-Xavier Briol, and Jeremias Knoblauch. "Robust and Scalable Bayesian Online Changepoint Detection." *Proceedings of the 40th International Conference on Machine Learning*, PMLR 202:642-663, 2023. <https://proceedings.mlr.press/v202/altamirano23a.html>
 19. Elias Alevizos, Alexander Artikis, and Georgios Paliouras. "Event Forecasting with Pattern Markov Chains." 2018. arXiv:1804.10388v1. <https://arxiv.org/abs/1804.10388v1>
 20. Chenxiao Yang, Qitian Wu, Qingsong Wen, Zhiqiang Zhou, Liang Sun, and Junchi Yan. "Towards Out-of-Distribution Sequential Event Prediction: A Causal Treatment." *Advances in Neural Information Processing Systems* 35, 2022. arXiv:2210.13005v2. <https://arxiv.org/abs/2210.13005v2>
+21. Mark Herbster and Manfred K. Warmuth. "Tracking the Best Expert." *Machine Learning* 32:151-178, 1998. DOI: 10.1023/A:1007424614876. <https://doi.org/10.1023/A:1007424614876>
+22. Olivier Bousquet and Manfred K. Warmuth. "Tracking a Small Set of Experts by Mixing Past Posteriors." *Journal of Machine Learning Research* 3:363-396, 2002. <https://jmlr.org/papers/v3/bousquet02b.html>
+
+References 21 and 22 motivate fixed-share online prediction, including mixing with a start vector. The finite Bernoulli reset-grid instantiation in Section 6 is not a new expert-tracking algorithm and does not inherit universal calibration, factual-truth, or runtime guarantees from those publications.
 
 References 7--9 support only a limiting thought experiment for physical substrates: CODATA supplies the named physical scales, while Bekenstein and Susskind concern physical information bounds under their stated assumptions. They do not prove a discrete sampling lattice, EventFrame sparsity, or any simulated- or software-substrate claim. The CFS references support only the self-adjoint-operator inspiration; EventFrame's clipping, projection, admissible set, and residual objective are independent definitions and do not implement the CFS causal action. Reference 11 supplies marked point-process background for the finite-horizon marked-event representation. Reference 12 supplies concept-drift taxonomy and adaptation background. Reference 13 motivates compositional compatibility across heterogeneous causal abstractions; EventFrame's predictive compatibility graph is not claimed to reproduce that paper's causal abstraction network or guarantees. References 14--16 motivate streaming and sequential approximate Bayesian updates but do not establish EventFrame latency, calibration, or model correctness. References 17 and 18 motivate online changepoint monitoring; constant resource use in EventFrame additionally requires explicit run-length truncation or approximation. Reference 19 applies to declared regular-expression event patterns rather than arbitrary next-event laws. Reference 20 motivates shift-aware latent-context modeling; EventFrame does not inherit its causal identification assumptions or guarantees.
 
 ## Appendix A. Symbol Index
+
+$m_{\mathrm{grid}},\vartheta_j,\pi_j^{\mathrm{grid}},h_{\mathrm{grid}},T_{ij}^{\mathrm{grid}}$: finite usefulness-hypothesis count, Bernoulli parameter, reset prior, reset probability per admitted observation, and latent-state transition matrix.
+
+$q_{K,n,j}^{\mathrm{grid}},a_{K,n+1,j}^{\mathrm{grid}},\ell_{n+1,j}^{\mathrm{grid}},p_{K,n}^{\mathrm{grid}}$: post-observation grid weights, next-observation prior weights, powered likelihood, and next-admitted-outcome useful probability.
 
 This index resolves the core symbols used by the formulas. Component spaces for event fields use calligraphic letters without descriptive subscripts; packet component spaces always carry descriptive subscripts.
 

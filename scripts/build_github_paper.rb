@@ -52,7 +52,7 @@ class InlineMathHTML
     "Theta" => "Θ", "Xi" => "Ξ",
     "alpha" => "α", "beta" => "β", "gamma" => "γ", "delta" => "δ",
     "epsilon" => "ε", "varepsilon" => "ϵ", "zeta" => "ζ", "eta" => "η",
-    "theta" => "θ", "iota" => "ι", "kappa" => "κ", "lambda" => "λ", "mu" => "μ",
+    "theta" => "θ", "vartheta" => "ϑ", "iota" => "ι", "kappa" => "κ", "lambda" => "λ", "mu" => "μ",
     "nu" => "ν", "xi" => "ξ", "pi" => "π", "rho" => "ρ",
     "sigma" => "σ", "tau" => "τ", "upsilon" => "υ", "phi" => "φ",
     "chi" => "χ", "psi" => "ψ", "omega" => "ω", "ell" => "ℓ",
@@ -252,6 +252,7 @@ end
   '\mathrm{share}' => 'share',
   '\iota^{\mathrm{obs}}' => 'ι<sup>obs</sup>',
   '\exp(-x)' => 'exp(−x)',
+  '\vartheta_j' => 'ϑ<sub>j</sub>',
   '\bigl(x\bigr)' => '(x)'
 }.each do |source, expected|
   actual = InlineMathHTML.render(source)

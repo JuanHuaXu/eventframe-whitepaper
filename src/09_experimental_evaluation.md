@@ -177,6 +177,31 @@ Concurrent ms/op is inverse throughput, not individual latency. Upgraded mixed p
 
 Saved median run means increased about 4.48% for serial recall, 0.92% for concurrent recall, 0.83% for durable outcomes, and 0.70% for concurrent mixed traffic. Short sequential runs and scheduling/storage variance prevent interpreting these as causal overhead estimates or confidence intervals. The smaller four-worker fixture supports conditional feasibility below 100 ms; it does not rescue the failed 16-worker strict-p99 proposition, establish a hard deadline, or demonstrate large-corpus or production latency. Accuracy, calibration, independence coverage, fabricated-ID attacks, and prospective signed-evidence utility remain untested.
 
+## Fixed-Share Grid: Conditional Improvement
+
+The September 6 comparison at runtime revision 76576dc tested the finite reset grid in Section 6 against the preceding two-hypothesis filter and ordinary Beta(1,1) updating. The protocol was written before either run, with no parameter search; it was not externally preregistered. Design seed base 2026090601 and confirmation base 2026090602 each generated 64 independent trajectories of 1,000 outcomes in each of eight scenarios. Forecasts preceded outcome generation and updating. The generator, all trajectory metrics, interval summaries, and raw timings are pinned under evidence/grid-belief-v1/. These are synthetic Bernoulli-usefulness experiments, not new private-session, retrieval, or downstream-answer tests.
+
+The frozen primary proposition required positive simultaneous raw Brier gain on both stationary extremes. The table reports confirmation means and old-minus-grid gain; negative gain is a regression. Approximate trajectory-normal intervals use 64 trajectory means, not 64,000 independent time points. A multiplier of 3.08 implements approximate Bonferroni 95% coverage across eight scenarios and three metrics; pointwise 1.96 intervals and log loss are retained in JSON. These are fixed-sample approximate intervals, not exact bounds or confidence sequences.
+
+| Scenario | Old Brier | Grid Brier | Beta Brier | Grid gain interval | Composed gain |
+| --- | --- | --- | --- | --- | --- |
+| Stationary .01 | 0.046271 | 0.011679 | 0.009568 | [0.033975, 0.035209] | 0.014558 |
+| Stationary .20 | 0.161864 | 0.167624 | 0.161841 | [-0.006055, -0.005465] | -0.001750 |
+| Stationary .50 | 0.309321 | 0.256933 | 0.251307 | [0.050415, 0.054361] | 0.000495 |
+| Stationary .80 | 0.162235 | 0.168010 | 0.162279 | [-0.006063, -0.005486] | -0.001767 |
+| Stationary .99 | 0.046712 | 0.012493 | 0.010297 | [0.033627, 0.034812] | 0.014429 |
+| Abrupt .99 to .01 | 0.048854 | 0.013522 | 0.250541 | [0.034678, 0.035986] | 0.014439 |
+| Recurring .9/.1 | 0.121374 | 0.111253 | 0.251069 | [0.009366, 0.010877] | 0.004347 |
+| Gradual .1 to .9 | 0.218149 | 0.204567 | 0.250784 | [0.011863, 0.015300] | -0.001497 |
+
+The range-bias proposition passed in this fixture. Universal superiority did not: the exactly matching old hypotheses won at stationary .20 and .80, and ordinary Beta won on all five stationary cases. Log-loss gain had the same direction as raw Brier in all eight scenarios. Composed gain uses the frozen contract simulation \(0.9(0.5)+0.1p\), identity calibration, and no residual, not a measured retrieval baseline. During gradual drift the raw belief improved but the composed Brier worsened by 0.001497, with simultaneous gain interval [-0.001732, -0.001262]. This counterexample prevents promotion on detached belief accuracy alone.
+
+Two audit rounds checked normalization, invalid states, prediction-before-update timing, copy semantics, and authority boundaries. Unit and service tests covered grid reversal after saturation, both-store duplicate/restart handling, actual belief-law and score wiring, and both-store Anti-Pigeon split-reset with one revealing outcome. Full tests, focused race checks, build, and vet passed. Certificates in these integration fixtures were supplied by synthetic fixture authority, not estimated from external data.
+
+The paired timing fixture retained authentication in both old and grid modes, with 50 events, 32-dimensional hash embeddings, recall/pack 50/10, and three runs of 500 operations on an Apple M4 using Go 1.27.0. Mixed traffic was 75% recall and 25% durable outcomes. Median four-worker mixed cost was 3.640 versus 3.718 ms/op, a descriptive 2.14% increase; p99 ranges were 32.98-35.02 versus 33.01-39.00 ms. Grid maximum mixed request was 75.00 ms. Serial recall medians were 7.483 versus 7.401 ms; serial mixed 6.581 versus 7.038 ms; four-worker recall 2.489 versus 2.654 ms/op. Concurrent ms/op is inverse throughput. Primitive median update cost was 0.4405 versus 1.318 microseconds, with 576 versus 1,312 allocated bytes per update. Run order was not randomized, so small timing differences are not causal estimates. The earlier failed 16-worker strict-p99 claim remains unresolved.
+
+The grid remains opt-in. A future rescue could combine stationary and adaptive experts using prequential loss on the complete composed law, then confirm against new streams with varied baseline and calibration regimes. That proposal is neither implemented nor validated by this comparison; using these confirmation outcomes for tuning would reclassify them as design evidence.
+
 ## Background Fuzz Queue Mechanism Check
 
 The Go runtime now nominates fuzz work only after a successful low-certainty recall and executes it through a bounded in-process queue. Focused tests confirmed that a low-certainty case enqueues and completes, a high-certainty case does not enqueue, equivalent candidate sets are suppressed during cooldown, queue saturation drops work without blocking recall, stale snapshots are rejected without retry, and the public status response contains no query text or event identifiers. The complete repository race suite, static analysis, repeated focused tests, and Go plus plugin builds passed on 2026-08-31.

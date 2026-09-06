@@ -1,11 +1,18 @@
 # Claims Register
 
+## Claim 2f: Fixed-share usefulness models are bounded alternatives, not universal upgrades
+
+A fixed finite reset mixture broadens the two-hypothesis raw predictive range while keeping history-independent working-state cost. It uses the same admitted-evidence and next-outcome family, and enters the actual pre-residual scored law. Its accuracy depends on the hypothesis grid, reset rate, external process, and score composition. Synthetic confirmation supports the extreme-rate range-bias correction, but falsifies universal superiority. Real signed-data benefit and adaptive selection among models remain untested.
+
 ## Current Experiment Results
 
 The result labels are local to the declared fixture. **Validated in fixture** means the frozen proposition met its stated test; **Falsified in fixture** means it failed; **Inconclusive** means the declared evidence requirement was not met; **Not tested** means no reported experiment addresses it. None of these local outcomes is automatically universal.
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2f | A fixed-share grid reduces the old working filter's range bias at stationary extremes. | Validated in synthetic confirmation | Both .01 and .99 scenarios had positive simultaneous approximate Brier-gain intervals; no signed real-data accuracy claim. |
+| 2f | Grid beliefs universally improve raw and composed forecasts. | Falsified in fixture | Stable .20/.80 favored the old filter; gradual drift improved raw Brier but worsened the composed score. Grid remains opt-in. |
+| 2f, 7 | The grid preserves bounded state and tested four-worker feasibility. | Validated mechanism; descriptive timing | 21 weights; read/replay/reset/restart and score-wiring checks pass. Mixed p99 33.01-39.00 ms, not a production deadline. |
 | 2d | Default-one repetition occupancy and flagged selected-feedback veto work. | Validated, mechanism only | Focused descriptor, packing, and service tests pass; distinct bucket keys are exempt and ordinary frontier updates remain active. |
 | 2d | Repetition protection preserves benign replay output. | Mixed descriptive regression | Aggregate Brier, ECE, priority-weighted Brier, and Recall@10 match the parent. Codex design packed recall decreases by 0.0004353; reused 138-case confirmation-named packed recall is unchanged. |
 | 2d | Poisoned answers and cumulative cross-journal poisoning are prevented. | Not tested; not guaranteed | No complete attack benchmark, authenticated lineage, or global repetition budget. |

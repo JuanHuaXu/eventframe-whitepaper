@@ -1,5 +1,9 @@
 # Appendix A. Symbol Index
 
+\(m_{\mathrm{grid}},\vartheta_j,\pi_j^{\mathrm{grid}},h_{\mathrm{grid}},T_{ij}^{\mathrm{grid}}\): finite usefulness-hypothesis count, Bernoulli parameter, reset prior, reset probability per admitted observation, and latent-state transition matrix.
+
+\(q_{K,n,j}^{\mathrm{grid}},a_{K,n+1,j}^{\mathrm{grid}},\ell_{n+1,j}^{\mathrm{grid}},p_{K,n}^{\mathrm{grid}}\): post-observation grid weights, next-observation prior weights, powered likelihood, and next-admitted-outcome useful probability.
+
 This index resolves the core symbols used by the formulas. Component spaces for event fields use calligraphic letters without descriptive subscripts; packet component spaces always carry descriptive subscripts.
 
 \(N_{\mathrm{rep}},c_{\mathrm{rep}},\ell_{\mathrm{rep}}\): repetition text normalization, ordered claim tuple excluding when, and recorded-lineage descriptor (Section 6).

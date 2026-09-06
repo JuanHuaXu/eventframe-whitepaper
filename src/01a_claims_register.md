@@ -1,11 +1,16 @@
 # 10. Claims Register
 
+Claim 2f. A fixed finite reset mixture broadens the two-hypothesis raw predictive range at bounded working-state cost. Synthetic confirmation supports extreme-rate range-bias correction but falsifies universal superiority, including a raw-belief gain that becomes a composed-score loss. The grid is opt-in; real signed-data benefit and adaptive model selection remain untested.
+
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
 The current experiment ledger labels a proposition Validated in fixture when its frozen test met the declared target, Falsified in fixture when it failed, Inconclusive when the declared evidence requirement was not met, and Not tested when no reported experiment addresses it. These labels are local to the stated generator, hardware, metric, and evaluation window. A fixture-level validation is not universal proof, and a fixture-level falsification rejects the tested proposition or configuration rather than every possible implementation of the broader claim.
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2f | A fixed-share grid reduces the old working filter's range bias at stationary extremes. | Validated in synthetic confirmation | Both .01 and .99 scenarios had positive simultaneous approximate Brier-gain intervals; no signed real-data accuracy claim. |
+| 2f | Grid beliefs universally improve raw and composed forecasts. | Falsified in fixture | Stable .20/.80 favored the old filter; gradual drift improved raw Brier but worsened the composed score. Grid remains opt-in. |
+| 2f, 7 | The grid preserves bounded state and tested four-worker feasibility. | Validated mechanism; descriptive timing | 21 weights; read/replay/reset/restart and score-wiring checks pass. Mixed p99 33.01-39.00 ms, not a production deadline. |
 | 2d | The repetition gate enforces default-one non-exempt packet occupancy and rejects flagged selected-only feedback. | Validated, mechanism only | Focused descriptor, packing, and service tests pass. Different Anti-Pigeon keys are exempt; ordinary frontier, full-stream, and valid audit updates remain separate. |
 | 2d | The gate preserves benign replay outputs relative to its parent. | Mixed descriptive regression | All populated aggregate Brier, ECE, priority-weighted Brier, and Recall@10 values matched. Codex design packed recall fell by 0.0004353; the reused 138-case confirmation-named block was unchanged. No prospective non-inferiority claim. |
 | 2d | The gate prevents poisoned answers, source spoofing, or cumulative repetition across journals. | Not tested; not guaranteed by the mechanism | No downstream poisoned-answer experiment or durable global evidence budget; hash/lineage identity and bucket exemption are not independence proofs. |

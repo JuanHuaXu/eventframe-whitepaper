@@ -1,5 +1,7 @@
 # Glossary
 
+**Fixed-share grid belief.** A finite mixture of usefulness hypotheses that redistributes a fixed fraction of posterior mass to a uniform prior before the next admitted observation. This preserves adaptation without a historical scan. The runtime's 21-state reset model is Bayesian at unit likelihood weight under its declared model and generalized at fractional weight; neither label establishes external truth or full-stream calibration. Its synthetic benefit is regime-dependent.
+
 ## Authenticated Outcome
 
 An outcome envelope whose signature verifies under an operator-enrolled key scoped to its tenant and feedback class, subject to validity, revocation, and the remaining admission gates. This authenticates attribution and contents, not truth, independence, or exhaustive sampling.

@@ -3,6 +3,8 @@
 from pathlib import Path
 import hashlib
 import json
+import math
+import statistics
 import runpy
 import unittest
 
@@ -11,6 +13,36 @@ builder = runpy.run_path(str(ROOT / "scripts" / "build_paper.py"))
 
 
 class PaperTableTests(unittest.TestCase):
+    def test_grid_evidence_and_table(self):
+        directory = ROOT / "evidence" / "grid-belief-v1"
+        for line in (directory / "SHA256SUMS").read_text().splitlines():
+            digest, name = line.split()
+            self.assertEqual(hashlib.sha256((directory / name).read_bytes()).hexdigest(), digest)
+        source = (ROOT / "src" / "09_experimental_evaluation.md").read_text()
+        names = ["Stationary .01", "Stationary .20", "Stationary .50", "Stationary .80",
+                 "Stationary .99", "Abrupt .99 to .01", "Recurring .9/.1", "Gradual .1 to .9"]
+        for split, seed in [("design", 2026090601), ("confirmation", 2026090602)]:
+            report = json.loads((directory / f"grid-belief-{split}.json").read_text())
+            self.assertEqual(report["Seed"], seed)
+            self.assertEqual(len(report["Trajectories"]), 512)
+            self.assertEqual(len(report["Summaries"]), 24)
+            for summary in report["Summaries"]:
+                rows = [r for r in report["Trajectories"] if r["Scenario"] == summary["Scenario"]]
+                self.assertEqual({r["Trajectory"] for r in rows}, set(range(64)))
+                metric = summary["Metric"]
+                gain = [r["Old"][metric] - r["Grid"][metric] for r in rows]
+                mean = statistics.mean(gain)
+                error = statistics.stdev(gain) / math.sqrt(64)
+                self.assertAlmostEqual(summary["Gain"], mean, places=13)
+                self.assertAlmostEqual(summary["LowerSimultaneous"], mean-3.08*error, places=13)
+                self.assertAlmostEqual(summary["UpperSimultaneous"], mean+3.08*error, places=13)
+                if split == "confirmation" and metric == "Brier":
+                    means = [statistics.mean(r[k][metric] for r in rows) for k in ["Old", "Grid", "Beta"]]
+                    composed = statistics.mean(r["Old"]["ComposedBrier"]-r["Grid"]["ComposedBrier"] for r in rows)
+                    row = (f"| {names[summary['Scenario']]} | {means[0]:.6f} | {means[1]:.6f} | "
+                           f"{means[2]:.6f} | [{mean-3.08*error:.6f}, {mean+3.08*error:.6f}] | {composed:.6f} |")
+                    self.assertIn(row, source)
+
     def test_claim_rows_are_not_a_hardcoded_snapshot(self):
         rows = [line for line in (ROOT / "src" / "01a_claims_register.md").read_text().splitlines()
                 if line.startswith("|")]
