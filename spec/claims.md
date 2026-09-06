@@ -1,8 +1,12 @@
 # Claims Register
 
+## Claim 2g: Journal-trained complete-law aggregation can rescue composition bias
+
+A fixed-size online mixture learns from pre-outcome complete forecast commitments, not retrospectively reconstructed predictions. Synthetic confirmation repairs the three targeted grid-composition failures and satisfies a predeclared .003 mean-harm ceiling across 32 scenario/baseline combinations. Two small regressions versus old composition remain. The implemented mode requires disabled residual application; active-residual coexistence, delayed-feedback accuracy and real-world answer benefit remain untested. It does not repair every constituent's raw prediction error.
+
 ## Claim 2f: Fixed-share usefulness models are bounded alternatives, not universal upgrades
 
-A fixed finite reset mixture broadens the two-hypothesis raw predictive range while keeping history-independent working-state cost. It uses the same admitted-evidence and next-outcome family, and enters the actual pre-residual scored law. Its accuracy depends on the hypothesis grid, reset rate, external process, and score composition. Synthetic confirmation supports the extreme-rate range-bias correction, but falsifies universal superiority. Real signed-data benefit and adaptive selection among models remain untested.
+A fixed finite reset mixture broadens the two-hypothesis raw predictive range while keeping history-independent working-state cost. It uses the same admitted-evidence and next-outcome family, and enters the actual pre-residual scored law. Its accuracy depends on the hypothesis grid, reset rate, external process, and score composition. Synthetic confirmation supports the extreme-rate range-bias correction, but falsifies universal superiority. Real signed-data benefit remains untested; the separately tested complete-law selector is Claim 2g.
 
 ## Current Experiment Results
 
@@ -10,6 +14,9 @@ The result labels are local to the declared fixture. **Validated in fixture** me
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2g | Complete-law aggregation repairs the three grid-composition failures at baseline .5. | Validated in synthetic confirmation | Positive simultaneous Brier gains on stationary .20/.80 and gradual drift; 64 trajectories each. |
+| 2g | Rescue stays within the declared .003 mean Brier-harm ceiling across 32 scenario/baseline combinations. | Validated in fixture, not zero harm | 30/32 improved versus old composition; two small regressions, worst simultaneous upper excess 0.000198. |
+| 2g | Rescue improves real answers or works with active residual correction. | Not tested | Reference mode requires disabled residual application; no new retrieval or signed real-data accuracy trial. |
 | 2f | A fixed-share grid reduces the old working filter's range bias at stationary extremes. | Validated in synthetic confirmation | Both .01 and .99 scenarios had positive simultaneous approximate Brier-gain intervals; no signed real-data accuracy claim. |
 | 2f | Grid beliefs universally improve raw and composed forecasts. | Falsified in fixture | Stable .20/.80 favored the old filter; gradual drift improved raw Brier but worsened the composed score. Grid remains opt-in. |
 | 2f, 7 | The grid preserves bounded state and tested four-worker feasibility. | Validated mechanism; descriptive timing | 21 weights; read/replay/reset/restart and score-wiring checks pass. Mixed p99 33.01-39.00 ms, not a production deadline. |

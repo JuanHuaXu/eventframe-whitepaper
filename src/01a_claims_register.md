@@ -1,6 +1,8 @@
 # 10. Claims Register
 
-Claim 2f. A fixed finite reset mixture broadens the two-hypothesis raw predictive range at bounded working-state cost. Synthetic confirmation supports extreme-rate range-bias correction but falsifies universal superiority, including a raw-belief gain that becomes a composed-score loss. The grid is opt-in; real signed-data benefit and adaptive model selection remain untested.
+Claim 2g. Journal-trained complete-law aggregation can rescue fixed-blend bias under a declared small-harm criterion. Synthetic confirmation supports the three targeted repairs, not universal superiority; direct Beta remains better on stationary targets. The implemented rescue requires disabled residual application, and active-residual coexistence and real-world benefit remain untested.
+
+Claim 2f. A fixed finite reset mixture broadens the two-hypothesis raw predictive range at bounded working-state cost. Synthetic confirmation supports extreme-rate range-bias correction but falsifies universal superiority, including a raw-belief gain that becomes a composed-score loss. The grid is opt-in; real signed-data benefit remains untested. Claim 2g addresses the separate complete-law selector.
 
 This section states the paper's major claims as falsifiable targets. The claims are not treated as established results. Each one names what would need to be measured, proved, or falsified by later experiments.
 
@@ -8,6 +10,9 @@ The current experiment ledger labels a proposition Validated in fixture when its
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| 2g | Complete-law aggregation repairs the three grid-composition failures at baseline .5. | Validated in synthetic confirmation | Positive simultaneous Brier gains on stationary .20/.80 and gradual drift; 64 trajectories each. |
+| 2g | Rescue stays within the declared .003 mean Brier-harm ceiling across 32 scenario/baseline combinations. | Validated in fixture, not zero harm | 30/32 improved versus old composition; two small regressions, worst simultaneous upper excess 0.000198. |
+| 2g | Rescue improves real answers or works with active residual correction. | Not tested | Reference mode requires disabled residual application; no new retrieval or signed real-data accuracy trial. |
 | 2f | A fixed-share grid reduces the old working filter's range bias at stationary extremes. | Validated in synthetic confirmation | Both .01 and .99 scenarios had positive simultaneous approximate Brier-gain intervals; no signed real-data accuracy claim. |
 | 2f | Grid beliefs universally improve raw and composed forecasts. | Falsified in fixture | Stable .20/.80 favored the old filter; gradual drift improved raw Brier but worsened the composed score. Grid remains opt-in. |
 | 2f, 7 | The grid preserves bounded state and tested four-worker feasibility. | Validated mechanism; descriptive timing | 21 weights; read/replay/reset/restart and score-wiring checks pass. Mixed p99 33.01-39.00 ms, not a production deadline. |

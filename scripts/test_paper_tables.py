@@ -13,6 +13,39 @@ builder = runpy.run_path(str(ROOT / "scripts" / "build_paper.py"))
 
 
 class PaperTableTests(unittest.TestCase):
+    def test_forecast_rescue_confirmation(self):
+        directory = ROOT / "evidence" / "forecast-rescue-v1"
+        for line in (directory / "SHA256SUMS").read_text().splitlines():
+            digest, name = line.split()
+            self.assertEqual(hashlib.sha256((directory / name).read_bytes()).hexdigest(), digest)
+        source = (ROOT / "src" / "09_experimental_evaluation.md").read_text()
+        names = {1: "Stationary .20", 3: "Stationary .80", 7: "Gradual .1 to .9"}
+        for split, seed in [("design", 2026090611), ("confirmation", 2026090612)]:
+            report = json.loads((directory / f"forecast-rescue-{split}.json").read_text())
+            self.assertEqual(report["Seed"], seed)
+            self.assertEqual(len(report["Trajectories"]), 2048)
+            self.assertEqual(len(report["Summaries"]), 128)
+            for summary in report["Summaries"]:
+                rows = [r for r in report["Trajectories"] if r["Scenario"] == summary["Scenario"]
+                        and r["Baseline"] == summary["Baseline"]]
+                self.assertEqual({r["Trajectory"] for r in rows}, set(range(64)))
+                metric, control = summary["Metric"], summary["Control"]
+                gain = [r[control][metric]-r["Rescue"][metric] for r in rows]
+                mean, error = statistics.mean(gain), statistics.stdev(gain)/8
+                self.assertAlmostEqual(summary["Gain"], mean, places=13)
+                self.assertAlmostEqual(summary["LowerSimultaneous"], mean-3.6*error, places=13)
+                self.assertAlmostEqual(summary["UpperSimultaneous"], mean+3.6*error, places=13)
+                if split == "confirmation" and metric == "Brier":
+                    if control == "Old":
+                        self.assertGreater(summary["LowerSimultaneous"], -.003)
+                    if control == "Grid" and summary["Baseline"] == 1 and summary["Scenario"] in names:
+                        self.assertGreater(summary["LowerSimultaneous"], 0)
+                        old = statistics.mean(r["Grid"][metric] for r in rows)
+                        new = statistics.mean(r["Rescue"][metric] for r in rows)
+                        row = (f"| {names[summary['Scenario']]} | {old:.6f} | {new:.6f} | "
+                               f"[{mean-3.6*error:.6f}, {mean+3.6*error:.6f}] | Validated in fixture |")
+                        self.assertIn(row, source)
+
     def test_grid_evidence_and_table(self):
         directory = ROOT / "evidence" / "grid-belief-v1"
         for line in (directory / "SHA256SUMS").read_text().splitlines():

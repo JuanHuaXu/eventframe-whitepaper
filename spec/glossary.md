@@ -1,5 +1,7 @@
 # Glossary
 
+**Complete-forecast mixture.** An online weighted combination of complete predictive laws, trained on pre-outcome journal commitments. Unlike fixed belief-score shrinkage, it can learn to favor a direct predictive expert when the baseline is biased. The reference rescue requires disabled residual application so its tested mixture is the final scored law; small selection costs and real-world validation gaps remain.
+
 **Fixed-share grid belief.** A finite mixture of usefulness hypotheses that redistributes a fixed fraction of posterior mass to a uniform prior before the next admitted observation. This preserves adaptation without a historical scan. The runtime's 21-state reset model is Bayesian at unit likelihood weight under its declared model and generalized at fractional weight; neither label establishes external truth or full-stream calibration. Its synthetic benefit is regime-dependent.
 
 ## Authenticated Outcome

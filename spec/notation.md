@@ -6,6 +6,8 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 
 | Symbol | Type | Meaning |
 |---|---|---|
+| \(p_{j,n}^{\mathrm{mix}},p_n^{\mathrm{mix}},L_{j,n}^{\mathrm{mix}}\) | probabilities, likelihood | pre-outcome complete expert laws, final mixture, journaled-outcome likelihood |
+| \(\pi^{\mathrm{mix}},h_{\mathrm{mix}},v_{j,n}^{\mathrm{mix}},a_{j,n}^{\mathrm{mix}}\) | simplex vectors, probability | four-expert prior, share rate, stored weights, prediction weights |
 | \(m_{\mathrm{grid}},\vartheta_j,\pi_j^{\mathrm{grid}},h_{\mathrm{grid}},T_{ij}^{\mathrm{grid}}\) | count, probabilities, stochastic matrix | fixed-grid hypothesis count, Bernoulli parameters, uniform reset prior, per-admitted-observation reset probability, and reset-HMM transition |
 | \(q_{K,n,j}^{\mathrm{grid}},a_{K,n+1,j}^{\mathrm{grid}},\ell_{n+1,j}^{\mathrm{grid}},p_{K,n}^{\mathrm{grid}}\) | probabilities, likelihood | grid posterior after observation n, prior before observation n+1, powered Bernoulli likelihood, and next-admitted-outcome predictive |
 | \(\mathsf E,\zeta^{\mathrm{auth}},J^{\mathrm{auth}}\) | envelope, digest, indicator | signed outcome, enrolled-key registry identity, and authentication/admission eligibility; not truth certification |

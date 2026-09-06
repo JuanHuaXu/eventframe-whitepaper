@@ -1,5 +1,9 @@
 # Appendix A. Symbol Index
 
+\(p_{j,n}^{\mathrm{mix}},p_n^{\mathrm{mix}},L_{j,n}^{\mathrm{mix}}\): pre-outcome complete expert useful probabilities, final mixture useful probability, and journal-based expert likelihood.
+
+\(\pi^{\mathrm{mix}},h_{\mathrm{mix}},v_{j,n}^{\mathrm{mix}},a_{j,n}^{\mathrm{mix}}\): selector prior, share rate, post-feedback weights, and weights used for prediction.
+
 \(m_{\mathrm{grid}},\vartheta_j,\pi_j^{\mathrm{grid}},h_{\mathrm{grid}},T_{ij}^{\mathrm{grid}}\): finite usefulness-hypothesis count, Bernoulli parameter, reset prior, reset probability per admitted observation, and latent-state transition matrix.
 
 \(q_{K,n,j}^{\mathrm{grid}},a_{K,n+1,j}^{\mathrm{grid}},\ell_{n+1,j}^{\mathrm{grid}},p_{K,n}^{\mathrm{grid}}\): post-observation grid weights, next-observation prior weights, powered likelihood, and next-admitted-outcome useful probability.
