@@ -24,6 +24,15 @@ The assembled paper uses the following numbered bibliography.
 20. Chenxiao Yang, Qitian Wu, Qingsong Wen, Zhiqiang Zhou, Liang Sun, and Junchi Yan. "Towards Out-of-Distribution Sequential Event Prediction: A Causal Treatment." *Advances in Neural Information Processing Systems* 35, 2022. arXiv:2210.13005v2. <https://arxiv.org/abs/2210.13005v2>
 21. Mark Herbster and Manfred K. Warmuth. "Tracking the Best Expert." *Machine Learning* 32:151-178, 1998. DOI: 10.1023/A:1007424614876. <https://doi.org/10.1023/A:1007424614876>
 22. Olivier Bousquet and Manfred K. Warmuth. "Tracking a Small Set of Experts by Mixing Past Posteriors." *Journal of Machine Learning Research* 3:363-396, 2002. <https://jmlr.org/papers/v3/bousquet02b.html>
+23. Alethea Power, Yuri Burda, Harri Edwards, Igor Babuschkin, and Vedant Misra. "Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets." 2022. arXiv:2201.02177v1. <https://arxiv.org/abs/2201.02177v1>
+24. Neel Nanda, Lawrence Chan, Tom Lieberum, Jess Smith, and Jacob Steinhardt. "Progress Measures for Grokking via Mechanistic Interpretability." ICLR 2023. arXiv:2301.05217v3. <https://arxiv.org/abs/2301.05217v3>
+25. Vikrant Varma, Rohin Shah, Zachary Kenton, Janos Kramar, and Ramana Kumar. "Explaining Grokking through Circuit Efficiency." 2023. arXiv:2309.02390v1. <https://arxiv.org/abs/2309.02390v1>
+26. Guan Wang, Jin Li, Yuhao Sun, Xing Chen, Changling Liu, Yue Wu, Meng Lu, Sen Song, and Yasin Abbasi Yadkori. "Hierarchical Reasoning Model." 2025. arXiv:2506.21734v3. <https://arxiv.org/abs/2506.21734v3>
+27. Surnex. "I made a model for games, then it started explaining human attention." YouTube video, September 1, 2026, 10:29. <https://www.youtube.com/watch?v=3Ey8XZYPCsE> English automatic captions consulted September 12, 2026; temporal-scope discussion at 1:01--3:10 and observation-depth discussion at 5:10--8:24. Informal conceptual source, not peer-reviewed evidence.
+
+Reference 27 motivates Exploration X3's distinction between temporal scope and observation depth. The mapping to 5W1H, controller contract, evidence protections, and evaluation protocol are EventFrame proposals, not results demonstrated by the video. Neither the analogy nor the shared event-centered vocabulary establishes cognitive equivalence, causal validity, or implementation performance.
+
+References 23--25 motivate the untested exploration in Section 13. Neural mechanism analysis does not establish external representation discovery, sheaf composition, causal validity, or EventFrame performance. Supplied successful mechanisms must be distinguished from learned ones. Reference 26 motivates bounded hierarchical recurrence as a separate exploratory worker design; it does not establish persistent learning, correctness of self-generated evidence, or EventFrame latency.
 
 References 21 and 22 motivate fixed-share online prediction, including mixing with a start vector. The finite Bernoulli reset-grid instantiation in Section 6 is not a new expert-tracking algorithm and does not inherit universal calibration, factual-truth, or runtime guarantees from those publications.
 

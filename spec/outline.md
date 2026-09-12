@@ -107,6 +107,9 @@ State the problem, proposed architecture, current evidence, falsified claims, an
 - Mathematical, statistical, causal, empirical, and operational gaps
 - Stability, convergence, calibration, and certificate power
 - Prospective validation and production-readiness requirements
+- Untested exploratory representation learning, background composition, and grokking diagnostics
+- Hierarchical recurrent discovery and event-centric observation attention as separate untested extensions
+- Observation scope/depth mapping to 5W1H, bounded controller contract, and matched-control evaluation
 
 ## 14. Conclusion
 

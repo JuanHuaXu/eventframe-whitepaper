@@ -10,6 +10,9 @@ The current experiment ledger labels a proposition Validated in fixture when its
 
 | Claim | Tested proposition | Result | Evidence and boundary |
 | --- | --- | --- | --- |
+| X1 | Learned representations and background composition improve unseen-event prediction over matched exemplar and simpler learning controls. | Not tested | Section 13 exploration only; no discovery, grokking, or latency result is claimed. |
+| X2 | Hierarchical recurrent background discovery improves future prediction over equal-compute bounded search. | Not tested | Section 13 exploration only; recurrent inference is not persistent learning, and publication requires external validation. |
+| X3 | Choosing temporal scope and observation depth improves investigation over matched fixed-view controls. | Not tested | Section 13 controller proposal; ontology alignment is not evidence of improved prediction or discovery. |
 | 2g | Complete-law aggregation repairs the three grid-composition failures at baseline .5. | Validated in synthetic confirmation | Positive simultaneous Brier gains on stationary .20/.80 and gradual drift; 64 trajectories each. |
 | 2g | Rescue stays within the declared .003 mean Brier-harm ceiling across 32 scenario/baseline combinations. | Validated in fixture, not zero harm | 30/32 improved versus old composition; two small regressions, worst simultaneous upper excess 0.000198. |
 | 2g | Rescue improves real answers or works with active residual correction. | Not tested | Reference mode requires disabled residual application; no new retrieval or signed real-data accuracy trial. |

@@ -53,6 +53,8 @@ Translation must hold through the chain, not only at its endpoint. If an interme
 
 ## Fast path and slow path
 
+Observation attention is a separate proposed control layer, not neural attention or a synonym for retrieval relevance. The same frame can be examined as an immediate occurrence, part of an episode, or part of a longer process, and at different depths: description, explanation, conditional prediction, time/cost estimation, or planning. Section 13's Exploration X3 connects this distinction to the existing 5W1H fields and higher-order event structures, with conceptual motivation from [27]. It proposes choosing which question to investigate and which scope to inspect, rather than only repeating the same calculation. The temporal scope of an observation is not its processing latency; a validated long-horizon pattern may be cheap to apply. This controller remains unimplemented and untested.
+
 The fast path is designed for bounded local work: retrieve a capped frontier, update cached sufficient statistics, reuse valid corrections, rerank a bounded packet, optionally enqueue a bounded audit nomination, and respond. The slow path performs particle methods, broad model comparison, fuzz and abstraction audits, changepoint review, compatibility analysis, and recalibration asynchronously or under explicit resource budgets.
 
 Future hardware may permit more slow-path stages to run more often, but it does not change their meaning or remove their evidence requirements. A faster machine cannot turn model sensitivity into causality, make a stale residual valid, or allow a proposed group to certify itself.

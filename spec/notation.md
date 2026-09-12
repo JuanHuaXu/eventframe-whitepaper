@@ -4,6 +4,10 @@ This register is normative for the paper. A symbol has one meaning unless an exp
 
 ## Symbol Table
 
+Section 13 exploratory symbols (not serving-law replacements): \(\mathcal X_{\mathrm{xpl}}\) is the declared context space; \(h_{\mathrm{xpl}}\) maps it to \(\mathbb R^{d_{\mathrm{xpl}}}\); \(T_a^{\mathrm{xpl}}\) is a valid partial transformation; \(\rho_{\mathrm{xpl}}(a)\) is its proposed square linear representation. Composition acts right to left. Approximation requires a declared metric, tolerance, valid domain, and evaluation law.
+
+\(Q_v\) is a frozen positive categorical baseline, \(b_v\) its log probabilities, and \(A_n,M_n\) are finite centered composition and exemplar logits at background fitting iteration \(n\). \(Q_n^{\mathrm{xpl}}\) is their softmax forecast mixed with mass \(\varepsilon_{\mathrm{xpl}}\in(0,1)\) of the uniform law \(u_Y\) on \(d_Y\) outcomes. All logits have dimension \(d_Y\). Repeated fitting steps are not new evidence.
+
 | Symbol | Type | Meaning |
 |---|---|---|
 | \(p_{j,n}^{\mathrm{mix}},p_n^{\mathrm{mix}},L_{j,n}^{\mathrm{mix}}\) | probabilities, likelihood | pre-outcome complete expert laws, final mixture, journaled-outcome likelihood |

@@ -1,5 +1,9 @@
 # Appendix A. Symbol Index
 
+\(\mathcal X_{\mathrm{xpl}}\), \(h_{\mathrm{xpl}}\), \(d_{\mathrm{xpl}}\), \(T_a^{\mathrm{xpl}}\), \(\rho_{\mathrm{xpl}}(a)\): exploratory context space, learned encoding, encoding dimension, valid partial input transformation, and its proposed linear representation. Approximate alignment is not a discovery certificate.
+
+\(Q_v\), \(b_v\), \(A_n\), \(M_n\), \(Q_n^{\mathrm{xpl}}\), \(u_Y\), \(d_Y\), \(\varepsilon_{\mathrm{xpl}}\): Section 13's frozen positive categorical baseline, its log probabilities, centered composition and exemplar logits at fitting iteration \(n\), normalized experimental forecast, uniform outcome law, alphabet size, and smoothing mass. These local experimental objects do not replace the serving law.
+
 \(p_{j,n}^{\mathrm{mix}},p_n^{\mathrm{mix}},L_{j,n}^{\mathrm{mix}}\): pre-outcome complete expert useful probabilities, final mixture useful probability, and journal-based expert likelihood.
 
 \(\pi^{\mathrm{mix}},h_{\mathrm{mix}},v_{j,n}^{\mathrm{mix}},a_{j,n}^{\mathrm{mix}}\): selector prior, share rate, post-feedback weights, and weights used for prediction.

@@ -1,5 +1,23 @@
 # Glossary
 
+## Observation Attention
+
+Exploration X3's proposed control over which event-centered question to investigate, at which temporal scope and depth, using bounded existing operations. It is not neural attention, vector relevance, or a claim that novelty is always useful. It does not replace frontier-all cheap updates or evidence/publication gates.
+
+## Temporal Scope and Observation Depth
+
+Temporal scope locates an occurrence within an immediate interaction, episode, or longer process under task-relative boundaries; depth identifies an operation such as description, explanation, conditional prediction, time/cost estimation, or planning. These are proposed control coordinates, not processing-latency classes or a mandatory hierarchy of cognitive competence. Multiple views retain one observation's lineage rather than creating independent support. MMM [27] is informal conceptual motivation.
+
+## Exploratory Representation Learning
+
+The related hierarchical recurrent discovery exploration uses bounded nested refinement in a background worker. Iteration alone supplies neither independent evidence nor persistent learning; accepted outputs require external validation and versioned publication.
+
+An unimplemented research extension that learns encodings and predictive compositions from fitting data, rather than receiving correct maps in advance. Fuzzing and snapping supply proposals and constraints, not outcome evidence. Cyclic representations are task-specific; collapse and unseen-case prediction require independent tests.
+
+## Grokking
+
+Delayed generalization after initial training-set fitting. A publication-induced jump or success with a supplied rule does not establish grokking. The exploratory external learner has not demonstrated this phenomenon.
+
 **Complete-forecast mixture.** An online weighted combination of complete predictive laws, trained on pre-outcome journal commitments. Unlike fixed belief-score shrinkage, it can learn to favor a direct predictive expert when the baseline is biased. The reference rescue requires disabled residual application so its tested mixture is the final scored law; small selection costs and real-world validation gaps remain.
 
 **Fixed-share grid belief.** A finite mixture of usefulness hypotheses that redistributes a fixed fraction of posterior mass to a uniform prior before the next admitted observation. This preserves adaptation without a historical scan. The runtime's 21-state reset model is Bayesian at unit likelihood weight under its declared model and generalized at fractional weight; neither label establishes external truth or full-stream calibration. Its synthetic benefit is regime-dependent.
