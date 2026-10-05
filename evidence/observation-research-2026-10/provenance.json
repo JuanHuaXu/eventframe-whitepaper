@@ -1,0 +1,155 @@
+{
+  "repository": "https://github.com/JuanHuaXu/eventframed",
+  "revision": "7a7b9357c06ce855795b947ffcde2fd61a82d3ca",
+  "scope": "Selected published synthetic summaries, public-task reports and serial timings; no raw chats or owned databases",
+  "byteIdenticalToPublishedBlobs": true,
+  "historicalVerdictsPreserved": true,
+  "nativeBaselineReplicationIsConsumedDevelopment": true,
+  "wholeResearchGoalsComplete": false,
+  "files": [
+    {
+      "name": "preserved-v3-results.md",
+      "source": "docs/experiments/mmm-preserved-v3-results.md",
+      "sha256": "7e56183f200edc5b37eb05eedd90ec7eace483c0df8552e03e97d85caa91a4d1",
+      "bytes": 8201
+    },
+    {
+      "name": "preserved-v3-summary.json",
+      "source": "docs/experiments/mmm-preserved-v3-summary.json",
+      "sha256": "7d7514a346593fe8dafbda0cdfaef1360a0e7fb148fb1301c7781b52022c6cbb",
+      "bytes": 1134697
+    },
+    {
+      "name": "retained-v8-results.md",
+      "source": "docs/experiments/mmm-retained-v8-results.md",
+      "sha256": "70c0d76f758bc21e7b9ddf1ad6fd953de3dbb385afa02811394846e8627269a6",
+      "bytes": 3678
+    },
+    {
+      "name": "retained-v8-summary.json",
+      "source": "docs/experiments/mmm-retained-v8-summary.json",
+      "sha256": "731fd2302fa68cc74cf1655ec65a0e74ce87bc93446e8efc889514d73847e1d8",
+      "bytes": 1422393
+    },
+    {
+      "name": "member-fit-results.md",
+      "source": "docs/experiments/mmm-member-fit-breadth-v1-results.md",
+      "sha256": "fa089a8db16edc822651c243343c9013a1c97d1778772f46d8de0b95d338b449",
+      "bytes": 4621
+    },
+    {
+      "name": "member-fit-summary.json",
+      "source": "docs/experiments/mmm-member-fit-breadth-v1-summary.json",
+      "sha256": "5b4948f9d6f3aa75a288609536259c274e988698b26b76dc850edd98d4ae87a1",
+      "bytes": 21407
+    },
+    {
+      "name": "native-v72-results.md",
+      "source": "docs/experiments/mmm-dynvarcache-v72-results.md",
+      "sha256": "89f399b7518ddce59888ff7a04a687ac4b203f6d47499492fe9580d0644cd229",
+      "bytes": 6527
+    },
+    {
+      "name": "native-v72-readback.json",
+      "source": "research/dynvarcache-v72-diagnostic/readback.json",
+      "sha256": "afcc2636aefc741f64a8edb98698e00891251f436a0036adff018fb26be86a2b",
+      "bytes": 981080
+    },
+    {
+      "name": "native-v75-results.md",
+      "source": "docs/experiments/mmm-mean-anchor-v75-cohort-results.md",
+      "sha256": "e68f1c909dceb1855cb727aa674d54234d92fea11baa08e95990beb225625faf",
+      "bytes": 5443
+    },
+    {
+      "name": "native-v75-readback.json",
+      "source": "research/mean-anchor-v75-diagnostic/readback.json",
+      "sha256": "11aeb7fdf28d94a366af6fddda209b0bb755497267af14b6137748f80b153c54",
+      "bytes": 1996573
+    },
+    {
+      "name": "protected-v81-results.md",
+      "source": "docs/experiments/mmm-regime-protected-v81-screen-results.md",
+      "sha256": "752b96d095bf9e340636f36345219d78aba7c24c14ed267717cb4beae328862e",
+      "bytes": 4830
+    },
+    {
+      "name": "protected-v81-readback.json",
+      "source": "research/regime-protected-v81-screen-initial/readback.json",
+      "sha256": "f212ae1691f9bd8639d45819fb25b090f0366f84db293d9cddfb587b111a4781",
+      "bytes": 18866
+    },
+    {
+      "name": "log-v82-results.md",
+      "source": "docs/experiments/mmm-regime-log-v82-results.md",
+      "sha256": "52ad2947d6fe1721788e331de0096344b29f6ae783964910899c1238c46491b5",
+      "bytes": 3733
+    },
+    {
+      "name": "summary-v83-audit.json",
+      "source": "research/regime-logsummary-v83-initial/audit.json",
+      "sha256": "c15a21187f913c66ab7f477c832ce8ef09dde454b931da6f2991fe71e6d9e87b",
+      "bytes": 896
+    },
+    {
+      "name": "summary-v83-benchmark.log",
+      "source": "research/regime-logsummary-v83-initial/benchmark.log",
+      "sha256": "8e4a2e36815f40b208cc1b0cc722b1221ddaf8f761017f5729447a3882e33658",
+      "bytes": 16430
+    },
+    {
+      "name": "summary-v83-completed.json",
+      "source": "research/regime-logsummary-v83-initial/completed.json",
+      "sha256": "ef756033bca49df6c3bdc7c856c4389c8946fe0a14a04c408bf3312d6ac47c2d",
+      "bytes": 1784
+    },
+    {
+      "name": "scifact-calibration-results.md",
+      "source": "docs/experiments/scifact-native-calibration-v4-results.md",
+      "sha256": "d75f30c4eebb82993d9cfa1b486c15ef880dc97b79e07155d9b94777111a8f03",
+      "bytes": 7789
+    },
+    {
+      "name": "nfcorpus-transfer-results.md",
+      "source": "docs/experiments/nfcorpus-transfer-v4-results.md",
+      "sha256": "89211955af2cc8552d02503725dec98a305f30f2210c359d38ead83c3157b4bc",
+      "bytes": 5474
+    },
+    {
+      "name": "durable-freshness-results.md",
+      "source": "docs/experiments/mmm-durable-live-freshness-v2-results.md",
+      "sha256": "0349d29e2d829632509f8c18598df6d2287c0e4893f34aba8d210d5a3bcd286b",
+      "bytes": 2940
+    },
+    {
+      "name": "recurrent-pilot-results.md",
+      "source": "research/recurrent-discovery/RESULTS.md",
+      "sha256": "bf217adc9741171ecd78b0cc6a9c2591fd5fc70c9207458d01728bfcec462cd2",
+      "bytes": 5690
+    },
+    {
+      "name": "baseline-protocol.md",
+      "source": "research/publication-2026-10-05/BASELINE-PROTOCOL.md",
+      "sha256": "e28d0e0447f1c6b69e0598ba8770bdaef5a5c21886dddfb60a7285fab84fad5f",
+      "bytes": 1968
+    },
+    {
+      "name": "baseline-selection.json",
+      "source": "research/publication-2026-10-05/selection-results.json",
+      "sha256": "ee8ec7d3e65832092154a4652d9e582ff0c80f6e96bdcbd91c179a5d62859983",
+      "bytes": 6528
+    },
+    {
+      "name": "baseline-controls.json",
+      "source": "research/publication-2026-10-05/baseline-run/control-results.json",
+      "sha256": "6d6a754ef392839477f5105db3c2085501aab91571461b7bdc5a0f26d1cad43f",
+      "bytes": 78455
+    },
+    {
+      "name": "baseline-completed.json",
+      "source": "research/publication-2026-10-05/baseline-run/completed.json",
+      "sha256": "4d0998dfcd650a8e66f4d66b9f75dd7a3f51b1406df0f8e933ec4e83805f8fed",
+      "bytes": 1394
+    }
+  ]
+}

@@ -19,6 +19,10 @@ EventFrame does not assume that its ontology is correct at the start. The ontolo
 
 This discussion also limits the claim. EventFrame does not provide a theory of scientific discovery. It provides a runtime vocabulary for prediction, residual diagnosis, sensitivity testing, and evidence-controlled abstraction.
 
+The observation-learning follow-ups sharpen that distinction. A narrower gate can revoke an invalid sharing choice earlier without improving the post-revocation law. Retaining a successful predictor alongside challengers can repair a particular replacement failure without proving that every challenger generalizes. An exact computational cache can reduce cost without changing any scientific loss, while a nearly exact score calculation can still change discrete acquisition decisions at a tie. These outcomes require separate statistical, decision-trace, and resource checks.
+
+Accordingly, the current Adaptive research reference is a constrained empirical comparator, not the oracle objective's optimizer or permission to publish arbitrary abstractions. Full remains a necessary speed control. Repetition of consumed worlds tests reproducibility; it cannot substitute for untouched confirmation, source-independence evidence, or real task outcomes.
+
 Convergence requires stronger conditions than stationarity and finite move types. Consider a finite set \(\mathfrak S\) of complete candidate abstraction states evaluated on a fixed validation distribution. Let
 
 \[

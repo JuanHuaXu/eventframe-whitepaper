@@ -25,7 +25,7 @@ SOURCE_FILES = [
     "13_acknowledgments.md",
 ]
 
-APPENDIX_FILES = ["12_symbol_index.md"]
+APPENDIX_FILES = ["12_symbol_index.md", "15_observation_research_appendix.md", "16_error_and_inference_appendix.md"]
 
 
 def assemble_markdown() -> None:
@@ -110,7 +110,10 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 \date{}
 \begin{document}
 \maketitle
+\begingroup
+\small
 \tableofcontents
+\endgroup
 \newpage
 """
 

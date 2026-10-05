@@ -1,0 +1,279 @@
+{
+  "scope": "Prepared serial operations on one local M4; not loaded serving tails or scientific confirmation",
+  "repetitionsPerArmAndProfile": 6,
+  "operationProfiles": [
+    {
+      "name": "BenchmarkLedgerOperations/M2/T32/PendingFirst",
+      "beforeMedianUS": 645.8955,
+      "afterMedianUS": 648.6425,
+      "changePercent": 0.425300996833089,
+      "beforeAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "afterAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M2/T32/Issue",
+      "beforeMedianUS": 149.8295,
+      "afterMedianUS": 150.0845,
+      "changePercent": 0.17019345322515367,
+      "beforeAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "afterAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M2/T64/PendingFirst",
+      "beforeMedianUS": 1264.3295,
+      "afterMedianUS": 1270.3215,
+      "changePercent": 0.4739270894177583,
+      "beforeAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "afterAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M2/T64/Issue",
+      "beforeMedianUS": 241.4315,
+      "afterMedianUS": 241.445,
+      "changePercent": 0.00559164814863955,
+      "beforeAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "afterAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M150/T32/PendingFirst",
+      "beforeMedianUS": 1153.185,
+      "afterMedianUS": 1147.188,
+      "changePercent": -0.5200379817635326,
+      "beforeAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "afterAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M150/T32/Issue",
+      "beforeMedianUS": 425.579,
+      "afterMedianUS": 421.711,
+      "changePercent": -0.9088794324907945,
+      "beforeAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "afterAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M150/T64/PendingFirst",
+      "beforeMedianUS": 1785.125,
+      "afterMedianUS": 1785.0505,
+      "changePercent": -0.00417337721447808,
+      "beforeAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "afterAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M150/T64/Issue",
+      "beforeMedianUS": 512.8145,
+      "afterMedianUS": 509.2105,
+      "changePercent": -0.7027882401920982,
+      "beforeAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "afterAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M200/T32/PendingFirst",
+      "beforeMedianUS": 1331.681,
+      "afterMedianUS": 1321.255,
+      "changePercent": -0.7829202338998531,
+      "beforeAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "afterAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M200/T32/Issue",
+      "beforeMedianUS": 522.9885,
+      "afterMedianUS": 512.9335,
+      "changePercent": -1.9226044167319323,
+      "beforeAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "afterAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M200/T64/PendingFirst",
+      "beforeMedianUS": 1956.714,
+      "afterMedianUS": 1955.8775,
+      "changePercent": -0.04275024352050627,
+      "beforeAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "afterAllocations": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ]
+    },
+    {
+      "name": "BenchmarkLedgerOperations/M200/T64/Issue",
+      "beforeMedianUS": 609.489,
+      "afterMedianUS": 604.542,
+      "changePercent": -0.8116635410975404,
+      "beforeAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "afterAllocations": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ]
+    }
+  ],
+  "changePercentRange": [
+    -1.9226044167319323,
+    0.4739270894177583
+  ],
+  "boundNSPerOperation": [
+    25.91,
+    25.66,
+    25.72
+  ]
+}

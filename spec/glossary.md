@@ -162,6 +162,14 @@ A bounded event-aware diagnostic that assigns maximum error to a wrong event mar
 
 A score for a full predictive distribution that is minimized in expectation by reporting the forecaster's true distribution. EventFrame uses it as the primary probabilistic-fidelity metric for marked event time and censoring; the complete system-design objective is composite.
 
+## Expected Issued Brier
+
+A synthetic Bernoulli evaluation statistic computed from a pre-outcome forecast \(q\) and the generator's known clean-outcome probability \(p\): \((q-p)^2+p(1-p)\). It integrates the random realized outcome and includes irreducible variance. The truth parameter is evaluator-only information, not a forecast input. This is not answer accuracy, realized Brier on a single sampled outcome, or the complete marked-time/no-event evaluation. See Appendix B.3 for the benchmark identity; Appendix C.3 uses its own local paired-forecast probabilities.
+
+## Prospective Research Baseline
+
+A frozen comparator chosen for future research within a declared cohort, metric, and resource budget. The current native-cohort accuracy reference is Adaptive, a mixture of bounded rolling predictors; Full is the retained 64-observation speed control. Selection on consumed development evidence is not independent confirmation, oracle optimality, Anti-Pigeon certification, or a deployed default. Historical protocols retain their original baselines.
+
 ## Pre-Observation Risk
 
 An admission score computed only from information available before the next event. It gates fast-path corrections.
@@ -349,3 +357,15 @@ The deepest completed stage in the cumulative upgrade architecture for one case.
 ## Priority-Weighted Gain
 
 The reduction in predictive loss after weighting cases by a priority assigned before their outcomes are observed. It must be reported with unweighted and priority-stratified results.
+
+## Total Variation
+
+The distance between two probability laws defined as the supremum of their event-probability differences, with range [0,1]. Appendix C.1--C.3 compares unrestricted, ideal capped, and computed current-state laws for the same declared model and evidence. A proved TV upper envelope is not a measured defect, target-law truth, or a calibration certificate. Under a common predictive map it bounds probability motion, single-coordinate Bernoulli-Brier loss, and its expected risk under a common outcome law; it does not supply an arbitrary proper-score or log-loss bound. The observed 0.698245997 joint defect remains unresolved.
+
+## Approximation and Numerical Error Budgets
+
+Appendix-C-local cap error is the exact-arithmetic filtering/truncation bound. The numerical budget separately requires justified coverage of propagated ideal-to-computed law error and underestimation of the analytic envelope from rounded inputs. Their clipped sum is the total admission budget, with a separately frozen single-coordinate Brier tolerance. Sampled parity checks or outward rounding of the bound calculation alone do not certify upstream numerical error. Opt-in research admission requires an external numerical budget and fails closed or uses shadow output when coverage is absent, stale, or unjustified; current-state certification does not certify historical-query evidence-ratio weights.
+
+## Confidence Sequence
+
+A sequence of intervals with simultaneous coverage across every declared review time, so its stated guarantee can survive optional stopping under its assumptions. Appendix C.4's prospective utility uses completed-stream paired statistics, a fixed conditional-mean estimand, a frozen comparison family and error budget, and a simple union-Hoeffding construction. Paired arms and within-stream forecasts are not independent sample units. References 28 and 29 motivate more efficient future variance-adaptive or betting alternatives; their algorithms are not implemented here. Historical fixed-sample intervals and verdicts retain their original rules, not retroactive anytime coverage. The utility is not a regime learner or evidence that an AP effect has been established.

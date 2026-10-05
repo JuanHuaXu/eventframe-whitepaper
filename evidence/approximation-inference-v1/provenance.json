@@ -1,0 +1,113 @@
+{
+  "scope": "Local uncommitted correction evidence; synthetic development checks and retrospective planning only",
+  "immutableControlRevision": "7a7b9357c06ce855795b947ffcde2fd61a82d3ca",
+  "candidateRevision": null,
+  "candidateSources": "SHA-256-pinned in source-manifest.json; not a published commit",
+  "untouchedConfirmation": false,
+  "wholeGoalValidation": false,
+  "privateRawDataIncluded": false,
+  "files": [
+    {
+      "source": "research/approximation-admission-2026-10-05/audit.json",
+      "name": "audit.json",
+      "sha256": "77d2295761346dccf0b7ee8082f30848ad708d7c432915d028442b261ef5ab65",
+      "bytes": 896
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/audit-tests.txt",
+      "name": "audit-tests.txt",
+      "sha256": "b897826812c86e2844e7fbe913eac16684998bd7206b905ea848b94644286311",
+      "bytes": 79
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/manifest.json",
+      "name": "source-manifest.json",
+      "sha256": "bbe25f6aa4378dd1e9b426c13a499d3a249c4cff579a617ae44041c0270e3685",
+      "bytes": 12352
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/benchmark-results.json",
+      "name": "benchmark-results.json",
+      "sha256": "383b1759f1d8710fbb4b0a210291304f7d577967dcd465b06770f7264d304c07",
+      "bytes": 15419
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/bounds-benchmark.txt",
+      "name": "bounds-benchmark.txt",
+      "sha256": "dd0087c41d0bf943eb4b376e419cab0883d4b315d68480b1ddb27a49118c596d",
+      "bytes": 414
+    },
+    {
+      "source": "docs/experiments/inference-utility-2026-10-05-report.json",
+      "name": "inference-utility.json",
+      "sha256": "1cc8b6fd6a61048b4812924cb422534471a2bc38127b2a4cfb8f063fdcdd1912",
+      "bytes": 4355
+    },
+    {
+      "source": "docs/experiments/inference-contract-2026-10-05.md",
+      "name": "inference-contract.md",
+      "sha256": "0e408f92134be89e25b896b19ca1aabd9af4a5d4295ef60160b49e9b705dea5f",
+      "bytes": 17877
+    },
+    {
+      "source": "docs/experiments/turn-fallback-2026-10-05.md",
+      "name": "turn-fallback-audit.md",
+      "sha256": "63d1987bafbc0474745caa5ee1ab84b2d60016f558c8d6bb6186fdade220d784",
+      "bytes": 59693
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/admission-benchmark.txt",
+      "name": "admission-benchmark.txt",
+      "sha256": "2c26202a72efec4100a01523be1f412a207bc15efb8be2e0b8dd6d5e9ec6c1bd",
+      "bytes": 2123
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/frame-benchmark.txt",
+      "name": "frame-benchmark.txt",
+      "sha256": "d4e6b74693233b358baffbd724f94506863cec8a42d89517886969763eeb7289",
+      "bytes": 69478
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/frame-benchmark-results.json",
+      "name": "frame-benchmark-results.json",
+      "sha256": "9c67990bf378645c2208a9ad5f8a5457ba25b882215365caf18cd5a22e5c5bcc",
+      "bytes": 16376
+    },
+    {
+      "source": "docs/experiments/approximation-admission-2026-10-05.md",
+      "name": "approximation-correction.md",
+      "sha256": "7bb0810864e1fad3bd2efd1237fe9c8419cb9049f83f58c7b876baa3bcce76be",
+      "bytes": 5772
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/before-benchmark-0.txt",
+      "name": "before-benchmark-0.txt",
+      "sha256": "d2b142c1b2fe8320825000ca235e1292825e493f1eb0b2386d6083c79781bfe7",
+      "bytes": 4301
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/before-benchmark-1.txt",
+      "name": "before-benchmark-1.txt",
+      "sha256": "c3985cf9b67c223913e854b4e9b9be6be4b20b6c0ed73149d0b060986fb26c70",
+      "bytes": 4301
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/after-benchmark-0.txt",
+      "name": "after-benchmark-0.txt",
+      "sha256": "68a1db38f089bbd86fe1febbf370f09636ed809eaadf98d570828289571e86c9",
+      "bytes": 4301
+    },
+    {
+      "source": "research/approximation-admission-2026-10-05/after-benchmark-1.txt",
+      "name": "after-benchmark-1.txt",
+      "sha256": "e5a3eae421ca22f74564161319e343eec3692ceb10c700440d5bd84d590774b8",
+      "bytes": 4301
+    },
+    {
+      "source": "derived from imported raw benchmark samples",
+      "name": "timing-summary.json",
+      "sha256": "55d7ce8b03c79d31d30c302cfbe47886e862ce3c11a30380536a845609ad483b",
+      "bytes": 5129
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Appendix A. Symbol Index
 
+\(q,p\) in Appendix B.3's expected-issued-Brier identity: local Bernoulli scalars for the pre-outcome clean forecast and the known generator probability, respectively. Both lie in \([0,1]\); \(p\) is evaluator-only. They do not replace the complete forecast law, Bayesian policy \(q_B\), or priority rule.
+
 \(\mathcal X_{\mathrm{xpl}}\), \(h_{\mathrm{xpl}}\), \(d_{\mathrm{xpl}}\), \(T_a^{\mathrm{xpl}}\), \(\rho_{\mathrm{xpl}}(a)\): exploratory context space, learned encoding, encoding dimension, valid partial input transformation, and its proposed linear representation. Approximate alignment is not a discovery certificate.
 
 \(Q_v\), \(b_v\), \(A_n\), \(M_n\), \(Q_n^{\mathrm{xpl}}\), \(u_Y\), \(d_Y\), \(\varepsilon_{\mathrm{xpl}}\): Section 13's frozen positive categorical baseline, its log probabilities, centered composition and exemplar logits at fitting iteration \(n\), normalized experimental forecast, uniform outcome law, alphabet size, and smoothing mass. These local experimental objects do not replace the serving law.
@@ -227,3 +229,33 @@ This index resolves the core symbols used by the formulas. Component spaces for 
 \(\mathfrak F_{AP}^{\Gamma,\star}\), \(\mathcal J_\Gamma^{\mathrm{oracle}}\): population Anti-Pigeon-feasible design family and its oracle infimal benchmark.
 
 \(\mathfrak G_\Gamma\), \(\widehat{\mathfrak F}_{AP}^{\Gamma}\), \(\widehat\Theta_\Gamma\): finite predeclared design family, empirically certified feasible family, and operationally selected design.
+
+### Appendix-C-Local Symbols
+
+Appendix C has an explicitly separate local namespace. Its plain proof letters and indexed families below do not redefine the core symbol table: in particular, local \(S_t\), \(R_t\), \(F\), \(X_j\), \(m_t\), \(h_j\), and \(a\) are not runtime state, event-graph edges, the structural causal map, compressed context, event fields, or availability time. Reuse outside Appendix C requires an explicitly typed name. The C.3 loss envelope concerns only single-coordinate Bernoulli Brier under a common predictive map and outcome law, not arbitrary proper scores.
+
+\(P_t^{\mathrm{full}},P_t^{\mathrm{cap}},P_t^{\mathrm{cap},-}\): Unrestricted, ideal capped, and capped predicted pre-conditioning laws for the same model and as-of evidence (C.1--C.2).
+
+\(c_{\mathrm{cap}},d_{\mathrm{TV}},\epsilon_t^{\mathrm{cap}}\): Declared component cap, total variation in [0,1], and proved exact-arithmetic current-state cap-error upper bound; the bound is not an empirical TV measurement (C.1--C.2).
+
+\(K_t^{\mathrm{reset}},K_t,R_t,\rho_t\): Common reset-mixture transition, underlying transition, state-independent reset law, and reset weight; local kernels and reset law, not event buckets or graph edges (C.1).
+
+\(g_t,m_t,M_t,m,M\): Common observed likelihood and its stepwise lower/upper bounds, with uniform positive lower and finite upper bounds for the safe-cap corollary; not event fields (C.1--C.2).
+
+\(S_t,d_t(c_{\mathrm{cap}}),\bar d(c_{\mathrm{cap}})\): Retained support, stepwise discarded-mass upper bound in the approximate updated law, and uniform discarded-mass bound; not runtime state or refinement depth (C.1--C.2).
+
+\(u_t,z_t,b_t^{\mathrm{ev}},v_t\): Predicted TV bound, capped evidence-integral lower bound, derived unrestricted evidence-integral lower bound, and post-conditioning TV bound (C.2).
+
+\(\rho,a,\epsilon_{\mathrm{safe}}\): Uniform reset lower bound, contraction factor for the safe-cap corollary, and frozen admissible TV tolerance; local \(a\) is not availability time (C.2).
+
+\(F,p,q,y,\epsilon\): Common predictive Markov map, paired Bernoulli probabilities, common binary outcome, and TV upper bound used only for the single-coordinate unit-range Brier envelope; not an arbitrary proper-score bound or the SCM map (C.3).
+
+\(\widehat\epsilon_t^{\mathrm{cap}},\nu_t^{\mathrm{num}},\epsilon_t^{\mathrm{total}}\): Computed cap envelope, externally justified propagated numerical/rounding budget, and total admission bound; sampled oracle parity does not establish the numerical budget (C.3).
+
+\(P,Q,P^{g_t},Q^{g_t},A,a_A,f,\delta\): Generic laws and their likelihood-conditioned versions, measurable test event, its conditioned probability, bounded test function, and omitted-prior mass in the counterexample; not global policy or action symbols (C.2).
+
+\(X_j,\bar X_j,\mu,\mathcal F_{j-1}\): Completed-stream paired Brier statistic in [-1,1], empirical mean, fixed conditional-mean estimand, and prior stream information; not compressed runtime context (C.4).
+
+\(k_{\mathrm{cmp}},\alpha_{\mathrm{CS}},\alpha_{j,c},h_j\): Frozen comparison-family size, family error budget, time/comparison allocation, and union-Hoeffding confidence-sequence half-width; not event depth or changepoint state (C.4).
+
+\(t,T,j,c\): Filter step, finite theorem horizon, completed-stream count, and declared comparison index; \(c\) is not component cap \(c_{\mathrm{cap}}\) (C.1--C.4).

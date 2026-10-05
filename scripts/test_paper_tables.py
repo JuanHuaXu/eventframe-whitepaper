@@ -13,6 +13,33 @@ builder = runpy.run_path(str(ROOT / "scripts" / "build_paper.py"))
 
 
 class PaperTableTests(unittest.TestCase):
+    def test_observation_rescue_evidence_and_table(self):
+        directory = ROOT / "evidence" / "observation-attention-v2"
+        for line in (directory / "SHA256SUMS").read_text().splitlines():
+            digest, name = line.split()
+            self.assertEqual(hashlib.sha256((directory / name).read_bytes()).hexdigest(), digest)
+        report = json.loads((directory / "mmm-antipigeon-v2-summary.json").read_text())
+        self.assertEqual(len(report["records"]), 320)
+        self.assertTrue(report["shift_gain_passed"])
+        self.assertFalse(report["stable_protection_passed"])
+        self.assertFalse(report["overall_passed"])
+        source = (ROOT / "src" / "09_experimental_evaluation.md").read_text()
+        cases = [
+            ("stable", "Stable, full stream", "full_brier", "Protection failed"),
+            ("member_shift", "Member shift, post-change", "post_brier", "Loss improved; timing failed"),
+            ("common_shift", "Common shift, post-change", "post_brier", "Loss improved; timing failed"),
+            ("recurring", "Recurring, after first change", "post_brier", "Gain over frozen; AP increment unresolved"),
+            ("null", "Null, full stream", "full_brier", "No useful signal established"),
+        ]
+        for scenario, label, metric, verdict in cases:
+            rows = {s["arm"]: s for s in report["summaries"]
+                    if s["split"] == "confirmation" and s["scenario"] == scenario}
+            values = [rows[a][metric] for a in ["frozen", "cp_audit", "ap_audit"]]
+            self.assertIn(f"| {label} | {values[0]:.5f} | {values[1]:.5f} | {values[2]:.5f} | {verdict} |", source)
+        claim = next(line for line in (ROOT / "src" / "01a_claims_register.md").read_text().splitlines()
+                     if line.startswith("| X3r |"))
+        self.assertIn(claim, (ROOT / "spec" / "claims.md").read_text())
+
     def test_forecast_rescue_confirmation(self):
         directory = ROOT / "evidence" / "forecast-rescue-v1"
         for line in (directory / "SHA256SUMS").read_text().splitlines():

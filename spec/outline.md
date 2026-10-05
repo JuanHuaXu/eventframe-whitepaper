@@ -4,7 +4,7 @@
 
 ## Abstract
 
-State the problem, proposed architecture, current evidence, falsified claims, and remaining validation limits.
+In approximately 250--350 words, state the problem, proposed architecture, current evidence, falsified claims, and remaining validation limits. Refer to Section 11 and Appendix B for the empirical record.
 
 ## 1. Introduction
 
@@ -91,10 +91,13 @@ State the problem, proposed architecture, current evidence, falsified claims, an
 ## 11. Experimental Evaluation
 
 - Predeclared protocols and confidence procedures
+- Main findings summary and seven-direction whole-goal status table
 - Initial evidence, failed designs, and replacements
 - Corrected EventFrame-corpus results
 - Synthetic mechanisms, chronological replay, durability, and runtime
+- Observation-learning result summary with explicit references to Appendix B's detailed research history
 - Falsified, mixed, inconclusive, and untested outcomes
+- Further evaluation protocols
 
 ## 12. Discussion: Innovation and Scientific Refinement
 
@@ -108,7 +111,7 @@ State the problem, proposed architecture, current evidence, falsified claims, an
 - Stability, convergence, calibration, and certificate power
 - Prospective validation and production-readiness requirements
 - Untested exploratory representation learning, background composition, and grokking diagnostics
-- Hierarchical recurrent discovery and event-centric observation attention as separate untested extensions
+- Hierarchical recurrent discovery and event-centric observation attention as separate extensions with limited negative and mixed pilot evidence
 - Observation scope/depth mapping to 5W1H, bounded controller contract, and matched-control evaluation
 
 ## 14. Conclusion
@@ -130,3 +133,24 @@ State the problem, proposed architecture, current evidence, falsified claims, an
 - Resolve core symbols to one type and meaning
 - Distinguish event, forecast-law, residual, and packet domains
 - Distinguish pre-observation risk from post-observation loss
+- Index Appendix-C-local error-bound and confidence-sequence families without redefining core letters
+
+## Appendix B. Observation-Learning Research History and Baselines
+
+- Detailed follow-up evidence and immutable provenance supporting Section 11; historical frozen gates remain unchanged
+- B.1 Preserved incumbents and retained challengers: v3 overconfidence mitigation, member-shift AP increment, and v8's 24-stream cases conditional on three fitted incumbents
+- B.2 Faster Anti-Pigeon review: finite gate coverage versus failed downstream forecast gain
+- B.3 Native cohort: consumed-development accuracy/cost controls, expected issued Brier, and unchanged historical comparators
+- B.4 Protected support, approximation limits, and numerical repair
+- B.5 Public retrieval promotion failures and finite durable-serving boundaries
+- B.6 Failed recurrent discovery configuration and interpretation
+
+## Appendix C. Approximation Error and Prospective Inference
+
+- Appendix-C-local symbol families, distinct from the core namespace and indexed in Appendix A
+- C.1 Same-model, as-of unrestricted/capped filter comparison and total-variation meaning
+- C.2 Conditional exact-arithmetic filtering/truncation theorem, safe-cap region, and counterexample; observed 0.698245997 joint defect remains unresolved
+- C.3 Common-map single-coordinate Bernoulli-Brier and unit-risk envelope, separate numerical coverage, and opt-in research admission; no arbitrary-score or whole-model guarantee
+- C.4 Prospective completed-stream union-Hoeffding confidence sequence, fixed conditional-mean and comparison-family assumptions, and power/tightness limits
+- References 28 and 29 motivate more efficient future CS alternatives, not the implemented algorithms
+- Unit/synthetic mechanism checks are not historical confirmation or regime-learning evidence; historical frozen tables and verdicts remain unchanged and all seven research directions remain open

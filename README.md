@@ -18,6 +18,19 @@ The canonical fully typeset Markdown assembly is [`build/paper.md`](build/paper.
 
 Synthetic reports and privacy-reduced aggregate chronological results cited by the paper are preserved under [`evidence/`](evidence/). They are mechanism and implementation evidence, not independent or controlled real-world validation. The corrected canonical-EventFrame corpus results are under [`evidence/eventframe-corpus-v1/`](evidence/eventframe-corpus-v1/), the claim-completion round is under [`evidence/claims-completion/`](evidence/claims-completion/), the rescue/replacement confirmation is under [`evidence/claim-rescue-v1/`](evidence/claim-rescue-v1/), and aggregate concurrency-rescue measurements are under [`evidence/runtime-rescue-v1/`](evidence/runtime-rescue-v1/). The older elastic-ranking and calibration reports under [`evidence/rank-adaptation-v1/`](evidence/rank-adaptation-v1/) are retained as historical false-start provenance because those organic runs used full transcript text in semantic retrieval; their synthetic mechanism controls remain informative where explicitly rerun under contract 12.
 
+The [observation-learning follow-ups](evidence/observation-research-2026-10/README.md)
+preserve selected published results through October 5: retained-mixture rescues,
+failed broad quality gates, numerical repairs, public ranking transfer, and finite
+durable-freshness checks. Adaptive is the prospective consumed-native-cohort
+accuracy reference; Full remains the speed control. This does not change deployed
+defaults or mark any of the seven whole research directions complete.
+
+Section 11 leads with the seven-direction status table. Appendix B preserves the
+detailed research history, and Appendix C proves a conditional capped-filter
+TV/Brier error budget and specifies prospective stream-level inference. The
+implemented guard requires an external numerical-error witness; it does not
+erase the observed large joint defect or retrospectively confirm adaptive gains.
+
 ## Intended Output
 
 The opt-in authenticated-outcome extension, reversible working filter, and scoped
@@ -26,7 +39,7 @@ internal timings are preserved in [authenticated-outcome evidence](evidence/auth
 These do not establish truthful independent observations or replace earlier
 failed high-concurrency latency results.
 
-Build the canonical assembly and TeX with `python3 scripts/build_paper.py`, check source-derived tables with `python3 scripts/test_paper_tables.py`, and generate GitHub Markdown with `ruby scripts/build_github_paper.rb`. Compile `tmp/pdfs/eventframe_whitepaper.tex` with XeLaTeX twice before replacing the distributed PDF. Do not use the historical ignored PDF builder, whose hard-coded tables could lag the Markdown source.
+Build the canonical assembly and TeX with `python3 scripts/build_paper.py`, check source-derived tables with `python3 scripts/test_paper_tables.py`, verify imported observation-research evidence with `python3 scripts/test_observation_research.py` and correction evidence with `python3 scripts/test_approximation_upgrade.py`, and generate GitHub Markdown with `ruby scripts/build_github_paper.rb`. Compile `tmp/pdfs/eventframe_whitepaper.tex` with XeLaTeX twice before replacing the distributed PDF. Do not use the historical ignored PDF builder, whose hard-coded tables could lag the Markdown source.
 
 The repeated-memory gate and its limits are described in Section 6. Aggregate-only retrospective regression evidence and test boundaries are recorded in [`evidence/repetition-gate-v1/`](evidence/repetition-gate-v1/); these are not a downstream poisoning-resistance benchmark.
 

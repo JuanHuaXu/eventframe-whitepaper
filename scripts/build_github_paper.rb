@@ -64,7 +64,7 @@ class InlineMathHTML
     "partial" => "∂", "prod" => "∏", "sqcup" => "⊔", "sum" => "∑",
     "times" => "×", "star" => "⋆", "varnothing" => "∅",
     "infty" => "∞", "langle" => "⟨", "rangle" => "⟩",
-    "ldots" => "…", "arg" => "arg", "inf" => "inf", "ker" => "ker",
+    "ldots" => "…", "arg" => "arg", "inf" => "inf", "sup" => "sup", "int" => "∫", "ker" => "ker",
     "log" => "log", "max" => "max", "min" => "min", "quad" => " ",
     "qquad" => " ", "exp" => "exp", "bigl" => "", "bigr" => ""
   }.freeze
@@ -253,7 +253,9 @@ end
   '\iota^{\mathrm{obs}}' => 'ι<sup>obs</sup>',
   '\exp(-x)' => 'exp(−x)',
   '\vartheta_j' => 'ϑ<sub>j</sub>',
-  '\bigl(x\bigr)' => '(x)'
+  '\bigl(x\bigr)' => '(x)',
+  '\sup_A|P(A)-Q(A)|' => 'sup<sub>A</sub>|P(A)−Q(A)|',
+  '\int g\,dP' => '∫ g dP'
 }.each do |source, expected|
   actual = InlineMathHTML.render(source)
   abort "Semantic inline math regression: #{source.inspect}: #{actual.inspect}" unless actual == expected
